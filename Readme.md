@@ -27,3 +27,7 @@ A sophisticated AI-powered trading platform built on Hyperliquid, enabling seaml
 - **Authentication**: Thirdweb wallet integration
 - **Styling**: Tailwind CSS with custom animations
 - **Performance**: React Server Components, Suspense boundaries
+
+## Environment Variables
+
+Rename a `.env.development` file to `.env` file (both client & server folder)
