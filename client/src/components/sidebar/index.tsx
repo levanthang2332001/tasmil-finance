@@ -20,16 +20,16 @@ import Logo from "../Logo";
 import SidebarButton, { SidebarItem } from "./SidebarButton";
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
-  { icon: <Wallet className="mr-2 h-6 w-6" />, label: "Dashboard", link: PATHS.dashboard },
-  { icon: <Brain className="mr-2 h-6 w-6" />, label: "Ai Agents", link: PATHS.aiAgent },
-  { icon: <Award className="mr-2 h-6 w-6" />, label: "Portfolio", link: PATHS.portfolio },
-  { icon: <ChartNoAxesCombined className="mr-2 h-6 w-6" />, label: "Trending", link: PATHS.trending },
-  { icon: <Landmark className="mr-2 h-6 w-6" />, label: "Defi Agent", link: PATHS.defiAgent },
+  { icon: <Wallet className="mr-2 h-6 w-6" />, label: "Dashboard", link: PATHS.DASHBOARD },
+  { icon: <Brain className="mr-2 h-6 w-6" />, label: "Ai Agents", link: PATHS.AI_AGENT },
+  { icon: <Landmark className="mr-2 h-6 w-6" />, label: "Defi Agent", link: PATHS.DEFI_AGENT },
+  { icon: <ChartNoAxesCombined className="mr-2 h-6 w-6" />, label: "Trending", link: PATHS.TRENDING },
+  { icon: <Award className="mr-2 h-6 w-6" />, label: "Portfolio", link: PATHS.PORTFOLIO },
 ];
 
 const FOOTER_ITEMS: SidebarItem[] = [
-  { icon: <Settings className="mr-2 h-6 w-6" />, label: "Settings", link: PATHS.settings },
-  { icon: <HelpCircle className="mr-2 h-6 w-6" />, label: "Help & FAQ", link: PATHS.help },
+  { icon: <Settings className="mr-2 h-6 w-6" />, label: "Settings", link: PATHS.SETTINGS },
+  { icon: <HelpCircle className="mr-2 h-6 w-6" />, label: "Help & FAQ", link: PATHS.HELP },
 ];
 
 const Sidebar: React.FC = () => {
@@ -42,7 +42,7 @@ const Sidebar: React.FC = () => {
   return (
     <div
       className={cn(
-        "transition-all duration-300 ease-in-out relative",
+        "transition-all h-full duration-300 ease-in-out relative",
         isSidebarOpen ? "w-64" : "w-0"
       )}
     >

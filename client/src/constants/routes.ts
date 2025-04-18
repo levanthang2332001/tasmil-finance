@@ -1,26 +1,31 @@
 export const PATHS = {
-  dashboard: "/dashboard",
-  aiAgent: "/ai-agent",
-  portfolio: "/portfolio",
-  trending: "/trending",
-  defiAgent: "/defi-agent",
-  settings: "/settings",
-  help: "/help",
+  DASHBOARD: "/dashboard",
+  AI_AGENT: "/ai-agent",
+  PORTFOLIO: "/portfolio",
+  TRENDING: "/trending",
+  DEFI_AGENT: "/defi-agent",
+  SETTINGS: "/settings",
+  HELP: "/help",
 
-  landingPage: "/",
-  next: "/_next",
-  favicon: "/favicon.ico",
-  robots: "/robots.txt",
+  LANDING_PAGE: "/",
+  NEXT: "/_next",
+  FAVICON: "/favicon.ico",
+  ROBOTS: "/robots.txt",
 };
 
-export const PUBLIC_PATHS = [PATHS.landingPage, PATHS.next, PATHS.favicon, PATHS.robots];
+export const PUBLIC_PATHS = [
+  PATHS.LANDING_PAGE,
+  PATHS.NEXT,
+  PATHS.FAVICON,
+  PATHS.ROBOTS,
+];
 
 export const PROTECTED_PATHS = [
-  PATHS.dashboard,
-  PATHS.aiAgent,
-  PATHS.portfolio,
-  PATHS.trending,
-  PATHS.defiAgent,
-  PATHS.settings,
-  PATHS.help,
+  PATHS.DASHBOARD,
+  PATHS.AI_AGENT,
+  PATHS.PORTFOLIO,
+  PATHS.TRENDING,
+  PATHS.DEFI_AGENT,
+  PATHS.SETTINGS,
+  PATHS.HELP,
 ];

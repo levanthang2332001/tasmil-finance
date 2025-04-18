@@ -1,6 +1,5 @@
 "use client";
 
-import ConnectWallet from "@/components/ConnectWallet";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -98,7 +97,6 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-200 to-purple-400">
           Dashboard
         </h1>
-        <ConnectWallet />
       </motion.div>
 
       <Button variant="outline" className="rounded-full mb-4">

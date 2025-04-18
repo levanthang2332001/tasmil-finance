@@ -26,8 +26,8 @@ const ConnectWallet = ({ className, label = "Launch App" }: ConnectWalletProps) 
           name: "Tasmil Finance",
           description: "Tasmil Finance",
         }}
-        onConnect={() => router.push(PATHS.dashboard)}
-        onDisconnect={() => router.push(PATHS.landingPage)}
+        onConnect={() => router.push(PATHS.DASHBOARD)}
+        onDisconnect={() => router.push(PATHS.LANDING_PAGE)}
       />
     </div>
   );

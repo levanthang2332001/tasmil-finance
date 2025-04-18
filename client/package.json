@@ -6,7 +6,7 @@
     "name": "le-dat (leo)",
     "url": "https://github.com/le-dat"
   },
-  "description": "A modern web3 marketplace built with Next.js, React 19, and TypeScript",
+  "description": "A modern web3 marketplace built with Next.js 14, TypeScript",
   "repository": {
     "type": "git",
     "url": "https://github.com/le-dat/tasmil-finance/client"

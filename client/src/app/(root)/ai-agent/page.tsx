@@ -1,18 +1,18 @@
 "use client";
 
 import AIAgent from "@/components/ai-agents/page";
-import Navbar from "@/components/Navbar";
+// import Navbar from "@/components/Navbar";
 
-const SwapPage = () => {
+const AiAgentPage = () => {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
 
-      <div className="flex flex-col max-h-calc(100vh-80px) h-full overflow-y-auto">
+      <div className="flex flex-col h-full overflow-y-auto">
         <AIAgent />
       </div>
     </>
   );
 };
 
-export default SwapPage;
+export default AiAgentPage;

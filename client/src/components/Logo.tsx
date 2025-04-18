@@ -11,7 +11,7 @@ interface LogoProps {
 const Logo = ({ className }: LogoProps) => {
   return (
     <Link
-      href={PATHS.aiAgent}
+      href={PATHS.AI_AGENT}
       className={cn("p-4 flex items-center gap-2", className)}
     >
       <Image src="/images/logo.png" alt="logo" width={40} height={40} className="w-10 h-10" />

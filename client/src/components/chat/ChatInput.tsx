@@ -49,7 +49,7 @@ export const ChatInput = ({ onSendMessage, isLoading, className }: ChatInputProp
   };
 
   return (
-    <div className={cn('pt-2', className)}>
+    <div className={cn('pt-2 px-2', className)}>
       <form onSubmit={handleSubmit} className="flex gap-2 items-end max-w-4xl mx-auto">
         <div className="flex-1 relative">
           <Textarea
@@ -57,7 +57,7 @@ export const ChatInput = ({ onSendMessage, isLoading, className }: ChatInputProp
             value={message}
             onChange={handleTextareaChange}
             onKeyDown={handleKeyDown}
-            placeholder="Type your message..."
+            placeholder="Ask Tasmil AI anything..."
             className="min-h-[52px] max-h-32 pe-12 resize-none text-white placeholder:text-white/50 border-none focus-visible:ring-background focus-visible:ring-1 outline-background "
             disabled={isLoading}
           />

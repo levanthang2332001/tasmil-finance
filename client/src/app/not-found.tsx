@@ -1,7 +1,10 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Home } from 'lucide-react';
-import Link from 'next/link';
+"use client";
+
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Home } from "lucide-react";
+import Link from "next/link";
+import { PATHS } from "@/constants/routes";
 
 const NotFound = () => {
   return (
@@ -13,7 +16,7 @@ const NotFound = () => {
           <p className="text-gray-400">
             The page you&apos;re looking for doesn&apos;t exist or has been moved.
           </p>
-          <Link href="/">
+          <Link href={PATHS.LANDING_PAGE}>
             <Button
               variant="outline"
               className="mt-4 border-purple-500/20 text-purple-400 hover:bg-purple-500/20"
