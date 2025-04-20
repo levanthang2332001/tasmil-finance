@@ -7,6 +7,7 @@ import History from "./History";
 import Orders from "./Orders";
 import Positions from "./Positions";
 import TabButton from "./TabButton";
+
 enum TabType {
   POSITIONS = "positions",
   ORDERS = "orders",
@@ -26,7 +27,9 @@ const Tabs = () => {
     <div className="flex-1 flex flex-col">
       <div className="flex items-center gap-2 px-4 py-3">
         <Coins className="size-4 text-muted-foreground" />
-        <span className="uppercase text-sm font-bold text-muted-foreground">Trade</span>
+        <span className="uppercase text-sm font-bold text-muted-foreground">
+          Trade
+        </span>
       </div>
       <div className="flex border-b">
         {tabs.map(({ id, label }) => (

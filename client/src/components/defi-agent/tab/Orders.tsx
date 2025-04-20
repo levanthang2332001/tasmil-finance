@@ -2,16 +2,18 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-interface Order {
+type Order = {
   id: string;
-  type: "limit" | "market";
-  side: "buy" | "sell";
   symbol: string;
-  size: number;
+  side: "buy" | "sell";
+  type: string;
   price: number;
+  size: number;
   status: "open" | "filled" | "cancelled";
   time: string;
-}
+};
+
+type OrderStatus = "open" | "filled" | "cancelled";
 
 const MOCK_ORDERS: Order[] = [
   {
@@ -46,13 +48,15 @@ const MOCK_ORDERS: Order[] = [
   },
 ];
 
+const statusColors: Record<OrderStatus, string> = {
+  open: "text-crypto-blue",
+  filled: "text-crypto-positive",
+  cancelled: "text-crypto-negative",
+};
+
 const OrderItem = ({ order }: { order: Order }) => {
   const isBuy = order.side === "buy";
-  const statusColor = {
-    open: "text-yellow-500",
-    filled: "text-green-500",
-    cancelled: "text-red-500",
-  }[order.status];
+  const statusColor = statusColors[order.status];
 
   const handleCancelOrder = () => {
     // TODO: Implement order cancellation logic
@@ -64,7 +68,10 @@ const OrderItem = ({ order }: { order: Order }) => {
       <div className="mb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
-            <Badge variant={isBuy ? "success" : "destructive"} className="px-2 py-1">
+            <Badge
+              variant={isBuy ? "success" : "destructive"}
+              className="px-2 py-1"
+            >
               {order.side.toUpperCase()}
             </Badge>
             <span className="font-semibold text-sm">{order.symbol}</span>
@@ -96,7 +103,11 @@ const OrderItem = ({ order }: { order: Order }) => {
         </div>
 
         {order.status === "open" && (
-          <Button variant="outline" className="px-2 py-1" onClick={handleCancelOrder}>
+          <Button
+            variant="outline"
+            className="px-2 py-1"
+            onClick={handleCancelOrder}
+          >
             Cancel
           </Button>
         )}
