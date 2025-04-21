@@ -1,5 +1,6 @@
 "use client";
 
+import ConnectWallet from "@/components/ConnectWallet";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -88,16 +89,19 @@ function SectionHeader({ title, viewAllLink }: { title: string; viewAllLink: str
 export default function DashboardPage() {
   return (
     <div className="container mx-auto px-4 py-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-4 flex items-center justify-between w-full"
-      >
-        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-200 to-purple-400">
-          Dashboard
-        </h1>
-      </motion.div>
+      <div className="flex items-center justify-between">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-4 flex items-center justify-between w-full"
+        >
+          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-200 to-purple-400">
+            Dashboard
+          </h1>
+        </motion.div>
+        <ConnectWallet />
+      </div>
 
       <Button variant="outline" className="rounded-full mb-4">
         Spotlight

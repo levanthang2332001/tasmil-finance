@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
-import ThirdWebProvider from "@/providers/ThirdWebProvider";
+import SuiProvider from "@/providers/SuiProvider";
 import { Inter } from "next/font/google";
 
 const inter = Inter({
@@ -46,7 +46,7 @@ export default function RootLayout({
       {/* dark mode */}
       <body className={`${inter.variable} antialiased overflow-x-hidden dark`}>
         <ReactQueryProvider>
-          <ThirdWebProvider>{children}</ThirdWebProvider>
+          <SuiProvider>{children}</SuiProvider>
         </ReactQueryProvider>
       </body>
     </html>
