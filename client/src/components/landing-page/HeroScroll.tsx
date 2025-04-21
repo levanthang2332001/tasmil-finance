@@ -1,8 +1,8 @@
-'use client';
-import React from 'react';
-import { ContainerScroll } from '@/components/ui/container-scroll-animation';
-import Image from 'next/image';
-import { cn } from '@/lib/utils';
+"use client";
+import React from "react";
+import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface HeroScrollProps {
   className?: string;
@@ -10,7 +10,7 @@ interface HeroScrollProps {
 
 export default function HeroScroll({ className }: HeroScrollProps) {
   return (
-    <div className={cn('flex flex-col ', className)}>
+    <div className={cn("flex flex-col ", className)}>
       <ContainerScroll>
         <Image
           src={`/images/chat-bot.png`}

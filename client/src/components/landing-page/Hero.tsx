@@ -14,7 +14,7 @@ const Hero = () => {
             transition={{ duration: 0.5 }}
             className="mb-8"
           >
-            <span className="px-3 py-1 text-sm font-medium text-purple-400 bg-purple-500/10 rounded-full border border-purple-500/20">
+            <span className="px-3 py-1 text-sm font-medium text-crypto-blue bg-crypto-blue/10 rounded-full border border-crypto-blue/20">
               AI-Powered DeFi Trading
             </span>
           </motion.div>
@@ -23,7 +23,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-200 to-purple-400 mb-6"
+            className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-crypto-blue/70 to-crypto-blue mb-6"
           >
             Your Intelligent DeFi
             <br />
@@ -36,8 +36,8 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="text-gray-400 text-lg md:text-xl max-w-2xl mb-8"
           >
-            Experience seamless token swaps, liquidity management, and real-time market insights
-            with our AI-powered DeFi chatbot.
+            Experience seamless token swaps, liquidity management, and real-time
+            market insights with our AI-powered DeFi chatbot.
           </motion.p>
 
           <motion.div

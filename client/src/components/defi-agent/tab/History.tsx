@@ -58,7 +58,10 @@ const TradeItem = ({ trade }: { trade: Trade }) => {
       <div className="mb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
-            <Badge variant={isBuy ? "success" : "destructive"} className="px-2 py-1">
+            <Badge
+              variant={isBuy ? "success" : "destructive"}
+              className="px-2 py-1"
+            >
               {trade.type.toUpperCase()}
             </Badge>
             <span className="font-semibold text-sm">{trade.symbol}</span>
@@ -81,9 +84,15 @@ const TradeItem = ({ trade }: { trade: Trade }) => {
         </div>
 
         {trade.pnl !== undefined && (
-          <p className={`font-bold text-base ${hasProfit ? "text-green-500" : "text-red-500"}`}>
+          <p
+            className={`font-bold text-base ${
+              hasProfit ? "text-crypto-positive" : "text-crypto-negative"
+            }`}
+          >
             ${trade.pnl.toLocaleString()}{" "}
-            <span className="text-sm">({trade.pnlPercentage?.toFixed(2)}%)</span>
+            <span className="text-sm">
+              ({trade.pnlPercentage?.toFixed(2)}%)
+            </span>
           </p>
         )}
       </div>

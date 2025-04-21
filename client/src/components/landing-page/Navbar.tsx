@@ -26,7 +26,10 @@ const Navbar = ({ className }: NavbarProps) => {
       <ul className="flex items-center gap-6">
         {navItems.map((item) => (
           <motion.li key={item.name} whileHover={{ scale: 1.05 }}>
-            <Link href={item.href} className="text-gray-300 hover:text-white transition-colors">
+            <Link
+              href={item.href}
+              className="text-gray-300 hover:text-crypto-blue transition-colors"
+            >
               {item.name}
             </Link>
           </motion.li>

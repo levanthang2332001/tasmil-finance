@@ -29,7 +29,8 @@ const SidebarButton: React.FC<SidebarItem> = ({
     onClick={disabled ? undefined : onClick}
     className={cn(
       "p-4 rounded-md flex items-center gap-2 relative cursor-pointer transition-all duration-300",
-      "text-gray-500 dark:text-neutral-400 dark:hover:text-white"
+      "dark:hover:text-crypto-blue hover:text-crypto-blue",
+      isActive ? "text-crypto-blue" : "text-gray-500 dark:text-neutral-400"
     )}
     id={`${label}-${link}`}
   >
@@ -38,7 +39,7 @@ const SidebarButton: React.FC<SidebarItem> = ({
     {isActive && (
       <motion.span
         layoutId="bubble"
-        className="absolute rounded-lg z-[-1] inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20"
+        className="absolute rounded-lg z-[-1] inset-0 bg-gradient-to-r from-crypto-blue/20 to-crypto-blue/10"
         transition={{
           type: "spring",
           bounce: 0.2,

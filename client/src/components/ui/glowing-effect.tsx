@@ -99,11 +99,12 @@ const GlowingEffect = memo(
 
     useEffect(() => {
       if (disabled) return;
+      if (!window) return;
 
       const handleScroll = () => handleMove();
       const handlePointerMove = (e: PointerEvent) => handleMove(e);
 
-      window.addEventListener("scroll", handleScroll, { passive: true });
+      window?.addEventListener("scroll", handleScroll, { passive: true });
       document.body.addEventListener("pointermove", handlePointerMove, {
         passive: true,
       });
@@ -112,7 +113,7 @@ const GlowingEffect = memo(
         if (animationFrameRef.current) {
           cancelAnimationFrame(animationFrameRef.current);
         }
-        window.removeEventListener("scroll", handleScroll);
+        window?.removeEventListener("scroll", handleScroll);
         document.body.removeEventListener("pointermove", handlePointerMove);
       };
     }, [handleMove, disabled]);
@@ -144,17 +145,17 @@ const GlowingEffect = memo(
                   var(--black),
                   var(--black) calc(25% / var(--repeating-conic-gradient-times))
                 )`
-                  : `radial-gradient(circle, #dd7bbb 10%, #dd7bbb00 20%),
-                radial-gradient(circle at 40% 40%, #d79f1e 5%, #d79f1e00 15%),
-                radial-gradient(circle at 60% 60%, #5a922c 10%, #5a922c00 20%), 
-                radial-gradient(circle at 40% 60%, #4c7894 10%, #4c789400 20%),
+                  : `radial-gradient(circle, #1EAEDB 10%, #1EAEDB00 20%),
+                radial-gradient(circle at 40% 40%, #1EAEDB 5%, #1EAEDB00 15%),
+                radial-gradient(circle at 60% 60%, #1EAEDB 10%, #1EAEDB00 20%), 
+                radial-gradient(circle at 40% 60%, #1EAEDB 10%, #1EAEDB00 20%),
                 repeating-conic-gradient(
                   from 236.84deg at 50% 50%,
-                  #dd7bbb 0%,
-                  #d79f1e calc(25% / var(--repeating-conic-gradient-times)),
-                  #5a922c calc(50% / var(--repeating-conic-gradient-times)), 
-                  #4c7894 calc(75% / var(--repeating-conic-gradient-times)),
-                  #dd7bbb calc(100% / var(--repeating-conic-gradient-times))
+                  #1EAEDB 0%,
+                  #1EAEDB calc(25% / var(--repeating-conic-gradient-times)),
+                  #1EAEDB calc(50% / var(--repeating-conic-gradient-times)), 
+                  #1EAEDB calc(75% / var(--repeating-conic-gradient-times)),
+                  #1EAEDB calc(100% / var(--repeating-conic-gradient-times))
                 )`,
             } as React.CSSProperties
           }

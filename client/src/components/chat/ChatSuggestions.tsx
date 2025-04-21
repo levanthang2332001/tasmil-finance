@@ -19,10 +19,15 @@ export const ChatSuggestions = ({
   suggestions,
 }: ChatSuggestionsProps) => {
   return (
-    <div className={cn("flex flex-col items-center justify-center gap-4 p-6", className)}>
+    <div
+      className={cn(
+        "flex flex-col items-center justify-center gap-4 p-6",
+        className
+      )}
+    >
       <div className="flex items-center gap-2 mb-6">
-        <Sparkles className="w-5 h-5 text-purple-500" />
-        <h3 className="text-xl font-semibold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+        <Sparkles className="w-5 h-5 text-crypto-blue" />
+        <h3 className="text-xl font-semibold bg-gradient-to-r from-crypto-blue to-crypto-blue bg-clip-text text-transparent">
           Start a conversation
         </h3>
       </div>
@@ -34,15 +39,15 @@ export const ChatSuggestions = ({
               key={`${suggestion.text}-${index}`}
               onClick={() => onSendMessage(suggestion.text)}
               className={cn(
-                "relative w-full cursor-pointer text-left text-sm bg-card text-white rounded-lg p-6",
+                "relative !bg-neutral-900/20 border-neutral-800 w-full cursor-pointer text-left text-sm  text-white rounded-lg p-6",
                 "border border-card transition-all duration-300",
-                "hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-pink-500/20",
-                "shadow-[0_0_5px_rgba(168,85,247,0.3)]"
+                "hover:bg-gradient-to-r hover:from-crypto-blue/20",
+                "shadow-[0_0_5px_#1EAEDB80]"
               )}
             >
               <div className="flex items-center gap-2">
-                <div className="p-2 rounded-lg bg-purple-500/10">
-                  <Icon className="w-5 h-5 text-purple-500" />
+                <div className="p-2 rounded-lg bg-crypto-blue/10">
+                  <Icon className="w-5 h-5 text-crypto-blue" />
                 </div>
                 <span className="relative z-10">{suggestion.text}</span>
               </div>

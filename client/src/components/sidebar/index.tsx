@@ -13,7 +13,7 @@ import {
   Landmark,
   LogOut,
   Settings,
-  Wallet
+  Wallet,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
@@ -57,8 +57,8 @@ const Sidebar: React.FC = () => {
       <div
         className={cn(
           "fixed top-0 left-0 h-full w-64",
-          "bg-black/20",
-          "border-r border-border",
+          "bg-black/20 backdrop-blur-sm",
+          "border-r border-crypto-blue/10",
           "transform transition-transform duration-300 ease-in-out",
           "flex flex-col",
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -81,7 +81,7 @@ const Sidebar: React.FC = () => {
           </AnimatePresence>
         </ScrollArea>
 
-        <div className="p-4 border-t border-border space-y-2">
+        <div className="p-4 border-t border-crypto-blue/10 space-y-2">
           {FOOTER_ITEMS.map((item, index) => (
             <SidebarButton
               key={`${index}-${item.link}`}
@@ -101,7 +101,7 @@ const Sidebar: React.FC = () => {
 
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="absolute top-1/2 -right-3 transform -translate-y-1/2 bg-purple-600 text-white p-1 rounded-full shadow-lg hover:bg-purple-700 transition-colors z-50"
+        className="absolute top-1/2 -right-3 transform -translate-y-1/2 bg-crypto-blue text-white p-1 rounded-full shadow-lg hover:bg-blue-600 transition-colors z-50"
       >
         {isSidebarOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
       </button>

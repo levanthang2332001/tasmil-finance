@@ -28,7 +28,7 @@ export default function IntroAi({ className }: IntroAiProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400"
+            className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-crypto-blue to-neutral-400"
           >
             AI-Powered Defi Trading
           </motion.h1>
@@ -38,8 +38,8 @@ export default function IntroAi({ className }: IntroAiProps) {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mt-4 text-neutral-500 max-w-lg"
           >
-            Get real-time market insights, automated portfolio management, and AI-driven trading
-            strategies at your fingertips.
+            Get real-time market insights, automated portfolio management, and
+            AI-driven trading strategies at your fingertips.
           </motion.p>
         </div>
 

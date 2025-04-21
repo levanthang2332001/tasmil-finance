@@ -29,7 +29,7 @@ const ConnectWallet = ({
 
   return (
     <div className={cn(className)}>
-      <ConnectButton className="!gradient-outline" connectText={label} />
+      <ConnectButton connectText={label} />
     </div>
   );
 };
