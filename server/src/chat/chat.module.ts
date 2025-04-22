@@ -6,6 +6,7 @@ import { MarketService } from './services/market.service';
 import { SwapService } from './services/swap.service';
 import { MarketIntentService } from './intent/market.intent';
 import { SwapIntentService } from './intent/swap.intent';
+import { NaviService } from './services/navi.service';
 @Module({
   controllers: [ChatController],
   providers: [
@@ -15,6 +16,7 @@ import { SwapIntentService } from './intent/swap.intent';
     SwapService,
     MarketIntentService,
     SwapIntentService,
+    NaviService,
   ],
   exports: [ChatService],
 })

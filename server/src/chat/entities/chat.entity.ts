@@ -1,8 +1,16 @@
-import { DeFiIntent } from './intent.entity';
+import { CetusActionType, DeFiIntent, NaviActionType } from './intent.entity';
 import { SwapQuote } from './swap.entity';
+
+export enum AgentType {
+  DEFAULT = 'default',
+  NAVI = 'navi',
+  CETUS = 'cetus',
+}
+
 export interface ChatMessage {
   userId: string;
   content: string;
+  agentType?: AgentType;
 }
 
 export enum ChatResponseType {
@@ -11,7 +19,17 @@ export enum ChatResponseType {
   MARKET_ANALYSIS = 'market_analysis',
   SWAP_EXECUTED = 'swap_executed',
   ERROR = 'error',
+  INFO = 'info',
+  ACTION_REQUIRED = 'action_required',
+  ACTION_RESULT = 'action_result',
+  DATA_VISUALIZATION = 'data_visualization',
 }
+
+// Mapping agent types to their action types
+export const AgentActionTypeMap = {
+  [AgentType.NAVI]: NaviActionType,
+  [AgentType.CETUS]: CetusActionType,
+};
 
 export interface ChatResponse {
   type: ChatResponseType;
@@ -19,6 +37,10 @@ export interface ChatResponse {
   intent?: DeFiIntent;
   quote?: SwapQuote;
   txHash?: string;
+  agentType?: AgentType;
+  actionType?: string;
+  data?: any;
+  visualizationType?: string;
 }
 
 export interface MessageHistoryEntry {

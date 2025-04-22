@@ -4,6 +4,12 @@ export enum MessageType {
   SWAP_QUOTE = "swap_quote",
 }
 
+export enum AgentType {
+  DEFAULT = "default",
+  NAVI = "navi",
+  // Add more agent types as needed
+}
+
 export interface Message {
   id: string;
   content: string;

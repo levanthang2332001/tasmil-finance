@@ -7,17 +7,20 @@ import {
 } from 'src/shared/utils/token-address';
 import { fromWei, toWei } from 'src/shared/utils/number';
 import { SwapParameters } from '../entities/swap.entity';
-import { API_CONFIG } from 'src/shared/config/api.config';
 import { LoggerService } from 'src/shared/services/logger.service';
 import { SwapQuote, SwapQuoteResponse } from '../entities/swap.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class SwapService {
   private readonly logger = new LoggerService(SwapService.name);
-  private readonly apiUrl: string = API_CONFIG.kyberswap.apiUrl;
-  private readonly apiKey: string = API_CONFIG.kyberswap.apiKey;
+  private readonly apiUrl: string;
+  private readonly apiKey: string;
 
-  constructor() {}
+  constructor(private readonly configService: ConfigService) {
+    this.apiUrl = this.configService.get('kyberswap.apiUrl') || '';
+    this.apiKey = this.configService.get('kyberswap.apiKey') || '';
+  }
 
   private getHeaders(): Record<string, string> {
     return {

@@ -2,14 +2,35 @@
 "use client";
 
 import { ChatContainer } from "@/components/chat/ChatContainer";
-import { Message, MessageType } from "@/types/chat";
-import { ArrowLeftRight, CircleDollarSign, Coins, Wallet } from "lucide-react";
-import { useState } from "react";
+import { AgentSelector } from "@/components/defi-agent/AgentSelector";
 import { ChatService } from "@/services/chat.service";
+import { AgentType, Message, MessageType } from "@/types/chat";
+import { ArrowLeftRight, CircleDollarSign, Coins, Wallet } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const AIAgent = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState<AgentType>(
+    AgentType.DEFAULT
+  );
+
+  // Initialize with welcome message
+  useEffect(() => {
+    const welcomeMessage =
+      selectedAgent === AgentType.NAVI
+        ? "Hello! I'm your Navi agent assistant. I can help you check your portfolio, positions, health factor, and rewards on Navi. What would you like to know?"
+        : "Hello! I'm your DeFi assistant. I can help you with token swaps, price checks, and general DeFi questions. How can I help you today?";
+
+    setMessages([
+      {
+        id: Date.now().toString(),
+        content: welcomeMessage,
+        timestamp: new Date(),
+        type: MessageType.BOT,
+      },
+    ]);
+  }, []);
 
   const handleSendMessage = async (content: string) => {
     // Add user message
@@ -24,12 +45,19 @@ const AIAgent = () => {
     // Send message to API
     setIsLoading(true);
     try {
-      const response = await ChatService.sendMessage("user-1", content);
+      const response = await ChatService.sendMessage(
+        "user-1",
+        content,
+        selectedAgent
+      );
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: response.message,
         timestamp: new Date(),
-        type: response.type === "swap_quote" ? MessageType.SWAP_QUOTE : MessageType.BOT,
+        type:
+          response.type === "swap_quote"
+            ? MessageType.SWAP_QUOTE
+            : MessageType.BOT,
         quote: response.quote,
       };
       setMessages((prev) => [...prev, botMessage]);
@@ -87,32 +115,90 @@ const AIAgent = () => {
     setMessages((prev) => [...prev, cancelMessage]);
   };
 
-  return (
-    <ChatContainer
-      messages={messages}
-      isLoading={isLoading}
-      onSendMessage={handleSendMessage}
-      onSwapConfirm={handleSwapConfirm}
-      onSwapCancel={handleSwapCancel}
-      suggestions={[
+  const handleAgentChange = (agentType: AgentType) => {
+    const previousAgent = selectedAgent;
+    setSelectedAgent(agentType);
+
+    // Clear messages when changing agents
+    setMessages([]);
+
+    // Generate welcome message based on the newly selected agent
+    const welcomeMessage =
+      agentType === AgentType.NAVI
+        ? "Hello! I'm your Navi agent assistant. I can help you check your portfolio, positions, health factor, and rewards on Navi. What would you like to know?"
+        : "Hello! I'm your DeFi assistant. I can help you with token swaps, price checks, and general DeFi questions. How can I help you today?";
+
+    // Add welcome message to the chat
+    setMessages([
+      {
+        id: Date.now().toString(),
+        content: welcomeMessage,
+        timestamp: new Date(),
+        type: MessageType.BOT,
+      },
+    ]);
+  };
+
+  // Get suggestions based on the selected agent type
+  const getSuggestions = () => {
+    if (selectedAgent === AgentType.NAVI) {
+      return [
         {
-          text: "Swap tokens from Weth to USDC",
-          icon: ArrowLeftRight,
+          text: "Check my portfolio on Navi",
+          icon: Wallet,
         },
         {
-          text: "What is the market cap of USDC?",
-          icon: CircleDollarSign,
-        },
-        {
-          text: "Analyze the Bitcoin 1 hours chart",
+          text: "What are my positions?",
           icon: Coins,
         },
         {
-          text: "Analyze the market",
+          text: "Check my health factor",
+          icon: CircleDollarSign,
+        },
+        {
+          text: "Show my available rewards",
           icon: Wallet,
         },
-      ]}
-    />
+      ];
+    }
+
+    return [
+      {
+        text: "Swap tokens from Weth to USDC",
+        icon: ArrowLeftRight,
+      },
+      {
+        text: "What is the market cap of USDC?",
+        icon: CircleDollarSign,
+      },
+      {
+        text: "Analyze the Bitcoin 1 hours chart",
+        icon: Coins,
+      },
+      {
+        text: "Analyze the market",
+        icon: Wallet,
+      },
+    ];
+  };
+
+  return (
+    <div className="flex flex-col h-full">
+      <div className="p-4 border-b flex justify-between items-center">
+        <AgentSelector
+          selectedAgent={selectedAgent}
+          onSelectAgent={handleAgentChange}
+        />
+      </div>
+      <ChatContainer
+        messages={messages}
+        isLoading={isLoading}
+        onSendMessage={handleSendMessage}
+        onSwapConfirm={handleSwapConfirm}
+        onSwapCancel={handleSwapCancel}
+        suggestions={getSuggestions()}
+      />
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-export const API_CONFIG = {
+export default () => ({
   kyberswap: {
     apiUrl: process.env.KYBER_API_URL || 'https://aggregator-api.kyberswap.com',
     apiKey: process.env.KYBER_AGGREGATOR_CLIENT_ID || 'xaiagent',
@@ -12,6 +12,7 @@ export const API_CONFIG = {
     model: 'gpt-4-turbo-preview',
     temperature: 0,
   },
-} as const;
-
-export type APIConfig = typeof API_CONFIG;
+  mongodb: {
+    uri: process.env.MONGODB_URI,
+  },
+});

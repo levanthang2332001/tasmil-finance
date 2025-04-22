@@ -18,6 +18,7 @@ export enum ChainId {
   MANTLE = 5000,
   BLAST = 81457,
   SONIC = 146,
+  SUI = 101,
 }
 
 // Define token schema
@@ -139,6 +140,20 @@ export const TOKEN_ADDRESSES: Record<ChainId, Record<string, Token>> = {
   [ChainId.MANTLE]: {},
   [ChainId.BLAST]: {},
   [ChainId.SONIC]: {},
+  [ChainId.SUI]: {
+    SUI: {
+      symbol: 'SUI',
+      name: 'Sui',
+      address: '0x2::sui::SUI',
+      decimals: 9,
+    },
+    USDC: {
+      symbol: 'USDC',
+      name: 'USD Coin',
+      address: '0x2::sui::USDC',
+      decimals: 6,
+    },
+  },
 };
 
 // Helper functions
@@ -194,6 +209,7 @@ export const CHAIN_NAMES: Record<ChainId, string> = {
   [ChainId.MANTLE]: 'mantle',
   [ChainId.BLAST]: 'blast',
   [ChainId.SONIC]: 'sonic',
+  [ChainId.SUI]: 'sui',
 };
 
 // Add helper function to get chain name
@@ -235,6 +251,7 @@ export const chainMap: Record<string, string> = {
   mantle: 'mantle',
   blast: 'blast',
   sonic: 'sonic',
+  sui: 'sui',
 };
 
 // Add helper to normalize user input to valid chain name

@@ -7,6 +7,8 @@ import {
 import { ChatOpenAI } from '@langchain/openai';
 import { Injectable } from '@nestjs/common';
 import { LoggerService } from 'src/shared/services/logger.service';
+import { AgentType } from './entities/chat.entity';
+
 @Injectable()
 export class ChatService {
   private model: ChatOpenAI;
@@ -48,11 +50,14 @@ export class ChatService {
     message: string,
     context: string = '',
     history: Array<{ role: 'user' | 'assistant'; content: string }> = [],
+    agentType?: AgentType,
   ): Promise<string> {
     try {
       const messages = [
         new SystemMessage(
-          'You are a helpful DeFi assistant. You can help with token swaps, price checks, and general DeFi questions.',
+          agentType === AgentType.NAVI
+            ? 'You are a helpful DeFi assistant specialized in Navi protocol. You can help with portfolio information, positions, health factors, and rewards.'
+            : 'You are a helpful DeFi assistant. You can help with token swaps, price checks, and general DeFi questions.',
         ),
       ];
 
