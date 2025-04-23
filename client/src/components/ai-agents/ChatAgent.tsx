@@ -7,7 +7,7 @@ import { ArrowLeftRight, CircleDollarSign, Coins, Wallet } from "lucide-react";
 import { useState } from "react";
 import { ChatService } from "@/services/chat.service";
 
-const AIAgent = () => {
+const ChatAgent = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -116,4 +116,4 @@ const AIAgent = () => {
   );
 };
 
-export default AIAgent;
+export default ChatAgent;
