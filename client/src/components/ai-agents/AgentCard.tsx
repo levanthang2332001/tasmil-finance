@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 interface Agent {
   agent: {
@@ -10,12 +11,18 @@ interface Agent {
     imageUrl: string;
     features: string[];
   };
+  className?: string;
 }
 
-const AgentCard = ({ agent }: Agent) => {
+const AgentCard = ({ agent, className }: Agent) => {
   return (
     <Link href={`/ai-agent/${agent.id}`} key={agent.id}>
-      <Card className="hover:shadow-lg transition-shadow cursor-pointer hover:border-primary">
+      <Card
+        className={cn(
+          "hover:shadow-lg transition-shadow cursor-pointer hover:border-primary",
+          className
+        )}
+      >
         <CardHeader>
           <div className="flex items-center space-x-4">
             <img

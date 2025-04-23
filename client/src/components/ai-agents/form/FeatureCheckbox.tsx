@@ -1,5 +1,4 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 interface FeatureCheckboxProps {
@@ -20,7 +19,7 @@ const FeatureCheckbox = ({
   className,
 }: FeatureCheckboxProps) => {
   return (
-    <div 
+    <div
       className={cn(
         "group grid grid-cols-[auto_1fr] gap-4 p-4 border rounded-lg cursor-pointer",
         "hover:bg-accent/50 transition-colors duration-200",
@@ -38,12 +37,9 @@ const FeatureCheckbox = ({
         />
       </div>
       <div className="space-y-1.5">
-        <Label 
-          htmlFor={id} 
-          className="text-base font-medium group-hover:text-primary transition-colors"
-        >
+        <div className="text-base font-medium group-hover:text-primary transition-colors">
           {title}
-        </Label>
+        </div>
         <p className="text-sm text-muted-foreground group-hover:text-muted-foreground/80">
           {description}
         </p>

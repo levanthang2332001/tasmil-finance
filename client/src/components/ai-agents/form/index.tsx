@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import FeatureCheckbox from "./FeatureCheckbox";
 import ImageGeneration from "./ImageGeneration";
+import { cn } from "@/lib/utils";
 
 interface FeatureOption {
   id: string;
@@ -21,26 +22,28 @@ interface FormProps {
 
 const Form = ({ type }: FormProps) => {
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("You are a professional trader and you are trading on the Binance exchange.");
+  const [description, setDescription] = useState(
+    "You are a professional trader and you are trading on the Binance exchange."
+  );
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [features, setFeatures] = useState<FeatureOption[]>([
-    { 
-      id: "price-monitoring", 
-      label: "Price Monitoring", 
-      checked: false, 
-      description: "Track real-time price movements and set alerts for specific tokens" 
+    {
+      id: "price-monitoring",
+      label: "Price Monitoring",
+      checked: false,
+      description: "Track real-time price movements and set alerts for specific tokens",
     },
-    { 
-      id: "liquidity-analysis", 
-      label: "Liquidity Analysis", 
-      checked: false, 
-      description: "Analyze DEX liquidity pools and identify optimal trading opportunities" 
+    {
+      id: "liquidity-analysis",
+      label: "Liquidity Analysis",
+      checked: false,
+      description: "Analyze DEX liquidity pools and identify optimal trading opportunities",
     },
-    { 
-      id: "risk-assessment", 
-      label: "Risk Assessment", 
-      checked: false, 
-      description: "Evaluate smart contract risks and token metrics for safer trading" 
+    {
+      id: "risk-assessment",
+      label: "Risk Assessment",
+      checked: false,
+      description: "Evaluate smart contract risks and token metrics for safer trading",
     },
   ]);
 
@@ -56,9 +59,11 @@ const Form = ({ type }: FormProps) => {
   };
 
   const toggleFeature = (id: string) => {
-    setFeatures(features.map(feature => 
-      feature.id === id ? { ...feature, checked: !feature.checked } : feature
-    ));
+    setFeatures(
+      features.map((feature) =>
+        feature.id === id ? { ...feature, checked: !feature.checked } : feature
+      )
+    );
   };
 
   const handleSubmit = () => {
@@ -114,8 +119,11 @@ const Form = ({ type }: FormProps) => {
       </div>
 
       <div className="p-4 border-t">
-        <Button 
-          className="w-full" 
+        <Button
+          className={cn(
+            "w-full",
+            "active:scale-[0.98] transform-gpu"
+          )}
           onClick={handleSubmit}
         >
           {type === "create" ? "Create AI Agent" : "Update AI Agent"}
