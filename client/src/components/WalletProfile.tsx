@@ -39,6 +39,8 @@ const WalletProfile = ({ name, email }: WalletProfileProps) => {
                   <Image
                     src={`https://api.dicebear.com/7.x/identicon/svg?seed=${account?.address}`}
                     alt="avatar"
+                    width={48}
+                    height={48}
                     className="w-full h-full rounded-full"
                   />
                 </div>
