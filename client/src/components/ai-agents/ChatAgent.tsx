@@ -8,7 +8,7 @@ import { AgentType, Message, MessageType } from "@/types/chat";
 import { ArrowLeftRight, CircleDollarSign, Coins, Wallet } from "lucide-react";
 import { useState, useEffect } from "react";
 
-const AIAgent = () => {
+const ChatAgent = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<AgentType>(
@@ -202,4 +202,4 @@ const AIAgent = () => {
   );
 };
 
-export default AIAgent;
+export default ChatAgent;
