@@ -5,6 +5,7 @@ import { PATHS } from "@/constants/routes";
 import { useRouter } from "next/navigation";
 import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 import { cn } from "@/lib/utils";
+import WalletProfile from "./WalletProfile";
 
 interface ConnectWalletProps {
   label?: string;
@@ -16,7 +17,6 @@ const ConnectWallet = ({
   label = "Launch App",
 }: ConnectWalletProps) => {
   const router = useRouter();
-
   const account = useCurrentAccount();
 
   React.useEffect(() => {
@@ -27,9 +27,20 @@ const ConnectWallet = ({
     }
   }, [account, router]);
 
+  if (account) {
+    return (
+      <div className={cn(className)}>
+        <WalletProfile />
+      </div>
+    );
+  }
+
   return (
     <div className={cn(className)}>
-      <ConnectButton connectText={label} />
+      <ConnectButton 
+        connectText={label}
+        className="rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      />
     </div>
   );
 };

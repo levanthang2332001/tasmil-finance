@@ -9,7 +9,7 @@ import { customTheme } from '@/theme/wallet';
 const SuiProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <SuiClientProvider networks={networkConfig} defaultNetwork={network}>
-      <WalletProvider theme={customTheme}>{children}</WalletProvider>
+      <WalletProvider theme={customTheme} autoConnect={true}>{children}</WalletProvider>
     </SuiClientProvider>
   );
 };
