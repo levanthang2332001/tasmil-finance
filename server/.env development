@@ -1,7 +1,6 @@
-OPENAI_API_KEY=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
-
+OPENAI_API_KEY=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
 KYBER_API_URL=https://aggregator-api.kyberswap.com
 KYBER_AGGREGATOR_CLIENT_ID=xaiagent
-
 COINKETGO_API_URL=https://api.coingecko.com/api/v3
-COINKETGO_API_KEY=
+COINKETGO_API_KEY=CG-oeeDjCJ5J1GZdnjTc4XPS5q2
+MONGODB_URI=mongodb+srv://thinhdang1402:thinhdang1402@movie.ey4eppa.mongodb.net/?retryWrites=true&w=majority&appName=Movie

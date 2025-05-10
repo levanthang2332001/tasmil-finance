@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, QrCode, Send, SlidersHorizontal } from "lucide-react";
+import { Eye, EyeOff, QrCode, Send, SlidersHorizontal, X } from "lucide-react";
 import { useState } from "react";
 import Receive from "./Receive";
 import Transfer from "./Transfer";
 import Withdraw from "./Withdraw";
+import { useToolbar } from "@/store/useToolbar";
 
 enum ActionType {
   TRANSFER = "transfer",
@@ -15,19 +16,36 @@ enum ActionType {
 const Action = () => {
   const balance = 12345.67;
   const [isBalanceVisible, setIsBalanceVisible] = useState<boolean>(true);
-  const [type, setType] = useState<ActionType>(ActionType.DEFAULT);  
+  const [type, setType] = useState<ActionType>(ActionType.DEFAULT);
+  const { setIsOpen } = useToolbar();
 
   const ACTION_BUTTONS = [
-    { icon: <QrCode className="size-4" />, label: "Receive", onClick: () => setType(ActionType.RECEIVE) },
-    { icon: <Send className="size-4" />, label: "Withdraw", onClick: () => setType(ActionType.WITHDRAW) },
-    { icon: <SlidersHorizontal className="size-4" />, label: "Transfer", onClick: () => setType(ActionType.TRANSFER) },
+    {
+      icon: <QrCode className="size-4" />,
+      label: "Receive",
+      onClick: () => setType(ActionType.RECEIVE),
+    },
+    {
+      icon: <Send className="size-4" />,
+      label: "Withdraw",
+      onClick: () => setType(ActionType.WITHDRAW),
+    },
+    {
+      icon: <SlidersHorizontal className="size-4" />,
+      label: "Transfer",
+      onClick: () => setType(ActionType.TRANSFER),
+    },
   ];
 
   const renderContent = () => {
     const result = {
-      [ActionType.TRANSFER]: <Transfer className="p-4" onClose={() => setType(ActionType.DEFAULT)} />,
+      [ActionType.TRANSFER]: (
+        <Transfer className="p-4" onClose={() => setType(ActionType.DEFAULT)} />
+      ),
       [ActionType.RECEIVE]: <Receive className="p-4" onClose={() => setType(ActionType.DEFAULT)} />,
-      [ActionType.WITHDRAW]: <Withdraw className="p-4" onClose={() => setType(ActionType.DEFAULT)} />,
+      [ActionType.WITHDRAW]: (
+        <Withdraw className="p-4" onClose={() => setType(ActionType.DEFAULT)} />
+      ),
       [ActionType.DEFAULT]: <Default />,
     };
     return result[type];
@@ -36,17 +54,20 @@ const Action = () => {
   const Default = () => {
     return (
       <div className="p-4 space-y-4">
-        <div className="flex items-center gap-2 justify-between">
+        <div className="flex items-center gap-1">
           <div className="text-2xl font-bold">
             $ {isBalanceVisible ? balance.toFixed(2) : "******"}
           </div>
           <Button
             variant="ghost"
             size="icon"
-            className="size-6"
+            className="ml-auto"
             onClick={() => setIsBalanceVisible(!isBalanceVisible)}
           >
             {isBalanceVisible ? <Eye className="size-4" /> : <EyeOff className="size-4" />}
+          </Button>
+          <Button variant="ghost" onClick={() => setIsOpen(false)}>
+            <X className="h-4 w-4" />
           </Button>
         </div>
         <div className="flex items-center gap-2">
