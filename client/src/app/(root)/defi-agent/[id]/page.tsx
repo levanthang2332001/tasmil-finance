@@ -12,11 +12,12 @@ const AiAgentDetailPage = () => {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-1 h-screen bg-black overflow-hidden">
+    <div className="flex flex-1 h-screen overflow-hidden">
       <div className="flex flex-1 flex-col h-full overflow-y-auto relative">
         <Navbar>
-          <BackButton />
-          <div className="text-sm font-bold capitalize">{pathname.split("/").pop()}</div>
+          <BackButton>
+            <div className="text-sm font-bold capitalize">{pathname.split("/").pop()}</div>
+          </BackButton>
           <ToolBar listType={[ToolbarType.FUTURE]} className="ml-auto" />
         </Navbar>
 
