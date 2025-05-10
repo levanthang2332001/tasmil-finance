@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import { ToolbarType } from "@/store/useToolbar";
 import { useState } from "react";
 import FeatureCheckbox from "./FeatureCheckbox";
 import ImageGeneration from "./ImageGeneration";
-import { cn } from "@/lib/utils";
 
 interface FeatureOption {
   id: string;
@@ -17,7 +18,7 @@ interface FeatureOption {
 }
 
 interface FormProps {
-  type: "create" | "edit";
+  type: ToolbarType;
 }
 
 const Form = ({ type }: FormProps) => {

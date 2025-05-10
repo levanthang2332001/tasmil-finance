@@ -2,18 +2,17 @@
 "use client";
 
 import { ChatContainer } from "@/components/chat/ChatContainer";
-import { AgentSelector } from "@/components/defi-agent/AgentSelector";
 import { ChatService } from "@/services/chat.service";
-import { AgentType, Message, MessageType } from "@/types/chat";
+import { AgentType } from "@/store/useAgent";
+import { Message, MessageType } from "@/types/chat";
+import { useAgent } from "@/store/useAgent";
 import { ArrowLeftRight, CircleDollarSign, Coins, Wallet } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const ChatAgent = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedAgent, setSelectedAgent] = useState<AgentType>(
-    AgentType.DEFAULT
-  );
+  const { selectedAgent, setSelectedAgent } = useAgent();
 
   // Initialize with welcome message
   useEffect(() => {
@@ -45,19 +44,12 @@ const ChatAgent = () => {
     // Send message to API
     setIsLoading(true);
     try {
-      const response = await ChatService.sendMessage(
-        "user-1",
-        content,
-        selectedAgent
-      );
+      const response = await ChatService.sendMessage("user-1", content, selectedAgent);
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: response.message,
         timestamp: new Date(),
-        type:
-          response.type === "swap_quote"
-            ? MessageType.SWAP_QUOTE
-            : MessageType.BOT,
+        type: response.type === "swap_quote" ? MessageType.SWAP_QUOTE : MessageType.BOT,
         quote: response.quote,
       };
       setMessages((prev) => [...prev, botMessage]);
@@ -183,13 +175,7 @@ const ChatAgent = () => {
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="p-4 border-b flex justify-between items-center">
-        <AgentSelector
-          selectedAgent={selectedAgent}
-          onSelectAgent={handleAgentChange}
-        />
-      </div>
+    <div className="flex flex-col h-full ">
       <ChatContainer
         messages={messages}
         isLoading={isLoading}

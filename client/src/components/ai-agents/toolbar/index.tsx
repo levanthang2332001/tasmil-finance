@@ -1,19 +1,42 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Form from "../form";
+import { ToolbarType, useToolbar } from "@/store/useToolbar";
+import { Pencil, Plus } from "lucide-react";
 
 interface ToolbarProps {
-  type: "create" | "edit";
+  listType: ToolbarType[];
   className?: string;
 }
+const ToolBar = ({ listType = [ToolbarType.CREATE], className }: ToolbarProps) => {
+  const {isOpen, setType, setIsOpen } = useToolbar();
 
-const ToolBar = ({type,  className }: ToolbarProps) => {
+  const handleOpen = (type: ToolbarType) => {
+    setIsOpen(true);
+    setType(type);
+  };
+
+  const renderButton = {
+    create: (
+      <Button onClick={() => handleOpen(ToolbarType.CREATE)} className="">
+        <Plus className="mr-2 h-4 w-4" />
+        Create New Agent
+      </Button>
+    ),
+    edit: (
+      <Button onClick={() => handleOpen(ToolbarType.EDIT)} className="">
+        <Pencil className="mr-2 h-4 w-4" />
+        Edit Agent
+      </Button>
+    ),
+  };
+
+  if (isOpen) return null;
+
   return (
-    <div className={cn("w-[360px] h-full border-l bg-background", className)}>
-      <div className="flex flex-col h-full">
-        <Form type={type} />
-      </div>
+    <div className={cn("flex items-center gap-2", className)}>
+      {listType.map((type) => renderButton[type])}
     </div>
   );
 };
