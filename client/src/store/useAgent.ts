@@ -3,6 +3,7 @@ import { create } from "zustand";
 export enum AgentType {
   NAVI = "navi",
   CETUS = "cetus",
+  SUILEND = "suiLend",
 }
 
 interface AgentState {

@@ -2,34 +2,16 @@
 "use client";
 
 import { ChatContainer } from "@/components/chat/ChatContainer";
+import { suggestionCetus, suggestionNavi, suggestionSuiLend } from "@/constants/suggestion";
 import { ChatService } from "@/services/chat.service";
-import { AgentType } from "@/store/useAgent";
+import { AgentType, useAgent } from "@/store/useAgent";
 import { Message, MessageType } from "@/types/chat";
-import { useAgent } from "@/store/useAgent";
-import { ArrowLeftRight, CircleDollarSign, Coins, Wallet } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const ChatDefi = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { selectedAgent, setSelectedAgent } = useAgent();
-
-  // Initialize with welcome message
-  useEffect(() => {
-    const welcomeMessage =
-      selectedAgent === AgentType.NAVI
-        ? "Hello! I'm your Navi agent assistant. I can help you check your portfolio, positions, health factor, and rewards on Navi. What would you like to know?"
-        : "Hello! I'm your DeFi assistant. I can help you with token swaps, price checks, and general DeFi questions. How can I help you today?";
-
-    setMessages([
-      {
-        id: Date.now().toString(),
-        content: welcomeMessage,
-        timestamp: new Date(),
-        type: MessageType.BOT,
-      },
-    ]);
-  }, []);
+  const { selectedAgent } = useAgent();
 
   const handleSendMessage = async (content: string) => {
     // Add user message
@@ -107,71 +89,15 @@ const ChatDefi = () => {
     setMessages((prev) => [...prev, cancelMessage]);
   };
 
-  const handleAgentChange = (agentType: AgentType) => {
-    const previousAgent = selectedAgent;
-    setSelectedAgent(agentType);
-
-    // Clear messages when changing agents
-    setMessages([]);
-
-    // Generate welcome message based on the newly selected agent
-    const welcomeMessage =
-      agentType === AgentType.NAVI
-        ? "Hello! I'm your Navi agent assistant. I can help you check your portfolio, positions, health factor, and rewards on Navi. What would you like to know?"
-        : "Hello! I'm your DeFi assistant. I can help you with token swaps, price checks, and general DeFi questions. How can I help you today?";
-
-    // Add welcome message to the chat
-    setMessages([
-      {
-        id: Date.now().toString(),
-        content: welcomeMessage,
-        timestamp: new Date(),
-        type: MessageType.BOT,
-      },
-    ]);
-  };
-
-  // Get suggestions based on the selected agent type
   const getSuggestions = () => {
-    if (selectedAgent === AgentType.NAVI) {
-      return [
-        {
-          text: "Check my portfolio on Navi",
-          icon: Wallet,
-        },
-        {
-          text: "What are my positions?",
-          icon: Coins,
-        },
-        {
-          text: "Check my health factor",
-          icon: CircleDollarSign,
-        },
-        {
-          text: "Show my available rewards",
-          icon: Wallet,
-        },
-      ];
-    }
+    const suggestionsMap = {
+      [AgentType.NAVI]: suggestionNavi,
+      [AgentType.CETUS]: suggestionCetus,
+      [AgentType.SUILEND]: suggestionSuiLend,
+      default: null,
+    };
 
-    return [
-      {
-        text: "Swap tokens from Weth to USDC",
-        icon: ArrowLeftRight,
-      },
-      {
-        text: "What is the market cap of USDC?",
-        icon: CircleDollarSign,
-      },
-      {
-        text: "Analyze the Bitcoin 1 hours chart",
-        icon: Coins,
-      },
-      {
-        text: "Analyze the market",
-        icon: Wallet,
-      },
-    ];
+    return suggestionsMap[selectedAgent as AgentType] ?? suggestionsMap.default;
   };
 
   return (

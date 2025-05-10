@@ -1,5 +1,6 @@
 "use client";
 
+import { AgentType } from "@/store/useAgent";
 import DefiCard from "./DefiCard";
 
 interface Agent {
@@ -13,21 +14,21 @@ interface Agent {
 const Dashboard = () => {
   const yourAgents: Agent[] = [
     {
-      id: "navi",
+      id: AgentType.NAVI,
       name: "Navi",
       description: "Professional trading assistant for Binance exchange",
       imageUrl: "/images/logo.png",
       features: ["Price Monitoring", "Liquidity Analysis"],
     },
     {
-      id: "cetus",
+      id: AgentType.CETUS,
       name: "Cetus",
       description: "Advanced market analysis and trend prediction",
       imageUrl: "/images/logo.png",
       features: ["Risk Assessment", "Market Analysis"],
     },
     {
-      id: "suilend",
+      id: AgentType.SUILEND,
       name: "Suilend",
       description: "Professional trading assistant for Binance exchange",
       imageUrl: "/images/logo.png",
