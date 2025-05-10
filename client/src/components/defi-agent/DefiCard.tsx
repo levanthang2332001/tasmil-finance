@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { AgentType, useAgent } from "@/store/useAgent";
+import { useRouter } from "next/navigation";
 
 interface Agent {
   agent: {
@@ -13,9 +14,18 @@ interface Agent {
   className?: string;
 }
 
-const AgentCard = ({ agent, className }: Agent) => {
+const DefiCard = ({ agent, className }: Agent) => {
+  const { setSelectedAgent } = useAgent();
+  const router = useRouter();
+
+  const handleClick = () => {
+    setSelectedAgent(agent.name as AgentType);
+    router.push(`/defi-agent/${agent.id}`);
+    router.refresh();
+  };
+
   return (
-    <Link href={`/ai-agent/${agent.id}`} className="cursor-pointer">
+    <div onClick={handleClick} className="cursor-pointer">
       <Card
         className={cn(
           "hover:shadow-lg transition-shadow cursor-pointer hover:border-primary",
@@ -46,8 +56,8 @@ const AgentCard = ({ agent, className }: Agent) => {
           </div>
         </CardContent>
       </Card>
-    </Link>
+    </div>
   );
 };
 
-export default AgentCard;
+export default DefiCard;

@@ -3,6 +3,7 @@ import { create } from 'zustand'
 export enum ToolbarType {
   CREATE = "create",
   EDIT = "edit",
+  FUTURE = "future",
 }
 
 interface ToolbarState {

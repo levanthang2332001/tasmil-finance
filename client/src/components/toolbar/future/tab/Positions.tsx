@@ -80,55 +80,50 @@ const PositionItem = ({ position }: { position: Position }) => {
   };
 
   return (
-    <div className="mb-4 py-4 px-3 text-sm rounded-lg hover:shadow-md transition-shadow border-b border-border">
+    <div className="mb-4 py-4 px-3 text-xs rounded-lg hover:shadow-md transition-shadow border-b border-border">
       <div className="mb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             <Badge variant={isLong ? "success" : "destructive"} className="px-2 py-1">
               {position.type.toUpperCase()} {position.leverage}x
             </Badge>
-            <span className="font-semibold text-sm">{position.symbol}</span>
-            <span className="text-muted-foreground text-sm">|</span>
-            <span className="text-muted-foreground text-base">
+            <span className="font-semibold text-xs">{position.symbol}</span>
+            <span className="text-muted-foreground text-xs">|</span>
+            <span className="text-muted-foreground text-sm">
               {position.currentPrice.toLocaleString()}
             </span>
           </div>
-          <div>
-            <span className="text-muted-foreground text-sm">Liq Price: </span>
-            <span className="font-medium text-base">
-              ${position.liquidationPrice.toLocaleString()}
-            </span>
-          </div>
+          <Button variant="outline" className="px-2 py-1 text-xs" onClick={handleClosePosition}>
+            Close
+          </Button>
         </div>
       </div>
 
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <span className="text-muted-foreground text-sm">Size: </span>
-          <span className="font-medium text-base"> ${position.size.toLocaleString()} </span>
-          <span className="text-muted-foreground text-sm">
-            {" "}
-            ( {position.margin.toLocaleString()} {position.symbol}){" "}
+          <span className="text-muted-foreground text-xs">Size: </span>
+          <span className="font-medium text-sm"> ${position.size.toLocaleString()} </span>
+          <span className="text-muted-foreground text-xs">
+            ( {position.margin.toLocaleString()} {position.symbol})
           </span>
         </div>
 
-        <p
-          className={`font-bold text-base ${position.pnl >= 0 ? "text-green-500" : "text-red-500"}`}
-        >
+        <p className={`font-bold text-sm ${position.pnl >= 0 ? "text-green-500" : "text-red-500"}`}>
           ${position.pnl.toLocaleString()}{" "}
-          <span className="text-sm">({position.pnlPercentage.toFixed(2)}%)</span>
+          <span className="text-xs">({position.pnlPercentage.toFixed(2)}%)</span>
         </p>
       </div>
 
       <div className="flex items-center justify-between mt-3">
         <div className="flex items-center gap-1">
-          <span className="text-muted-foreground text-sm">Funding Fee: </span>
-          <span className="font-medium text-base"> ${position.fundingFee.toFixed(4)} </span>
+          <span className="text-muted-foreground text-xs">Funding Fee: </span>
+          <span className="font-medium text-sm"> ${position.fundingFee.toFixed(4)} </span>
         </div>
 
-        <Button variant="outline" className="px-2 py-1" onClick={handleClosePosition}>
-          Close
-        </Button>
+        <div>
+          <span className="text-muted-foreground text-xs">Liq Price: </span>
+          <span className="font-medium text-sm">${position.liquidationPrice.toLocaleString()}</span>
+        </div>
       </div>
     </div>
   );

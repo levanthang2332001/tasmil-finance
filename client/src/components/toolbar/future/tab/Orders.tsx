@@ -64,50 +64,41 @@ const OrderItem = ({ order }: { order: Order }) => {
   };
 
   return (
-    <div className="mb-4 py-4 px-3 text-sm rounded-lg hover:shadow-md transition-shadow border-b border-border">
+    <div className="mb-4 py-4 px-3 text-xs rounded-lg hover:shadow-md transition-shadow border-b border-border">
       <div className="mb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
-            <Badge
-              variant={isBuy ? "success" : "destructive"}
-              className="px-2 py-1"
-            >
+            <Badge variant={isBuy ? "success" : "destructive"} className="px-2 py-1">
               {order.side.toUpperCase()}
             </Badge>
-            <span className="font-semibold text-sm">{order.symbol}</span>
-            <span className="text-muted-foreground text-sm">|</span>
-            <span className="text-muted-foreground text-base">
-              {order.price.toLocaleString()}
-            </span>
+            <span className="font-semibold text-xs">{order.symbol}</span>
+            <span className="text-muted-foreground text-xs">|</span>
+            <span className="text-muted-foreground text-sm">{order.price.toLocaleString()}</span>
           </div>
           <div>
-            <span className="text-muted-foreground text-sm">Size: </span>
-            <span className="font-medium text-base">{order.size}</span>
+            <span className="text-muted-foreground text-xs">Size: </span>
+            <span className="font-medium text-sm">{order.size}</span>
           </div>
         </div>
       </div>
 
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <span className="text-muted-foreground text-sm">Type: </span>
-          <span className="font-medium text-base">{order.type}</span>
+          <span className="text-muted-foreground text-xs">Type: </span>
+          <span className="font-medium text-sm">{order.type}</span>
         </div>
 
-        <p className={`font-bold text-base ${statusColor}`}>{order.status}</p>
+        <p className={`font-bold text-sm ${statusColor}`}>{order.status}</p>
       </div>
 
       <div className="flex items-center justify-between mt-3">
         <div className="flex items-center gap-1">
-          <span className="text-muted-foreground text-sm">Time: </span>
-          <span className="font-medium text-base">{order.time}</span>
+          <span className="text-muted-foreground text-xs">Time: </span>
+          <span className="font-medium text-sm">{order.time}</span>
         </div>
 
         {order.status === "open" && (
-          <Button
-            variant="outline"
-            className="px-2 py-1"
-            onClick={handleCancelOrder}
-          >
+          <Button variant="outline" className="px-2 py-1" onClick={handleCancelOrder}>
             Cancel
           </Button>
         )}

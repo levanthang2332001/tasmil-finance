@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import React from "react";
-import Form from "../form";
+import Form from "./form";
 import { useToolbar } from "@/store/useToolbar";
 
-interface SideRightProps {
+interface SideAgentProps {
   className?: string;
 }
 
-const SideRight = ({ className }: SideRightProps) => {
+const SideAgent = ({ className }: SideAgentProps) => {
   const { type, isOpen, setIsOpen } = useToolbar();
 
   if (!isOpen) return null;
@@ -28,4 +28,4 @@ const SideRight = ({ className }: SideRightProps) => {
   );
 };
 
-export default SideRight;
+export default SideAgent;

@@ -3,14 +3,14 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ToolbarType, useToolbar } from "@/store/useToolbar";
-import { Pencil, Plus } from "lucide-react";
+import { Columns2, Pencil, Plus } from "lucide-react";
 
 interface ToolbarProps {
   listType: ToolbarType[];
   className?: string;
 }
 const ToolBar = ({ listType = [ToolbarType.CREATE], className }: ToolbarProps) => {
-  const {isOpen, setType, setIsOpen } = useToolbar();
+  const { isOpen, setType, setIsOpen } = useToolbar();
 
   const handleOpen = (type: ToolbarType) => {
     setIsOpen(true);
@@ -28,6 +28,11 @@ const ToolBar = ({ listType = [ToolbarType.CREATE], className }: ToolbarProps) =
       <Button onClick={() => handleOpen(ToolbarType.EDIT)} className="">
         <Pencil className="mr-2 h-4 w-4" />
         Edit Agent
+      </Button>
+    ),
+    future: (
+      <Button variant={'ghost'} onClick={() => handleOpen(ToolbarType.FUTURE)} className="">
+        <Columns2 className="mr-2 h-4 w-4" />
       </Button>
     ),
   };

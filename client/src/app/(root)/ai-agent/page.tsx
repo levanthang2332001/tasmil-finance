@@ -1,14 +1,14 @@
 "use client";
 
-import Dashboard from "@/components/ai-agents/Dashboard";
-import ToolBar from "@/components/ai-agents/toolbar";
-import SideRight from "@/components/ai-agents/toolbar/SideRight";
+import Dashboard from "@/components/ai-agents";
+import ToolBar from "@/components/toolbar";
+import SideRight from "@/components/toolbar/agent/SideAgent";
 import Navbar from "@/components/Navbar";
 import { ToolbarType } from "@/store/useToolbar";
 
 const AiAgentPage = () => {
   return (
-    <>
+    <div className="flex flex-1 h-screen bg-black overflow-hidden">
       <div>
         <Navbar className="flex justify-end">
           <ToolBar listType={[ToolbarType.CREATE]} />
@@ -18,7 +18,7 @@ const AiAgentPage = () => {
         </div>
       </div>
       <SideRight />
-    </>
+    </div>
   );
 };
 
