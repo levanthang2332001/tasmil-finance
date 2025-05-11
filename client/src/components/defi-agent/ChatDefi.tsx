@@ -2,14 +2,16 @@
 "use client";
 
 import { ChatContainer } from "@/components/chat/ChatContainer";
-import { Message, MessageType } from "@/types/chat";
-import { ArrowLeftRight, CircleDollarSign, Coins, Wallet } from "lucide-react";
-import { useState } from "react";
+import { suggestionCetus, suggestionNavi, suggestionSuiLend } from "@/constants/suggestion";
 import { ChatService } from "@/services/chat.service";
+import { AgentType, useAgent } from "@/store/useAgent";
+import { Message, MessageType } from "@/types/chat";
+import { useState } from "react";
 
-const AIAgent = () => {
+const ChatDefi = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { selectedAgent } = useAgent();
 
   const handleSendMessage = async (content: string) => {
     // Add user message
@@ -24,7 +26,7 @@ const AIAgent = () => {
     // Send message to API
     setIsLoading(true);
     try {
-      const response = await ChatService.sendMessage("user-1", content);
+      const response = await ChatService.sendMessage("user-1", content, selectedAgent);
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: response.message,
@@ -87,33 +89,29 @@ const AIAgent = () => {
     setMessages((prev) => [...prev, cancelMessage]);
   };
 
+  const getSuggestions = () => {
+    const suggestionsMap = {
+      [AgentType.NAVI]: suggestionNavi,
+      [AgentType.CETUS]: suggestionCetus,
+      [AgentType.SUILEND]: suggestionSuiLend,
+      default: null,
+    };
+
+    return suggestionsMap[selectedAgent as AgentType] ?? suggestionsMap.default;
+  };
+
   return (
-    <ChatContainer
-      messages={messages}
-      isLoading={isLoading}
-      onSendMessage={handleSendMessage}
-      onSwapConfirm={handleSwapConfirm}
-      onSwapCancel={handleSwapCancel}
-      suggestions={[
-        {
-          text: "Swap tokens from Weth to USDC",
-          icon: ArrowLeftRight,
-        },
-        {
-          text: "What is the market cap of USDC?",
-          icon: CircleDollarSign,
-        },
-        {
-          text: "Analyze the Bitcoin 1 hours chart",
-          icon: Coins,
-        },
-        {
-          text: "Analyze the market",
-          icon: Wallet,
-        },
-      ]}
-    />
+    <div className="flex flex-col h-full ">
+      <ChatContainer
+        messages={messages}
+        isLoading={isLoading}
+        onSendMessage={handleSendMessage}
+        onSwapConfirm={handleSwapConfirm}
+        onSwapCancel={handleSwapCancel}
+        suggestions={getSuggestions()}
+      />
+    </div>
   );
 };
 
-export default AIAgent;
+export default ChatDefi;

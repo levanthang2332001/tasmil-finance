@@ -1,35 +1,28 @@
 "use client";
 
-import React from "react";
-import { client } from "@/lib/thirdweb-client";
-import { PATHS } from "@/constants/routes";
-import { useRouter } from "next/navigation";
-import { ConnectButton } from "thirdweb/react";
 import { cn } from "@/lib/utils";
-
+import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
+import WalletProfile from "./WalletProfile";
 interface ConnectWalletProps {
   label?: string;
   className?: string;
 }
 
 const ConnectWallet = ({ className, label = "Launch App" }: ConnectWalletProps) => {
-  const router = useRouter();
+  const account = useCurrentAccount();
+
+  if (account) {
+    return <WalletProfile className={className} />;
+  }
+
   return (
-    <div className={cn(className)}>
-      <ConnectButton
-        client={client}
-        connectButton={{
-          className: "!gradient-outline",
-          label: label,
-        }}
-        appMetadata={{
-          name: "Tasmil Finance",
-          description: "Tasmil Finance",
-        }}
-        onConnect={() => router.push(PATHS.DASHBOARD)}
-        onDisconnect={() => router.push(PATHS.LANDING_PAGE)}
-      />
-    </div>
+    <ConnectButton
+      connectText={label}
+      className={cn(
+        "rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        className
+      )}
+    />
   );
 };
 

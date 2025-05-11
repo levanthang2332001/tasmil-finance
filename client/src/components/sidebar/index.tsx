@@ -16,51 +16,52 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import ConnectWallet from "../ConnectWallet";
 import Logo from "../Logo";
 import SidebarButton, { SidebarItem } from "./SidebarButton";
 
-const SIDEBAR_ITEMS: SidebarItem[] = [
-  {
-    icon: <Wallet className="mr-2 h-6 w-6" />,
-    label: "Dashboard",
-    link: PATHS.DASHBOARD,
-  },
-  {
-    icon: <Brain className="mr-2 h-6 w-6" />,
-    label: "Ai Agents",
-    link: PATHS.AI_AGENT,
-  },
-  {
-    icon: <Landmark className="mr-2 h-6 w-6" />,
-    label: "Defi Agent",
-    link: PATHS.DEFI_AGENT,
-  },
-  {
-    icon: <ChartNoAxesCombined className="mr-2 h-6 w-6" />,
-    label: "Trending",
-    link: PATHS.TRENDING,
-  },
-  {
-    icon: <Award className="mr-2 h-6 w-6" />,
-    label: "Portfolio",
-    link: PATHS.PORTFOLIO,
-  },
-];
-
-const FOOTER_ITEMS: SidebarItem[] = [
-  {
-    icon: <Settings className="mr-2 h-6 w-6" />,
-    label: "Settings",
-    link: PATHS.SETTINGS,
-  },
-  {
-    icon: <HelpCircle className="mr-2 h-6 w-6" />,
-    label: "Help & FAQ",
-    link: PATHS.HELP,
-  },
-];
-
 const Sidebar: React.FC = () => {
+  const SIDEBAR_ITEMS: SidebarItem[] = [
+    {
+      icon: <Wallet className="mr-2 h-6 w-6" />,
+      label: "Dashboard",
+      link: PATHS.DASHBOARD,
+    },
+    {
+      icon: <Brain className="mr-2 h-6 w-6" />,
+      label: "Ai Agents",
+      link: PATHS.AI_AGENT,
+    },
+    {
+      icon: <Landmark className="mr-2 h-6 w-6" />,
+      label: "Defi Agent",
+      link: PATHS.DEFI_AGENT,
+    },
+    {
+      icon: <ChartNoAxesCombined className="mr-2 h-6 w-6" />,
+      label: "Trending",
+      link: PATHS.TRENDING,
+    },
+    {
+      icon: <Award className="mr-2 h-6 w-6" />,
+      label: "Portfolio",
+      link: PATHS.PORTFOLIO,
+    },
+  ];
+
+  const FOOTER_ITEMS: SidebarItem[] = [
+    {
+      icon: <Settings className="mr-2 h-6 w-6" />,
+      label: "Settings",
+      link: PATHS.SETTINGS,
+    },
+    {
+      icon: <HelpCircle className="mr-2 h-6 w-6" />,
+      label: "Help & FAQ",
+      link: PATHS.HELP,
+    },
+  ];
+
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
   const pathname = usePathname();
@@ -110,6 +111,7 @@ const Sidebar: React.FC = () => {
               isActive={pathname.includes(item.link!)}
             />
           ))}
+          <ConnectWallet className="w-full" />
         </div>
       </div>
 

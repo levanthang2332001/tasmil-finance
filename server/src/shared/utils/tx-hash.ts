@@ -16,6 +16,7 @@ const BLOCK_EXPLORERS: Record<ChainId, string> = {
   [ChainId.MANTLE]: 'https://explorer.mantle.xyz',
   [ChainId.BLAST]: 'https://blastscan.io',
   [ChainId.SONIC]: 'https://explorer.sonic.oasys.games',
+  [ChainId.SUI]: 'https://suiscan.xyz',
 };
 
 export function getTxHash(

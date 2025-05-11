@@ -1,3 +1,10 @@
+export enum MarketActionType {
+  PRICE = 'price',
+  MARKET_CAP = 'market_cap',
+  VOLUME = 'volume',
+  ATH = 'ath',
+  ATL = 'atl',
+}
 export interface MarketParams {
   token: string;
   timeframe: string;

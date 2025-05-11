@@ -1,25 +1,16 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { AnimatePresence } from "framer-motion";
-import ConnectWallet from "./ConnectWallet";
 interface NavbarProps {
   className?: string;
+  children?: React.ReactNode;
 }
 
-const Navbar = ({ className }: NavbarProps) => {
-  const HEADER_HEIGHT = "h-[var(--header-height)] max-h-[var(--header-height)]";
-
+const Navbar = ({ className, children }: NavbarProps) => {
   return (
     <AnimatePresence mode="wait">
-      <div
-        className={cn(
-          HEADER_HEIGHT,
-          "flex items-center justify-between gap-2 px-6 py-4 border-b border-border",
-          className
-        )}
-      >
-        <div></div>
-        <ConnectWallet />
+      <div className={cn("flex items-center gap-2 px-6 py-4 " , className)}>
+        {children}
       </div>
     </AnimatePresence>
   );

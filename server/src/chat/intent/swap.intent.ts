@@ -1,8 +1,7 @@
 import { ChatOpenAI } from '@langchain/openai';
 import { Injectable } from '@nestjs/common';
 import { LoggerService } from 'src/shared/services/logger.service';
-import { SwapParams } from '../entities/intent.entity';
-
+import { SwapParams } from '../entities/cetus/swap.entity';
 @Injectable()
 export class SwapIntentService {
   private model: ChatOpenAI;
@@ -32,7 +31,6 @@ export class SwapIntentService {
     if (!params.fromToken) missingFields.push('fromToken');
     if (!params.toToken) missingFields.push('toToken');
     if (!params.amount) missingFields.push('amount');
-    if (!params.chainId) missingFields.push('chainId');
     return missingFields;
   }
 }

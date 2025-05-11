@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { API_CONFIG } from 'src/shared/config/api.config';
 import { CoinGeckoResponse } from '../entities/market.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MarketService {
-  private readonly apiUrl: string = API_CONFIG.coinketgo.apiUrl;
-  private readonly apiKey: string = API_CONFIG.coinketgo.apiKey;
+  private readonly apiUrl: string;
+  private readonly apiKey: string;
 
-  constructor() {}
+  constructor(private readonly configService: ConfigService) {
+    this.apiUrl = this.configService.get('coinketgo.apiUrl') || '';
+    this.apiKey = this.configService.get('coinketgo.apiKey') || '';
+  }
 
   private getHeaders(): Record<string, string> {
     return {

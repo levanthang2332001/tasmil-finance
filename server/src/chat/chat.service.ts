@@ -7,6 +7,8 @@ import {
 import { ChatOpenAI } from '@langchain/openai';
 import { Injectable } from '@nestjs/common';
 import { LoggerService } from 'src/shared/services/logger.service';
+import { AgentType } from './entities/chat.entity';
+
 @Injectable()
 export class ChatService {
   private model: ChatOpenAI;
@@ -48,11 +50,19 @@ export class ChatService {
     message: string,
     context: string = '',
     history: Array<{ role: 'user' | 'assistant'; content: string }> = [],
+    agentType?: AgentType,
   ): Promise<string> {
     try {
       const messages = [
         new SystemMessage(
-          'You are a helpful DeFi assistant. You can help with token swaps, price checks, and general DeFi questions.',
+          'You are a specialized DeFi assistant with expertise in multiple protocols. You can help with:\n' +
+            '- Token swaps and liquidity provision\n' +
+            '- Portfolio analysis and position management\n' +
+            '- Health factor monitoring and risk assessment\n' +
+            '- Market analysis and price trends\n' +
+            '- Borrowing, lending, and yield optimization\n' +
+            '- Position management and withdrawals\n' +
+            '- General DeFi strategy and protocol interactions',
         ),
       ];
 

@@ -1,24 +1,21 @@
+import { SwapQuote } from './cetus/swap.entity';
 import { DeFiIntent } from './intent.entity';
-import { SwapQuote } from './swap.entity';
-export interface ChatMessage {
+
+export enum AgentType {
+  NAVI = 'navi',
+  CETUS = 'cetus',
+}
+
+export interface ChatRequest {
+  agentType?: AgentType;
   userId: string;
   content: string;
 }
 
-export enum ChatResponseType {
-  BOT = 'bot',
-  SWAP_QUOTE = 'swap_quote',
-  MARKET_ANALYSIS = 'market_analysis',
-  SWAP_EXECUTED = 'swap_executed',
-  ERROR = 'error',
-}
-
 export interface ChatResponse {
-  type: ChatResponseType;
-  message: string;
   intent?: DeFiIntent;
+  message: string;
   quote?: SwapQuote;
-  txHash?: string;
 }
 
 export interface MessageHistoryEntry {

@@ -1,7 +1,7 @@
 {
-  "name": "vault-market-server",
+  "name": "tasmil-finance-server",
   "version": "0.0.1",
-  "description": "Server for the Vault Market",
+  "description": "Server for the Tasmil Finance",
   "author": {
     "name": "le-dat (leo)",
     "url": "https://github.com/le-dat"
@@ -10,10 +10,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/le-dat/vault-market-server"
+    "url": "https://github.com/XDefai/tasmil-finance"
   },
   "bugs": {
-    "url": "https://github.com/le-dat/vault-market-server/issues"
+    "url": "https://github.com/XDefai/tasmil-finance/issues"
   },
   "scripts": {
     "build": "nest build",
@@ -30,15 +30,28 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@cetusprotocol/cetus-sui-clmm-sdk": "^5.3.4",
     "@langchain/core": "^0.3.43",
     "@langchain/openai": "^0.4.9",
+    "@mysten/sui": "^1.29.1",
     "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^3.2.0",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
+    "@nestjs/mongoose": "^10.0.2",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "^11.2.0",
+    "bn.js": "^5.2.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
+    "ethers": "^6.9.0",
+    "mongoose": "^8.0.3",
+    "navi-sdk": "^1.6.4",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -83,5 +96,6 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { ChatOpenAI } from '@langchain/openai';
 import { Injectable } from '@nestjs/common';
 import { LoggerService } from 'src/shared/services/logger.service';
-import { DeFiIntent, MarketParams } from '../entities/intent.entity';
-import { CoinGeckoResponse } from '../entities/market.entity';
+import { CoinGeckoResponse, MarketParams } from '../entities/market.entity';
 import { clearResponse } from 'src/shared/utils/function';
 
 @Injectable()
