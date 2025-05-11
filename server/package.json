@@ -30,8 +30,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@cetusprotocol/cetus-sui-clmm-sdk": "^5.3.4",
     "@langchain/core": "^0.3.43",
     "@langchain/openai": "^0.4.9",
+    "@mysten/sui": "^1.29.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^3.2.0",
     "@nestjs/core": "^11.0.1",
@@ -40,6 +42,7 @@
     "@nestjs/mongoose": "^10.0.2",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.2.0",
+    "bn.js": "^5.2.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
