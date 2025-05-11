@@ -37,10 +37,8 @@ export interface ChatResponse {
   intent?: DeFiIntent;
   quote?: SwapQuote;
   txHash?: string;
-  agentType?: AgentType;
   actionType?: string;
   data?: any;
-  visualizationType?: string;
 }
 
 export interface MessageHistoryEntry {

@@ -11,19 +11,16 @@ import {
   ChevronRight,
   HelpCircle,
   Landmark,
-  LogOut,
   Settings,
   Wallet,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import ConnectWallet from "../ConnectWallet";
 import Logo from "../Logo";
 import SidebarButton, { SidebarItem } from "./SidebarButton";
-import { useDisconnectWallet } from "@mysten/dapp-kit";
 
 const Sidebar: React.FC = () => {
-  const { mutate: disconnect } = useDisconnectWallet();
-
   const SIDEBAR_ITEMS: SidebarItem[] = [
     {
       icon: <Wallet className="mr-2 h-6 w-6" />,
@@ -114,14 +111,7 @@ const Sidebar: React.FC = () => {
               isActive={pathname.includes(item.link!)}
             />
           ))}
-          <SidebarButton
-            icon={<LogOut className="mr-2 h-6 w-6" />}
-            label="Logout"
-            onClick={() => {
-              disconnect();
-              router.push(PATHS.LANDING_PAGE);
-            }}
-          />
+          <ConnectWallet className="w-full" />
         </div>
       </div>
 

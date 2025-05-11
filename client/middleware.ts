@@ -1,17 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { PUBLIC_PATHS } from "@/constants/routes";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  // const isPublicPath = PUBLIC_PATHS.some((path) =>
-  //   request.nextUrl.pathname.startsWith(path)
-  // );
+  // const isPublicPath = PUBLIC_PATHS.some((path) => request.nextUrl.pathname.startsWith(path));
 
   // if (isPublicPath) {
   //   return NextResponse.next();
   // }
 
-  // const authToken = localStorage.getItem("thirdweb:active-wallet-id");
+  // const storage = JSON.parse(localStorage.getItem("sui-dapp-kit:wallet-connection-info") || "null");
+  // const authToken = storage?.state?.lastConnectedAccountAddress;
 
   // if (!authToken) {
   //   const loginUrl = new URL("/", request.url);
