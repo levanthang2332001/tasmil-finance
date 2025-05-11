@@ -33,7 +33,6 @@ export class NaviIntentService {
       [ParamsField.FROM_TOKEN]: 'Please provide the fromToken parameter.',
       [ParamsField.TO_TOKEN]: 'Please provide the toToken parameter.',
       [ParamsField.AMOUNT]: 'Please provide the amount parameter.',
-      [ParamsField.CHAIN_ID]: 'Please provide the chainId parameter.',
     };
     return prompts[missingField];
   }

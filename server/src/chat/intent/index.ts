@@ -92,8 +92,8 @@ export class IntentService {
           break;
         default:
           // For DEFAULT agent, keep the original swap and market examples
-          systemPrompt += `\n\nFor swap intent: fromToken, toToken, amount, and chainId are required.
-              For market intent: token, timeframe, and chainId are required.
+          systemPrompt += `\n\nFor swap intent: fromToken, toToken, amount.
+              For market intent: token, timeframe.
               Include missing required fields in the missingFields array.
               Use previous messages context to fill in missing fields when possible.
               
