@@ -7,11 +7,11 @@ export enum AgentType {
 }
 
 interface AgentState {
-  selectedAgent: AgentType | null;
+  selectedAgent: AgentType 
   setSelectedAgent: (agent: AgentType) => void;
 }
 
 export const useAgent = create<AgentState>((set) => ({
-  selectedAgent: null,
+  selectedAgent: AgentType.NAVI,
   setSelectedAgent: (agent) => set({ selectedAgent: agent }),
 }));
