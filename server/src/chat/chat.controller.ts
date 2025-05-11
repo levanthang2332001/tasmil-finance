@@ -20,7 +20,11 @@ import { MarketService } from './services/market.service';
 import { NaviService } from './services/navi/navi.service';
 // import Cetus services
 import { CetusSwapService } from './services/cetus/swap.service';
-import { SwapParams, ParamsField, SwapQuote } from './entities/cetus/swap.entity';
+import {
+  SwapParams,
+  ParamsField,
+  SwapQuote,
+} from './entities/cetus/swap.entity';
 import { ChatResponseType } from './entities/cetus/cetus.entity';
 
 @Controller('chat')
@@ -62,7 +66,6 @@ export class ChatController {
   private async handleSwapIntent(
     intent: DeFiIntent & { params: SwapParams },
   ): Promise<ChatResponse> {
-
     if (intent.missingFields && intent.missingFields.length < 0) {
       const missingField = intent.missingFields[0] as ParamsField;
       return {
@@ -161,8 +164,7 @@ export class ChatController {
     intent: DeFiIntent,
     chatMessage: ChatRequest,
   ): Promise<ChatResponse> {
-
-    console.log("default intent", intent)
+    console.log('default intent', intent);
     const response = await this.chatService.processMessage(
       chatMessage.content,
       intent?.context || '',
@@ -196,7 +198,6 @@ export class ChatController {
     intent: DeFiIntent,
     chatMessage: ChatRequest,
   ): Promise<ChatResponse> {
-    
     const intentHandlers = {
       default: () => this.handleDefaultIntent(intent, chatMessage),
       swap: () => this.handleSwapIntent(intent),
@@ -210,8 +211,6 @@ export class ChatController {
     intent: DeFiIntent,
     chatMessage: ChatRequest,
   ): Promise<ChatResponse> {
-    
-    
     const intentHandlers = {
       default: () => this.handleDefaultIntent(intent, chatMessage),
       navi: () => this.handleNaviIntent(intent, chatMessage),
@@ -235,7 +234,6 @@ export class ChatController {
         chatMessage.agentType,
       );
 
-
       if (!intent) {
         return {
           message:
@@ -255,7 +253,10 @@ export class ChatController {
   }
 
   @Post('execute-swap')
-  async executeSwap(@Body() quote: SwapQuote, @Body() signer: string): Promise<ChatResponse> {
+  async executeSwap(
+    @Body() quote: SwapQuote,
+    @Body() signer: string,
+  ): Promise<ChatResponse> {
     try {
       const txHash = await this.swapService.getTxHash(quote, signer);
       return {
