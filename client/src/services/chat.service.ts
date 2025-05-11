@@ -35,7 +35,7 @@ export class ChatService {
   static async sendMessage(
     userId: string,
     content: string,
-    agentType?: AgentType
+    agentType: AgentType
   ): Promise<ChatResponse> {
     return this.request<ChatResponse>("/chat/message", {
       method: "POST",

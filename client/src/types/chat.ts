@@ -39,3 +39,9 @@ export interface SwapBoxProps extends ChatProps {
   onConfirm: (messageId: string) => Promise<void>;
   onCancel: (messageId: string) => void;
 }
+
+export enum AgentType {
+  NAVI = "navi",
+  CETUS = "cetus",
+  SUILEND = "suiLend",
+}
