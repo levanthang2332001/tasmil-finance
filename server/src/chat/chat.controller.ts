@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/require-await */
 import { Body, Controller, Post } from '@nestjs/common';
 import { ChainId, normalizeChainName } from 'src/shared/utils/token-address';
 import { getTxHash } from 'src/shared/utils/tx-hash';
@@ -10,14 +11,24 @@ import {
   MessageHistoryEntry,
 } from './entities/chat.entity';
 import {
+  BorrowParams,
   CetusActionType,
   CetusParams,
   DeFiIntent,
+  HealthParams,
   IntentType,
   MarketParams,
   NaviActionType,
   NaviParams,
+  PortfolioParams,
+  PositionParams,
+  RepayParams,
+  RewardParams,
+  StakeParams,
+  SupplyParams,
   SwapParams,
+  UnstakeParams,
+  WithdrawParams,
 } from './entities/intent.entity';
 import { ParamsField, SwapQuote } from './entities/swap.entity';
 import { IntentService } from './intent';
@@ -25,7 +36,7 @@ import { MarketIntentService } from './intent/market.intent';
 import { MarketService } from './services/market.service';
 import { SwapService } from './services/swap.service';
 import { NaviService } from './services/navi.service';
-
+import { NaviIntentService } from './intent/navi.intent';
 @Controller('chat')
 export class ChatController {
   private messageHistory: Map<string, MessageHistoryEntry[]> = new Map();
@@ -37,6 +48,7 @@ export class ChatController {
     private readonly marketService: MarketService,
     private readonly marketIntentService: MarketIntentService,
     private readonly naviService: NaviService,
+    private readonly naviIntent: NaviIntentService,
   ) {}
 
   private getRecentMessages(userId: string, limit: number = 3): string {
@@ -61,45 +73,65 @@ export class ChatController {
     this.messageHistory.set(userId, userMessages);
   }
 
-  private isSwapIntent(
-    intent: DeFiIntent,
-  ): intent is DeFiIntent & { params: SwapParams } {
-    return intent.type === IntentType.SWAP;
-  }
+  // private isSwapIntent(
+  //   intent: DeFiIntent,
+  // ): intent is DeFiIntent & { params: SwapParams } {
+  //   return intent.type === IntentType.SWAP;
+  // }
 
-  private isMarketIntent(
-    intent: DeFiIntent,
-  ): intent is DeFiIntent & { params: MarketParams } {
-    return intent.type === IntentType.MARKET;
-  }
+  // private isMarketIntent(
+  //   intent: DeFiIntent,
+  // ): intent is DeFiIntent & { params: MarketParams } {
+  //   return intent.type === IntentType.MARKET;
+  // }
 
-  private isNaviIntent(
-    intent: DeFiIntent,
-  ): intent is DeFiIntent & { params: NaviParams } {
-    return (
-      (intent.type === IntentType.ACTION ||
-        intent.type === IntentType.QUERY ||
-        intent.type === IntentType.INFO) &&
-      typeof intent.agentActionType === 'string' &&
-      Object.values(NaviActionType).includes(
-        intent.agentActionType as NaviActionType,
-      )
-    );
-  }
+  // private isHealthIntent(
+  //   intent: DeFiIntent,
+  // ): intent is DeFiIntent & { params: HealthParams } {
+  //   return intent.type === IntentType.HEALTH;
+  // }
 
-  private isCetusIntent(
-    intent: DeFiIntent,
-  ): intent is DeFiIntent & { params: CetusParams } {
-    return (
-      (intent.type === IntentType.ACTION ||
-        intent.type === IntentType.QUERY ||
-        intent.type === IntentType.INFO) &&
-      typeof intent.agentActionType === 'string' &&
-      Object.values(CetusActionType).includes(
-        intent.agentActionType as CetusActionType,
-      )
-    );
-  }
+  // private isPortfolioIntent(
+  //   intent: DeFiIntent,
+  // ): intent is DeFiIntent & { params: PortfolioParams } {
+  //   return intent.type === IntentType.PORTFOLIO;
+  // }
+
+  // private isBorrowIntent(
+  //   intent: DeFiIntent,
+  // ): intent is DeFiIntent & { params: BorrowParams } {
+  //   return intent.type === IntentType.BORROW;
+  // }
+
+  // private isSupplyIntent(
+  //   intent: DeFiIntent,
+  // ): intent is DeFiIntent & { params: SupplyParams } {
+  //   return intent.type === IntentType.SUPPLY;
+  // }
+
+  // private isWithdrawIntent(
+  //   intent: DeFiIntent,
+  // ): intent is DeFiIntent & { params: WithdrawParams } {
+  //   return intent.type === IntentType.WITHDRAW;
+  // }
+
+  // private isRepayIntent(
+  //   intent: DeFiIntent,
+  // ): intent is DeFiIntent & { params: RepayParams } {
+  //   return intent.type === IntentType.REPAY;
+  // }
+
+  // private isPositionIntent(
+  //   intent: DeFiIntent,
+  // ): intent is DeFiIntent & { params: PositionParams } {
+  //   return intent.type === IntentType.POSITION;
+  // }
+
+  // private isRewardIntent(
+  //   intent: DeFiIntent,
+  // ): intent is DeFiIntent & { params: RewardParams } {
+  //   return intent.type === IntentType.REWARD;
+  // }
 
   private async handleSwapIntent(
     intent: DeFiIntent & { params: SwapParams },
@@ -137,9 +169,12 @@ export class ChatController {
     intent: DeFiIntent & { params: MarketParams },
   ): Promise<ChatResponse> {
     if (intent.missingFields.length > 0) {
+      const missingField = intent.missingFields[0] as keyof MarketParams;
+      const response =
+        this.marketIntentService.getMissingParameterPrompt(missingField);
       return {
         type: ChatResponseType.BOT,
-        message: `I need more information about the market data you're looking for. ${intent.context}`,
+        message: `${intent.context ? intent.context + '\n' : ''}${response}`,
         intent,
       };
     }
@@ -158,211 +193,111 @@ export class ChatController {
     };
   }
 
-  private async handleNaviIntent(
-    intent: DeFiIntent & { params: NaviParams },
-    userId: string,
+  private async handlePortfolioIntent(
+    intent: DeFiIntent & { params: PortfolioParams },
   ): Promise<ChatResponse> {
-    try {
-      if (intent.missingFields.length > 0) {
-        return {
-          type: ChatResponseType.ACTION_REQUIRED,
-          message: `I need more information to process your request. ${
-            intent.context
-          }. Missing: ${intent.missingFields.join(', ')}.`,
-          intent,
-          agentType: AgentType.NAVI,
-          actionType: intent.agentActionType || 'unknown',
-        };
-      }
-
-      // Process based on action type
-      const actionType =
-        (intent.agentActionType as NaviActionType) || NaviActionType.PORTFOLIO;
-
-      switch (actionType) {
-        case NaviActionType.PORTFOLIO:
-          return {
-            type: ChatResponseType.DATA_VISUALIZATION,
-            message: 'Here is your portfolio overview.',
-            intent,
-            agentType: AgentType.NAVI,
-            actionType: NaviActionType.PORTFOLIO,
-            visualizationType: 'portfolio',
-            data: await this.naviService.getPortfolio(userId),
-          };
-
-        case NaviActionType.POSITION:
-          return {
-            type: ChatResponseType.DATA_VISUALIZATION,
-            message: `Here are your positions for address ${intent.params.address}.`,
-            intent,
-            agentType: AgentType.NAVI,
-            actionType: NaviActionType.POSITION,
-            visualizationType: 'positions',
-            data: await this.naviService.getPositions(intent.params.address!),
-          };
-
-        case NaviActionType.HEALTH:
-          return {
-            type: ChatResponseType.INFO,
-            message: `Your health factor for address ${intent.params.address} is ${await this.naviService.getHealthFactor(
-              intent.params.address!,
-            )}.`,
-            intent,
-            agentType: AgentType.NAVI,
-            actionType: NaviActionType.HEALTH,
-          };
-
-        case NaviActionType.REWARD: {
-          const rewards = '0.00 NAVI';
-          return {
-            type: ChatResponseType.INFO,
-            message: `Your current rewards are ${rewards}.`,
-            intent,
-            agentType: AgentType.NAVI,
-            actionType: NaviActionType.REWARD,
-          };
-        }
-
-        case NaviActionType.BORROW:
-        case NaviActionType.SUPPLY:
-        case NaviActionType.WITHDRAW:
-        case NaviActionType.REPAY:
-          return {
-            type: ChatResponseType.ACTION_REQUIRED,
-            message: `Would you like to ${actionType.toLowerCase()} ${
-              intent.params.amount
-            } ${intent.params.asset}?`,
-            intent,
-            agentType: AgentType.NAVI,
-            actionType,
-            data: {
-              asset: intent.params.asset,
-              amount: intent.params.amount,
-            },
-          };
-
-        default: {
-          // Process general request via Navi service
-          const actionMessage = actionType ? `${String(actionType)}: ` : '';
-          const response = await this.naviService.processNaviMessage(
-            `${actionMessage}${JSON.stringify(intent.params)}`,
-          );
-          return {
-            type: ChatResponseType.BOT,
-            message: response,
-            intent,
-            agentType: AgentType.NAVI,
-          };
-        }
-      }
-    } catch (error) {
+    if (intent.missingFields.length > 0) {
+      const missingField = intent.missingFields[0] as ParamsField;
+      const response = this.naviIntent.getMissingParameterPrompt(missingField);
       return {
-        type: ChatResponseType.ERROR,
-        message: `Sorry, I encountered an error with Navi: ${error.message}`,
-        agentType: AgentType.NAVI,
+        type: ChatResponseType.BOT,
+        message: `${intent.context ? intent.context + '\n' : ''}${response}`,
+        intent,
       };
     }
+    return {
+      type: ChatResponseType.BOT,
+      message: `Here's the portfolio data for ${intent.params.address}.`,
+      intent,
+    };
   }
 
-  private async handleCetusIntent(
-    intent: DeFiIntent & { params: CetusParams },
+  private async handleHealthIntent(
+    intent: DeFiIntent & { params: HealthParams },
   ): Promise<ChatResponse> {
-    try {
-      if (intent.missingFields.length > 0) {
-        return {
-          type: ChatResponseType.ACTION_REQUIRED,
-          message: `I need more information to process your Cetus request. ${
-            intent.context
-          }. Missing: ${intent.missingFields.join(', ')}.`,
-          intent,
-          agentType: AgentType.CETUS,
-          actionType: intent.agentActionType || 'unknown',
-        };
-      }
+    return {
+      type: ChatResponseType.BOT,
+      message: `Here's the health data for ${intent.params.address}.`,
+      intent,
+      data: await this.naviService.getHealthFactor(intent.params.address!),
+    };
+  }
 
-      const actionType =
-        (intent.agentActionType as CetusActionType) || CetusActionType.POOL;
+  private async handleBorrowIntent(
+    intent: DeFiIntent & { params: BorrowParams },
+  ): Promise<ChatResponse> {
+    return {
+      type: ChatResponseType.BOT,
+      message: `Here's the borrow data for ${intent.params.asset}.`,
+      intent,
+    };
+  }
 
-      await Promise.resolve();
+  private async handleSupplyIntent(
+    intent: DeFiIntent & { params: SupplyParams },
+  ): Promise<ChatResponse> {
+    return {
+      type: ChatResponseType.BOT,
+      message: `Here's the supply data for ${intent.params.asset}.`,
+      intent,
+    };
+  }
 
-      switch (actionType) {
-        case CetusActionType.POOL:
-        case CetusActionType.LIQUIDITY: {
-          const poolData = { liquidity: '1000000', volume24h: '500000' };
-          return {
-            type: ChatResponseType.DATA_VISUALIZATION,
-            message: `Here is the information for ${intent.params.pool} pool.`,
-            intent,
-            agentType: AgentType.CETUS,
-            actionType,
-            visualizationType: 'pool',
-            data: {
-              pool: intent.params.pool,
-              poolData,
-            },
-          };
-        }
+  private async handleWithdrawIntent(
+    intent: DeFiIntent & { params: WithdrawParams },
+  ): Promise<ChatResponse> {
+    return {
+      type: ChatResponseType.BOT,
+      message: `Here's the withdraw data for ${intent.params.asset}.`,
+      intent,
+    };
+  }
 
-        case CetusActionType.APR:
-        case CetusActionType.YIELD: {
-          // Mock implementation
-          const apr = '5.2%';
-          return {
-            type: ChatResponseType.INFO,
-            message: `The current APR for ${intent.params.pool} pool is ${apr}.`,
-            intent,
-            agentType: AgentType.CETUS,
-            actionType,
-          };
-        }
+  private async handleRepayIntent(
+    intent: DeFiIntent & { params: RepayParams },
+  ): Promise<ChatResponse> {
+    return {
+      type: ChatResponseType.BOT,
+      message: `Here's the repay data for ${intent.params.asset}.`,
+      intent,
+    };
+  }
 
-        case CetusActionType.STAKE:
-        case CetusActionType.UNSTAKE:
-        case CetusActionType.FARM:
-          return {
-            type: ChatResponseType.ACTION_REQUIRED,
-            message: `Would you like to ${actionType.toLowerCase()} ${
-              intent.params.amount
-            } ${intent.params.token}?`,
-            intent,
-            agentType: AgentType.CETUS,
-            actionType,
-            data: {
-              token: intent.params.token,
-              amount: intent.params.amount,
-            },
-          };
+  private async handleDefaultIntent(
+    intent: DeFiIntent,
+    chatMessage: ChatMessage,
+  ) {
+    const response = await this.chatService.processMessage(
+      chatMessage.content,
+      intent?.context || '',
+      [],
+    );
 
-        case CetusActionType.SWAP:
-          // For Cetus swaps, redirect to the general swap handler
-          return {
-            type: ChatResponseType.ACTION_REQUIRED,
-            message: `Would you like to swap on Cetus?`,
-            intent,
-            agentType: AgentType.CETUS,
-            actionType: CetusActionType.SWAP,
-          };
+    return {
+      type: ChatResponseType.BOT,
+      message: response,
+      intent,
+    };
+  }
 
-        default: {
-          const actionMessage = actionType
-            ? `${String(actionType)}`
-            : 'unknown';
-          return {
-            type: ChatResponseType.BOT,
-            message: `I'm processing your Cetus request for ${actionMessage}.`,
-            intent,
-            agentType: AgentType.CETUS,
-          };
-        }
-      }
-    } catch (error) {
-      return {
-        type: ChatResponseType.ERROR,
-        message: `Sorry, I encountered an error with Cetus: ${error.message}`,
-        agentType: AgentType.CETUS,
-      };
-    }
+  private async handleObjectKeyIntent(
+    intent: DeFiIntent,
+    chatMessage: ChatMessage,
+  ): Promise<ChatResponse> {
+    const intentHandlers = {
+      default: () => this.handleDefaultIntent(intent, chatMessage),
+      swap: () => this.handleSwapIntent(intent),
+      market: () => this.handleMarketIntent(intent),
+      health: () => this.handleHealthIntent(intent),
+      portfolio: () => this.handlePortfolioIntent(intent),
+      borrow: () => this.handleBorrowIntent(intent),
+      supply: () => this.handleSupplyIntent(intent),
+      withdraw: () => this.handleWithdrawIntent(intent),
+      repay: () => this.handleRepayIntent(intent),
+    };
+
+    const handler = intentHandlers[intent.type ?? 'default'];
+    return handler?.();
   }
 
   @Post('message')
@@ -383,46 +318,16 @@ export class ChatController {
           message:
             "I couldn't understand your request. Please try again with more details.",
           intent: undefined,
-          agentType: chatMessage.agentType || AgentType.DEFAULT,
         };
       }
 
-      if (this.isSwapIntent(intent)) {
-        return this.handleSwapIntent(intent);
-      }
-
-      if (this.isMarketIntent(intent)) {
-        return this.handleMarketIntent(intent);
-      }
-
-      if (this.isNaviIntent(intent)) {
-        return this.handleNaviIntent(intent, chatMessage.userId);
-      }
-
-      if (this.isCetusIntent(intent)) {
-        return this.handleCetusIntent(intent);
-      }
-
-      const response = await this.chatService.processMessage(
-        chatMessage.content,
-        intent?.context || '',
-        [],
-        chatMessage.agentType,
-      );
-
-      return {
-        type: ChatResponseType.BOT,
-        message: response,
-        intent,
-        agentType: chatMessage.agentType || AgentType.DEFAULT,
-      };
+      return this.handleObjectKeyIntent(intent, chatMessage);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error occurred';
       return {
         type: ChatResponseType.ERROR,
         message: `Sorry, I encountered an error: ${errorMessage}`,
-        agentType: chatMessage.agentType || AgentType.DEFAULT,
       };
     }
   }

@@ -1,20 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
 import BiophilicBackground from "@/components/dashboard/BiophilicBackground";
-import Navigation from "@/components/dashboard/Navigation";
-import SearchBar from "@/components/dashboard/SearchBar";
 import FilterOptions from "@/components/dashboard/FilterOptions";
+import Navigation from "@/components/dashboard/Navigation";
 import ScrollableModules from "@/components/dashboard/ScrollableModules";
+import SearchBar from "@/components/dashboard/SearchBar";
 import TraderSection from "@/components/dashboard/TraderSection";
-import { topTraders, topWhales, modules } from "@/data/dashboardMockData";
-import ConnectWallet from "@/components/ConnectWallet";
+import { modules, topTraders, topWhales } from "@/data/dashboardMockData";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState<"spotlight" | "dashboard">(
-    "dashboard"
-  );
+  const [activeTab, setActiveTab] = useState<"spotlight" | "dashboard">("dashboard");
 
   // Animation variants
   const containerVariants = {
@@ -59,7 +56,6 @@ export default function DashboardPage() {
               <div className="absolute -top-2 -left-3 w-10 h-10 border-t-2 border-l-2 border-crypto-blue/30 rounded-tl-lg opacity-50"></div>
               <div className="absolute -bottom-2 -right-3 w-10 h-10 border-b-2 border-r-2 border-crypto-teal/30 rounded-br-lg opacity-50"></div>
             </div>
-            <ConnectWallet />
           </motion.div>
 
           {/* Navigation */}
@@ -86,10 +82,7 @@ export default function DashboardPage() {
           </motion.div>
 
           {/* Trader Sections */}
-          <motion.div
-            className="grid grid-cols-1 lg:grid-cols-2 gap-6"
-            variants={itemVariants}
-          >
+          <motion.div className="grid grid-cols-1 lg:grid-cols-2 gap-6" variants={itemVariants}>
             <TraderSection title="Top Traders" traders={topTraders} />
             <TraderSection title="Top Whales" traders={topWhales} />
           </motion.div>
@@ -99,9 +92,7 @@ export default function DashboardPage() {
       {/* Maximum contrast dark footer */}
       <div className="w-full py-2 mt-8 bg-black relative z-10">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <div className="text-xs text-gray-500 font-mono">
-            DEFI.ANALYTICS.PLATFORM
-          </div>
+          <div className="text-xs text-gray-500 font-mono">DEFI.ANALYTICS.PLATFORM</div>
           <div className="text-xs text-gray-500 flex items-center gap-2">
             <span className="inline-block w-2 h-2 rounded-full bg-crypto-teal"></span>
             <span>ALPHA v0.1</span>

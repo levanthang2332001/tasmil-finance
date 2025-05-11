@@ -3,6 +3,7 @@ import "./globals.css";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import SuiProvider from "@/providers/SuiProvider";
 import { Inter } from "next/font/google";
+import RouteGuard from "@/providers/RouteGuard";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -46,7 +47,9 @@ export default function RootLayout({
       {/* dark mode */}
       <body className={`${inter.variable} antialiased overflow-x-hidden dark`}>
         <ReactQueryProvider>
-          <SuiProvider>{children}</SuiProvider>
+          <SuiProvider>
+            <RouteGuard>{children}</RouteGuard>
+          </SuiProvider>
         </ReactQueryProvider>
       </body>
     </html>
