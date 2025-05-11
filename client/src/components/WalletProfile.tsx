@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import { useCurrentAccount, useDisconnectWallet } from "@mysten/dapp-kit";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Copy, LogOut } from "lucide-react";
+import { Copy, LogOut, User } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
 
@@ -17,6 +17,7 @@ interface WalletProfileProps {
 const WalletProfile = ({ name, email, className }: WalletProfileProps) => {
   const account = useCurrentAccount();
   const { mutate: disconnect } = useDisconnectWallet();
+  const [hasImageError, setHasImageError] = useState(false);
 
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -54,15 +55,20 @@ const WalletProfile = ({ name, email, className }: WalletProfileProps) => {
                   {name.charAt(0).toUpperCase()}
                 </span>
               ) : (
-                <div className="w-full h-full">
-                  <Image
-                    src={`https://api.dicebear.com/7.x/identicon/svg?seed=${account?.address}`}
-                    alt="avatar"
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-cover"
-                    priority
-                  />
+                <div className="w-full h-full flex items-center justify-center">
+                  {hasImageError ? (
+                    <User className="w-8 h-8 text-muted-foreground" />
+                  ) : (
+                    <Image
+                      src={`https://api.dicebear.com/7.x/identicon/svg?seed=${account?.address}`}
+                      alt="avatar"
+                      width={48}
+                      height={48}
+                      className="w-full h-full object-cover"
+                      priority
+                      onError={() => setHasImageError(true)}
+                    />
+                  )}
                 </div>
               )}
             </div>
@@ -100,7 +106,7 @@ const WalletProfile = ({ name, email, className }: WalletProfileProps) => {
               </span>
               <div className="flex items-center gap-2">
                 <Image
-                  src="/sui-logo.png"
+                  src="/images/sui-logo.png"
                   alt="SUI"
                   width={24}
                   height={24}

@@ -46,8 +46,7 @@ export default function StepMoving({ className }: StepMovingProps) {
             {
               icon: <Bot className="h-8 w-8" />,
               title: "Chat with AI",
-              description:
-                "Interact naturally with our AI to execute trades and manage positions",
+              description: "Interact naturally with our AI to execute trades and manage positions",
             },
             {
               icon: <ChartBar className="h-8 w-8" />,
@@ -80,22 +79,12 @@ const Step = ({
   description: string;
   index: number;
 }) => {
-  const colors = [
-    "bg-blue-900",
-    "bg-green-900",
-    "bg-yellow-900",
-    "bg-indigo-900",
-    "bg-pink-900",
-  ];
-
-  const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className={cn("sticky h-80 p-8 shadow rounded-2xl", randomColor)}
+      className="sticky h-80 p-8 rounded-2xl shadow-lg bg-white/10 backdrop-blur-lg border border-white/20"
       style={{ zIndex: index + 1, top: index * 20 + 150 }}
     >
       <div className="flex h-full">
@@ -103,9 +92,7 @@ const Step = ({
           <div className="absolute -top-4 left-6 bg-crypto-blue rounded-full p-2 text-white">
             {icon}
           </div>
-          <h3 className="text-3xl font-semibold text-white mt-4 mb-6">
-            {title}
-          </h3>
+          <h3 className="text-3xl font-semibold text-white mt-4 mb-6">{title}</h3>
           <p className="text-accent-foreground">{description}</p>
         </div>
         <Image

@@ -36,8 +36,8 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="text-gray-400 text-lg md:text-xl max-w-2xl mb-8"
           >
-            Experience seamless token swaps, liquidity management, and real-time
-            market insights with our AI-powered DeFi chatbot.
+            Experience seamless token swaps, liquidity management, and real-time market insights
+            with our AI-powered DeFi chatbot.
           </motion.p>
 
           <motion.div
