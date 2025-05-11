@@ -16,9 +16,13 @@ import { WithdrawParams } from './entities/navi/withdraw.entity';
 import { IntentService } from './intent';
 import { MarketIntentService } from './intent/market.intent';
 import { NaviIntentService } from './intent/navi.intent';
-import { CetusSwapService } from './services/cetus/swap.service';
 import { MarketService } from './services/market.service';
 import { NaviService } from './services/navi/navi.service';
+// import Cetus services
+import { CetusSwapService } from './services/cetus/swap.service';
+import { SwapParams, ParamsField, SwapQuote } from './entities/cetus/swap.entity';
+import { ChatResponseType } from './entities/cetus/cetus.entity';
+
 @Controller('chat')
 export class ChatController {
   private messageHistory: Map<string, MessageHistoryEntry[]> = new Map();
@@ -55,37 +59,39 @@ export class ChatController {
     this.messageHistory.set(userId, userMessages);
   }
 
-  // private async handleSwapIntent(
-  //   intent: DeFiIntent & { params: SwapParams },
-  // ): Promise<ChatResponse> {
-  //   if (intent.missingFields.length > 0) {
-  //     const missingField = intent.missingFields[0] as ParamsField;
-  //     const response = this.swapService.getMissingParameterPrompt(missingField);
-  //     return {
-  //       type: ChatResponseType.BOT,
-  //       message: `${intent.context ? intent.context + '\n' : ''}${response}`,
-  //       intent,
-  //     };
-  //   }
+  private async handleSwapIntent(
+    intent: DeFiIntent & { params: SwapParams },
+  ): Promise<ChatResponse> {
 
-  //   const quote = await this.swapService.getSwapQuote({
-  //     fromToken: intent.params.fromToken!,
-  //     toToken: intent.params.toToken!,
-  //     amount: intent.params.amount ? parseFloat(intent.params.amount) : 1,
-  //     chainId: intent.params.chainId ?? ChainId.ETHEREUM,
-  //   });
+    if (intent.missingFields && intent.missingFields.length < 0) {
+      const missingField = intent.missingFields[0] as ParamsField;
+      return {
+        message: `I need more information to process your swap request. What ${missingField} would you like to use?`,
+        intent,
+      };
+    }
 
-  //   return {
-  //     type: ChatResponseType.SWAP_QUOTE,
-  //     message: `I found a swap route for you:
-  //     Input: ${quote.amountIn} ${intent.params.fromToken}
-  //     Output: ${quote.amountOut} ${intent.params.toToken}
-  //     Gas Price: ${quote.gasPrice}
-  //     Would you like to proceed with the swap?`,
-  //     quote,
-  //     intent,
-  //   };
-  // }
+    const quote = await this.swapService.getSwapQuote({
+      fromToken: intent.params.fromToken!,
+      toToken: intent.params.toToken!,
+      amount: intent.params.amount ? parseFloat(intent.params.amount) : 1,
+      a2b: intent.params.a2b ?? true,
+      byAmountIn: intent.params.byAmountIn ?? true,
+    });
+
+    console.log('quote', quote);
+
+    return {
+      message: `I found a swap route for you:
+      Input: ${quote.amountIn} ${intent.params.fromToken}
+      Output: ${quote.amountOut} ${intent.params.toToken}
+      amount: ${intent.params.amount}
+      Gas Price: ${quote.fee}
+      Would you like to proceed with the swap?`,
+      quote,
+      intent,
+    };
+  }
 
   // private async handleMarketIntent(
   //   intent: DeFiIntent & { params: MarketParams },
@@ -155,6 +161,8 @@ export class ChatController {
     intent: DeFiIntent,
     chatMessage: ChatRequest,
   ): Promise<ChatResponse> {
+
+    console.log("default intent", intent)
     const response = await this.chatService.processMessage(
       chatMessage.content,
       intent?.context || '',
@@ -188,20 +196,22 @@ export class ChatController {
     intent: DeFiIntent,
     chatMessage: ChatRequest,
   ): Promise<ChatResponse> {
+    
     const intentHandlers = {
       default: () => this.handleDefaultIntent(intent, chatMessage),
-      // swap: () => this.handleSwapIntent(intent),
+      swap: () => this.handleSwapIntent(intent),
     };
 
-    const handler =
-      intentHandlers[intent.agentType ?? 'default'] ?? intentHandlers.default;
-    return handler?.();
+    const handler = intentHandlers.swap;
+    return handler();
   }
 
   private async handleObjectKeyIntent(
     intent: DeFiIntent,
     chatMessage: ChatRequest,
   ): Promise<ChatResponse> {
+    
+    
     const intentHandlers = {
       default: () => this.handleDefaultIntent(intent, chatMessage),
       navi: () => this.handleNaviIntent(intent, chatMessage),
@@ -225,6 +235,7 @@ export class ChatController {
         chatMessage.agentType,
       );
 
+
       if (!intent) {
         return {
           message:
@@ -243,22 +254,19 @@ export class ChatController {
     }
   }
 
-  // @Post('execute-swap')
-  // async executeSwap(@Body() quote: SwapQuote): Promise<ChatResponse> {
-  //   try {
-  //     const txHash = await this.swapService.executeSwap(quote);
-  //     return {
-  //       type: 'swap_executed',
-  //       message: `Great! Your swap has been executed. You can track the transaction here: ${getTxHash(txHash, quote.chainId)}`,
-  //       txHash,
-  //     };
-  //   } catch (error) {
-  //     const errorMessage =
-  //       error instanceof Error ? error.message : 'Unknown error occurred';
-  //     return {
-  //       type: 'error',
-  //       message: `Sorry, I couldn't execute the swap: ${errorMessage}`,
-  //     };
-  //   }
-  // }
+  @Post('execute-swap')
+  async executeSwap(@Body() quote: SwapQuote, @Body() signer: string): Promise<ChatResponse> {
+    try {
+      const txHash = await this.swapService.getTxHash(quote, signer);
+      return {
+        message: `Great! Your swap has been executed. You can track the transaction here: ${txHash}`,
+      };
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error occurred';
+      return {
+        message: `Sorry, I couldn't execute the swap: ${errorMessage}`,
+      };
+    }
+  }
 }

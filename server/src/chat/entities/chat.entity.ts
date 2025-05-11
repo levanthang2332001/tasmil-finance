@@ -1,3 +1,4 @@
+import { SwapQuote } from './cetus/swap.entity';
 import { DeFiIntent } from './intent.entity';
 
 export enum AgentType {
@@ -14,6 +15,7 @@ export interface ChatRequest {
 export interface ChatResponse {
   intent?: DeFiIntent;
   message: string;
+  quote?: SwapQuote;
 }
 
 export interface MessageHistoryEntry {

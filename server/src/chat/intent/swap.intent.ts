@@ -31,7 +31,6 @@ export class SwapIntentService {
     if (!params.fromToken) missingFields.push('fromToken');
     if (!params.toToken) missingFields.push('toToken');
     if (!params.amount) missingFields.push('amount');
-    if (!params.chainId) missingFields.push('chainId');
     return missingFields;
   }
 }
