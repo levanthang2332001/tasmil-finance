@@ -222,8 +222,7 @@ export class ChatController {
       // Extract intent including agent-specific context
       const intent = await this.intentService.extractIntent(
         `Previous messages:\n${recentContext}\n\nCurrent message: ${chatMessage.content}`,
-        // chatMessage.agentType,
-        AgentType.NAVI,
+        chatMessage.agentType,
       );
 
       if (!intent) {
