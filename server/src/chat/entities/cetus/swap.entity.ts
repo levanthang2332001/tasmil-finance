@@ -1,5 +1,9 @@
 import { ChainId, Token } from 'src/shared/utils/token-address';
 
+export enum SwapActionType {
+  SWAP = 'swap',
+}
+
 export type SwapParameters = {
   fromToken: string | null;
   toToken: string | null;
@@ -40,4 +44,10 @@ export interface SwapQuoteResponse {
   data: {
     routeSummary: SwapQuote;
   };
+}
+export interface SwapParams {
+  fromToken?: string;
+  toToken?: string;
+  amount?: string;
+  chainId?: number;
 }

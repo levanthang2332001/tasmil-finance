@@ -1,8 +1,8 @@
 import { ChatOpenAI } from '@langchain/openai';
 import { Injectable } from '@nestjs/common';
 import { LoggerService } from 'src/shared/services/logger.service';
-import { NaviActionType, NaviParams } from '../entities/intent.entity';
-import { ParamsField } from '../entities/swap.entity';
+import { ParamsField } from '../entities/cetus/swap.entity';
+import { CommonParams } from '../entities/navi/navi.entity';
 
 @Injectable()
 export class NaviIntentService {
@@ -38,7 +38,7 @@ export class NaviIntentService {
     return prompts[missingField];
   }
 
-  validateHealthIntent(params: NaviParams): string[] {
+  validateHealthIntent(params: CommonParams): string[] {
     const missingFields: string[] = [];
     if (!params.address) missingFields.push('address');
     return missingFields;
@@ -49,41 +49,41 @@ export class NaviIntentService {
     return missingFields;
   }
 
-  validateBorrowIntent(params: NaviParams): string[] {
+  validateBorrowIntent(params: CommonParams): string[] {
     const missingFields: string[] = [];
     if (!params.asset) missingFields.push('asset');
     if (!params.amount) missingFields.push('amount');
     return missingFields;
   }
 
-  validateSupplyIntent(params: NaviParams): string[] {
+  validateSupplyIntent(params: CommonParams): string[] {
     const missingFields: string[] = [];
     if (!params.asset) missingFields.push('asset');
     if (!params.amount) missingFields.push('amount');
     return missingFields;
   }
 
-  validateWithdrawIntent(params: NaviParams): string[] {
+  validateWithdrawIntent(params: CommonParams): string[] {
     const missingFields: string[] = [];
     if (!params.asset) missingFields.push('asset');
     if (!params.amount) missingFields.push('amount');
     return missingFields;
   }
 
-  validateRepayIntent(params: NaviParams): string[] {
+  validateRepayIntent(params: CommonParams): string[] {
     const missingFields: string[] = [];
     if (!params.asset) missingFields.push('asset');
     if (!params.amount) missingFields.push('amount');
     return missingFields;
   }
 
-  validatePositionIntent(params: NaviParams): string[] {
+  validatePositionIntent(params: CommonParams): string[] {
     const missingFields: string[] = [];
     if (!params.address) missingFields.push('address');
     return missingFields;
   }
 
-  validateRewardIntent(params: NaviParams): string[] {
+  validateRewardIntent(params: CommonParams): string[] {
     const missingFields: string[] = [];
     if (!params.address) missingFields.push('address');
     return missingFields;

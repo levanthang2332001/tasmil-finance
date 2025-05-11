@@ -6,14 +6,14 @@ import {
   Token,
 } from 'src/shared/utils/token-address';
 import { fromWei, toWei } from 'src/shared/utils/number';
-import { SwapParameters } from '../entities/swap.entity';
+import { SwapParameters } from '../../entities/cetus/swap.entity';
 import { LoggerService } from 'src/shared/services/logger.service';
-import { SwapQuote, SwapQuoteResponse } from '../entities/swap.entity';
+import { SwapQuote, SwapQuoteResponse } from '../../entities/cetus/swap.entity';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class SwapService {
-  private readonly logger = new LoggerService(SwapService.name);
+export class CetusSwapService {
+  private readonly logger = new LoggerService(CetusSwapService.name);
   private readonly apiUrl: string;
   private readonly apiKey: string;
 

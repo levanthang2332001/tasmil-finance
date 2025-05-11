@@ -1,7 +1,6 @@
 import { ChatOpenAI } from '@langchain/openai';
 import { Injectable } from '@nestjs/common';
 import { LoggerService } from 'src/shared/services/logger.service';
-import { CetusActionType, CetusParams } from '../entities/intent.entity';
 
 @Injectable()
 export class CetusIntent {
@@ -27,7 +26,7 @@ export class CetusIntent {
     this.logger.log('Cetus Intent model initialized');
   }
 
-  validateCetusIntent(params: CetusParams): string[] {
+  validateCetusIntent(params: any): string[] {
     const missingFields: string[] = [];
     const actionType = params.actionType;
 
@@ -36,20 +35,20 @@ export class CetusIntent {
       return missingFields;
     }
 
-    switch (actionType) {
-      case CetusActionType.STAKE:
-      case CetusActionType.UNSTAKE:
-      case CetusActionType.FARM:
-        if (!params.token) missingFields.push('token');
-        if (!params.amount) missingFields.push('amount');
-        break;
-      case CetusActionType.POOL:
-      case CetusActionType.LIQUIDITY:
-      case CetusActionType.APR:
-      case CetusActionType.YIELD:
-        if (!params.pool) missingFields.push('pool');
-        break;
-    }
+    // switch (actionType) {
+    //   case CetusActionType.STAKE:
+    //   case CetusActionType.UNSTAKE:
+    //   case CetusActionType.FARM:
+    //     if (!params.token) missingFields.push('token');
+    //     if (!params.amount) missingFields.push('amount');
+    //     break;
+    //   case CetusActionType.POOL:
+    //   case CetusActionType.LIQUIDITY:
+    //   case CetusActionType.APR:
+    //   case CetusActionType.YIELD:
+    //     if (!params.pool) missingFields.push('pool');
+    //     break;
+    // }
 
     return missingFields;
   }

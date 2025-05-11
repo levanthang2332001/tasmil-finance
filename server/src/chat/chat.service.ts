@@ -55,9 +55,14 @@ export class ChatService {
     try {
       const messages = [
         new SystemMessage(
-          agentType === AgentType.NAVI
-            ? 'You are a helpful DeFi assistant specialized in Navi protocol. You can help with portfolio information, positions, health factors, and rewards.'
-            : 'You are a helpful DeFi assistant. You can help with token swaps, price checks, and general DeFi questions.',
+          'You are a specialized DeFi assistant with expertise in multiple protocols. You can help with:\n' +
+            '- Token swaps and liquidity provision\n' +
+            '- Portfolio analysis and position management\n' +
+            '- Health factor monitoring and risk assessment\n' +
+            '- Market analysis and price trends\n' +
+            '- Borrowing, lending, and yield optimization\n' +
+            '- Position management and withdrawals\n' +
+            '- General DeFi strategy and protocol interactions',
         ),
       ];
 

@@ -4,25 +4,13 @@ import { Injectable } from '@nestjs/common';
 import { LoggerService } from 'src/shared/services/logger.service';
 import { clearResponse } from 'src/shared/utils/function';
 import { AgentType } from '../entities/chat.entity';
-import {
-  CetusActionType,
-  DeFiIntent,
-  BorrowParams,
-  HealthParams,
-  IntentType,
-  MarketParams,
-  NaviActionType,
-  SwapParams,
-  SupplyParams,
-  WithdrawParams,
-  RepayParams,
-  PositionParams,
-  RewardParams,
-} from '../entities/intent.entity';
+import { DeFiIntent, ParamsType } from '../entities/intent.entity';
 import { CetusIntent } from './cetus.intent';
 import { MarketIntentService } from './market.intent';
 import { NaviIntentService } from './navi.intent';
 import { SwapIntentService } from './swap.intent';
+import { NaviActionType } from '../entities/navi/navi.entity';
+import { CetusActionType } from '../entities/cetus/cetus.entity';
 
 @Injectable()
 export class IntentService {
@@ -65,7 +53,8 @@ export class IntentService {
            Analyze both the current message and previous context to determine missing fields.
            Return a JSON object with the following structure:
            {
-             "type": one of ["unknown", "swap", "market", "portfolio", "borrow", "position", "reward", "stake", "unstake", "farm", "pool", "liquidity", "apr", "yield"],
+             "agentType": one of ["unknown", 'navi', 'cetus'],
+             "actionType": one of ["unknown", ${Object.values(NaviActionType).join(', ')}, ${Object.values(CetusActionType).join(', ')}],
              "params": {
                // Parameters based on the intent type
              },
@@ -74,10 +63,9 @@ export class IntentService {
              "context": string (brief explanation of what was understood and what's missing)
            }`;
 
-      if (agentType) {
-        switch (agentType) {
-          case AgentType.NAVI:
-            systemPrompt += `\n\nFor agent type "${AgentType.NAVI}", the possible action types are:
+      switch (agentType) {
+        case AgentType.NAVI:
+          systemPrompt += `\n\nFor agent type "${AgentType.NAVI}", the possible action types are:
               ${Object.values(NaviActionType).join(', ')}
               
               For type "portfolio", no additional params are required.
@@ -86,12 +74,12 @@ export class IntentService {
               For type "reward", no additional params are required.
               
               Examples:
-              "show my portfolio" -> type=portfolio 
-              "borrow 100 USDC" -> type=borrow, params: {asset: "USDC", amount: "100"}
-              "check health for 0x123..." -> type=position, params: {address: "0x123..."}`;
-            break;
-          case AgentType.CETUS:
-            systemPrompt += `\n\nFor agent type "${AgentType.CETUS}", the possible action types are:
+              "show my portfolio" -> agentType=navi, actionType=portfolio 
+              "borrow 100 USDC" -> agentType=navi, actionType=borrow, params: {asset: "USDC", amount: "100"}
+              "check health for 0x123..." -> agentType=navi, actionType=position, params: {address: "0x123..."}`;
+          break;
+        case AgentType.CETUS:
+          systemPrompt += `\n\nFor agent type "${AgentType.CETUS}", the possible action types are:
               ${Object.values(CetusActionType).join(', ')}
               
               For type "stake", "unstake", "farm", params should include: token, amount
@@ -99,20 +87,19 @@ export class IntentService {
               For type "swap", params should include: fromToken, toToken, amount
               
               Examples:
-              "stake 10 SUI in Cetus" -> type=stake, params: {token: "SUI", amount: "10"}
-              "show APR for SUI-USDC pool" -> type=apr, params: {pool: "SUI-USDC"}`;
-            break;
-          default:
-            // For DEFAULT agent, keep the original swap and market examples
-            systemPrompt += `\n\nFor swap intent: fromToken, toToken, amount, and chainId are required.
+              "stake 10 SUI in Cetus" -> agentType=cetus, actionType=stake, params: {token: "SUI", amount: "10"}
+              "show APR for SUI-USDC pool" -> agentType=cetus, actionType=apr, params: {pool: "SUI-USDC"}`;
+          break;
+        default:
+          // For DEFAULT agent, keep the original swap and market examples
+          systemPrompt += `\n\nFor swap intent: fromToken, toToken, amount, and chainId are required.
               For market intent: token, timeframe, and chainId are required.
               Include missing required fields in the missingFields array.
               Use previous messages context to fill in missing fields when possible.
               
               Examples:
-              "swap 1 ETH for BTC" -> type=swap, params: {fromToken: "ETH", toToken: "BTC", amount: "1"}
-              "show me ETH market 1h" -> type=market, params: {token: "ETH", timeframe: "1h"}`;
-        }
+              "swap 1 ETH for BTC" -> agentType=cetus, actionType=swap, params: {fromToken: "ETH", toToken: "BTC", amount: "1"}
+              "show me ETH market 1h" -> agentType=cetus, actionType=market, params: {token: "ETH", timeframe: "1h"}`;
       }
 
       const response = await this.model.invoke([
@@ -123,40 +110,32 @@ export class IntentService {
       const cleanContent = clearResponse(response.content as string);
       const intent = JSON.parse(cleanContent) as DeFiIntent;
 
-      const intentValidators = {
-        [IntentType.SWAP]: (params: SwapParams) =>
-          this.swapIntentService.validateSwapIntent(params),
-
-        [IntentType.MARKET]: (params: MarketParams) =>
-          this.marketIntentService.validateMarketIntent(params),
-
-        [IntentType.HEALTH]: (params: HealthParams) =>
-          this.naviIntentService.validateHealthIntent(params),
-
-        [IntentType.PORTFOLIO]: () =>
-          this.naviIntentService.validatePortfolioIntent(),
-
-        [IntentType.BORROW]: (params: BorrowParams) =>
-          this.naviIntentService.validateBorrowIntent(params),
-
-        [IntentType.SUPPLY]: (params: SupplyParams) =>
-          this.naviIntentService.validateSupplyIntent(params),
-
-        [IntentType.WITHDRAW]: (params: WithdrawParams) =>
-          this.naviIntentService.validateWithdrawIntent(params),
-
-        [IntentType.REPAY]: (params: RepayParams) =>
-          this.naviIntentService.validateRepayIntent(params),
-
-        [IntentType.POSITION]: (params: PositionParams) =>
-          this.naviIntentService.validatePositionIntent(params),
-
-        [IntentType.REWARD]: (params: RewardParams) =>
-          this.naviIntentService.validateRewardIntent(params),
-      };
-
-      intent.missingFields =
-        intentValidators[intent.type]?.(intent.params as any) ?? [];
+      // Validate params based on agentType
+      switch (intent.agentType) {
+        case AgentType.NAVI:
+          intent.missingFields =
+            this.naviIntentService.validateBorrowIntent(intent.params as any) ||
+            this.naviIntentService.validateSupplyIntent(intent.params as any) ||
+            this.naviIntentService.validateWithdrawIntent(
+              intent.params as any,
+            ) ||
+            this.naviIntentService.validateRepayIntent(intent.params as any) ||
+            [];
+          break;
+        case AgentType.CETUS:
+          intent.missingFields =
+            this.cetusIntentService.validateCetusIntent(intent.params as any) ||
+            [];
+          break;
+        default:
+          // For swap and market, try both
+          intent.missingFields =
+            this.swapIntentService.validateSwapIntent(intent.params as any) ||
+            this.marketIntentService.validateMarketIntent(
+              intent.params as any,
+            ) ||
+            [];
+      }
 
       this.logger.log(`Extracted intent: ${JSON.stringify(intent)}`);
       return intent;
