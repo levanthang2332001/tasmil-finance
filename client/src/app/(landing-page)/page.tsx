@@ -12,7 +12,7 @@ export default function Home() {
   const WIDTH = "w-full max-w-[var(--container-width)] mx-auto";
 
   return (
-    <div className="min-h-screen relative bg-transparent">
+    <div className="min-h-screen relative bg-gradient-to-b from-gray-900/70 to-black">
       <Header />
       <Squares
         direction="diagonal"

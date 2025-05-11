@@ -38,8 +38,8 @@ export default function IntroAi({ className }: IntroAiProps) {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mt-4 text-neutral-500 max-w-lg"
           >
-            Get real-time market insights, automated portfolio management, and
-            AI-driven trading strategies at your fingertips.
+            Get real-time market insights, automated portfolio management, and AI-driven trading
+            strategies at your fingertips.
           </motion.p>
         </div>
 
