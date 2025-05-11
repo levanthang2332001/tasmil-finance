@@ -32,14 +32,22 @@ A sophisticated AI-powered trading platform built on Hyperliquid, enabling seaml
 
 Rename a `.env.development` file to `.env` file (both client & server folder)
 
-## 🚀 Run Commands 
+## 🚀 Run Commands
 
 #### Client
+
 ```sh
 cd client && yarn && yarn dev
 ```
 
 #### Server
+
 ```sh
 cd server && yarn && yarn start:dev
+```
+
+## 📚 Document
+
+```sh
+ http://localhost:5000/api/docs
 ```

@@ -1,7 +1,7 @@
 {
-  "name": "vault-market-server",
+  "name": "tasmil-finance-server",
   "version": "0.0.1",
-  "description": "Server for the Vault Market",
+  "description": "Server for the Tasmil Finance",
   "author": {
     "name": "le-dat (leo)",
     "url": "https://github.com/le-dat"
@@ -10,10 +10,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/le-dat/vault-market-server"
+    "url": "https://github.com/XDefai/tasmil-finance"
   },
   "bugs": {
-    "url": "https://github.com/le-dat/vault-market-server/issues"
+    "url": "https://github.com/XDefai/tasmil-finance/issues"
   },
   "scripts": {
     "build": "nest build",
@@ -39,6 +39,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/mongoose": "^10.0.2",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "^11.2.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
@@ -46,7 +47,8 @@
     "mongoose": "^8.0.3",
     "navi-sdk": "^1.6.4",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
