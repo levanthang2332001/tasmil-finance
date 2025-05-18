@@ -1,13 +1,20 @@
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { formatAmount, formatCurrency } from '@/lib/utils';
-import { SwapBoxProps } from '@/types/chat';
-import { motion } from 'framer-motion';
-import { ArrowDown, Bot } from 'lucide-react';
-import Image from 'next/image';
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+// import { formatAmount, formatCurrency } from "@/lib/utils";
+import { Message } from "@/types/chat";
+import { motion } from "framer-motion";
+import { ArrowDown, Bot } from "lucide-react";
+// import Image from "next/image";
 
-export const SwapBoxMessage = ({ message, onConfirm, onCancel, isLoading }: SwapBoxProps) => {
-  if (!message.quote) {
+interface BotSwapType {
+  message: Message;
+  isLoading?: boolean;
+  onConfirm: (messageId: string) => Promise<void>;
+  onCancel: (messageId: string) => void;
+}
+
+export const BotSwapMessage = ({ message, onConfirm, onCancel, isLoading }: BotSwapType) => {
+  if (!message.intent.params.quote) {
     return null;
   }
 
@@ -27,13 +34,13 @@ export const SwapBoxMessage = ({ message, onConfirm, onCancel, isLoading }: Swap
               <h3 className="font-semibold text-secondary-foreground">Swap Preview</h3>
               <span className="text-xs text-muted-foreground">
                 {new Date(message.timestamp).toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit',
+                  hour: "2-digit",
+                  minute: "2-digit",
                 })}
               </span>
             </div>
 
-            <div className="space-y-4">
+            {/* <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-secondary-foreground">Sell</p>
@@ -57,7 +64,7 @@ export const SwapBoxMessage = ({ message, onConfirm, onCancel, isLoading }: Swap
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="flex justify-center">
               <div className="rounded-full bg-secondary p-2">
@@ -65,7 +72,7 @@ export const SwapBoxMessage = ({ message, onConfirm, onCancel, isLoading }: Swap
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
+            {/* <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-secondary-foreground">Buy</p>
                 <p className="text-2xl font-medium text-secondary-foreground">
@@ -87,16 +94,16 @@ export const SwapBoxMessage = ({ message, onConfirm, onCancel, isLoading }: Swap
                   className="h-6 w-6 rounded-full"
                 />
               </div>
-            </div>
+            </div> */}
 
-            <div className="space-y-2 border-t pt-4">
+            {/* <div className="space-y-2 border-t pt-4">
               <div className="flex justify-between text-sm">
                 <span className="text-secondary-foreground">Estimated Gas</span>
                 <span className="text-amber-700 font-medium">
                   {formatCurrency(message.quote.gasUsd)}
                 </span>
               </div>
-            </div>
+            </div> */}
 
             <div className="flex gap-2">
               <Button
@@ -108,7 +115,7 @@ export const SwapBoxMessage = ({ message, onConfirm, onCancel, isLoading }: Swap
                 Cancel
               </Button>
               <Button className="flex-1" onClick={() => onConfirm(message.id)} disabled={isLoading}>
-                {isLoading ? 'Confirming...' : 'Confirm Swap'}
+                {isLoading ? "Confirming..." : "Confirm Swap"}
               </Button>
             </div>
           </div>

@@ -16,6 +16,7 @@ export interface ChatResponse {
   intent?: DeFiIntent;
   message: string;
   quote?: SwapQuote;
+  data?: any;
 }
 
 export interface MessageHistoryEntry {

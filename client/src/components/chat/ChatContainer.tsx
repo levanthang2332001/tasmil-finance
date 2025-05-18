@@ -15,10 +15,10 @@ interface Suggestion {
 interface ChatContainerProps {
   messages: Message[];
   isLoading?: boolean;
+  suggestions?: Suggestion[];
   onSendMessage: (message: string) => void;
   onSwapConfirm: (messageId: string) => Promise<void>;
   onSwapCancel: (messageId: string) => void;
-  suggestions?: Suggestion[];
 }
 
 export const ChatContainer = ({

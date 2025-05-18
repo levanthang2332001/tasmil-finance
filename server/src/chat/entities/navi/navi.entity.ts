@@ -1,4 +1,4 @@
-export enum NaviActionType {
+export enum NAVI_ACTION_TYPE {
   BORROW = 'borrow',
   SUPPLY = 'supply',
   WITHDRAW = 'withdraw',

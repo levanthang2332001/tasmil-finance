@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { LoggerService } from 'src/shared/services/logger.service';
 import { NAVISDKClient, NAVX } from 'navi-sdk';
+import { BorrowParams } from 'src/chat/entities/navi/borrow.entity';
+// import { Scallop } from '@scallop-io/sui-scallop-sdk';
 
 @Injectable()
 export class NaviService {
@@ -19,6 +21,50 @@ export class NaviService {
     } catch (error) {
       this.logger.error('Failed to initialize Navi SDK client', error);
       throw error;
+    }
+  }
+
+  getMissingParameterPrompt(missingParam: keyof BorrowParams): string {
+    const prompts: Record<keyof BorrowParams, string> = {
+      amount: 'How much would you like to borrow?',
+      asset: 'What asset would you like to borrow?',
+    };
+    return prompts[missingParam];
+  }
+
+  async getBorrow(
+    // sender: string,
+    amount: number,
+    // isSign: boolean,
+    // token: string,
+  ): Promise<any> {
+    try {
+      this.logger.log(`Getting Navi borrow for amount: ${amount}`);
+      const account = this.client.accounts[0];
+      const borrow = await account.borrow(NAVX, amount);
+      return { borrow };
+
+      // const scallop = new Scallop({
+      //   addressId:
+      //     '0x98331290579aee43997ccaedabdbf12f51275a4f300b1bc0dd40f64b94477090',
+      //   networkType: 'testnet',
+      // });
+
+      // const query = await scallop.createScallopQuery();
+      // const scallopClient = await scallop.createScallopClient();
+
+      // const txPayload = await scallopClient.borrow(
+      //   '0x98331290579aee43997ccaedabdbf12f51275a4f300b1bc0dd40f64b94477090',
+      //   amount,
+      //   isSign,
+      //   '0x98331290579aee43997ccaedabdbf12f51275a4f300b1bc0dd40f64b94477090',
+      //   '0x98331290579aee43997ccaedabdbf12f51275a4f300b1bc0dd40f64b94 477090',
+      //   sender,
+      // );
+      // return { txPayload };
+    } catch (error) {
+      this.logger.error('Failed to get Navi borrow', error);
+      throw new Error(`Failed to get Navi borrow: ${error.message}`);
     }
   }
 
@@ -85,15 +131,20 @@ export class NaviService {
     }
   }
 
-  async getBorrow(address: string, amount: number): Promise<any> {
+  async getSupply(amount: number): Promise<any> {
     try {
-      this.logger.log(`Getting Navi borrow for address: ${address}`);
+      this.logger.log(`Getting Navi supply for amount: ${amount}`);
       const account = this.client.accounts[0];
-      const borrow = await account.borrow(NAVX, amount);
-      return { borrow };
+      const accountCap = await account.createAccountCap();
+      const supply = await account.depositToNaviWithAccountCap(
+        NAVX,
+        amount,
+        accountCap,
+      );
+      return { supply };
     } catch (error) {
-      this.logger.error('Failed to get Navi borrow', error);
-      throw new Error(`Failed to get Navi borrow: ${error.message}`);
+      this.logger.error('Failed to get Navi supply', error);
+      throw new Error(`Failed to get Navi supply: ${error.message}`);
     }
   }
 

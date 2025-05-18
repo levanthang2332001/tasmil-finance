@@ -5,7 +5,7 @@ import { ChatContainer } from "@/components/chat/ChatContainer";
 import { suggestionCetus, suggestionNavi, suggestionSuiLend } from "@/constants/suggestion";
 import { ChatService } from "@/services/chat.service";
 import { AgentType, useAgent } from "@/store/useAgent";
-import { Message, MessageType } from "@/types/chat";
+import { Message, MESSAGE_TYPE } from "@/types/chat";
 import { useState } from "react";
 
 const ChatDefi = () => {
@@ -13,13 +13,15 @@ const ChatDefi = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { selectedAgent } = useAgent();
 
+  console.log("messages: ", messages);
+
   const handleSendMessage = async (content: string) => {
     // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
-      content,
       timestamp: new Date(),
-      type: MessageType.USER,
+      message: content,
+      actionType: MESSAGE_TYPE.USER,
     };
     setMessages((prev) => [...prev, userMessage]);
 
@@ -29,18 +31,21 @@ const ChatDefi = () => {
       const response = await ChatService.sendMessage("user-1", content, selectedAgent);
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: response.message,
         timestamp: new Date(),
-        type: response.type === "swap_quote" ? MessageType.SWAP_QUOTE : MessageType.BOT,
-        quote: response.quote,
+        message: response?.message,
+        actionType:
+          response?.intent?.actionType === MESSAGE_TYPE.UNKNOWN
+            ? MESSAGE_TYPE.BOT
+            : response?.intent?.actionType,
+        data: response?.intent?.params,
       };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       const errorMessage: Message = {
         id: Date.now().toString(),
-        content: "Sorry, there was an error processing your message.",
         timestamp: new Date(),
-        type: MessageType.BOT,
+        message: "Sorry, there was an error processing your message.",
+        actionType: MESSAGE_TYPE.BOT,
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
@@ -53,25 +58,25 @@ const ChatDefi = () => {
     try {
       // Find the swap message to get the quote
       const swapMessage = messages.find((m) => m.id === messageId);
-      if (!swapMessage || !swapMessage.quote) {
+      if (!swapMessage || !swapMessage.data) {
         throw new Error("Swap quote not found");
       }
 
       // Execute the swap
-      const response = await ChatService.executeSwap(swapMessage.quote);
-      const confirmationMessage: Message = {
-        id: Date.now().toString(),
-        content: response.message,
-        timestamp: new Date(),
-        type: MessageType.BOT,
-      };
-      setMessages((prev) => [...prev, confirmationMessage]);
+      // const response = await ChatService.executeSwap(swapMessage.data);
+      // const confirmationMessage: Message = {
+      //   id: Date.now().toString(),
+      //   message: response.message,
+      //   timestamp: new Date(),
+      //   actionType: MESSAGE_TYPE.BOT,
+      // };
+      // setMessages((prev) => [...prev, confirmationMessage]);
     } catch (error) {
       const errorMessage: Message = {
         id: Date.now().toString(),
-        content: "Sorry, there was an error processing your swap.",
         timestamp: new Date(),
-        type: MessageType.BOT,
+        message: "Sorry, there was an error processing your swap.",
+        actionType: MESSAGE_TYPE.BOT,
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
@@ -82,9 +87,9 @@ const ChatDefi = () => {
   const handleSwapCancel = (messageId: string) => {
     const cancelMessage: Message = {
       id: Date.now().toString(),
-      content: "Swap cancelled. Is there anything else I can help you with?",
+      message: "Swap cancelled. Is there anything else I can help you with?",
       timestamp: new Date(),
-      type: MessageType.BOT,
+      actionType: MESSAGE_TYPE.BOT,
     };
     setMessages((prev) => [...prev, cancelMessage]);
   };

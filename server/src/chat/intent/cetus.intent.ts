@@ -36,16 +36,16 @@ export class CetusIntent {
     }
 
     // switch (actionType) {
-    //   case CetusActionType.STAKE:
-    //   case CetusActionType.UNSTAKE:
-    //   case CetusActionType.FARM:
+    //   case CETUS_ACTION_TYPE.STAKE:
+    //   case CETUS_ACTION_TYPE.UNSTAKE:
+    //   case CETUS_ACTION_TYPE.FARM:
     //     if (!params.token) missingFields.push('token');
     //     if (!params.amount) missingFields.push('amount');
     //     break;
-    //   case CetusActionType.POOL:
-    //   case CetusActionType.LIQUIDITY:
-    //   case CetusActionType.APR:
-    //   case CetusActionType.YIELD:
+    //   case CETUS_ACTION_TYPE.POOL:
+    //   case CETUS_ACTION_TYPE.LIQUIDITY:
+    //   case CETUS_ACTION_TYPE.APR:
+    //   case CETUS_ACTION_TYPE.YIELD:
     //     if (!params.pool) missingFields.push('pool');
     //     break;
     // }

@@ -9,8 +9,8 @@ import { CetusIntent } from './cetus.intent';
 import { MarketIntentService } from './market.intent';
 import { NaviIntentService } from './navi.intent';
 import { SwapIntentService } from './swap.intent';
-import { NaviActionType } from '../entities/navi/navi.entity';
-import { CetusActionType } from '../entities/cetus/cetus.entity';
+import { NAVI_ACTION_TYPE } from '../entities/navi/navi.entity';
+import { CETUS_ACTION_TYPE } from '../entities/cetus/cetus.entity';
 
 @Injectable()
 export class IntentService {
@@ -54,7 +54,7 @@ export class IntentService {
            Return a JSON object with the following structure:
            {
              "agentType": one of ["unknown", 'navi', 'cetus'],
-             "actionType": one of ["unknown", ${Object.values(NaviActionType).join(', ')}, ${Object.values(CetusActionType).join(', ')}],
+             "actionType": one of ["unknown", ${Object.values(NAVI_ACTION_TYPE).join(', ')}, ${Object.values(CETUS_ACTION_TYPE).join(', ')}],
              "params": {
                // Parameters based on the intent type
              },
@@ -66,7 +66,7 @@ export class IntentService {
       switch (agentType) {
         case AgentType.NAVI:
           systemPrompt += `\n\nFor agent type "${AgentType.NAVI}", the possible action types are:
-              ${Object.values(NaviActionType).join(', ')}
+              ${Object.values(NAVI_ACTION_TYPE).join(', ')}
               
               For type "portfolio", no additional params are required.
               For type "borrow", "supply", "withdraw", "repay", params should include: asset, amount
@@ -75,12 +75,12 @@ export class IntentService {
               
               Examples:
               "show my portfolio" -> agentType=navi, actionType=portfolio 
-              "borrow 100 USDC" -> agentType=navi, actionType=borrow, params: {asset: "USDC", amount: "100"}
+              "borrow 100 USDC" -> agentType=navi, actionType=borrow, params: { amount: "100", asset: "USDC", }
               "check health for 0x123..." -> agentType=navi, actionType=position, params: {address: "0x123..."}`;
           break;
         case AgentType.CETUS:
           systemPrompt += `\n\nFor agent type "${AgentType.CETUS}", the possible action types are:
-              ${Object.values(CetusActionType).join(', ')}
+              ${Object.values(CETUS_ACTION_TYPE).join(', ')}
               
               For type "stake", "unstake", "farm", params should include: token, amount
               For type "pool", "liquidity", "apr", "yield", params should include: pool  

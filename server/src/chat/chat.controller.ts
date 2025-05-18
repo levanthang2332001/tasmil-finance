@@ -17,9 +17,9 @@ import { IntentService } from './intent';
 import { MarketIntentService } from './intent/market.intent';
 import { NaviIntentService } from './intent/navi.intent';
 import { MarketService } from './services/market.service';
-import { NaviService } from './services/navi/navi.service';
+import { NaviService } from './services/navi.service';
 // import Cetus services
-import { CetusSwapService } from './services/cetus/swap.service';
+import { CetusSwapService } from './services/swap.service';
 import {
   SwapParams,
   ParamsField,
@@ -128,16 +128,7 @@ export class ChatController {
     intent: DeFiIntent & { params: BorrowParams },
   ): Promise<ChatResponse> {
     return {
-      message: `Here's the borrow data for ${intent.params.asset}.`,
-      intent,
-    };
-  }
-
-  private async handleSupplyIntent(
-    intent: DeFiIntent & { params: SupplyParams },
-  ): Promise<ChatResponse> {
-    return {
-      message: `Here's the supply data for ${intent.params.asset}.`,
+      message: `Here's the borrow data for ${intent.params.amount} ${intent.params.asset}.`,
       intent,
     };
   }
@@ -183,14 +174,17 @@ export class ChatController {
   ): Promise<ChatResponse> {
     const intentHandlers = {
       default: () => this.handleDefaultIntent(intent, chatMessage),
-      borrow: () => this.handleBorrowIntent(intent),
-      supply: () => this.handleSupplyIntent(intent),
+      borrow: () =>
+        this.handleBorrowIntent(
+          intent as DeFiIntent & { params: BorrowParams },
+        ),
       withdraw: () => this.handleWithdrawIntent(intent),
       repay: () => this.handleRepayIntent(intent),
     };
 
     const handler =
-      intentHandlers[intent.agentType ?? 'default'] ?? intentHandlers.default;
+      (await intentHandlers[intent.actionType ?? 'default']) ??
+      intentHandlers.default;
     return handler?.();
   }
 
@@ -258,7 +252,10 @@ export class ChatController {
     @Body() signer: string,
   ): Promise<ChatResponse> {
     try {
-      const txHash = await this.swapService.getTxHash(quote, signer);
+      const txHash = (await this.swapService.getTxHash(
+        quote,
+        signer,
+      )) as unknown as string;
       return {
         message: `Great! Your swap has been executed. You can track the transaction here: ${txHash}`,
       };

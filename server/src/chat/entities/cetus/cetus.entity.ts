@@ -1,6 +1,6 @@
-import { SwapQuote } from "./swap.entity";
+import { SwapQuote } from './swap.entity';
 
-export enum CetusActionType {
+export enum CETUS_ACTION_TYPE {
   UNKNOWN = 'unknown',
   SWAP = 'swap',
   MARKET = 'market',
@@ -19,7 +19,7 @@ export interface MarketParams {
 }
 
 export interface DeFiIntent {
-  type: CetusActionType;
+  type: CETUS_ACTION_TYPE;
   params: SwapParams | MarketParams;
   confidence: number;
   missingFields: string[];
@@ -34,7 +34,6 @@ export enum ChatResponseType {
   SWAP_EXECUTED = 'swap_executed',
   ERROR = 'error',
 }
-
 
 export interface ChatResponse {
   type: ChatResponseType;

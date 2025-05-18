@@ -1,3 +1,4 @@
-import { CommonParams } from './navi.entity';
-
-export interface BorrowParams extends CommonParams {}
+export interface BorrowParams {
+  amount: string;
+  asset: string;
+}

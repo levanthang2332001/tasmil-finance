@@ -1,12 +1,17 @@
 'use client';
 
-import { ChatProps } from '@/types/chat';
+import { Message } from '@/types/chat';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { Bot } from 'lucide-react';
 import MessageMarkdown from './MessageMarkdown';
 
-export const BotChat = ({ message, isLoading }: ChatProps) => {
+interface BotChatProps {
+  message: Message;
+  isLoading?: boolean;
+}
+
+export const BotChat = ({ message, isLoading }: BotChatProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -26,7 +31,7 @@ export const BotChat = ({ message, isLoading }: ChatProps) => {
               isLoading && 'opacity-50'
             )}
           >
-            <MessageMarkdown>{message.content}</MessageMarkdown>
+            <MessageMarkdown>{message.message}</MessageMarkdown>
           </motion.div>
           <span className="text-xs text-muted-foreground mt-2 block">
             {new Date(message.timestamp).toLocaleTimeString([], {
