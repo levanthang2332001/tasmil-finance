@@ -153,7 +153,6 @@ function CardNewsFeed({ items, onScrollEnd, loading }: BentoGridProps) {
                   </span>
                 </div>
               </div>
-
               <div
                 className={`absolute inset-0 -z-10 rounded-xl p-px bg-gradient-to-br from-transparent via-gray-100/50 to-transparent dark:via-white/10 ${item.hasPersistentHover
                   ? "opacity-100"
