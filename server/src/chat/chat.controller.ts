@@ -3,29 +3,30 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { ChatService } from './chat.service';
 
 import {
-  AgentType,
+  ParamsField,
+  SwapParams,
+  SwapQuote,
+} from './entities/cetus/swap.entity';
+import {
   ChatRequest,
   ChatResponse,
   MessageHistoryEntry,
 } from './entities/chat.entity';
 import { DeFiIntent } from './entities/intent.entity';
 import { BorrowParams } from './entities/navi/borrow.entity';
-import { RepayParams } from './entities/navi/repay.entity';
-import { SupplyParams } from './entities/navi/supply.entity';
-import { WithdrawParams } from './entities/navi/withdraw.entity';
+import {
+  NAVI_ACTION_TEST,
+  NAVI_ACTION_TYPE,
+  RepayParams,
+  SupplyParams,
+  WithdrawParams,
+} from './entities/navi/navi.entity';
 import { IntentService } from './intent';
 import { MarketIntentService } from './intent/market.intent';
 import { NaviIntentService } from './intent/navi.intent';
 import { MarketService } from './services/market.service';
 import { NaviService } from './services/navi.service';
-// import Cetus services
 import { CetusSwapService } from './services/swap.service';
-import {
-  SwapParams,
-  ParamsField,
-  SwapQuote,
-} from './entities/cetus/swap.entity';
-import { ChatResponseType } from './entities/cetus/cetus.entity';
 
 @Controller('chat')
 export class ChatController {
@@ -127,26 +128,98 @@ export class ChatController {
   private async handleBorrowIntent(
     intent: DeFiIntent & { params: BorrowParams },
   ): Promise<ChatResponse> {
-    return {
-      message: `Here's the borrow data for ${intent.params.amount} ${intent.params.asset}.`,
-      intent,
-    };
+    // if (intent.missingFields && intent.missingFields.length < 0) {
+    //   const missingField = intent.missingFields[0] as keyof BorrowParams;
+    //   return {
+    //     message: `I need more information to process your borrow request. What ${missingField} would you like to use?`,
+    //     intent,
+    //   };
+    // }
+    try {
+      const borrow = await this.naviService.getBorrow(
+        parseFloat(intent.params.amount),
+      );
+      console.log('borrow', borrow);
+      return {
+        message: `Here's the borrow data for ${intent.params.amount} ${intent.params.asset}.`,
+        intent,
+      };
+    } catch (error) {
+      return {
+        message: `Sorry, I encountered an error: ${error}`,
+        intent: {
+          ...intent,
+          actionType: 'unknown',
+        },
+      };
+    }
+  }
+
+  private async handleSupplyIntent(
+    intent: DeFiIntent & { params: SupplyParams },
+  ): Promise<ChatResponse> {
+    // if (intent.missingFields && intent.missingFields.length < 0) {
+    //   const missingField = intent.missingFields[0] as keyof SupplyParams;
+    //   return {
+    //     message: `I need more information to process your supply request. What ${missingField} would you like to use?`,
+    //     intent,
+    //   };
+    // }
+    try {
+      const supply = await this.naviService.getSupply(
+        parseFloat(intent.params.amount!),
+      );
+      console.log('supply', supply);
+      return {
+        message: `Here's the supply data for ${intent.params.amount} ${intent.params.asset}.`,
+        intent,
+      };
+    } catch (error) {
+      return {
+        message: `Sorry, I encountered an error: ${error}`,
+        intent: {
+          ...intent,
+          actionType: 'unknown',
+        },
+      };
+    }
   }
 
   private async handleWithdrawIntent(
     intent: DeFiIntent & { params: WithdrawParams },
   ): Promise<ChatResponse> {
-    return {
-      message: `Here's the withdraw data for ${intent.params.asset}.`,
-      intent,
-    };
+    // if (intent.missingFields && intent.missingFields.length < 0) {
+    //   const missingField = intent.missingFields[0] as keyof WithdrawParams;
+    //   return {
+    //     message: `I need more information to process your withdraw request. What ${missingField} would you like to use?`,
+    //     intent,
+    //   };
+    // }
+    try {
+      const withdraw = await this.naviService.getWithdraw(
+        parseFloat(intent.params.amount!),
+      );
+      console.log('withdraw', withdraw);
+      return {
+        message: `Here's the withdraw data for ${intent.params.amount} ${intent.params.asset}.`,
+        intent,
+      };
+    } catch (error) {
+      return {
+        message: `Sorry, I encountered an error: ${error}`,
+        intent: {
+          ...intent,
+          actionType: 'unknown',
+        },
+      };
+    }
   }
 
   private async handleRepayIntent(
     intent: DeFiIntent & { params: RepayParams },
   ): Promise<ChatResponse> {
     return {
-      message: `Here's the repay data for ${intent.params.asset}.`,
+      message: `Here's the repay data for `,
       intent,
     };
   }
@@ -155,7 +228,7 @@ export class ChatController {
     intent: DeFiIntent,
     chatMessage: ChatRequest,
   ): Promise<ChatResponse> {
-    console.log('default intent', intent);
+    console.log('=> default intent', intent);
     const response = await this.chatService.processMessage(
       chatMessage.content,
       intent?.context || '',
@@ -173,19 +246,20 @@ export class ChatController {
     chatMessage: ChatRequest,
   ): Promise<ChatResponse> {
     const intentHandlers = {
-      default: () => this.handleDefaultIntent(intent, chatMessage),
       borrow: () =>
         this.handleBorrowIntent(
           intent as DeFiIntent & { params: BorrowParams },
         ),
       withdraw: () => this.handleWithdrawIntent(intent),
+      supply: () => this.handleSupplyIntent(intent),
       repay: () => this.handleRepayIntent(intent),
+      default: () => this.handleDefaultIntent(intent, chatMessage),
     };
 
     const handler =
-      (await intentHandlers[intent.actionType ?? 'default']) ??
+      intentHandlers[intent.actionType as NAVI_ACTION_TEST] ??
       intentHandlers.default;
-    return handler?.();
+    return handler();
   }
 
   private async handleCetusIntent(
@@ -211,8 +285,7 @@ export class ChatController {
       cetus: () => this.handleCetusIntent(intent, chatMessage),
     };
 
-    const handler =
-      intentHandlers[intent.agentType ?? 'default'] ?? intentHandlers.default;
+    const handler = intentHandlers[intent.agentType] ?? intentHandlers.default;
     return handler?.();
   }
 

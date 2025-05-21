@@ -6,7 +6,7 @@ import { BotSwapMessage } from "./BotSwapMessage";
 import { BotWithdrawMessage } from "./BotWithdrawMessage";
 import { UserChat } from "./UserChat";
 import BotError from "./BotError";
-
+import BotSupplyMessage from "./BotSupplyMessage";
 interface MessageTypeProps {
   message: Message;
   isLoading?: boolean;
@@ -31,6 +31,8 @@ export function MessageType({ message, isLoading, onSwapConfirm, onSwapCancel }:
           isLoading={isLoading}
         />
       );
+    case NAVI_ACTION_TYPE.SUPPLY:
+      return <BotSupplyMessage message={message} isLoading={isLoading} />;
     case NAVI_ACTION_TYPE.BORROW:
       return <BotBorrowMessage message={message} isLoading={isLoading} />;
     case NAVI_ACTION_TYPE.REPAY:
