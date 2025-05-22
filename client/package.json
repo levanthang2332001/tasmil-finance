@@ -21,6 +21,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cetusprotocol/cetus-sui-clmm-sdk": "^5.3.4",
     "@mysten/dapp-kit": "^0.14.50",
     "@mysten/enoki": "^0.4.25",
     "@mysten/sui": "^1.21.2",
@@ -42,11 +43,13 @@
     "@tanstack/react-query": "^5.69.0",
     "@tanstack/react-query-devtools": "^5.69.0",
     "axios": "^1.8.4",
+    "bn.js": "^5.2.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.6.2",
     "lucide-react": "^0.485.0",
     "motion": "^12.6.2",
+    "navi-sdk": "^1.6.8",
     "next": "14.2.26",
     "react": "^18",
     "react-dom": "^18",

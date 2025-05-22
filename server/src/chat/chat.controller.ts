@@ -16,10 +16,9 @@ import { DeFiIntent } from './entities/intent.entity';
 import { BorrowParams } from './entities/navi/borrow.entity';
 import {
   NAVI_ACTION_TEST,
-  NAVI_ACTION_TYPE,
   RepayParams,
   SupplyParams,
-  WithdrawParams,
+  WithdrawParams
 } from './entities/navi/navi.entity';
 import { IntentService } from './intent';
 import { MarketIntentService } from './intent/market.intent';
