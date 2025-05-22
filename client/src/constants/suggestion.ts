@@ -21,19 +21,19 @@ export const suggestionNavi = [
 
 export const suggestionCetus = [
   {
-    text: "Check my portfolio on Cetus",
+    text: "Swap 1 sui to usdc",
     icon: Wallet,
   },
   {
-    text: "What are my positions on Cetus?",
+    text: "Swap 1 sui to eth",
     icon: Coins,
   },
   {
-    text: "Check my health factor on Cetus",
+    text: "Swap 1 sui to usdt",
     icon: CircleDollarSign,
   },
   {
-    text: "Show my available rewards on Cetus",
+    text: "Swap 1 sui to hippo",
     icon: Wallet,
   },
 ];
