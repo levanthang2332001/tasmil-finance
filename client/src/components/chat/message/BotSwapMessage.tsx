@@ -1,10 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-// import { formatAmount, formatCurrency } from "@/lib/utils";
 import { Message } from "@/types/chat";
 import { motion } from "framer-motion";
 import { ArrowDown, Bot } from "lucide-react";
-// import Image from "next/image";
 
 interface BotSwapType {
   message: Message;
@@ -14,9 +12,11 @@ interface BotSwapType {
 }
 
 export const BotSwapMessage = ({ message, onConfirm, onCancel, isLoading }: BotSwapType) => {
-  if (!message.intent.params.quote) {
+  if (!message.data) {
     return null;
   }
+
+  const { tokenIn, tokenOut, decimalsA, decimalsB, symbolA, symbolB, amountIn, amountOut, a2b, byAmountIn, slippage } = message.data; 
 
   return (
     <div className="flex items-end gap-2">
@@ -40,31 +40,31 @@ export const BotSwapMessage = ({ message, onConfirm, onCancel, isLoading }: BotS
               </span>
             </div>
 
-            {/* <div className="space-y-4">
+            {<div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-secondary-foreground">Sell</p>
                   <p className="text-2xl font-medium text-secondary-foreground">
-                    {formatAmount(message.quote.amountIn)}
+                    {Number(amountIn) / 10 ** Number(decimalsA)}
                   </p>
                   <p className="text-sm text-secondary-foreground font-medium">
-                    {formatCurrency(message.quote.amountInUsd)}
+                    {/* {amountIn} */}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <p className="text-lg font-medium uppercase text-secondary-foreground">
-                    {message.quote.sourceToken.symbol}
+                    {symbolA}
                   </p>
-                  <Image
+                  {/* <Image
                     src={message.quote.sourceToken.logoURI}
-                    alt={message.quote.sourceToken.symbol}
+                    alt={symbolA}
                     width={24}
                     height={24}
                     className="h-6 w-6 rounded-full"
-                  />
+                  /> */}
                 </div>
               </div>
-            </div> */}
+            </div>}
 
             <div className="flex justify-center">
               <div className="rounded-full bg-secondary p-2">
@@ -72,35 +72,35 @@ export const BotSwapMessage = ({ message, onConfirm, onCancel, isLoading }: BotS
               </div>
             </div>
 
-            {/* <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-secondary-foreground">Buy</p>
                 <p className="text-2xl font-medium text-secondary-foreground">
-                  {formatAmount(message.quote.amountOut)}
+                  {Number(amountOut) / 10 ** Number(decimalsB)}
                 </p>
                 <p className="text-sm text-secondary-foreground font-medium">
-                  {formatCurrency(message.quote.amountOutUsd)}
+                  {/* {amountOut} */}
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <p className="text-lg font-medium uppercase text-secondary-foreground">
-                  {message.quote.destinationToken.symbol}
+                  {symbolB}
                 </p>
-                <Image
+                {/* <Image
                   src={message.quote.destinationToken.logoURI}
-                  alt={message.quote.destinationToken.symbol}
+                  alt={symbolB}
                   width={24}
                   height={24}
                   className="h-6 w-6 rounded-full"
-                />
+                /> */}
               </div>
-            </div> */}
+            </div>
 
             {/* <div className="space-y-2 border-t pt-4">
               <div className="flex justify-between text-sm">
                 <span className="text-secondary-foreground">Estimated Gas</span>
                 <span className="text-amber-700 font-medium">
-                  {formatCurrency(message.quote.gasUsd)}
+                  {formatCurrency(fee)}
                 </span>
               </div>
             </div> */}

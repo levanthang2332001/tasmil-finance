@@ -3,15 +3,13 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { ChatService } from './chat.service';
 
 import {
-  AgentType,
   ChatRequest,
   ChatResponse,
-  MessageHistoryEntry,
+  MessageHistoryEntry
 } from './entities/chat.entity';
 import { DeFiIntent } from './entities/intent.entity';
 import { BorrowParams } from './entities/navi/borrow.entity';
 import { RepayParams } from './entities/navi/repay.entity';
-import { SupplyParams } from './entities/navi/supply.entity';
 import { WithdrawParams } from './entities/navi/withdraw.entity';
 import { IntentService } from './intent';
 import { MarketIntentService } from './intent/market.intent';
@@ -19,13 +17,12 @@ import { NaviIntentService } from './intent/navi.intent';
 import { MarketService } from './services/market.service';
 import { NaviService } from './services/navi.service';
 // import Cetus services
-import { CetusSwapService } from './services/swap.service';
 import {
-  SwapParams,
   ParamsField,
+  SwapParams,
   SwapQuote,
 } from './entities/cetus/swap.entity';
-import { ChatResponseType } from './entities/cetus/cetus.entity';
+import { CetusSwapService } from './services/swap.service';
 
 @Controller('chat')
 export class ChatController {

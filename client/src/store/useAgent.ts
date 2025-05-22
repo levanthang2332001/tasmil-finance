@@ -12,6 +12,6 @@ interface AgentState {
 }
 
 export const useAgent = create<AgentState>((set) => ({
-  selectedAgent: AgentType.NAVI,
+  selectedAgent: AgentType.CETUS,
   setSelectedAgent: (agent) => set({ selectedAgent: agent }),
 }));

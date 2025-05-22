@@ -31,13 +31,24 @@ const ChatDefi = () => {
       const response = await ChatService.sendMessage("user-1", content, selectedAgent);
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
+        message: response.message,
         timestamp: new Date(),
-        message: response?.message,
-        actionType:
-          response?.intent?.actionType === MESSAGE_TYPE.UNKNOWN
-            ? MESSAGE_TYPE.BOT
-            : response?.intent?.actionType,
-        data: response?.intent?.params,
+        actionType: response.intent?.actionType || MESSAGE_TYPE.BOT,
+        data: response.quote ? {
+          poolAddress: response.quote.poolAddress,
+          tokenIn: response.quote.coinTypeIn,
+          tokenOut: response.quote.coinTypeOut,
+          symbolA: response.quote.symbolA || '',
+          symbolB: response.quote.symbolB || '',
+          amountIn: response.quote.amountIn,
+          amountOut: response.quote.amountOut,
+          decimalsA: response.quote.decimalsA.toString(),
+          decimalsB: response.quote.decimalsB.toString(),
+          a2b: response.quote.a2b,
+          byAmountIn: response.quote.byAmountIn,
+          slippage: response.quote.slippage,
+          }
+        : response.intent?.params,
       };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
