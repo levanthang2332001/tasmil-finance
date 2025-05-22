@@ -11,6 +11,7 @@ export enum AgentType {
 }
 
 export enum NAVI_ACTION_TYPE {
+  SUPPLY = "supply",
   BORROW = "borrow",
   WITHDRAW = "withdraw",
   REPAY = "repay",

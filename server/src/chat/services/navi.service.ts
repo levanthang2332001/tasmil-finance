@@ -32,42 +32,45 @@ export class NaviService {
     return prompts[missingParam];
   }
 
-  async getBorrow(
-    // sender: string,
-    amount: number,
-    // isSign: boolean,
-    // token: string,
-  ): Promise<any> {
+  async getSupply(amount: number): Promise<any> {
     try {
-      this.logger.log(`Getting Navi borrow for amount: ${amount}`);
+      const account = this.client.accounts[0];
+      const accountCap = await account.createAccountCap();
+      const supply = await account.depositToNaviWithAccountCap(
+        NAVX,
+        amount,
+        accountCap,
+      );
+      return supply;
+    } catch (error) {
+      this.logger.error('Failed to get Navi supply', error);
+      throw new Error(`Failed to get Navi supply: ${error.message}`);
+    }
+  }
+
+  async getBorrow(amount: number): Promise<any> {
+    try {
       const account = this.client.accounts[0];
       const borrow = await account.borrow(NAVX, amount);
-      return { borrow };
-
-      // const scallop = new Scallop({
-      //   addressId:
-      //     '0x98331290579aee43997ccaedabdbf12f51275a4f300b1bc0dd40f64b94477090',
-      //   networkType: 'testnet',
-      // });
-
-      // const query = await scallop.createScallopQuery();
-      // const scallopClient = await scallop.createScallopClient();
-
-      // const txPayload = await scallopClient.borrow(
-      //   '0x98331290579aee43997ccaedabdbf12f51275a4f300b1bc0dd40f64b94477090',
-      //   amount,
-      //   isSign,
-      //   '0x98331290579aee43997ccaedabdbf12f51275a4f300b1bc0dd40f64b94477090',
-      //   '0x98331290579aee43997ccaedabdbf12f51275a4f300b1bc0dd40f64b94 477090',
-      //   sender,
-      // );
-      // return { txPayload };
+      return borrow;
     } catch (error) {
       this.logger.error('Failed to get Navi borrow', error);
       throw new Error(`Failed to get Navi borrow: ${error.message}`);
     }
   }
 
+  async getWithdraw(amount: number): Promise<any> {
+    try {
+      const account = this.client.accounts[0];
+      const withdraw = await account.withdraw(NAVX, amount);
+      return withdraw;
+    } catch (error) {
+      this.logger.error('Failed to get Navi withdraw', error);
+      throw new Error(`Failed to get Navi withdraw: ${error.message}`);
+    }
+  }
+
+  // not test and confirm
   async getPortfolio(address: string): Promise<any> {
     try {
       this.logger.log(`Getting Navi portfolio for address: ${address}`);
@@ -128,23 +131,6 @@ export class NaviService {
     } catch (error) {
       this.logger.error('Failed to get Navi reward history', error);
       throw new Error(`Failed to get Navi reward history: ${error.message}`);
-    }
-  }
-
-  async getSupply(amount: number): Promise<any> {
-    try {
-      this.logger.log(`Getting Navi supply for amount: ${amount}`);
-      const account = this.client.accounts[0];
-      const accountCap = await account.createAccountCap();
-      const supply = await account.depositToNaviWithAccountCap(
-        NAVX,
-        amount,
-        accountCap,
-      );
-      return { supply };
-    } catch (error) {
-      this.logger.error('Failed to get Navi supply', error);
-      throw new Error(`Failed to get Navi supply: ${error.message}`);
     }
   }
 
