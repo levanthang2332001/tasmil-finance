@@ -2,19 +2,19 @@ import { ArrowLeftRight, CircleDollarSign, Coins, Wallet } from "lucide-react";
 
 export const suggestionNavi = [
   {
-    text: "Check my portfolio on Navi",
+    text: "Supply 1 SUI",
     icon: Wallet,
   },
   {
-    text: "What are my positions?",
+    text: "Borrow 1 SUI",
     icon: Coins,
   },
   {
-    text: "Check my health factor",
+    text: "Withdraw 1 SUI",
     icon: CircleDollarSign,
   },
   {
-    text: "Show my available rewards",
+    text: "Repay 1 SUI",
     icon: Wallet,
   },
 ];

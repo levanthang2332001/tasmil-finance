@@ -20,12 +20,12 @@ export interface BorrowParams {
   asset?: string;
   amount?: string;
 }
-
-export interface WithdrawParams {
+export interface RepayParams {
   asset?: string;
   amount?: string;
 }
-export interface RepayParams {
+
+export interface WithdrawParams {
   asset?: string;
   amount?: string;
 }

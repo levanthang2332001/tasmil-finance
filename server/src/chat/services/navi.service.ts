@@ -44,7 +44,7 @@ export class NaviService {
       return supply;
     } catch (error) {
       this.logger.error('Failed to get Navi supply', error);
-      throw new Error(`Failed to get Navi supply: ${error.message}`);
+      throw new Error(error.message);
     }
   }
 
@@ -55,7 +55,18 @@ export class NaviService {
       return borrow;
     } catch (error) {
       this.logger.error('Failed to get Navi borrow', error);
-      throw new Error(`Failed to get Navi borrow: ${error.message}`);
+      throw new Error(error.message);
+    }
+  }
+
+  async getRepay(amount: number): Promise<any> {
+    try {
+      const account = this.client.accounts[0];
+      const repay = await account.repay(NAVX, amount);
+      return repay;
+    } catch (error) {
+      this.logger.error('Failed to get Navi repay', error);
+      throw new Error(error.message);
     }
   }
 
@@ -66,7 +77,7 @@ export class NaviService {
       return withdraw;
     } catch (error) {
       this.logger.error('Failed to get Navi withdraw', error);
-      throw new Error(`Failed to get Navi withdraw: ${error.message}`);
+      throw new Error(error.message);
     }
   }
 
@@ -79,7 +90,7 @@ export class NaviService {
       return portfolio;
     } catch (error) {
       this.logger.error('Failed to get Navi portfolio', error);
-      throw new Error(`Failed to get Navi portfolio: ${error.message}`);
+      throw new Error(error.message);
     }
   }
 
@@ -90,7 +101,7 @@ export class NaviService {
       return portfolio?.positions || [];
     } catch (error) {
       this.logger.error('Failed to get Navi positions', error);
-      throw new Error(`Failed to get Navi positions: ${error.message}`);
+      throw new Error(error.message);
     }
   }
 
@@ -102,7 +113,7 @@ export class NaviService {
       return { healthFactor };
     } catch (error) {
       this.logger.error('Failed to get Navi health factor', error);
-      throw new Error(`Failed to get Navi health factor: ${error.message}`);
+      throw new Error(error.message);
     }
   }
 
@@ -119,7 +130,7 @@ export class NaviService {
       return { rewards };
     } catch (error) {
       this.logger.error('Failed to get Navi available rewards', error);
-      throw new Error(`Failed to get Navi available rewards: ${error.message}`);
+      throw new Error(error.message);
     }
   }
 
@@ -130,7 +141,7 @@ export class NaviService {
       return { history };
     } catch (error) {
       this.logger.error('Failed to get Navi reward history', error);
-      throw new Error(`Failed to get Navi reward history: ${error.message}`);
+      throw new Error(error.message);
     }
   }
 

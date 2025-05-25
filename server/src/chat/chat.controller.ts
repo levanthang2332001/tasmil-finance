@@ -125,6 +125,22 @@ export class ChatController {
   //   };
   // }
 
+  private async handleSupplyIntent(
+    intent: DeFiIntent & { params: SupplyParams },
+  ): Promise<ChatResponse> {
+    // if (intent.missingFields && intent.missingFields.length < 0) {
+    //   const missingField = intent.missingFields[0] as keyof SupplyParams;
+    //   return {
+    //     message: `I need more information to process your supply request. What ${missingField} would you like to use?`,
+    //     intent,
+    //   };
+    // }
+    return {
+      message: `Here's the supply data for ${intent.params.amount} ${intent.params.asset}.`,
+      intent,
+    };
+  }
+
   private async handleBorrowIntent(
     intent: DeFiIntent & { params: BorrowParams },
   ): Promise<ChatResponse> {
@@ -155,23 +171,23 @@ export class ChatController {
     }
   }
 
-  private async handleSupplyIntent(
-    intent: DeFiIntent & { params: SupplyParams },
+  private async handleRepayIntent(
+    intent: DeFiIntent & { params: RepayParams },
   ): Promise<ChatResponse> {
     // if (intent.missingFields && intent.missingFields.length < 0) {
-    //   const missingField = intent.missingFields[0] as keyof SupplyParams;
+    //   const missingField = intent.missingFields[0] as keyof RepayParams;
     //   return {
-    //     message: `I need more information to process your supply request. What ${missingField} would you like to use?`,
+    //     message: `I need more information to process your repay request. What ${missingField} would you like to use?`,
     //     intent,
     //   };
     // }
     try {
-      const supply = await this.naviService.getSupply(
+      const repay = await this.naviService.getRepay(
         parseFloat(intent.params.amount!),
       );
-      console.log('supply', supply);
+      console.log('repay', repay);
       return {
-        message: `Here's the supply data for ${intent.params.amount} ${intent.params.asset}.`,
+        message: `Here's the repay data for ${intent.params.amount} ${intent.params.asset}.`,
         intent,
       };
     } catch (error) {
@@ -213,15 +229,6 @@ export class ChatController {
         },
       };
     }
-  }
-
-  private async handleRepayIntent(
-    intent: DeFiIntent & { params: RepayParams },
-  ): Promise<ChatResponse> {
-    return {
-      message: `Here's the repay data for `,
-      intent,
-    };
   }
 
   private async handleDefaultIntent(
