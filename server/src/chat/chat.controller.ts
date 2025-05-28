@@ -1,7 +1,17 @@
 /* eslint-disable @typescript-eslint/require-await */
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import * as fs from 'fs';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import { v4 as uuidv4 } from 'uuid';
 import { ChatService } from './chat.service';
-
 import {
   ParamsField,
   SwapParams,
@@ -16,17 +26,16 @@ import { DeFiIntent } from './entities/intent.entity';
 import { BorrowParams } from './entities/navi/borrow.entity';
 import {
   NAVI_ACTION_TEST,
-  NAVI_ACTION_TYPE,
   RepayParams,
   SupplyParams,
   WithdrawParams,
 } from './entities/navi/navi.entity';
 import { IntentService } from './intent';
-import { MarketIntentService } from './intent/market.intent';
 import { NaviIntentService } from './intent/navi.intent';
 import { MarketService } from './services/market.service';
 import { NaviService } from './services/navi.service';
 import { CetusSwapService } from './services/swap.service';
+import { VoiceService } from './services/voice.service';
 
 @Controller('chat')
 export class ChatController {
@@ -37,9 +46,9 @@ export class ChatController {
     private readonly swapService: CetusSwapService,
     private readonly chatService: ChatService,
     private readonly marketService: MarketService,
-    private readonly marketIntentService: MarketIntentService,
     private readonly naviService: NaviService,
     private readonly naviIntent: NaviIntentService,
+    private readonly voiceService: VoiceService,
   ) {}
 
   private getRecentMessages(userId: string, limit: number = 3): string {
@@ -345,6 +354,48 @@ export class ChatController {
       return {
         message: `Sorry, I couldn't execute the swap: ${errorMessage}`,
       };
+    }
+  }
+  @Post('transcribe')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (_req, file, cb) => {
+          const uniqueName = `${uuidv4()}${extname(file.originalname)}`;
+          cb(null, uniqueName);
+        },
+      }),
+      // fileFilter: (_req, file, cb) => {
+      //   if (!file.mimetype.match(/^audio\/(mpeg|mp4|wav|ogg|webm)$/)) {
+      //     return cb(new Error('Only audio files are allowed!'), false);
+      //   }
+      //   cb(null, true);
+      // },
+      // limits: {
+      //   fileSize: 10 * 1024 * 1024, // 10MB limit
+      // },
+    }),
+  )
+  async transcribe(
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<{ transcript: string }> {
+    try {
+      if (!file) {
+        throw new Error('No audio file provided');
+      }
+
+      const transcript = await this.voiceService.transcribeAudio(file);
+      return { transcript };
+    } catch (error) {
+      throw new Error(`Failed to transcribe audio: ${error.message}`);
+    } finally {
+      // Clean up the uploaded file after processing
+      fs.unlink(file.path, (err) => {
+        if (err) {
+          console.error(`Error deleting file ${file.path}:`, err);
+        }
+      });
     }
   }
 }
