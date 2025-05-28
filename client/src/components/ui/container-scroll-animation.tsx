@@ -2,7 +2,7 @@
 "use client";
 import React, { useRef } from "react";
 import { useScroll, useTransform, motion, MotionValue } from "framer-motion";
-import { useIsMobile } from "@/hooks/useMobile";
+import { useDevice } from "@/hooks/useDevice";
 
 export const ContainerScroll = ({
   titleComponent,
@@ -16,7 +16,7 @@ export const ContainerScroll = ({
     target: containerRef,
   });
 
-  const isMobile = useIsMobile();
+  const isMobile = useDevice();
 
   const scaleDimensions = () => {
     return isMobile ? [0.7, 0.9] : [1.05, 1];
