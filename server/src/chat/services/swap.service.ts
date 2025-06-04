@@ -18,6 +18,7 @@ import {
   CoinMetadata,
   SuiTransactionBlockResponse,
 } from '@mysten/sui/dist/cjs/client';
+import { Tokens } from 'src/shared/utils/address';
 
 @Injectable()
 export class CetusSwapService {
@@ -72,8 +73,13 @@ export class CetusSwapService {
 
   private async calculateOptimalRoute(
     request: SwapRequest,
+    symbolA: string,
+    symbolB: string,
   ): Promise<SwapResponse> {
     try {
+      console.log('tokenIn', request.tokenIn);
+      console.log('tokenOut', request.tokenOut);
+
       const pool = await this.getPoolByCoins(request.tokenIn, request.tokenOut);
       if (!pool) {
         throw new Error('No pool found for the token pair');
@@ -132,33 +138,22 @@ export class CetusSwapService {
         amount: coinAmount.toString(),
       });
 
-      // console.log("swapQuote", swapQuote);
+      console.log("swapQuote", swapQuote);
 
       return {
-        tokenIn: request.tokenIn,
-        tokenOut: request.tokenOut,
+        poolAddress: pool.poolAddress,
+        coinTypeIn: request.tokenIn,
+        coinTypeOut: request.tokenOut,
+        symbolA: symbolA,
+        symbolB: symbolB,
         amountIn: swapQuote?.estimatedAmountIn || '0',
         amountOut: swapQuote?.estimatedAmountOut || '0',
-        amountInUsd: '0',
-        amountOutUsd: '0',
-        tokenInMarketPriceAvailable: false,
-        tokenOutMarketPriceAvailable: false,
-        priceImpact: swapQuote?.estimatedEndSqrtPrice || '0',
+        decimalsA: decimalsA,
+        decimalsB: decimalsB,
+        a2b: a2b,
+        byAmountIn: byAmountIn,
+        slippage: request.slippage.toString(),
         fee: swapQuote?.estimatedFeeAmount || '0',
-        transactionData: {
-          poolAddress: pool.poolAddress,
-          coinTypeIn: request.tokenIn,
-          coinTypeOut: request.tokenOut,
-          amountIn: swapQuote?.estimatedAmountIn || '0',
-          amountOut: swapQuote?.estimatedAmountOut || '0',
-          a2b: a2b,
-          byAmountIn: byAmountIn,
-          slippage: request.slippage.toString(),
-        },
-        estimatedOutput: {
-          priceImpact: swapQuote?.estimatedEndSqrtPrice || '0',
-          fee: swapQuote?.estimatedFeeAmount || '0',
-        },
       };
     } catch (error) {
       this.logger.error(`Error calculating swap route: ${error}`);
@@ -166,19 +161,21 @@ export class CetusSwapService {
     }
   }
 
-  private convertToSwapQuote(response: SwapResponse): SwapQuote {
+  private convertToSwapQuote(response: SwapResponse, symbolA: string, symbolB: string): SwapQuote {
     return {
-      tokenIn: response.tokenIn,
-      tokenOut: response.tokenOut,
+      poolAddress: response.poolAddress,
+      coinTypeIn: response.coinTypeIn,
+      coinTypeOut: response.coinTypeOut,
+      symbolA: symbolA,
+      symbolB: symbolB,
+      decimalsA: response.decimalsA,
+      decimalsB: response.decimalsB,
       amountIn: response.amountIn,
       amountOut: response.amountOut,
-      amountInUsd: response.amountInUsd,
-      amountOutUsd: response.amountOutUsd,
-      tokenInMarketPriceAvailable: response.tokenInMarketPriceAvailable,
-      tokenOutMarketPriceAvailable: response.tokenOutMarketPriceAvailable,
-      priceImpact: response.priceImpact,
+      a2b: response.a2b,
+      byAmountIn: response.byAmountIn,
+      slippage: response.slippage,
       fee: response.fee,
-      transactionData: response.transactionData,
     };
   }
 
@@ -195,7 +192,7 @@ export class CetusSwapService {
       a2b,
       byAmountIn,
       slippage,
-    } = quote.transactionData;
+    } = quote;
     const formattedSlippage = Percentage.fromDecimal(d(slippage));
 
     const toAmount = byAmountIn ? new BN(amountOut) : new BN(amountIn);
@@ -239,18 +236,33 @@ export class CetusSwapService {
     }
   }
 
+  private getTokenAddress(tokenInput: string): string {
+    if (typeof tokenInput !== 'string') return '';
+    const tokenBySymbol = Tokens.find((t) => t.symbol.toLowerCase() === tokenInput.toLowerCase());
+    return tokenBySymbol?.address || '';
+  }
+
   async getSwapQuote(params: SwapParameters): Promise<SwapQuote> {
-    const decimals = await this.isCheckDecimals(params.fromToken);
+    const addressA = this.getTokenAddress(params.fromToken) || params.fromToken;
+    const addressB = this.getTokenAddress(params.toToken) || params.toToken;
+
+    if (!addressA || !addressB) {
+      this.logger.error('Token not found');
+    }
+
+    const decimals = await this.isCheckDecimals(addressA);
+
     try {
       const response = await this.calculateOptimalRoute({
-        tokenIn: params.fromToken,
-        tokenOut: params.toToken,
+        tokenIn: addressA,
+        tokenOut: addressB,
         amount: (params.amount * 10 ** decimals).toString(),
         slippage: 0.5,
         a2b: params.a2b,
         byAmountIn: params.byAmountIn,
-      });
-      return this.convertToSwapQuote(response);
+      }, params.fromToken, params.toToken);
+      
+      return this.convertToSwapQuote(response, params.fromToken, params.toToken);
     } catch (error) {
       this.logger.error(`Error in getSwapQuote: ${error}`);
       throw error;

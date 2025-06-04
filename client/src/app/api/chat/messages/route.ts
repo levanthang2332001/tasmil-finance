@@ -5,5 +5,6 @@ export async function POST(req: Request) {
     method: 'POST',
     body: JSON.stringify({ messages }),
   });
+
   return response;
 }

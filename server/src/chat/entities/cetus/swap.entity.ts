@@ -19,26 +19,19 @@ export enum ParamsField {
 }
 
 export interface SwapQuote {
-  tokenIn: string;
-  tokenOut: string;
+  poolAddress: string;
+  coinTypeIn: string;
+  coinTypeOut: string;
+  symbolA?: string;
+  symbolB?: string;
+  decimalsA: number;
+  decimalsB: number;
   amountIn: string;
   amountOut: string;
-  amountInUsd: string;
-  amountOutUsd: string;
-  tokenInMarketPriceAvailable: boolean;
-  tokenOutMarketPriceAvailable: boolean;
-  priceImpact: string;
+  a2b: boolean;
+  byAmountIn: boolean;
+  slippage: string;
   fee: string;
-  transactionData: {
-    poolAddress: string;
-    coinTypeIn: string;
-    coinTypeOut: string;
-    amountIn: string;
-    amountOut: string;
-    a2b: boolean;
-    byAmountIn: boolean;
-    slippage: string;
-  };
 }
 
 export interface SwapQuoteResponse {
@@ -65,28 +58,17 @@ export interface SwapRequest {
 }
 
 export interface SwapResponse {
-  tokenIn: string;
-  tokenOut: string;
+  poolAddress: string;
+  coinTypeIn: string;
+  coinTypeOut: string;
+  symbolA: string;
+  symbolB: string;
+  decimalsA: number;
+  decimalsB: number;
   amountIn: string;
   amountOut: string;
-  amountInUsd: string;
-  amountOutUsd: string;
-  tokenInMarketPriceAvailable: boolean;
-  tokenOutMarketPriceAvailable: boolean;
-  priceImpact: string;
+  a2b: boolean;
+  byAmountIn: boolean;
+  slippage: string;
   fee: string;
-  transactionData: {
-    poolAddress: string;
-    coinTypeIn: string;
-    coinTypeOut: string;
-    amountIn: string;
-    amountOut: string;
-    a2b: boolean;
-    byAmountIn: boolean;
-    slippage: string;
-  };
-  estimatedOutput: {
-    priceImpact: string;
-    fee: string;
-  };
 } 

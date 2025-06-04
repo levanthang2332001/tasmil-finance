@@ -21,9 +21,8 @@ export function formatAmount(amount: number | string) {
 }
 
 export function truncateAddress(address: string, length = 4): string {
-  if (!address) return "";
-  if (address.length <= length * 2) return address;
-  return `${address.slice(0, length)}...${address.slice(-length)}`;
+  if (address?.length <= length * 2) return address;
+  return `${address?.slice(0, length)}...${address?.slice(-length)}`;
 }
 
 export function formatPercentage(value: number): string {

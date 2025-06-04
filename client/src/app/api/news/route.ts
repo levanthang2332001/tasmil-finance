@@ -14,11 +14,11 @@ export async function GET(request: Request) {
     const res = await fetchFeaturedNews({
       categoryList: [1, 2],
       pageNum,
-      pageSize: 10,
+      pageSize: 9,
     }, apiKey);
 
     return NextResponse.json(res.data);
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch news" }, { status: 500 });
+    return NextResponse.json({ error: `Failed to fetch news: ${error}` }, { status: 500 });
   }
 } 
