@@ -21,7 +21,6 @@ const DefiCard = ({ agent, className }: Agent) => {
   const handleClick = () => {
     setSelectedAgent(agent.id as AgentType);
     router.push(`/defi-agent/${agent.id}`);
-    router.refresh();
   };
 
   return (

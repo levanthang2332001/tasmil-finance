@@ -20,7 +20,7 @@ import {
 import {
   ChatRequest,
   ChatResponse,
-  MessageHistoryEntry,
+  MessageHistoryEntry
 } from './entities/chat.entity';
 import { DeFiIntent } from './entities/intent.entity';
 import { BorrowParams } from './entities/navi/borrow.entity';
@@ -28,7 +28,7 @@ import {
   NAVI_ACTION_TEST,
   RepayParams,
   SupplyParams,
-  WithdrawParams,
+  WithdrawParams
 } from './entities/navi/navi.entity';
 import { IntentService } from './intent';
 import { NaviIntentService } from './intent/navi.intent';
