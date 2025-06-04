@@ -53,7 +53,7 @@ export class IntentService {
            Analyze both the current message and previous context to determine missing fields.
            Return a JSON object with the following structure:
            {
-             "agentType": one of ["unknown", 'navi', 'cetus'],
+             "agentType": "${agentType || 'unknown'}",
              "actionType": one of ["unknown", ${Object.values(NAVI_ACTION_TYPE).join(', ')}, ${Object.values(CETUS_ACTION_TYPE).join(', ')}],
              "params": {
                // Parameters based on the intent type
@@ -109,6 +109,9 @@ export class IntentService {
 
       const cleanContent = clearResponse(response.content as string);
       const intent = JSON.parse(cleanContent) as DeFiIntent;
+
+      // Force agentType to match the input parameter
+      intent.agentType = agentType || 'unknown';
 
       // Validate params based on agentType
       switch (intent.agentType) {

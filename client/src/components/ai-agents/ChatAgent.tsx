@@ -4,7 +4,7 @@
 import { ChatContainer } from "@/components/chat/ChatContainer";
 import { ChatService } from "@/services/chat.service";
 import { AgentType } from "@/store/useAgent";
-import { Message, MessageType } from "@/types/chat";
+import { Message, MESSAGE_TYPE } from "@/types/chat";
 import { useAgent } from "@/store/useAgent";
 import { ArrowLeftRight, CircleDollarSign, Coins, Wallet } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -24,9 +24,9 @@ const ChatAgent = () => {
     setMessages([
       {
         id: Date.now().toString(),
-        content: welcomeMessage,
+        message: welcomeMessage,
         timestamp: new Date(),
-        type: MessageType.BOT,
+        actionType: MESSAGE_TYPE.BOT,
       },
     ]);
   }, []);
@@ -35,9 +35,9 @@ const ChatAgent = () => {
     // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
-      content,
+      message: content,
       timestamp: new Date(),
-      type: MessageType.USER,
+      actionType: MESSAGE_TYPE.USER,
     };
     setMessages((prev) => [...prev, userMessage]);
 
@@ -45,20 +45,36 @@ const ChatAgent = () => {
     setIsLoading(true);
     try {
       const response = await ChatService.sendMessage("user-1", content, selectedAgent);
+      console.log("response from backend:", response); // For debugging
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: response.message,
+        message: response.message,
         timestamp: new Date(),
-        type: response.type === "swap_quote" ? MessageType.SWAP_QUOTE : MessageType.BOT,
-        quote: response.quote,
+        actionType: response.intent?.actionType || MESSAGE_TYPE.BOT,
+        data: response.quote ? {
+          poolAddress: response.quote.poolAddress,
+          coinTypeIn: response.quote.coinTypeIn,
+          coinTypeOut: response.quote.coinTypeOut,
+          symbolA: response.quote.symbolA || '',
+          symbolB: response.quote.symbolB || '',
+          decimalsA: response.quote.decimalsA.toString(),
+          decimalsB: response.quote.decimalsB.toString(),
+          amountIn: response.quote.amountIn,
+          amountOut: response.quote.amountOut,
+          fee: response.quote.fee,
+          a2b: response.quote.a2b,
+          byAmountIn: response.quote.byAmountIn,
+          slippage: response.quote.slippage,
+        } : response.intent?.params
       };
       setMessages((prev) => [...prev, botMessage]);
+      
     } catch (error) {
       const errorMessage: Message = {
         id: Date.now().toString(),
-        content: "Sorry, there was an error processing your message.",
+        message: "Sorry, there was an error processing your message.",
         timestamp: new Date(),
-        type: MessageType.BOT,
+        actionType: MESSAGE_TYPE.BOT,
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
@@ -71,25 +87,25 @@ const ChatAgent = () => {
     try {
       // Find the swap message to get the quote
       const swapMessage = messages.find((m) => m.id === messageId);
-      if (!swapMessage || !swapMessage.quote) {
+      if (!swapMessage || !swapMessage.data) {
         throw new Error("Swap quote not found");
       }
 
       // Execute the swap
-      const response = await ChatService.executeSwap(swapMessage.quote);
+      const response = await ChatService.sendMessage("user-1", "confirm_swap", selectedAgent);
       const confirmationMessage: Message = {
         id: Date.now().toString(),
-        content: response.message,
+        message: response.message,
         timestamp: new Date(),
-        type: MessageType.BOT,
+        actionType: MESSAGE_TYPE.BOT,
       };
       setMessages((prev) => [...prev, confirmationMessage]);
     } catch (error) {
       const errorMessage: Message = {
         id: Date.now().toString(),
-        content: "Sorry, there was an error processing your swap.",
+        message: "Sorry, there was an error processing your swap.",
         timestamp: new Date(),
-        type: MessageType.BOT,
+        actionType: MESSAGE_TYPE.BOT,
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
@@ -100,9 +116,9 @@ const ChatAgent = () => {
   const handleSwapCancel = (messageId: string) => {
     const cancelMessage: Message = {
       id: Date.now().toString(),
-      content: "Swap cancelled. Is there anything else I can help you with?",
+      message: "Swap cancelled. Is there anything else I can help you with?",
       timestamp: new Date(),
-      type: MessageType.BOT,
+      actionType: MESSAGE_TYPE.BOT,
     };
     setMessages((prev) => [...prev, cancelMessage]);
   };
@@ -124,9 +140,9 @@ const ChatAgent = () => {
     setMessages([
       {
         id: Date.now().toString(),
-        content: welcomeMessage,
+        message: welcomeMessage,
         timestamp: new Date(),
-        type: MessageType.BOT,
+        actionType: MESSAGE_TYPE.BOT,
       },
     ]);
   };

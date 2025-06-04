@@ -1,16 +1,31 @@
 export enum NAVI_ACTION_TYPE {
-  BORROW = 'borrow',
   SUPPLY = 'supply',
+  BORROW = 'borrow',
   WITHDRAW = 'withdraw',
   REPAY = 'repay',
 }
 
-export interface CommonParams {
+export type NAVI_ACTION_TEST =
+  | 'supply'
+  | 'borrow'
+  | 'withdraw'
+  | 'repay'
+  | 'unknown';
+
+export interface SupplyParams {
   asset?: string;
-  address?: string;
   amount?: string;
 }
-export interface BorrowParams extends CommonParams {}
-export interface SupplyParams extends CommonParams {}
-export interface WithdrawParams extends CommonParams {}
-export interface RepayParams extends CommonParams {}
+export interface BorrowParams {
+  asset?: string;
+  amount?: string;
+}
+export interface RepayParams {
+  asset?: string;
+  amount?: string;
+}
+
+export interface WithdrawParams {
+  asset?: string;
+  amount?: string;
+}

@@ -5,7 +5,7 @@ import { Module } from "@/data/dashboardMockData";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import ModuleCard from "./ModuleCard";
-import { useIsMobile } from "@/hooks/useMobile";
+import { useDevice } from "@/hooks/useDevice";
 
 interface ScrollableModulesProps {
   modules: Module[];
@@ -15,7 +15,7 @@ const ScrollableModules: React.FC<ScrollableModulesProps> = ({ modules }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [hovering, setHovering] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
+  const isMobile = useDevice();
 
   // Handle manual scroll indexing for the dots indicator
   useEffect(() => {

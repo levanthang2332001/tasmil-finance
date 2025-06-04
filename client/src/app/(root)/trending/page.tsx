@@ -1,5 +1,5 @@
 'use client';
-import CardNewsFeed, { BentoItem } from "@/components/trending/cardNewsFeed";
+import CardNewsFeed, { BentoItem } from "@/components/trending/CardNewsFeed";
 import { NewsItem } from "@/lib/apiNewsFeed";
 import { Newspaper } from "lucide-react";
 import { useEffect, useState } from "react";
