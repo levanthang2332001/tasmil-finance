@@ -258,7 +258,7 @@ export class ChatController {
     }
   }
 
-  @Post('execute-swap')
+  @Post('execute-swap-liquid-swap')
   async executeSwap(
     @Body() quote: SwapQuote,
     @Body() signer: string,

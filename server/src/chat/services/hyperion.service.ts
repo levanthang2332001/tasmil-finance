@@ -23,13 +23,13 @@ export class HyperionService {
   }
 
   private async initSDK() {
-    const sdkModule = await import('@hyperionxyz/sdk');
-    this.FeeTierIndex = sdkModule.FeeTierIndex;
-    this.priceToTick = sdkModule.priceToTick;
-    this.sdk = sdkModule.initHyperionSDK({
-      network: Network.MAINNET,
-      APTOS_API_KEY: process.env.APTOS_API_KEY || '',
-    });
+    // const sdkModule = await import('@hyperionxyz/sdk');
+    // this.FeeTierIndex = sdkModule.FeeTierIndex;
+    // this.priceToTick = sdkModule.priceToTick;
+    // this.sdk = sdkModule.initHyperionSDK({
+    //   network: Network.MAINNET,
+    //   APTOS_API_KEY: process.env.APTOS_API_KEY || '',
+    // });
   }
 
   getMissingParameterSwapPrompt(
