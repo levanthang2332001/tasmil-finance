@@ -18,18 +18,17 @@ export class HyperionService {
   private FeeTierIndex: any;
   private priceToTick: any;
 
-  constructor() {
-    this.initSDK();
-  }
+  constructor() {}
 
   private async initSDK() {
-    // const sdkModule = await import('@hyperionxyz/sdk');
-    // this.FeeTierIndex = sdkModule.FeeTierIndex;
-    // this.priceToTick = sdkModule.priceToTick;
-    // this.sdk = sdkModule.initHyperionSDK({
-    //   network: Network.MAINNET,
-    //   APTOS_API_KEY: process.env.APTOS_API_KEY || '',
-    // });
+    if (this.sdk) return;
+    const sdkModule = await import('@hyperionxyz/sdk');
+    this.FeeTierIndex = sdkModule.FeeTierIndex;
+    this.priceToTick = sdkModule.priceToTick;
+    this.sdk = sdkModule.initHyperionSDK({
+      network: Network.MAINNET,
+      APTOS_API_KEY: process.env.APTOS_API_KEY || '',
+    });
   }
 
   getMissingParameterSwapPrompt(
