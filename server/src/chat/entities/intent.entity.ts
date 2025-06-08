@@ -1,26 +1,17 @@
 import { CETUS_ACTION_TYPE } from './cetus/cetus.entity';
 import { SwapParams } from './cetus/swap.entity';
 import { AgentType } from './chat.entity';
-import { MarketParams } from './market.entity';
 import {
-  BorrowParams,
-  NAVI_ACTION_TYPE,
-  RepayParams,
-  SupplyParams,
-  WithdrawParams,
-} from './navi/navi.entity';
+  EstimatePoolRequest,
+  EstimateSwapRequest,
+  HYPERION_ACTION,
+} from './hyperion.entity';
 
-export type ParamsType =
-  | SwapParams
-  | MarketParams
-  | BorrowParams
-  | SupplyParams
-  | WithdrawParams
-  | RepayParams;
+export type ParamsType = SwapParams | EstimateSwapRequest | EstimatePoolRequest;
 
 export interface DeFiIntent {
   agentType: 'unknown' | AgentType;
-  actionType: 'unknown' | NAVI_ACTION_TYPE | CETUS_ACTION_TYPE;
+  actionType: 'unknown' | CETUS_ACTION_TYPE | HYPERION_ACTION;
   params: ParamsType;
   confidence: number;
   missingFields: string[];

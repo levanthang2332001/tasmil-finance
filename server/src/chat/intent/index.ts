@@ -3,14 +3,14 @@ import { ChatOpenAI } from '@langchain/openai';
 import { Injectable } from '@nestjs/common';
 import { LoggerService } from 'src/shared/services/logger.service';
 import { clearResponse } from 'src/shared/utils/function';
+import { CETUS_ACTION_TYPE } from '../entities/cetus/cetus.entity';
 import { AgentType } from '../entities/chat.entity';
-import { DeFiIntent, ParamsType } from '../entities/intent.entity';
+import { HYPERION_ACTION_ENUM } from '../entities/hyperion.entity';
+import { DeFiIntent } from '../entities/intent.entity';
 import { CetusIntent } from './cetus.intent';
 import { MarketIntentService } from './market.intent';
-import { NaviIntentService } from './navi.intent';
 import { SwapIntentService } from './swap.intent';
-import { NAVI_ACTION_TYPE } from '../entities/navi/navi.entity';
-import { CETUS_ACTION_TYPE } from '../entities/cetus/cetus.entity';
+import { HyperionIntentService } from './hyperion.intent';
 
 @Injectable()
 export class IntentService {
@@ -18,7 +18,7 @@ export class IntentService {
   private readonly logger: LoggerService;
   private marketIntentService: MarketIntentService;
   private swapIntentService: SwapIntentService;
-  private naviIntentService: NaviIntentService;
+  private hyperionIntentService: HyperionIntentService;
   private cetusIntentService: CetusIntent;
 
   constructor() {
@@ -26,7 +26,7 @@ export class IntentService {
     this.initializeModel();
     this.marketIntentService = new MarketIntentService();
     this.swapIntentService = new SwapIntentService();
-    this.naviIntentService = new NaviIntentService();
+    this.hyperionIntentService = new HyperionIntentService();
     this.cetusIntentService = new CetusIntent();
   }
 
@@ -54,7 +54,7 @@ export class IntentService {
            Return a JSON object with the following structure:
            {
              "agentType": "${agentType || 'unknown'}",
-             "actionType": one of ["unknown", ${Object.values(NAVI_ACTION_TYPE).join(', ')}, ${Object.values(CETUS_ACTION_TYPE).join(', ')}],
+             "actionType": one of ["unknown", ${Object.values(HYPERION_ACTION_ENUM).join(', ')}, ${Object.values(CETUS_ACTION_TYPE).join(', ')}],
              "params": {
                // Parameters based on the intent type
              },
@@ -64,14 +64,9 @@ export class IntentService {
            }`;
 
       switch (agentType) {
-        case AgentType.NAVI:
-          systemPrompt += `\n\nFor agent type "${AgentType.NAVI}", the possible action types are:
-              ${Object.values(NAVI_ACTION_TYPE).join(', ')}
-              
-              For type "portfolio", no additional params are required.
-              For type "borrow", "supply", "withdraw", "repay", params should include: asset, amount
-              For type "position", "health", params should include: address
-              For type "reward", no additional params are required.
+        case AgentType.HYPERION:
+          systemPrompt += `\n\nFor agent type "${AgentType.HYPERION}", the possible action types are:
+              ${Object.values(HYPERION_ACTION_ENUM).join(', ')}
               
               Examples:
               "show my portfolio" -> agentType=navi, actionType=portfolio 
@@ -115,14 +110,14 @@ export class IntentService {
 
       // Validate params based on agentType
       switch (intent.agentType) {
-        case AgentType.NAVI:
+        case AgentType.HYPERION:
           intent.missingFields =
-            this.naviIntentService.validateBorrowIntent(intent.params as any) ||
-            this.naviIntentService.validateSupplyIntent(intent.params as any) ||
-            this.naviIntentService.validateWithdrawIntent(
+            this.hyperionIntentService.validateSwapIntent(
               intent.params as any,
             ) ||
-            this.naviIntentService.validateRepayIntent(intent.params as any) ||
+            this.hyperionIntentService.validateLiquidityIntent(
+              intent.params as any,
+            ) ||
             [];
           break;
         case AgentType.CETUS:

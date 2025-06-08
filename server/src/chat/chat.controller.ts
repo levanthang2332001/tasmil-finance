@@ -18,22 +18,21 @@ import {
   SwapQuote,
 } from './entities/cetus/swap.entity';
 import {
+  AgentType,
   ChatRequest,
   ChatResponse,
-  MessageHistoryEntry
+  MessageHistoryEntry,
 } from './entities/chat.entity';
-import { DeFiIntent } from './entities/intent.entity';
-import { BorrowParams } from './entities/navi/borrow.entity';
 import {
-  NAVI_ACTION_TEST,
-  RepayParams,
-  SupplyParams,
-  WithdrawParams
-} from './entities/navi/navi.entity';
+  EstimatePoolRequest,
+  EstimateSwapRequest,
+  ExecutePoolRequest,
+  ExecuteSwapRequest,
+  HYPERION_ACTION,
+} from './entities/hyperion.entity';
+import { DeFiIntent } from './entities/intent.entity';
 import { IntentService } from './intent';
-import { NaviIntentService } from './intent/navi.intent';
-import { MarketService } from './services/market.service';
-import { NaviService } from './services/navi.service';
+import { HyperionService } from './services/hyperion.service';
 import { CetusSwapService } from './services/swap.service';
 import { VoiceService } from './services/voice.service';
 
@@ -44,10 +43,8 @@ export class ChatController {
   constructor(
     private readonly intentService: IntentService,
     private readonly swapService: CetusSwapService,
+    private readonly hyperionService: HyperionService,
     private readonly chatService: ChatService,
-    private readonly marketService: MarketService,
-    private readonly naviService: NaviService,
-    private readonly naviIntent: NaviIntentService,
     private readonly voiceService: VoiceService,
   ) {}
 
@@ -106,140 +103,6 @@ export class ChatController {
     };
   }
 
-  // private async handleMarketIntent(
-  //   intent: DeFiIntent & { params: MarketParams },
-  // ): Promise<ChatResponse> {
-  //   if (intent.missingFields.length > 0) {
-  //     const missingField = intent.missingFields[0] as keyof MarketParams;
-  //     const response =
-  //       this.marketIntentService.getMissingParameterPrompt(missingField);
-  //     return {
-  //       type: ChatResponseType.BOT,
-  //       message: `${intent.context ? intent.context + '\n' : ''}${response}`,
-  //       intent,
-  //     };
-  //   }
-
-  //   const formatToken =
-  //     normalizeChainName(intent.params.token as string) || 'bitcoin';
-
-  //   const quote = await this.marketService.getTokenInfo(formatToken);
-  //   const analysisIntent = await this.marketIntentService.analysisIntent(quote);
-
-  //   return {
-  //     type: ChatResponseType.BOT,
-  //     message: `Here's the market data for ${intent.params.token} over ${intent.params.timeframe} timeframe.
-  //      ${analysisIntent}`,
-  //     intent,
-  //   };
-  // }
-
-  private async handleSupplyIntent(
-    intent: DeFiIntent & { params: SupplyParams },
-  ): Promise<ChatResponse> {
-    // if (intent.missingFields && intent.missingFields.length < 0) {
-    //   const missingField = intent.missingFields[0] as keyof SupplyParams;
-    //   return {
-    //     message: `I need more information to process your supply request. What ${missingField} would you like to use?`,
-    //     intent,
-    //   };
-    // }
-    return {
-      message: `Here's the supply data for ${intent.params.amount} ${intent.params.asset}.`,
-      intent,
-    };
-  }
-
-  private async handleBorrowIntent(
-    intent: DeFiIntent & { params: BorrowParams },
-  ): Promise<ChatResponse> {
-    // if (intent.missingFields && intent.missingFields.length < 0) {
-    //   const missingField = intent.missingFields[0] as keyof BorrowParams;
-    //   return {
-    //     message: `I need more information to process your borrow request. What ${missingField} would you like to use?`,
-    //     intent,
-    //   };
-    // }
-    try {
-      const borrow = await this.naviService.getBorrow(
-        parseFloat(intent.params.amount),
-      );
-      console.log('borrow', borrow);
-      return {
-        message: `Here's the borrow data for ${intent.params.amount} ${intent.params.asset}.`,
-        intent,
-      };
-    } catch (error) {
-      return {
-        message: `Sorry, I encountered an error: ${error}`,
-        intent: {
-          ...intent,
-          actionType: 'unknown',
-        },
-      };
-    }
-  }
-
-  private async handleRepayIntent(
-    intent: DeFiIntent & { params: RepayParams },
-  ): Promise<ChatResponse> {
-    // if (intent.missingFields && intent.missingFields.length < 0) {
-    //   const missingField = intent.missingFields[0] as keyof RepayParams;
-    //   return {
-    //     message: `I need more information to process your repay request. What ${missingField} would you like to use?`,
-    //     intent,
-    //   };
-    // }
-    try {
-      const repay = await this.naviService.getRepay(
-        parseFloat(intent.params.amount!),
-      );
-      console.log('repay', repay);
-      return {
-        message: `Here's the repay data for ${intent.params.amount} ${intent.params.asset}.`,
-        intent,
-      };
-    } catch (error) {
-      return {
-        message: `Sorry, I encountered an error: ${error}`,
-        intent: {
-          ...intent,
-          actionType: 'unknown',
-        },
-      };
-    }
-  }
-
-  private async handleWithdrawIntent(
-    intent: DeFiIntent & { params: WithdrawParams },
-  ): Promise<ChatResponse> {
-    // if (intent.missingFields && intent.missingFields.length < 0) {
-    //   const missingField = intent.missingFields[0] as keyof WithdrawParams;
-    //   return {
-    //     message: `I need more information to process your withdraw request. What ${missingField} would you like to use?`,
-    //     intent,
-    //   };
-    // }
-    try {
-      const withdraw = await this.naviService.getWithdraw(
-        parseFloat(intent.params.amount!),
-      );
-      console.log('withdraw', withdraw);
-      return {
-        message: `Here's the withdraw data for ${intent.params.amount} ${intent.params.asset}.`,
-        intent,
-      };
-    } catch (error) {
-      return {
-        message: `Sorry, I encountered an error: ${error}`,
-        intent: {
-          ...intent,
-          actionType: 'unknown',
-        },
-      };
-    }
-  }
-
   private async handleDefaultIntent(
     intent: DeFiIntent,
     chatMessage: ChatRequest,
@@ -257,23 +120,73 @@ export class ChatController {
     };
   }
 
-  private async handleNaviIntent(
-    intent: DeFiIntent,
+  private async handleHyperionSwapIntent(
+    intent: DeFiIntent & { params: EstimateSwapRequest },
+    chatMessage: ChatRequest,
+  ): Promise<ChatResponse> {
+    if (intent.missingFields && intent.missingFields.length < 0) {
+      const missingField = intent.missingFields[0] as keyof EstimateSwapRequest;
+      return {
+        message: `I need more information to process your swap request. What ${missingField} would you like to use?`,
+        intent,
+      };
+    }
+
+    const quote = await this.hyperionService.estimateSwap({
+      fromToken: intent.params.fromToken,
+      toToken: intent.params.toToken,
+      amount: intent.params.amount,
+    });
+    return {
+      message: 'Hyperion swap intent',
+      intent,
+    };
+  }
+
+  private async handleHyperionLiquidityIntent(
+    intent: DeFiIntent & { params: EstimatePoolRequest },
+    chatMessage: ChatRequest,
+  ): Promise<ChatResponse> {
+    if (intent.missingFields && intent.missingFields.length < 0) {
+      const missingField = intent.missingFields[0] as keyof EstimatePoolRequest;
+      return {
+        message: `I need more information to process your liquidity request. What ${missingField} would you like to use?`,
+        intent,
+      };
+    }
+
+    const quote = await this.hyperionService.estimatePool({
+      currencyA: intent.params.currencyA,
+      currencyB: intent.params.currencyB,
+      currencyAAmount: intent.params.currencyAAmount,
+    });
+
+    return {
+      message: 'Hyperion liquidity intent',
+      intent,
+    };
+  }
+
+  private async handleHyperionIntent(
+    intent: DeFiIntent & { params: EstimateSwapRequest | EstimatePoolRequest },
     chatMessage: ChatRequest,
   ): Promise<ChatResponse> {
     const intentHandlers = {
-      borrow: () =>
-        this.handleBorrowIntent(
-          intent as DeFiIntent & { params: BorrowParams },
+      swap: () =>
+        this.handleHyperionSwapIntent(
+          intent as DeFiIntent & { params: EstimateSwapRequest },
+          chatMessage,
         ),
-      withdraw: () => this.handleWithdrawIntent(intent),
-      supply: () => this.handleSupplyIntent(intent),
-      repay: () => this.handleRepayIntent(intent),
+      liquidity: () =>
+        this.handleHyperionLiquidityIntent(
+          intent as DeFiIntent & { params: EstimatePoolRequest },
+          chatMessage,
+        ),
       default: () => this.handleDefaultIntent(intent, chatMessage),
     };
 
     const handler =
-      intentHandlers[intent.actionType as NAVI_ACTION_TEST] ??
+      intentHandlers[intent.actionType as HYPERION_ACTION] ??
       intentHandlers.default;
     return handler();
   }
@@ -284,10 +197,10 @@ export class ChatController {
   ): Promise<ChatResponse> {
     const intentHandlers = {
       default: () => this.handleDefaultIntent(intent, chatMessage),
-      swap: () => this.handleSwapIntent(intent),
+      // swap: () => this.handleSwapIntent(intent),
     };
 
-    const handler = intentHandlers.swap;
+    const handler = intentHandlers.default;
     return handler();
   }
 
@@ -297,12 +210,26 @@ export class ChatController {
   ): Promise<ChatResponse> {
     const intentHandlers = {
       default: () => this.handleDefaultIntent(intent, chatMessage),
-      navi: () => this.handleNaviIntent(intent, chatMessage),
+      hyperion: () =>
+        this.handleHyperionIntent(
+          intent as DeFiIntent & {
+            params: EstimateSwapRequest | EstimatePoolRequest;
+          },
+          chatMessage,
+        ),
       cetus: () => this.handleCetusIntent(intent, chatMessage),
     };
 
     const handler = intentHandlers[intent.agentType] ?? intentHandlers.default;
     return handler?.();
+  }
+
+  private async handleError(error: unknown): Promise<ChatResponse> {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+    return {
+      message: `Sorry, I encountered an error: ${errorMessage}`,
+    };
   }
 
   @Post('message')
@@ -327,11 +254,7 @@ export class ChatController {
 
       return this.handleObjectKeyIntent(intent, chatMessage);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Unknown error occurred';
-      return {
-        message: `Sorry, I encountered an error: ${errorMessage}`,
-      };
+      return this.handleError(error);
     }
   }
 
@@ -349,13 +272,56 @@ export class ChatController {
         message: `Great! Your swap has been executed. You can track the transaction here: ${txHash}`,
       };
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Unknown error occurred';
-      return {
-        message: `Sorry, I couldn't execute the swap: ${errorMessage}`,
-      };
+      return this.handleError(error);
     }
   }
+
+  @Post('execute-swap-hyperion')
+  async executeSwapHyperion(
+    @Body() quote: ExecuteSwapRequest,
+    @Body() signer: string,
+  ): Promise<ChatResponse> {
+    try {
+      const txHash = await this.hyperionService.executeSwap(quote);
+      return {
+        message: `Great! Your swap has been executed. You can track the transaction here: `,
+      };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  @Post('execute-create-pool-hyperion')
+  async executeCreatePoolHyperion(
+    @Body() quote: ExecutePoolRequest,
+    @Body() signer: string,
+  ): Promise<ChatResponse> {
+    try {
+      const txHash = await this.hyperionService.executePool(quote);
+      return {
+        message: `Great! Your liquidity has been executed. You can track the transaction here: `,
+      };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  @Post('execute-add-liquidity-hyperion')
+  async executeAddLiquidityHyperion(
+    @Body() quote: ExecutePoolRequest,
+    @Body() signer: string,
+  ): Promise<ChatResponse> {
+    try {
+      // const txHash = await this.hyperionService.executeAddLiquidity(quote);
+      return {
+        message: `Great! Your liquidity has been executed. You can track the transaction here: `,
+      };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  // Audio voice transcription
   @Post('transcribe')
   @UseInterceptors(
     FileInterceptor('file', {

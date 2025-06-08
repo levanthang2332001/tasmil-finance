@@ -2,7 +2,7 @@ import { SwapQuote } from './cetus/swap.entity';
 import { DeFiIntent } from './intent.entity';
 
 export enum AgentType {
-  NAVI = 'navi',
+  HYPERION = 'hyperion',
   CETUS = 'cetus',
 }
 

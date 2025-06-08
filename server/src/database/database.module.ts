@@ -10,8 +10,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         uri: configService.get<string>('mongodb.uri'),
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
       }),
     }),
   ],
