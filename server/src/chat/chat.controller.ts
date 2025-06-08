@@ -26,7 +26,7 @@ import {
 import {
   EstimatePoolRequest,
   EstimateSwapRequest,
-  ExecutePoolRequest,
+  ExecuteCreatePoolRequest,
   ExecuteSwapRequest,
   HYPERION_ACTION,
 } from './entities/hyperion.entity';
@@ -35,7 +35,18 @@ import { IntentService } from './intent';
 import { HyperionService } from './services/hyperion.service';
 import { CetusSwapService } from './services/swap.service';
 import { VoiceService } from './services/voice.service';
+import {
+  ApiOkResponse,
+  ApiBadRequestResponse,
+  ApiInternalServerErrorResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+} from '@nestjs/swagger';
+import { ErrorResponse } from './dto/error-response.dto';
 
+@ApiTags('chat')
 @Controller('chat')
 export class ChatController {
   private messageHistory: Map<string, MessageHistoryEntry[]> = new Map();
@@ -233,6 +244,14 @@ export class ChatController {
   }
 
   @Post('message')
+  @ApiOkResponse({
+    description: 'Message processed successfully',
+    type: Object,
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal Server Error',
+    type: ErrorResponse,
+  })
   async sendMessage(@Body() chatMessage: ChatRequest): Promise<ChatResponse> {
     try {
       this.updateMessageHistory(chatMessage.userId, chatMessage.content);
@@ -293,7 +312,7 @@ export class ChatController {
 
   @Post('execute-create-pool-hyperion')
   async executeCreatePoolHyperion(
-    @Body() quote: ExecutePoolRequest,
+    @Body() quote: ExecuteCreatePoolRequest,
     @Body() signer: string,
   ): Promise<ChatResponse> {
     try {
@@ -308,11 +327,26 @@ export class ChatController {
 
   @Post('execute-add-liquidity-hyperion')
   async executeAddLiquidityHyperion(
-    @Body() quote: ExecutePoolRequest,
+    @Body() quote: ExecuteCreatePoolRequest,
     @Body() signer: string,
   ): Promise<ChatResponse> {
     try {
       // const txHash = await this.hyperionService.executeAddLiquidity(quote);
+      return {
+        message: `Great! Your liquidity has been executed. You can track the transaction here: `,
+      };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  @Post('execute-remove-liquidity-hyperion')
+  async executeRemoveLiquidityHyperion(
+    @Body() quote: ExecuteCreatePoolRequest,
+    @Body() signer: string,
+  ): Promise<ChatResponse> {
+    try {
+      // const txHash = await this.hyperionService.executeRemoveLiquidity(quote);
       return {
         message: `Great! Your liquidity has been executed. You can track the transaction here: `,
       };

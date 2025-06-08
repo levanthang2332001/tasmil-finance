@@ -45,11 +45,30 @@ export interface EstimatePoolResponse {
   currencyBAmount: number;
 }
 
-export interface ExecutePoolRequest extends EstimatePoolRequest {
+export interface ExecuteCreatePoolRequest extends EstimatePoolRequest {
   currencyBAmount?: number;
   slippage?: number;
 }
 
-export interface ExecutePoolResponse {
+export interface ExecuteCreatePoolResponse {
+  transactionPayload: string;
+}
+
+export interface ExecuteAddLiquidityRequest extends EstimatePoolRequest {
+  currencyAAmount: number;
+  currencyBAmount: number;
+  slippage?: number;
+}
+
+export interface ExecuteAddLiquidityResponse {
+  transactionPayload: string;
+}
+
+export interface ExecuteRemoveLiquidityRequest extends EstimatePoolRequest {
+  currencyBAmount?: number;
+  slippage?: number;
+}
+
+export interface ExecuteRemoveLiquidityResponse {
   transactionPayload: string;
 }

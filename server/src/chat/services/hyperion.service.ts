@@ -5,8 +5,12 @@ import {
   EstimatePoolResponse,
   EstimateSwapRequest,
   EstimateSwapResponse,
-  ExecutePoolRequest,
-  ExecutePoolResponse,
+  ExecuteAddLiquidityRequest,
+  ExecuteAddLiquidityResponse,
+  ExecuteCreatePoolRequest,
+  ExecuteCreatePoolResponse,
+  ExecuteRemoveLiquidityRequest,
+  ExecuteRemoveLiquidityResponse,
   ExecuteSwapRequest,
   ExecuteSwapResponse,
 } from '../entities/hyperion.entity';
@@ -174,7 +178,9 @@ export class HyperionService {
     }
   }
 
-  async executePool(params: ExecutePoolRequest): Promise<ExecutePoolResponse> {
+  async executePool(
+    params: ExecuteCreatePoolRequest,
+  ): Promise<ExecuteCreatePoolResponse> {
     if (!this.sdk) await this.initSDK();
     try {
       const poolPayload = await this.sdk.Pool.createPoolTransactionPayload({
@@ -197,6 +203,70 @@ export class HyperionService {
     } catch (error) {
       this.logger.error(
         `Failed to execute pool: ${error.message}`,
+        error.stack,
+      );
+      throw error;
+    }
+  }
+
+  async executeAddLiquidity(
+    params: ExecuteAddLiquidityRequest,
+  ): Promise<ExecuteAddLiquidityResponse> {
+    if (!this.sdk) await this.initSDK();
+    try {
+      const addLiquidityPayload =
+        await this.sdk.Pool.addLiquidityTransactionPayload({
+          currencyA: params.currencyA,
+          currencyB: params.currencyB,
+          currencyAAmount: params.currencyAAmount,
+          currencyBAmount: params.currencyBAmount || 0,
+          feeTierIndex: Number(
+            this.FeeTierIndex[params.feeTierIndex || 'PER_0.05_SPACING_5'],
+          ),
+          currentPriceTick: Number(params.currentPriceTick || 0),
+          tickLower: Number(params.tickLower || 0),
+          tickUpper: Number(params.tickUpper || 0),
+          slippage: params.slippage || 0.1,
+        });
+
+      return {
+        transactionPayload: addLiquidityPayload,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to execute add liquidity: ${error.message}`,
+        error.stack,
+      );
+      throw error;
+    }
+  }
+
+  async executeRemoveLiquidity(
+    params: ExecuteRemoveLiquidityRequest,
+  ): Promise<ExecuteRemoveLiquidityResponse> {
+    if (!this.sdk) await this.initSDK();
+    try {
+      const removeLiquidityPayload =
+        await this.sdk.Pool.removeLiquidityTransactionPayload({
+          currencyA: params.currencyA,
+          currencyB: params.currencyB,
+          currencyAAmount: params.currencyAAmount,
+          currencyBAmount: params.currencyBAmount || 0,
+          feeTierIndex: Number(
+            this.FeeTierIndex[params.feeTierIndex || 'PER_0.05_SPACING_5'],
+          ),
+          currentPriceTick: Number(params.currentPriceTick || 0),
+          tickLower: Number(params.tickLower || 0),
+          tickUpper: Number(params.tickUpper || 0),
+          slippage: params.slippage || 0.1,
+        });
+
+      return {
+        transactionPayload: removeLiquidityPayload,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to execute remove liquidity: ${error.message}`,
         error.stack,
       );
       throw error;
