@@ -2,13 +2,13 @@
 
 import { cn } from "@/lib/utils";
 import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
-import WalletProfile from "./WalletProfile";
-interface ConnectWalletProps {
+import WalletProfile from "../WalletProfile";
+interface SuiConnectWalletProps {
   label?: string;
   className?: string;
 }
 
-const ConnectWallet = ({ className, label = "Launch App" }: ConnectWalletProps) => {
+const SuiConnectWallet = ({ className, label = "Launch App" }: SuiConnectWalletProps) => {
   const account = useCurrentAccount();
 
   if (account) {
@@ -26,4 +26,4 @@ const ConnectWallet = ({ className, label = "Launch App" }: ConnectWalletProps) 
   );
 };
 
-export default ConnectWallet;
+export default SuiConnectWallet;

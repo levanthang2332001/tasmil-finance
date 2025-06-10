@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-import ConnectWallet from "../ConnectWallet";
+import ConnectWallet from "../wallet/sui-wallet";
 import Logo from "../Logo";
 import SidebarButton, { SidebarItem } from "./SidebarButton";
 

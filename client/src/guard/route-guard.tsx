@@ -1,7 +1,8 @@
 "use client";
 
 import { PATHS, PROTECTED_PATHS, PUBLIC_PATHS } from "@/constants/routes";
-import { useCurrentAccount } from "@mysten/dapp-kit";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+// import { useCurrentAccount } from "@mysten/dapp-kit";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -20,7 +21,9 @@ function isProtectedPath(path: string): boolean {
 export function RouteGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const account = useCurrentAccount();
+  // const account = useCurrentAccount();
+  const { account } = useWallet();
+
 
   useEffect(() => {
     if (account && isPublicPath(pathname)) {

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import ConnectWallet from "../ConnectWallet";
+import ConnectWallet from "../wallet/sui-wallet";
 
 const Hero = () => {
   return (
