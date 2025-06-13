@@ -9,10 +9,12 @@ import {
   Patch,
   ValidationPipe,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AgentService } from './agent.service';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { Agent } from './schemas/agent.schema';
 
+@ApiTags('agent')
 @Controller('api/agent')
 export class AgentController {
   constructor(private readonly agentService: AgentService) {}

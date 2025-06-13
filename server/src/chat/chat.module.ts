@@ -8,9 +8,10 @@ import { HyperionService } from './services/hyperion.service';
 import { MarketService } from './services/market.service';
 import { CetusSwapService } from './services/swap.service';
 import { VoiceService } from './services/voice.service';
+import { VoiceController } from './voice.controller';
 
 @Module({
-  controllers: [ChatController],
+  controllers: [ChatController, VoiceController],
   providers: [
     ChatService,
     IntentService,

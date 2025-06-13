@@ -1,24 +1,18 @@
 /* eslint-disable @typescript-eslint/require-await */
+import { Body, Controller, Post } from '@nestjs/common';
 import {
-  Body,
-  Controller,
-  Post,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import * as fs from 'fs';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
-import { v4 as uuidv4 } from 'uuid';
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ChatService } from './chat.service';
+import { ErrorResponse } from './dto/error-response.dto';
 import {
   ParamsField,
   SwapParams,
   SwapQuote,
 } from './entities/cetus/swap.entity';
 import {
-  AgentType,
   ChatRequest,
   ChatResponse,
   MessageHistoryEntry,
@@ -32,32 +26,27 @@ import {
 } from './entities/hyperion.entity';
 import { DeFiIntent } from './entities/intent.entity';
 import { IntentService } from './intent';
+import { HyperionIntentService } from './intent/hyperion.intent';
 import { HyperionService } from './services/hyperion.service';
 import { CetusSwapService } from './services/swap.service';
-import { VoiceService } from './services/voice.service';
-import {
-  ApiOkResponse,
-  ApiBadRequestResponse,
-  ApiInternalServerErrorResponse,
-  ApiTags,
-  ApiUnauthorizedResponse,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
-} from '@nestjs/swagger';
-import { ErrorResponse } from './dto/error-response.dto';
 
 @ApiTags('chat')
 @Controller('chat')
 export class ChatController {
   private messageHistory: Map<string, MessageHistoryEntry[]> = new Map();
+  private readonly hyperionIntentService: HyperionIntentService;
+  private readonly intentService: IntentService;
+  private readonly swapService: CetusSwapService;
+  private readonly hyperionService: HyperionService;
+  private readonly chatService: ChatService;
 
-  constructor(
-    private readonly intentService: IntentService,
-    private readonly swapService: CetusSwapService,
-    private readonly hyperionService: HyperionService,
-    private readonly chatService: ChatService,
-    private readonly voiceService: VoiceService,
-  ) {}
+  constructor() {
+    this.hyperionIntentService = new HyperionIntentService();
+    this.intentService = new IntentService();
+    this.swapService = new CetusSwapService();
+    this.hyperionService = new HyperionService();
+    this.chatService = new ChatService();
+  }
 
   private getRecentMessages(userId: string, limit: number = 3): string {
     const userMessages = this.messageHistory.get(userId) || [];
@@ -131,65 +120,18 @@ export class ChatController {
     };
   }
 
-  private async handleHyperionSwapIntent(
-    intent: DeFiIntent & { params: EstimateSwapRequest },
-    chatMessage: ChatRequest,
-  ): Promise<ChatResponse> {
-    if (intent.missingFields && intent.missingFields.length < 0) {
-      const missingField = intent.missingFields[0] as keyof EstimateSwapRequest;
-      return {
-        message: `I need more information to process your swap request. What ${missingField} would you like to use?`,
-        intent,
-      };
-    }
-
-    const quote = await this.hyperionService.estimateSwap({
-      fromToken: intent.params.fromToken,
-      toToken: intent.params.toToken,
-      amount: intent.params.amount,
-    });
-    return {
-      message: 'Hyperion swap intent',
-      intent,
-    };
-  }
-
-  private async handleHyperionLiquidityIntent(
-    intent: DeFiIntent & { params: EstimatePoolRequest },
-    chatMessage: ChatRequest,
-  ): Promise<ChatResponse> {
-    if (intent.missingFields && intent.missingFields.length < 0) {
-      const missingField = intent.missingFields[0] as keyof EstimatePoolRequest;
-      return {
-        message: `I need more information to process your liquidity request. What ${missingField} would you like to use?`,
-        intent,
-      };
-    }
-
-    const quote = await this.hyperionService.estimatePool({
-      currencyA: intent.params.currencyA,
-      currencyB: intent.params.currencyB,
-      currencyAAmount: intent.params.currencyAAmount,
-    });
-
-    return {
-      message: 'Hyperion liquidity intent',
-      intent,
-    };
-  }
-
   private async handleHyperionIntent(
     intent: DeFiIntent & { params: EstimateSwapRequest | EstimatePoolRequest },
     chatMessage: ChatRequest,
   ): Promise<ChatResponse> {
     const intentHandlers = {
       swap: () =>
-        this.handleHyperionSwapIntent(
+        this.hyperionIntentService.handleHyperionSwapIntent(
           intent as DeFiIntent & { params: EstimateSwapRequest },
           chatMessage,
         ),
       liquidity: () =>
-        this.handleHyperionLiquidityIntent(
+        this.hyperionIntentService.handleHyperionLiquidityIntent(
           intent as DeFiIntent & { params: EstimatePoolRequest },
           chatMessage,
         ),
@@ -352,50 +294,6 @@ export class ChatController {
       };
     } catch (error) {
       return this.handleError(error);
-    }
-  }
-
-  // Audio voice transcription
-  @Post('transcribe')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (_req, file, cb) => {
-          const uniqueName = `${uuidv4()}${extname(file.originalname)}`;
-          cb(null, uniqueName);
-        },
-      }),
-      // fileFilter: (_req, file, cb) => {
-      //   if (!file.mimetype.match(/^audio\/(mpeg|mp4|wav|ogg|webm)$/)) {
-      //     return cb(new Error('Only audio files are allowed!'), false);
-      //   }
-      //   cb(null, true);
-      // },
-      // limits: {
-      //   fileSize: 10 * 1024 * 1024, // 10MB limit
-      // },
-    }),
-  )
-  async transcribe(
-    @UploadedFile() file: Express.Multer.File,
-  ): Promise<{ transcript: string }> {
-    try {
-      if (!file) {
-        throw new Error('No audio file provided');
-      }
-
-      const transcript = await this.voiceService.transcribeAudio(file);
-      return { transcript };
-    } catch (error) {
-      throw new Error(`Failed to transcribe audio: ${error.message}`);
-    } finally {
-      // Clean up the uploaded file after processing
-      fs.unlink(file.path, (err) => {
-        if (err) {
-          console.error(`Error deleting file ${file.path}:`, err);
-        }
-      });
     }
   }
 }

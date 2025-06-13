@@ -36,7 +36,7 @@ export default function VoiceRecorder({ className, setMessage, disabled }: Voice
 
     try {
       setIsLoading(true);
-      const res = await fetch("http://localhost:5000/chat/transcribe", {
+      const res = await fetch("http://localhost:5000/voice/transcribe", {
         method: "POST",
         body: formData,
       });
