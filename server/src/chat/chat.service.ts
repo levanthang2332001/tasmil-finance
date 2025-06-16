@@ -6,7 +6,7 @@ import {
 } from '@langchain/core/messages';
 import { ChatOpenAI } from '@langchain/openai';
 import { Injectable } from '@nestjs/common';
-import { LoggerService } from 'src/shared/services/logger.service';
+import { LoggerService } from 'src/chat/services/logger.service';
 import { AgentType } from './entities/chat.entity';
 
 @Injectable()

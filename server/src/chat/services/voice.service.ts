@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
-import { LoggerService } from 'src/shared/services/logger.service';
+import { LoggerService } from 'src/chat/services/logger.service';
 
 @Injectable()
 export class VoiceService {

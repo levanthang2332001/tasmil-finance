@@ -2,19 +2,8 @@
   "name": "tasmil-finance-server",
   "version": "0.0.1",
   "description": "Server for the Tasmil Finance",
-  "author": {
-    "name": "le-dat (leo)",
-    "url": "https://github.com/le-dat"
-  },
   "private": true,
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/XDefai/tasmil-finance"
-  },
-  "bugs": {
-    "url": "https://github.com/XDefai/tasmil-finance/issues"
-  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

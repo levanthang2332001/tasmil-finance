@@ -1,9 +1,7 @@
-import { SwapQuote } from './cetus/swap.entity';
 import { DeFiIntent } from './intent.entity';
 
 export enum AgentType {
-  HYPERION = 'hyperion',
-  CETUS = 'cetus',
+  UNKNOWN = 'unknown',
 }
 
 export interface ChatRequest {
@@ -15,7 +13,6 @@ export interface ChatRequest {
 export interface ChatResponse {
   intent?: DeFiIntent;
   message: string;
-  quote?: SwapQuote;
   data?: any;
 }
 
