@@ -19,6 +19,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@aptos-labs/ts-sdk": "^2.0.1",
     "@langchain/core": "^0.3.43",
     "@langchain/openai": "^0.4.9",
     "@nestjs/common": "^11.0.1",
@@ -28,6 +29,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.1.1",
     "@nestjs/swagger": "^11.2.0",
+    "@supabase/supabase-js": "^2.50.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
@@ -35,6 +37,7 @@
     "got": "11",
     "multer": "^2.0.0",
     "reflect-metadata": "^0.2.2",
+    "rollup": "^4.43.0",
     "rxjs": "^7.8.1",
     "swagger-ui-express": "^5.0.1",
     "uuid": "^11.1.0"
