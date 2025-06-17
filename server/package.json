@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Server for the Tasmil Finance",
   "private": true,
-  "license": "MIT",
+  "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -19,23 +19,29 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@aptos-labs/ts-sdk": "^2.0.1",
     "@langchain/core": "^0.3.43",
     "@langchain/openai": "^0.4.9",
+=======
+    "@langchain/core": "^0.3.59",
+    "@langchain/openai": "^0.5.13",
+>>>>>>> da96ebf6f102aa4be8b29cede877181449592db6
     "@nestjs/common": "^11.0.1",
-    "@nestjs/config": "^3.2.0",
+    "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
-    "@nestjs/jwt": "^10.2.0",
-    "@nestjs/mapped-types": "*",
-    "@nestjs/platform-express": "^11.1.1",
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/mapped-types": "^2.1.0",
+    "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.2.0",
     "@supabase/supabase-js": "^2.50.0",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.1",
-    "dotenv": "^16.4.7",
-    "form-data": "^4.0.2",
-    "got": "11",
-    "multer": "^2.0.0",
+    "class-validator": "^0.14.2",
+    "dotenv": "^16.5.0",
+    "form-data": "^4.0.3",
+    "got": "^14.4.7",
+    "move-agent-kit": "^0.2.0",
+    "multer": "^2.0.1",
     "reflect-metadata": "^0.2.2",
     "rollup": "^4.43.0",
     "rxjs": "^7.8.1",
@@ -51,9 +57,9 @@
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.10.7",
     "@types/express": "^5.0.0",
-    "@types/form-data": "^2.5.2",
+    "@types/form-data": "^2.2.1",
     "@types/jest": "^29.5.14",
-    "@types/multer": "^1.4.12",
+    "@types/multer": "^1.4.13",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.2",
     "eslint": "^9.18.0",
@@ -87,6 +93,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  }
 }
