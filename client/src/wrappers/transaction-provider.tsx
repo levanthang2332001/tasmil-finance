@@ -1,7 +1,8 @@
+"use client";
+import React, { createContext, useContext, useMemo, useCallback, ReactNode } from "react";
 import { useToast } from "@/hooks/shared/use-toast";
 import { InputTransactionData } from "@aptos-labs/wallet-adapter-core";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { createContext, ReactNode, useCallback, useContext, useMemo } from "react";
 import { aptosProvider } from "./aptos-provider";
 import { TransactionHash } from "@/components/transaction-hash";
 import { InputViewFunctionData, MoveValue } from "@aptos-labs/ts-sdk";

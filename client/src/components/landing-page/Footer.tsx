@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
-import ConnectWallet from "../wallet/sui-wallet";
 import SocialMedia from "./SocialMedia";
+import { AptosConnectWallet } from "../wallet";
 
 const Footer = () => {
   return (
@@ -20,7 +20,7 @@ const Footer = () => {
             Join thousands of traders using AI to optimize their DeFi strategies
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <ConnectWallet label="Get Started" />
+            <AptosConnectWallet label="Get Started" />
           </div>
         </motion.div>
       </div>

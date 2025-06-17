@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import ConnectWallet from "../wallet/sui-wallet";
+import { AptosConnectWallet } from "../wallet";
 
 const Hero = () => {
   return (
@@ -46,7 +46,7 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            <ConnectWallet label="Get Started" />
+            <AptosConnectWallet label="Get Started" />
           </motion.div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import RouteGuard from "@/guard/route-guard";
 import { Toaster } from "sonner";
-import { WalletAptosSuiProviders } from "@/providers";
+import { WalletAptosProviders } from "@/providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -47,10 +47,10 @@ export default function RootLayout({
     <html lang="en">
       {/* dark mode */}
       <body className={`${inter.variable} antialiased overflow-x-hidden dark`}>
-          <WalletAptosSuiProviders>
+          <WalletAptosProviders>
             <Toaster />
             <RouteGuard>{children}</RouteGuard>
-          </WalletAptosSuiProviders>
+          </WalletAptosProviders>
       </body>
     </html>
   );

@@ -122,7 +122,7 @@ const WalletProfile = ({ name, email, className }: WalletProfileProps) => {
           <Button
             variant="ghost"
             onClick={() => disconnect()}
-            className="flex items-center gap-2 p-4 text-destructive hover:text-destructive hover:bg-destructive/10 rounded-none"
+            className="flex items-center gap-4 p-4 text-destructive hover:text-destructive hover:bg-destructive/10 rounded-none"
           >
             <LogOut className="h-4 w-4" />
             <span>Disconnect Wallet</span>
