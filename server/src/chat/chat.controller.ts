@@ -1,33 +1,20 @@
 /* eslint-disable @typescript-eslint/require-await */
 import { Body, Controller, Post } from '@nestjs/common';
-import {
-  ApiInternalServerErrorResponse,
-  ApiOkResponse,
-  ApiTags,
-} from '@nestjs/swagger';
-import { ChatService } from './chat.service';
-import { ErrorResponse } from './dto/error-response.dto';
-
-import {
-  ChatRequest,
-  ChatResponse,
-  MessageHistoryEntry,
-} from './entities/chat.entity';
-
-import { DeFiIntent } from './entities/intent.entity';
+import { ApiTags } from '@nestjs/swagger';
+import { ChatRequestDto, ChatResponseDto } from './dto/chat.dto';
+import { MessageHistoryEntry } from './entities/chat.entity';
 import { IntentService } from './services/intent.service';
-import { SuccessResponse } from './dto/success-response.dto';
+import { handleAction } from './actions';
+import { ChatApiDocs } from './docs/chat-api.docs';
 
 @ApiTags('chat')
 @Controller('chat')
 export class ChatController {
   private messageHistory: Map<string, MessageHistoryEntry[]> = new Map();
   private readonly intentService: IntentService;
-  private readonly chatService: ChatService;
 
   constructor() {
     this.intentService = new IntentService();
-    this.chatService = new ChatService();
   }
 
   private getRecentMessages(userId: string, limit: number = 3): string {
@@ -52,36 +39,7 @@ export class ChatController {
     this.messageHistory.set(userId, userMessages);
   }
 
-  private async handleDefaultIntent(
-    intent: DeFiIntent,
-    chatMessage: ChatRequest,
-  ): Promise<ChatResponse> {
-    console.log('=> default intent', intent);
-    const response = await this.chatService.processMessage(
-      chatMessage.content,
-      intent?.context || '',
-      [],
-    );
-
-    return {
-      message: response,
-      intent,
-    };
-  }
-
-  private async handleObjectKeyIntent(
-    intent: DeFiIntent,
-    chatMessage: ChatRequest,
-  ): Promise<ChatResponse> {
-    const intentHandlers = {
-      default: () => this.handleDefaultIntent(intent, chatMessage),
-    };
-
-    const handler = intentHandlers[intent.agentType] ?? intentHandlers.default;
-    return handler?.();
-  }
-
-  private async handleError(error: unknown): Promise<ChatResponse> {
+  private async handleError(error: unknown): Promise<ChatResponseDto> {
     const errorMessage =
       error instanceof Error ? error.message : 'Unknown error occurred';
     return {
@@ -90,15 +48,14 @@ export class ChatController {
   }
 
   @Post('message')
-  @ApiOkResponse({
-    description: 'Message processed successfully',
-    type: SuccessResponse,
-  })
-  @ApiInternalServerErrorResponse({
-    description: 'Internal Server Error',
-    type: ErrorResponse,
-  })
-  async sendMessage(@Body() chatMessage: ChatRequest): Promise<ChatResponse> {
+  @ChatApiDocs.sendMessage.operation
+  @ChatApiDocs.sendMessage.body
+  @ChatApiDocs.sendMessage.okResponse
+  @ChatApiDocs.sendMessage.badRequestResponse
+  @ChatApiDocs.sendMessage.internalServerErrorResponse
+  async sendMessage(
+    @Body() chatMessage: ChatRequestDto,
+  ): Promise<ChatResponseDto> {
     try {
       this.updateMessageHistory(chatMessage.userId, chatMessage.content);
       const recentContext = this.getRecentMessages(chatMessage.userId);
@@ -106,7 +63,6 @@ export class ChatController {
       // Extract intent including agent-specific context
       const intent = await this.intentService.extractIntent(
         `Previous messages:\n${recentContext}\n\nCurrent message: ${chatMessage.content}`,
-        chatMessage.agentType,
       );
 
       if (!intent) {
@@ -117,7 +73,12 @@ export class ChatController {
         };
       }
 
-      return this.handleObjectKeyIntent(intent, chatMessage);
+      const data = handleAction(intent.actionType, intent.params);
+      return {
+        message: 'Action processed successfully',
+        intent,
+        data,
+      };
     } catch (error) {
       return this.handleError(error);
     }
