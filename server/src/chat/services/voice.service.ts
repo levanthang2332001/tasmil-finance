@@ -41,10 +41,10 @@ export class VoiceService {
         throw new Error(`Whisper API failed: ${error}`);
       }
 
-      const data = await response.json();
+      const data = (await response.json()) as { text: string };
       fs.unlinkSync(file.path); // Clean up temporary file
 
-      return data.text;
+      return data?.text;
     } catch (error) {
       this.logger.error('Failed to transcribe audio', error);
       throw error;
