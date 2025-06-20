@@ -1,10 +1,23 @@
 import { createClient } from "@supabase/supabase-js";
+import * as dotenv from 'dotenv';
 
-const supabaseUrl = process.env.SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_KEY || '';
+dotenv.config();
 
-if (!supabaseUrl || !supabaseKey) {
-    throw new Error('Missing Supabase URL or key');
+export class SupabaseClient {
+    private readonly supabaseUrl: string;
+    private readonly supabaseRoleKey: string;
+
+    constructor() {
+        this.supabaseUrl = process.env.SUPABASE_URL || '';
+        this.supabaseRoleKey = process.env.SUPABASE_ROLE_KEY || '';
+    }
+
+    public async checkClient() {
+        if (!this.supabaseUrl || !this.supabaseRoleKey) {
+            throw new Error('Missing Supabase URL or role key');
+        }
+
+        const supabase = createClient(this.supabaseUrl, this.supabaseRoleKey);
+        return supabase;
+    }
 }
-
-export const supabase = createClient(supabaseUrl, supabaseKey);
