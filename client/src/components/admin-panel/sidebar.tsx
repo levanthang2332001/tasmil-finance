@@ -23,7 +23,7 @@ export function Sidebar() {
       <div
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        className="relative h-full flex flex-col px-3 py-4 overflow-y-auto shadow-md dark:shadow-zinc-800"
+        className="relative h-full flex flex-col px-3 py-4 shadow-md dark:shadow-zinc-800"
       >
         <Button
           className={cn(
@@ -33,18 +33,12 @@ export function Sidebar() {
           variant="link"
           asChild
         >
-          <Link href="/dashboard" className="!p-0 flex flex-row justify-start items-start gap-2">
-              <img
-                src="/images/logo.png"
-                alt="logo"
-                className="w-[40px] h-[40px] object-contain"
-              />
+          <Link href="/dashboard" className="!p-0 flex flex-row justify-start items-start gap-2 !no-underline">
+            <img src="/images/logo.png" alt="logo" className="w-[40px] h-[40px] object-contain" />
             <h3
               className={cn(
-                "no-underline hover:no-underline text-lg font-semibold bg-gradient-to-r from-crypto-blue to-crypto-blue bg-clip-text text-transparent whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300",
-                !getOpenState()
-                  ? "-translate-x-96 opacity-0 hidden"
-                  : "translate-x-0 opacity-100"
+                "text-lg font-semibold text-gradient whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300",
+                !getOpenState() ? "-translate-x-96 opacity-0 hidden" : "translate-x-0 opacity-100"
               )}
             >
               Tasmil Finance

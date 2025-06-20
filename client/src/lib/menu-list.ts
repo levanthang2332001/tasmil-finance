@@ -63,7 +63,7 @@ export function getMenuList(pathname: string): Group[] {
       ]
     },
     {
-      groupLabel: "Settings",
+      groupLabel: "",
       menus: [
         {
           href: PATHS.SETTINGS,
