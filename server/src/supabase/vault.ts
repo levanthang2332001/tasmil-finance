@@ -1,7 +1,19 @@
-import { Logger } from "@nestjs/common";
-import { SupabaseClient } from "./client"
-import { IInsertVaultRequest, IReadVaultRequest } from "../interfaces/vault.interface";
+import { Logger } from '@nestjs/common';
+import { SupabaseClient } from './client';
+import {
+  IInsertVaultRequest,
+  IReadVaultRequest,
+} from '../interfaces/vault.interface';
 
+interface IInsertVaultResponse {
+  id: string;
+}
+
+interface IReadVaultResponse {
+  id: string;
+  secret_name: string;
+  secret_value: string;
+}
 
 export class VaultSupabase {
   private readonly supabaseClient: SupabaseClient;
@@ -10,35 +22,33 @@ export class VaultSupabase {
     this.supabaseClient = new SupabaseClient();
   }
 
-  public async insertVault(params: IInsertVaultRequest) {
+  public async insertVault(
+    params: IInsertVaultRequest,
+  ): Promise<IInsertVaultResponse | null> {
     try {
-      const client = await this.supabaseClient.checkClient();
-      const { data, error } = await client.rpc('insert_secret', {
+      const client = this.supabaseClient.checkClient();
+      const response = await client.rpc('insert_secret', {
         secret_name: params.secret_name,
-        secret_value: params.secret_value
+        secret_value: params.secret_value,
       });
 
-      if(error) { Logger.error(error.message); }
-
-      return data;
+      return response.data as IInsertVaultResponse;
     } catch (error) {
       Logger.error(error);
+      return null;
     }
   }
 
-  public async getVault(params: IReadVaultRequest) {
+  public async getVault(
+    params: IReadVaultRequest,
+  ): Promise<IReadVaultResponse | null> {
     try {
-      const client = await this.supabaseClient.checkClient();
-      const { data, error } = await client.rpc('read_secret', {
-        secret_name: params.secret_name
+      const client = this.supabaseClient.checkClient();
+      const response = await client.rpc('read_secret', {
+        secret_name: params.secret_name,
       });
 
-      if(error) { 
-        Logger.error(error.message);
-        return null;
-      }
-
-      return data;
+      return response.data as IReadVaultResponse;
     } catch (error) {
       Logger.error(error);
       return null;

@@ -20,6 +20,4 @@ interface IDecryptResponse {
   prKey: string;
 }
 
-
-
 export { IEncryptRequest, IDecryptRequest, IEncryptResponse, IDecryptResponse };
