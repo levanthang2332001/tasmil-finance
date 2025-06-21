@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { Inter } from "next/font/google";
-import RouteGuard from "@/guard/route-guard";
 import { Toaster } from "sonner";
 import { WalletAptosProviders } from "@/providers";
 
@@ -47,10 +46,12 @@ export default function RootLayout({
     <html lang="en">
       {/* dark mode */}
       <body className={`${inter.variable} antialiased overflow-x-hidden dark`}>
-          <WalletAptosProviders>
-            <Toaster />
-            <RouteGuard>{children}</RouteGuard>
-          </WalletAptosProviders>
+        <WalletAptosProviders>
+          <Toaster />
+          {/* <RouteGuard> */}
+          {children}
+          {/* </RouteGuard> */}
+        </WalletAptosProviders>
       </body>
     </html>
   );
