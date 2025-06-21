@@ -83,7 +83,7 @@ export interface PaginatedNewsData {
 const SOSO_API_BASE_URL = 'https://openapi.sosovalue.com/api/v1';
 
 // Generic API Fetch Function
-export async function useAPI<T>(
+export async function getAPI<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
@@ -131,7 +131,7 @@ export async function fetchFeaturedNews(
   
   const endpoint = `${SOSO_API_BASE_URL}/news/featured?pageNum=${pageNum}&pageSize=${pageSize}&categoryList=${categoryListString}`;
   
-  return useAPI<PaginatedNewsData>(endpoint, {
+  return getAPI<PaginatedNewsData>(endpoint, {
     method: 'GET',
     headers: {
       'x-soso-api-key': apiKey

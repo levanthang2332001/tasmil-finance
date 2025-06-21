@@ -2,7 +2,14 @@
 
 const nextConfig = {
   images: {
-    domains: ["images.unsplash.com", "ui.aceternity.com", "tokens.1inch.io", "api.dicebear.com"],
+    domains: [
+      "images.unsplash.com",
+      "ui.aceternity.com",
+      "tokens.1inch.io",
+      "api.dicebear.com",
+      "pbs.twimg.com",
+      "cdn.discordapp.com",
+    ],
   },
   webpack: (config) => {
     config.resolve.fallback = {

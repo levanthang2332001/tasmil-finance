@@ -2,16 +2,13 @@
 "use client";
 
 import { ChatContainer } from "@/components/chat/ChatContainer";
-import { suggestionCetus, suggestionNavi, suggestionSuiLend } from "@/constants/suggestion";
-import { ChatService } from "@/services/chat.service";
-import { AgentType, useAgent } from "@/store/useAgent";
+import { SUGGESTION_DEFI_AGENT } from "@/constants/suggestion";
 import { Message, MESSAGE_TYPE } from "@/types/chat";
 import { useState } from "react";
 
 const ChatDefi = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { selectedAgent } = useAgent();
 
   console.log("messages: ", messages);
 
@@ -28,27 +25,11 @@ const ChatDefi = () => {
     // Send message to API
     setIsLoading(true);
     try {
-      const response = await ChatService.sendMessage("user-1", content, selectedAgent);
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        message: response.message,
+        message: "Sorry, there was an error processing your message.",
         timestamp: new Date(),
-        actionType: response.intent?.actionType || MESSAGE_TYPE.BOT,
-        data: response.quote ? {
-          poolAddress: response.quote.poolAddress,
-          tokenIn: response.quote.coinTypeIn,
-          tokenOut: response.quote.coinTypeOut,
-          symbolA: response.quote.symbolA || '',
-          symbolB: response.quote.symbolB || '',
-          amountIn: response.quote.amountIn,
-          amountOut: response.quote.amountOut,
-          decimalsA: response.quote.decimalsA.toString(),
-          decimalsB: response.quote.decimalsB.toString(),
-          a2b: response.quote.a2b,
-          byAmountIn: response.quote.byAmountIn,
-          slippage: response.quote.slippage,
-          }
-        : response.intent?.params,
+        actionType: MESSAGE_TYPE.BOT,
       };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
@@ -105,17 +86,6 @@ const ChatDefi = () => {
     setMessages((prev) => [...prev, cancelMessage]);
   };
 
-  const getSuggestions = () => {
-    const suggestionsMap = {
-      [AgentType.NAVI]: suggestionNavi,
-      [AgentType.CETUS]: suggestionCetus,
-      [AgentType.SUILEND]: suggestionSuiLend,
-      default: null,
-    };
-
-    return suggestionsMap[selectedAgent as AgentType] ?? suggestionsMap.default;
-  };
-
   return (
     <div className="flex flex-col h-full ">
       <ChatContainer
@@ -124,7 +94,7 @@ const ChatDefi = () => {
         onSendMessage={handleSendMessage}
         onSwapConfirm={handleSwapConfirm}
         onSwapCancel={handleSwapCancel}
-        suggestions={getSuggestions()}
+        suggestions={SUGGESTION_DEFI_AGENT}
       />
     </div>
   );

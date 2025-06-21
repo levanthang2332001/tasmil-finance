@@ -1,5 +1,5 @@
 export const PART = {
-  features: "features",
-  ai: "ai",
-  steps: "steps",
+  Features: "features",
+  Documentation: "documentation",
+  "How It Works": "how-it-works",
 };

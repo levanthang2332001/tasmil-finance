@@ -1,43 +1,21 @@
-import { AptosProviders } from "./aptos";
-import { ReactQueryClientProvider } from "./querry-provider";
-import SuiProviders from "./sui";
+"use client";
 
-// type WalletType = "sui" | "aptos";
+import { PropsWithChildren } from "react";
+import { ReactQueryClientProvider } from "./QuerryProvider";
+import { WalletProvider } from "./WalletProvider";
+import { TransactionProvider } from "@/providers/TransactionProvider";
+import { ThemeProvider } from "./ThemeProvider";
 
-// export function WalletAptosSuiProviders({
-//   children,
-//   walletType = "aptos"
-// }: {
-//   children: React.ReactNode;
-//   walletType?: WalletType;
-// }) {
-//   if (walletType === "aptos") {
-//     return (
-//     <ReactQueryClientProvider>
-//       <AptosProviders>{children}</AptosProviders>
-//     </ReactQueryClientProvider>
-//   );
-//   } else if (walletType === "sui") {
-//     return (
-//       <ReactQueryClientProvider>
-//         <SuiProviders>{children}</SuiProviders>
-//       </ReactQueryClientProvider>
-//     );
-//   }
-// }
-
-
-export function WalletAptosSuiProviders({
-  children
-}: {
-  children: React.ReactNode;
-}) {
-    return (
+export function WalletAptosProviders({ children }: PropsWithChildren) {
+  return (
     <ReactQueryClientProvider>
-      <AptosProviders>
-        <SuiProviders>{children}</SuiProviders>
-      </AptosProviders>
+      <WalletProvider>
+        <TransactionProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+          </ThemeProvider>
+        </TransactionProvider>
+      </WalletProvider>
     </ReactQueryClientProvider>
   );
-  
 }

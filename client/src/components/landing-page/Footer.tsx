@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
-import ConnectWallet from "../wallet/sui-wallet";
 import SocialMedia from "./SocialMedia";
+import { AptosConnectWallet } from "../wallet";
 
 const Footer = () => {
   return (
@@ -13,14 +13,14 @@ const Footer = () => {
           transition={{ duration: 0.5 }}
           className="max-w-3xl mx-auto text-center"
         >
-          <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-crypto-blue mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent text-gradient mb-6">
             Ready to Transform Your DeFi Trading?
           </h2>
           <p className="text-gray-400 mb-8 text-lg">
             Join thousands of traders using AI to optimize their DeFi strategies
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <ConnectWallet label="Get Started" />
+            <AptosConnectWallet label="🚀 Get Started" />
           </div>
         </motion.div>
       </div>
