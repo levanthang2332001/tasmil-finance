@@ -1,4 +1,4 @@
-import { aptosProvider } from "@/wrappers/aptos-provider";
+import { aptosProvider } from "@/providers/AptosProvider";
 import {
   Aptos,
   EntryFunctionArgumentTypes,

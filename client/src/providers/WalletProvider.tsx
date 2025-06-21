@@ -4,8 +4,7 @@ import { AptosWalletAdapterProvider } from "@aptos-labs/wallet-adapter-react";
 // import { MartianWallet } from "@martianwallet/aptos-wallet-adapter";
 import { PropsWithChildren } from "react";
 import { Network } from "@aptos-labs/ts-sdk";
-import { useToast } from "@/hooks/shared/use-toast";
-
+import { useToast } from "@/hooks/useToast";
 
 // ref: https://github.com/aptos-labs/aptos-wallet-adapter/blob/main/apps/nextjs-example/src/components/WalletProvider.tsx#L29
 export function WalletProvider({ children }: PropsWithChildren) {

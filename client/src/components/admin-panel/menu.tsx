@@ -8,16 +8,11 @@ import { useState, useEffect } from "react";
 import { CollapseMenuButton } from "@/components/admin-panel/collapse-menu-button";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { getMenuList } from "@/lib/menu-list";
 import { cn } from "@/lib/utils";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { useToast } from "@/hooks/shared/use-toast";
+import { useToast } from "@/hooks/useToast";
 import { PrivateKeyDialog } from "../dialogs/PrivateKeyDialog";
 
 interface MenuProps {
@@ -36,9 +31,7 @@ export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList(pathname);
   const { disconnect, account } = useWallet();
-  const [internalWallet, setInternalWallet] = useState<InternalWallet | null>(
-    null
-  );
+  const [internalWallet, setInternalWallet] = useState<InternalWallet | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -85,8 +78,7 @@ export function Menu({ isOpen }: MenuProps) {
     setTimeout(() => {
       const mockResponse: CreateInternalWalletResponse = {
         address: "0x8e78f6c5b96d4e12c1b9a9f4c1e7f0c13c12",
-        privateKey:
-          "0xb76b9f932065a3381452fa0281021315b8dc08ac6689a3074fa8354053ccbaeb",
+        privateKey: "0xb76b9f932065a3381452fa0281021315b8dc08ac6689a3074fa8354053ccbaeb",
       };
 
       console.log("MOCK: Wallet created successfully.");
@@ -141,16 +133,11 @@ export function Menu({ isOpen }: MenuProps) {
         <nav className="mt-8 h-full w-full">
           <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
             {menuList.map(({ groupLabel, menus }, index) => (
-              <li
-                className={cn("w-full", groupLabel ? "pt-5" : "")}
-                key={index}
-              >
+              <li className={cn("w-full", groupLabel ? "pt-5" : "")} key={index}>
                 {renderGroupLabel(groupLabel)}
                 {menus.map((menu) => {
                   const { href, label, icon: Icon, active, submenus } = menu;
-                  const isActive = Boolean(
-                    active ?? pathname.startsWith(href)
-                  );
+                  const isActive = Boolean(active ?? pathname.startsWith(href));
                   if (!submenus?.length)
                     return (
                       <div className="w-full" key={href}>
@@ -162,10 +149,7 @@ export function Menu({ isOpen }: MenuProps) {
                                 className="w-full justify-start h-10 mb-1"
                                 asChild
                               >
-                                <Link
-                                  href={href}
-                                  className="flex items-center"
-                                >
+                                <Link href={href} className="flex items-center">
                                   <span className={isOpen ? "mr-4" : ""}>
                                     <Icon size={18} />
                                   </span>
@@ -177,11 +161,7 @@ export function Menu({ isOpen }: MenuProps) {
                                 </Link>
                               </Button>
                             </TooltipTrigger>
-                            {!isOpen && (
-                              <TooltipContent side="right">
-                                {label}
-                              </TooltipContent>
-                            )}
+                            {!isOpen && <TooltipContent side="right">{label}</TooltipContent>}
                           </Tooltip>
                         </TooltipProvider>
                       </div>
@@ -203,9 +183,7 @@ export function Menu({ isOpen }: MenuProps) {
             <li className="w-full grow flex flex-col justify-end">
               {/* Wallet Section */}
               <div className="w-full rounded-2xl p-3 mb-4 glass border border-white/5 space-y-2">
-                <h3 className="text-center font-semibold text-base text-white/90">
-                  Wallet
-                </h3>
+                <h3 className="text-center font-semibold text-base text-white/90">Wallet</h3>
 
                 {/* Connected wallet address */}
                 {account?.address && (
@@ -262,18 +240,10 @@ export function Menu({ isOpen }: MenuProps) {
                       <span className={cn(isOpen ? "mr-4" : "")}>
                         <LogOut size={18} />
                       </span>
-                      {isOpen && (
-                        <p className="whitespace-nowrap opacity-100">
-                          Disconnect Wallet
-                        </p>
-                      )}
+                      {isOpen && <p className="whitespace-nowrap opacity-100">Disconnect Wallet</p>}
                     </Button>
                   </TooltipTrigger>
-                  {!isOpen && (
-                    <TooltipContent side="right">
-                      Disconnect Wallet
-                    </TooltipContent>
-                  )}
+                  {!isOpen && <TooltipContent side="right">Disconnect Wallet</TooltipContent>}
                 </Tooltip>
               </TooltipProvider>
             </li>

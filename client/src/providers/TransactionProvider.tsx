@@ -1,17 +1,20 @@
 "use client";
 import React, { createContext, useContext, useMemo, useCallback, ReactNode } from "react";
-import { useToast } from "@/hooks/shared/use-toast";
+import { useToast } from "@/hooks/useToast";
 import { InputTransactionData } from "@aptos-labs/wallet-adapter-core";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { aptosProvider } from "./aptos-provider";
+import { aptosProvider } from "./AptosProvider";
 import { TransactionHash } from "@/components/transaction-hash";
 import { InputViewFunctionData, MoveValue } from "@aptos-labs/ts-sdk";
-import { EntryService } from "@/services/sui/entry-services";
-import { ViewService } from "@/services/sui/view-services";
+import { EntryService } from "@/services/aptos/entry-services";
+import { ViewService } from "@/services/aptos/view-services";
 
 interface ITransactionContext {
   signAndSubmitTx: (tx: InputTransactionData, options?: TransactionOptions) => Promise<void>;
-  viewTx: (tx: InputViewFunctionData, options?: TransactionOptions) => Promise<MoveValue[] | undefined>;
+  viewTx: (
+    tx: InputViewFunctionData,
+    options?: TransactionOptions
+  ) => Promise<MoveValue[] | undefined>;
   entryService: EntryService;
   viewService: ViewService;
 }

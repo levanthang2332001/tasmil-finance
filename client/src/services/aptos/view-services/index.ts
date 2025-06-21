@@ -1,5 +1,5 @@
 // import { UiPoolDataProviderService } from "@/services/sui/view-services/ui-pool-data-provider";
-import { ExampleService } from "@/services/sui/view-services/example";
+import { ExampleService } from "@/services/aptos/view-services/example";
 
 export class ViewService {
   private example: ExampleService;

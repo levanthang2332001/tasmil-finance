@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/shared/use-toast";
+import { useToast } from "@/hooks/useToast";
 
 interface PrivateKeyDialogProps {
   isOpen: boolean;
@@ -18,11 +18,7 @@ interface PrivateKeyDialogProps {
   privateKey: string | null;
 }
 
-export const PrivateKeyDialog = ({
-  isOpen,
-  onClose,
-  privateKey,
-}: PrivateKeyDialogProps) => {
+export const PrivateKeyDialog = ({ isOpen, onClose, privateKey }: PrivateKeyDialogProps) => {
   const { toast } = useToast();
 
   const handleCopy = () => {
@@ -43,8 +39,7 @@ export const PrivateKeyDialog = ({
         <DialogHeader>
           <DialogTitle>Your Private Key</DialogTitle>
           <DialogDescription>
-            Please securely store your private key. Do not share it with
-            anyone.
+            Please securely store your private key. Do not share it with anyone.
           </DialogDescription>
         </DialogHeader>
         <div className="my-4">
@@ -61,10 +56,10 @@ export const PrivateKeyDialog = ({
           </div>
         </div>
         <div className="p-3 bg-yellow-900/20 text-yellow-400/80 rounded-md text-xs">
-          <strong>Note:</strong> Please fund your wallet with any amount of
-          token to activate in Aptos network.
+          <strong>Note:</strong> Please fund your wallet with any amount of token to activate in
+          Aptos network.
         </div>
       </DialogContent>
     </Dialog>
   );
-}; 
+};

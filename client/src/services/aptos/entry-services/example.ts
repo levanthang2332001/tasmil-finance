@@ -1,5 +1,5 @@
 import { InputTransactionData } from "@aptos-labs/wallet-adapter-core";
-import { AptosBaseService } from "@/services/sui/base";
+import { AptosBaseService } from "@/services/aptos/base";
 
 export class ExampleService extends AptosBaseService {
   public getExamplePayload(): InputTransactionData {

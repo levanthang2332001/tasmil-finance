@@ -1,4 +1,4 @@
-import { ExampleService } from "@/services/sui/entry-services/example";
+import { ExampleService } from "@/services/aptos/entry-services/example";
 
 export class EntryService {
   private readonly example: ExampleService;

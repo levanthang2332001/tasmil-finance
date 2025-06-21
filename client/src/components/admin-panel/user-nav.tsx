@@ -4,12 +4,7 @@ import Link from "next/link";
 import { Copy, LayoutGrid, LogOut, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,13 +12,13 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Typography } from "../ui/typography";
 import { truncateAddress } from "@aptos-labs/ts-sdk";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { useCallback } from "react";
-import { useToast } from "@/hooks/shared/use-toast";
+import { useToast } from "@/hooks/useToast";
 
 export function UserNav() {
   const { account, disconnect, network } = useWallet();
@@ -51,11 +46,10 @@ export function UserNav() {
         <Tooltip delayDuration={100}>
           <TooltipTrigger asChild>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="relative h-9 rounded-sm"
-              >
-                <Typography className="text-sm">{truncateAddress(account?.address?.toString() || "")}</Typography>
+              <Button variant="outline" className="relative h-9 rounded-sm">
+                <Typography className="text-sm">
+                  {truncateAddress(account?.address?.toString() || "")}
+                </Typography>
               </Button>
             </DropdownMenuTrigger>
           </TooltipTrigger>
@@ -73,7 +67,10 @@ export function UserNav() {
               </p>
 
               {/* copy address */}
-              <div onClick={copyAddress} className="p-0 h-4 w-4 hover:cursor-pointer hover:text-primary">
+              <div
+                onClick={copyAddress}
+                className="p-0 h-4 w-4 hover:cursor-pointer hover:text-primary"
+              >
                 <Copy className="w-4 h-4" />
               </div>
             </div>
@@ -95,9 +92,12 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="hover:cursor-pointer" onClick={() => {
-          disconnect();
-        }}>
+        <DropdownMenuItem
+          className="hover:cursor-pointer"
+          onClick={() => {
+            disconnect();
+          }}
+        >
           <LogOut className="w-4 h-4 mr-3 text-muted-foreground" />
           Disconnect Wallet
         </DropdownMenuItem>
