@@ -20,6 +20,8 @@ const NONCE_STORE: {
   };
 } = {};
 
+const NONCE_EXPIRATION_TIME = 3 * 60 * 1000; // 3 minutes
+
 @Controller('auth')
 export class AuthController {
   private readonly jwtSecret: string;
@@ -90,7 +92,7 @@ export class AuthController {
       }
 
       const token = jwt.sign({ walletAddress }, this.jwtSecret, {
-        expiresIn: '1h',
+        expiresIn: NONCE_EXPIRATION_TIME,
       });
 
       delete NONCE_STORE[walletAddress];
