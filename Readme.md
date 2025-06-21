@@ -34,7 +34,7 @@ Rename a `.env.development` file to `.env` file (both client & server folder)
 
 ## 🚀 Run Commands
 
-#### Client ([Staging](https://tasmil-finance-flax.vercel.app/))
+#### Client ([Staging](https://tasmil-finance.vercel.app/))
 
 ```sh
 cd client && yarn && yarn dev
