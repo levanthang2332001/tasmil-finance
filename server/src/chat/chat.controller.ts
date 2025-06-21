@@ -17,8 +17,8 @@ export class ChatController {
     this.intentService = new IntentService();
   }
 
-  private getRecentMessages(userId: string, limit: number = 3): string {
-    const userMessages = this.messageHistory.get(userId) || [];
+  private getRecentMessages(user_address: string, limit: number = 3): string {
+    const userMessages = this.messageHistory.get(user_address) || [];
     const recentMessages = userMessages
       .slice(-limit)
       .map((entry) => entry.content)
@@ -26,8 +26,8 @@ export class ChatController {
     return recentMessages;
   }
 
-  private updateMessageHistory(userId: string, content: string): void {
-    const userMessages = this.messageHistory.get(userId) || [];
+  private updateMessageHistory(user_address: string, content: string): void {
+    const userMessages = this.messageHistory.get(user_address) || [];
     userMessages.push({
       content,
       timestamp: Date.now(),
@@ -36,7 +36,7 @@ export class ChatController {
     if (userMessages.length > 10) {
       userMessages.shift();
     }
-    this.messageHistory.set(userId, userMessages);
+    this.messageHistory.set(user_address, userMessages);
   }
 
   private async handleError(error: unknown): Promise<ChatResponseDto> {
@@ -57,8 +57,8 @@ export class ChatController {
     @Body() chatMessage: ChatRequestDto,
   ): Promise<ChatResponseDto> {
     try {
-      this.updateMessageHistory(chatMessage.userId, chatMessage.content);
-      const recentContext = this.getRecentMessages(chatMessage.userId);
+      this.updateMessageHistory(chatMessage.user_address, chatMessage.content);
+      const recentContext = this.getRecentMessages(chatMessage.user_address);
 
       // Extract intent including agent-specific context
       const intent = await this.intentService.extractIntent(
@@ -73,7 +73,11 @@ export class ChatController {
         };
       }
 
-      const data = handleAction(intent.actionType, intent.params);
+      const data = handleAction(
+        intent.actionType,
+        intent.params,
+        chatMessage.user_address,
+      );
       return {
         message: 'Action processed successfully',
         intent,
