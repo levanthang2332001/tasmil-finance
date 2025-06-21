@@ -1,6 +1,9 @@
 import { StakingParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
 import { ActionResult } from '../types/action.interface';
+import { aptosAgent } from '../../../utils/aptosAgent';
+import { getTokenByTokenName } from '../../../utils/token';
+import { stakeTokensWithThala } from '../../../tools/thala/staking';
 
 export class StakingAction extends AbstractBaseAction<StakingParams> {
   readonly name = 'staking';
@@ -25,14 +28,39 @@ export class StakingAction extends AbstractBaseAction<StakingParams> {
     'Stake 50 MATIC for rewards',
   ];
 
-  handle(params: StakingParams): ActionResult {
+  async handle(
+    params: StakingParams,
+    user_address: string,
+  ): Promise<ActionResult<any>> {
     try {
-      // TODO: Implement actual staking logic
+      const { token, amount } = params;
+
+      const findToken = getTokenByTokenName(token);
+
+      if (!findToken) {
+        return this.createErrorResult('Token not found');
+      }
+
+      const rawValue = Number(amount);
+      if (isNaN(rawValue) || rawValue <= 0) {
+        return this.createErrorResult('Invalid value provided');
+      }
+
+      const amountInInterger = Math.floor(rawValue * 10 ** findToken.decimals);
+      const { aptos, accounts } = await aptosAgent(user_address);
+
+      const data = await stakeTokensWithThala(
+        aptos,
+        accounts,
+        amountInInterger,
+      );
+
       const result = {
         action: 'stake',
         token: params.token,
         amount: params.amount,
         duration: params.duration || 'flexible',
+        data,
         timestamp: new Date().toISOString(),
       };
 
