@@ -74,7 +74,7 @@ export const ChatInput = ({ onSendMessage, isLoading, className }: ChatInputProp
               variant="ghost"
               className={cn(
                 BUTTON_CLASS,
-                " rounded-full text-muted-foreground hover:text-crypto-blue cursor-pointer"
+                "rounded-full text-muted-foreground hover:text-primary cursor-pointer"
               )}
               disabled={!message.trim() || isLoading}
             >
