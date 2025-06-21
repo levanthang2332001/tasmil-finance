@@ -38,14 +38,14 @@ function BotRepayMessage({ message, isLoading }: BotRepayMessageProps) {
                 Amount
               </span>
               <span className="font-semibold text-primary">
-                {formatAmount(amount)} {asset}
+                {formatAmount(amount as string)} {asset}
               </span>
 
               <span className="flex items-center">
                 <PercentCircle className="w-4 h-4 text-orange-400 mr-1" />
                 APR
               </span>
-              <span className="font-semibold text-orange-400">{formatAmount(rate)}%</span>
+              <span className="font-semibold text-orange-400">{formatAmount(rate as string)}%</span>
 
               {fee && (
                 <>
@@ -53,7 +53,9 @@ function BotRepayMessage({ message, isLoading }: BotRepayMessageProps) {
                     <ReceiptText className="w-4 h-4 text-rose-400 mr-1" />
                     Fee
                   </span>
-                  <span className="font-semibold text-rose-400">{formatCurrency(fee)}</span>
+                  <span className="font-semibold text-rose-400">
+                    {formatCurrency(fee as string)}
+                  </span>
                 </>
               )}
 
@@ -64,7 +66,7 @@ function BotRepayMessage({ message, isLoading }: BotRepayMessageProps) {
                     Balance
                   </span>
                   <span className="font-semibold text-blue-400">
-                    {formatAmount(balance)} {asset}
+                    {formatAmount(balance as string)} {asset}
                   </span>
                 </>
               )}

@@ -74,7 +74,7 @@ function FaqAccordion() {
   );
 }
 
-export function HelpPage() {
+const HelpPage = () => {
   return (
     <ContentLayout title="Help & FAQ">
       <div className="w-full min-h-screen flex items-center justify-center">
@@ -115,6 +115,6 @@ export function HelpPage() {
       </div>
     </ContentLayout>
   );
-}
+};
 
 export default HelpPage;
