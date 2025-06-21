@@ -96,7 +96,7 @@ export class Accounts {
     };
   }
 
-  public async getAccountByAddress(address: string): Promise<string | null> {
+  public async getPrivateKeyByAddress(address: string): Promise<string | null> {
     const userExist = await this.checkUserExist(address);
     const vault = new VaultSupabase();
 
@@ -107,7 +107,7 @@ export class Accounts {
         throw new Error('Vault data not found');
       }
 
-      const data = JSON.parse(vaultData.secret_value) as {
+      const data = JSON.parse(vaultData as unknown as string) as {
         cipherText: string;
         salt: string;
         iv: string;
@@ -119,6 +119,7 @@ export class Accounts {
         saltB64: data.salt,
         ivB64: data.iv,
       });
+
       return decrypted.prKey;
     }
     return null;
