@@ -2,7 +2,7 @@ import * as forge from 'node-forge';
 import {
   IDecryptRequest,
   IDecryptResponse,
-} from '../interfaces/crypto.interface';
+} from '../wallet/entities/crypto.entities';
 
 export const Decrypt = (params: IDecryptRequest): IDecryptResponse => {
   const { cipherText, password, saltB64, ivB64 } = params;

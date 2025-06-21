@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 import { Account, Ed25519PrivateKey } from '@aptos-labs/ts-sdk';
-import { SupabaseClient, VaultSupabase } from '../supabase/index';
-import { IAccount } from '../interfaces/account.interface';
+import { SupabaseClient, VaultSupabase } from './supabase/index';
+import { IAccount } from './entities/account.entities';
 import { Decrypt, Encrypt } from '../utils/index';
 dotenv.config();
 
