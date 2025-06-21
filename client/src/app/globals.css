@@ -18,34 +18,34 @@
   :root {
     --container-width: 1440px;
     --header-height: 83px;
-    --brand-cyan: #1eaedb;
-    --brand-purple: #1eaedb;
-    --brand-blue: #1eaedb;
+    --brand-cyan: #df255a;
+    --brand-purple: #df255a;
+    --brand-blue: #df255a;
 
-    --background: 222 47% 6%;
+    --background: 222 47% 10%;
     --foreground: 210 40% 98%;
     --card: 224 47% 8%;
     --card-foreground: 210 40% 98%;
     --popover: 222 47% 6%;
     --popover-foreground: 210 40% 98%;
-    --primary: 196 87% 49%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
+    --primary: 342 74% 51%; /* #DF255A */
+    --primary-foreground: 210 40% 98%;
+    --secondary: 342 74% 51%; /* #DF255A */
     --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
+    --muted: 342 74% 51%; /* #DF255A */
+    --muted-foreground: 210 40% 98%;
+    --accent: 342 74% 51%; /* #DF255A */
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 196 87% 49%;
-    --chart-1: 196 87% 49%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --ring: 342 74% 51%; /* #DF255A */
+    --chart-1: 342 74% 51%; /* #DF255A */
+    --chart-2: 342 74% 51%; /* #DF255A */
+    --chart-3: 342 74% 51%; /* #DF255A */
+    --chart-4: 342 74% 51%; /* #DF255A */
+    --chart-5: 342 74% 51%; /* #DF255A */
     --radius: 0.75rem;
   }
   .dark {
@@ -55,24 +55,24 @@
     --card-foreground: 210 40% 98%;
     --popover: 222 47% 6%;
     --popover-foreground: 210 40% 98%;
-    --primary: 196 87% 49%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
+    --primary: 342 74% 51%; /* #DF255A */
+    --primary-foreground: 210 40% 98%;
+    --secondary: 342 74% 51%; /* #DF255A */
     --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
+    --muted: 342 74% 51%; /* #DF255A */
+    --muted-foreground: 210 40% 98%;
+    --accent: 342 74% 51%; /* #DF255A */
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 196 87% 49%;
-    --chart-1: 196 87% 49%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 196 87% 49%;
-    --chart-5: 196 87% 49%;
+    --ring: 342 74% 51%; /* #DF255A */
+    --chart-1: 342 74% 51%; /* #DF255A */
+    --chart-2: 342 74% 51%; /* #DF255A */
+    --chart-3: 342 74% 51%; /* #DF255A */
+    --chart-4: 342 74% 51%; /* #DF255A */
+    --chart-5: 342 74% 51%; /* #DF255A */
   }
 }
 
@@ -91,7 +91,7 @@
   .gradient-outline {
     position: relative;
     background: linear-gradient(#111111, #111111) padding-box,
-      linear-gradient(45deg, #1eaedb, #1eaedb) border-box;
+      linear-gradient(45deg, #df255a, #df255a) border-box;
     border: 0.5px solid transparent;
     color: var(--primary);
   }
@@ -106,6 +106,10 @@
 
   .trader-card {
     @apply glass rounded-xl p-4 bg-top-trader-card;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#DF255A] to-neutral-400;
   }
 }
 

@@ -1,26 +1,64 @@
-import { CETUS_ACTION_TYPE } from './cetus/cetus.entity';
-import { SwapParams } from './cetus/swap.entity';
-import { AgentType } from './chat.entity';
-import { MarketParams } from './market.entity';
-import {
-  BorrowParams,
-  NAVI_ACTION_TYPE,
-  RepayParams,
-  SupplyParams,
-  WithdrawParams,
-} from './navi/navi.entity';
+export type SwapParams = {
+  fromToken: string;
+  toToken: string;
+  amount: number;
+};
+
+export type LiquidityParams = {
+  tokenA: string;
+  tokenB: string;
+  amountA: number;
+  amountB: number;
+};
+
+export type StakingParams = {
+  token: string;
+  amount: number;
+  duration?: number;
+};
+
+export type BorrowParams = {
+  token: string;
+  amount: number;
+  collateralToken?: string;
+  collateralAmount?: number;
+  ltv?: number; // Loan-to-Value ratio
+};
+
+export type LendingParams = {
+  token: string;
+  amount: number;
+  duration?: number;
+  interestRate?: number;
+};
+
+export type RemoveLiquidityParams = {
+  tokenA: string;
+  tokenB: string;
+  liquidityAmount: number;
+  minAmountA?: number;
+  minAmountB?: number;
+};
 
 export type ParamsType =
   | SwapParams
-  | MarketParams
+  | LiquidityParams
+  | StakingParams
   | BorrowParams
-  | SupplyParams
-  | WithdrawParams
-  | RepayParams;
+  | LendingParams
+  | RemoveLiquidityParams;
+
+export type ActionType =
+  | 'swap'
+  | 'liquidity'
+  | 'staking'
+  | 'borrow'
+  | 'lending'
+  | 'remove_liquidity'
+  | 'unknown';
 
 export interface DeFiIntent {
-  agentType: 'unknown' | AgentType;
-  actionType: 'unknown' | NAVI_ACTION_TYPE | CETUS_ACTION_TYPE;
+  actionType: ActionType;
   params: ParamsType;
   confidence: number;
   missingFields: string[];

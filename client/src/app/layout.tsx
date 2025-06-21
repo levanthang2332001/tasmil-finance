@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import ReactQueryProvider from "@/providers/ReactQueryProvider";
-import SuiProvider from "@/providers/SuiProvider";
+
 import { Inter } from "next/font/google";
-import RouteGuard from "@/providers/RouteGuard";
 import { Toaster } from "sonner";
+import { WalletAptosProviders } from "@/providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -47,12 +46,12 @@ export default function RootLayout({
     <html lang="en">
       {/* dark mode */}
       <body className={`${inter.variable} antialiased overflow-x-hidden dark`}>
-        <ReactQueryProvider>
-          <SuiProvider>
-            <Toaster />
-            <RouteGuard>{children}</RouteGuard>
-          </SuiProvider>
-        </ReactQueryProvider>
+        <WalletAptosProviders>
+          <Toaster />
+          {/* <RouteGuard> */}
+          {children}
+          {/* </RouteGuard> */}
+        </WalletAptosProviders>
       </body>
     </html>
   );

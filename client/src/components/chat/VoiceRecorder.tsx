@@ -36,7 +36,7 @@ export default function VoiceRecorder({ className, setMessage, disabled }: Voice
 
     try {
       setIsLoading(true);
-      const res = await fetch("http://localhost:5000/chat/transcribe", {
+      const res = await fetch("http://localhost:5000/voice/transcribe", {
         method: "POST",
         body: formData,
       });
@@ -63,7 +63,7 @@ export default function VoiceRecorder({ className, setMessage, disabled }: Voice
         "rounded-full p-2",
         isRecording
           ? "bg-red-500 hover:bg-red-600 text-white"
-          : "bg-crypto-blue hover:bg-crypto-blue/90 text-white",
+          : "bg-black hover:bg-black/90 border shadow-[0_0_5px_#1EAEDB80] text-white",
         className
       )}
     >
