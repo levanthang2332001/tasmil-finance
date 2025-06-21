@@ -5,7 +5,7 @@ import { ParamsType, ActionType } from '../../entities/intent.entity';
 import { swapAction } from '../trading/swap.action';
 import { liquidityAction } from '../liquidity/add-liquidity.action';
 import { removeLiquidityAction } from '../liquidity/remove-liquidity.action';
-import { stakingAction } from '../yield/staking.action';
+import { stakingAction } from '../stake/staking.action';
 import { borrowAction } from '../lending/borrow.action';
 import { lendingAction } from '../lending/lending.action';
 import { defaultAction } from '../unknown/default.action';

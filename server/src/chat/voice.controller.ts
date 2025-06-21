@@ -49,7 +49,7 @@ export class VoiceController {
       const transcript = await this.voiceService.transcribeAudio(file);
       return { transcript };
     } catch (error) {
-      throw new Error(`Failed to transcribe audio: ${error}`);
+      throw new Error(`Failed to transcribe audio: ${error as string}`);
     } finally {
       // Clean up the uploaded file after processing
       fs.unlink(file.path, (err) => {

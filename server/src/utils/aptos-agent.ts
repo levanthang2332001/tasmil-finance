@@ -8,7 +8,7 @@ import {
   PrivateKey,
   PrivateKeyVariants,
 } from '@aptos-labs/ts-sdk';
-import decryptKey from './decryptKey';
+import { Decrypt } from './decrypt';
 
 export async function aptosAgent(userWalletAddress: string) {
   const aptosConfig = new AptosConfig({ network: Network.MAINNET });
@@ -20,13 +20,19 @@ export async function aptosAgent(userWalletAddress: string) {
 
   const record = {
     encryptedPrivateKey: '1234567890',
+    salt: 'salt_value',
+    iv: 'iv_value',
   };
 
   if (!record) {
     throw new Error('No record found for the provided userWalletAddress');
   }
 
-  const privateKeyStr = decryptKey(record.encryptedPrivateKey);
+  const privateKeyStr = Decrypt({
+    cipherText: record.encryptedPrivateKey,
+    saltB64: record.salt || '',
+    ivB64: record.iv || '',
+  } ) ;
 
   if (!privateKeyStr) {
     throw new Error('Missing APTOS_PRIVATE_KEY environment variable');

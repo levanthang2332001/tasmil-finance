@@ -1,5 +1,8 @@
-import * as forge from "node-forge";
-import { IDecryptRequest, IDecryptResponse } from "../interfaces/crypto.interface";
+import * as forge from 'node-forge';
+import {
+  IDecryptRequest,
+  IDecryptResponse,
+} from '../interfaces/crypto.interface';
 
 export const Decrypt = (params: IDecryptRequest): IDecryptResponse => {
   const { cipherText, password, saltB64, ivB64 } = params;
@@ -15,9 +18,9 @@ export const Decrypt = (params: IDecryptRequest): IDecryptResponse => {
 
   const success = decipher.finish();
 
-  if (!success) throw new Error("Failed to decrypt private key");
+  if (!success) throw new Error('Failed to decrypt private key');
 
   return {
-    prKey: decipher.output.toString()
+    prKey: decipher.output.toString(),
   };
-}
+};

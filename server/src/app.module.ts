@@ -6,7 +6,7 @@ import { AppService } from './app.service';
 import { ChatModule } from './chat/chat.module';
 import { AccountsModule } from './wallet/accounts.module';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthModule } from './Guard/auth.module';
+import { AuthModule } from './guard/auth.module';
 
 @Module({
   imports: [
