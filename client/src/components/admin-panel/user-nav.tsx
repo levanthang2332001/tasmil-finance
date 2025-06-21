@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutGrid, LogOut, User } from "lucide-react";
+import { Copy, LayoutGrid, LogOut, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Tooltip,
   TooltipContent,
@@ -20,8 +19,32 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import { Typography } from "../ui/typography";
+import { truncateAddress } from "@aptos-labs/ts-sdk";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { useCallback } from "react";
+import { useToast } from "@/hooks/shared/use-toast";
 
 export function UserNav() {
+  const { account, disconnect, network } = useWallet();
+  const { toast } = useToast();
+
+  const copyAddress = useCallback(async () => {
+    if (!account?.address) return;
+    try {
+      await navigator.clipboard.writeText(account.address.toString());
+      toast({
+        title: "Success",
+        description: "Copied wallet address to clipboard.",
+      });
+    } catch {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to copy wallet address.",
+      });
+    }
+  }, [account?.address, toast]);
   return (
     <DropdownMenu>
       <TooltipProvider disableHoverableContent>
@@ -30,12 +53,9 @@ export function UserNav() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="relative h-8 w-8 rounded-full"
+                className="relative h-9 rounded-sm"
               >
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src="#" alt="Avatar" />
-                  <AvatarFallback className="bg-transparent">JD</AvatarFallback>
-                </Avatar>
+                <Typography className="text-sm">{truncateAddress(account?.address?.toString() || "")}</Typography>
               </Button>
             </DropdownMenuTrigger>
           </TooltipTrigger>
@@ -46,10 +66,17 @@ export function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">John Doe</p>
-            <p className="text-xs leading-none text-muted-foreground">
-              johndoe@example.com
-            </p>
+            <p className="text-sm font-medium leading-none">{network?.name}</p>
+            <div className="flex flex-row items-center gap-2">
+              <p className="text-xs leading-none text-muted-foreground">
+                {truncateAddress(account?.address?.toString() || "")}
+              </p>
+
+              {/* copy address */}
+              <div onClick={copyAddress} className="p-0 h-4 w-4 hover:cursor-pointer hover:text-primary">
+                <Copy className="w-4 h-4" />
+              </div>
+            </div>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -68,9 +95,11 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="hover:cursor-pointer" onClick={() => {}}>
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={() => {
+          disconnect();
+        }}>
           <LogOut className="w-4 h-4 mr-3 text-muted-foreground" />
-          Sign out
+          Disconnect Wallet
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
