@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 
 interface Agent {
@@ -24,10 +25,12 @@ const AgentCard = ({ agent, className }: Agent) => {
       >
         <CardHeader>
           <div className="flex items-center space-x-4">
-            <img
+            <Image
               src={agent.imageUrl}
               alt={agent.name}
               className="w-12 h-12 rounded-full object-cover"
+              width={48}
+              height={48}
             />
             <CardTitle>{agent.name}</CardTitle>
           </div>
