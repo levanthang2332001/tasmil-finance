@@ -1,7 +1,7 @@
 import { DeFiIntent } from './intent.entity';
 
 export interface ChatRequest {
-  userId: string;
+  user_address: string;
   content: string;
 }
 

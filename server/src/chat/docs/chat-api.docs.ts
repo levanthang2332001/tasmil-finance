@@ -71,9 +71,9 @@ export const ChatApiDocs = {
       description: 'Invalid request parameters',
       type: ErrorResponse,
       examples: {
-        invalidUserId: {
-          summary: 'Invalid user ID',
-          value: ChatExamples.errors.invalidUserId,
+        invalidTasmilAddress: {
+          summary: 'Invalid tasmil address',
+          value: ChatExamples.errors.invalidTasmilAddress,
         },
         invalidContent: {
           summary: 'Invalid message content',

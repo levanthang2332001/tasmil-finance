@@ -1,19 +1,19 @@
 export const ChatExamples = {
   requests: {
     swap: {
-      userId: 'user123',
-      content: 'I want to swap 100 USDT to ETH',
+      user_address: '0x1234567890abcdef...',
+      content: 'I want to swap 10 USDT to APT',
     },
     liquidity: {
-      userId: 'user456',
-      content: 'Add 1000 USDT and 0.5 ETH to liquidity pool',
+      user_address: '0x1234567890abcdef...',
+      content: 'Add 10 USDT and 0.5 APT to liquidity pool',
     },
     staking: {
-      userId: 'user789',
-      content: 'Stake 500 USDT for 30 days',
+      user_address: '0x1234567890abcdef...',
+      content: 'Stake 1 USDT for 30 days',
     },
     unclear: {
-      userId: 'user999',
+      user_address: '0x1234567890abcdef...',
       content: 'Hello, how are you?',
     },
   },
@@ -87,9 +87,9 @@ export const ChatExamples = {
   },
 
   errors: {
-    invalidUserId: {
+    invalidTasmilAddress: {
       statusCode: 400,
-      message: 'userId should not be empty',
+      message: 'user_address should not be empty',
     },
     invalidContent: {
       statusCode: 400,

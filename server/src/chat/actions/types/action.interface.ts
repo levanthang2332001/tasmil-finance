@@ -12,7 +12,10 @@ export interface BaseAction<TParams extends ParamsType = ParamsType> {
   readonly prompt: string;
   readonly examples: string[];
 
-  handle(params: TParams): Promise<ActionResult> | ActionResult;
+  handle(
+    params: TParams,
+    user_address: string,
+  ): Promise<ActionResult> | ActionResult;
   validateMissingParams(params: Partial<TParams>): string[];
   validateParams?(params: TParams): boolean;
 }

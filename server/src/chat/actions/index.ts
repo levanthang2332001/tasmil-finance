@@ -13,7 +13,11 @@ import { ActionType, ParamsType } from '../entities/intent.entity';
 
 export const actionsMap = actionRegistry.getAllActions();
 
-export function handleAction(actionType: ActionType, params: ParamsType) {
+export function handleAction(
+  actionType: ActionType,
+  params: ParamsType,
+  user_address: string,
+) {
   const action = actionRegistry.getAction(actionType);
-  return action.handle(params as any);
+  return action.handle(params, user_address);
 }

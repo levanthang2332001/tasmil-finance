@@ -3,14 +3,16 @@ import { ParamsType } from '../../entities/intent.entity';
 
 export abstract class AbstractBaseAction<
   TParams extends ParamsType = ParamsType,
-> implements BaseAction<TParams>
-{
+> implements BaseAction<TParams> {
   abstract readonly name: string;
   abstract readonly similar: string[];
   abstract readonly prompt: string;
   abstract readonly examples: string[];
 
-  abstract handle(params: TParams): Promise<ActionResult> | ActionResult;
+  abstract handle(
+    params: TParams,
+    user_address: string,
+  ): Promise<ActionResult> | ActionResult;
   abstract validateMissingParams(params: Partial<TParams>): string[];
 
   protected validateRequired(value: any, fieldName: string): string | null {
