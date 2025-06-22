@@ -3,7 +3,8 @@ import { ParamsType } from '../../entities/intent.entity';
 
 export abstract class AbstractBaseAction<
   TParams extends ParamsType = ParamsType,
-> implements BaseAction<TParams> {
+> implements BaseAction<TParams>
+{
   abstract readonly name: string;
   abstract readonly similar: string[];
   abstract readonly prompt: string;
@@ -24,6 +25,16 @@ export abstract class AbstractBaseAction<
 
   protected validateNumber(value: any, fieldName: string): string | null {
     if (typeof value !== 'number' || isNaN(value) || value <= 0) {
+      return fieldName;
+    }
+    return null;
+  }
+
+  protected validateNumberOrMax(value: any, fieldName: string): string | null {
+    if (
+      value !== 'max' &&
+      (typeof value !== 'number' || isNaN(value) || value <= 0)
+    ) {
       return fieldName;
     }
     return null;

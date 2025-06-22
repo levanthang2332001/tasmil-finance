@@ -14,17 +14,24 @@ export class UnStakingAction extends AbstractBaseAction<StakingParams> {
     'unearn',
     'unstaking token',
     'unyield farming',
+    'withdraw stake',
+    'remove stake',
+    'exit staking',
   ];
-  readonly prompt = `Extract the following parameters for a staking action as JSON:
+  readonly prompt = `Extract the following parameters for an unstaking action as JSON:
     {
-      "token": "string - the token to unstake (e.g., 'APT',USDC')",
+      "token": "string - the token to unstake (e.g., 'APT', 'USDC')",
       "amount": "number - the amount to unstake (must be positive)",
     }`;
 
   readonly examples = [
-    'unstake 1 APT for 30 days',
+    'unstake 1 APT',
     'unstake 1000 USDC',
-    'unstake 50 MATIC for rewards',
+    'unstake 50 MATIC',
+    'unstake 0.5 APT',
+    'unstake 500 USDC',
+    'withdraw 2 APT from staking',
+    'remove 100 USDC from farm',
   ];
 
   async handle(

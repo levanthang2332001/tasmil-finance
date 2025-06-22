@@ -25,11 +25,40 @@ export type BorrowParams = {
   ltv?: number; // Loan-to-Value ratio
 };
 
-export type LendingParams = {
+export type SupplyParams = {
   token: string;
   amount: number;
   duration?: number;
   interestRate?: number;
+};
+
+export type RepayParams = {
+  token: string;
+  amount: number | 'max';
+  repayFrom?: 'wallet' | 'deposited collateral';
+};
+
+export type WithdrawParams = {
+  token: string;
+  amount: number | 'max';
+};
+
+export type ClaimRewardParams = {
+  token?: string;
+  platform?: string;
+};
+
+export type PlaceLimitOrderParams = {
+  token: string;
+  amount: number;
+  price: number;
+  side: 'buy' | 'sell';
+};
+
+export type PlaceMarketOrderParams = {
+  token: string;
+  amount: number;
+  side: 'buy' | 'sell';
 };
 
 export type RemoveLiquidityParams = {
@@ -45,7 +74,12 @@ export type ParamsType =
   | LiquidityParams
   | StakingParams
   | BorrowParams
-  | LendingParams
+  | SupplyParams
+  | RepayParams
+  | WithdrawParams
+  | ClaimRewardParams
+  | PlaceLimitOrderParams
+  | PlaceMarketOrderParams
   | RemoveLiquidityParams;
 
 export type ActionType =
@@ -53,7 +87,12 @@ export type ActionType =
   | 'liquidity'
   | 'staking'
   | 'borrow'
-  | 'lending'
+  | 'supply'
+  | 'repay'
+  | 'withdraw'
+  | 'claim_reward'
+  | 'place_limit_order'
+  | 'place_market_order'
   | 'remove_liquidity'
   | 'unknown';
 
