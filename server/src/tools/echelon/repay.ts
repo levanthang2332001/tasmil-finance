@@ -5,7 +5,7 @@ import type {
   Account,
 } from '@aptos-labs/ts-sdk';
 
-export async function lendTokensWithEchelon(
+export async function repayTokensWithEchelon(
   aptos: Aptos,
   account: Account,
   mintType: MoveStructId,
@@ -18,14 +18,14 @@ export async function lendTokensWithEchelon(
 
     const COIN_STANDARD_DATA: InputGenerateTransactionPayloadData = {
       function:
-        '0xc6bc659f1649553c1a3fa05d9727433dc03843baac29473c817d06d39e7621ba::scripts::supply',
+        '0xc6bc659f1649553c1a3fa05d9727433dc03843baac29473c817d06d39e7621ba::scripts::repay',
       typeArguments: [mintType.toString()],
       functionArguments: FUNCTIONAL_ARGS_DATA,
     };
 
     const FUNGIBLE_ASSET_DATA: InputGenerateTransactionPayloadData = {
       function:
-        '0xc6bc659f1649553c1a3fa05d9727433dc03843baac29473c817d06d39e7621ba::scripts::supply_fa',
+        '0xc6bc659f1649553c1a3fa05d9727433dc03843baac29473c817d06d39e7621ba::scripts::repay_fa',
       functionArguments: FUNCTIONAL_ARGS_DATA,
     };
 
@@ -40,13 +40,13 @@ export async function lendTokensWithEchelon(
     });
 
     if (!response) {
-      throw new Error('Failed to lend tokens');
+      throw new Error('Failed to repay tokens');
     }
 
     console.log(response.hash);
     return response.hash;
   } catch (error) {
     console.error(error);
-    throw new Error('Failed to lend tokens: ' + error);
+    throw new Error('Failed to repay tokens: ' + error);
   }
 }
