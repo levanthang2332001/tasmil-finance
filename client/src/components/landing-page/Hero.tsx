@@ -14,7 +14,7 @@ const Hero = () => {
             transition={{ duration: 0.5 }}
             className="mb-8"
           >
-            <span className="px-3 py-1 text-sm font-medium text-primary bg-primary/10 rounded-full border border-primary/20">
+            <span className="px-3 py-1 text-sm font-medium text-accent-foreground bg-accent-foreground/10 rounded-full border border-accent-foreground/20">
               AI-Powered DeFi Trading
             </span>
           </motion.div>

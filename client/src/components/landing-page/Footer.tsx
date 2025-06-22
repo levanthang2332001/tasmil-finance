@@ -5,7 +5,7 @@ import { AptosConnectWallet } from "../wallet";
 
 const Footer = () => {
   return (
-    <section className="pt-24 pb-8 relative bg-gradient-to-b from-black to-gray-900">
+    <section className="pt-24 pb-8 relative bg-gradient-to-b from-transparent to-black">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -13,7 +13,7 @@ const Footer = () => {
           transition={{ duration: 0.5 }}
           className="max-w-3xl mx-auto text-center"
         >
-          <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent text-gradient mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-gradient mb-6">
             Ready to Transform Your DeFi Trading?
           </h2>
           <p className="text-gray-400 mb-8 text-lg">
