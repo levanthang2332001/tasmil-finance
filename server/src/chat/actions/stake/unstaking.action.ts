@@ -3,7 +3,7 @@ import { AbstractBaseAction } from '../base/base-action';
 import { ActionResult } from '../types/action.interface';
 import { aptosAgent } from '../../../utils/aptosAgent';
 import { getTokenByTokenName } from '../../../utils/token';
-import { stakeTokensWithThala } from '../../../tools/thala/staking';
+import { stakeTokensWithThala } from '../../../tools/thala/stake';
 
 export class UnStakingAction extends AbstractBaseAction<StakingParams> {
   readonly name = 'unstaking';
