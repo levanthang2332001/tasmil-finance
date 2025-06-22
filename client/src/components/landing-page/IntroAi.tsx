@@ -23,7 +23,7 @@ export default function IntroAi({ className }: IntroAiProps) {
           className
         )}
       >
-        <Spotlight className="-top-40 left-0 md:left-60 md:-top-20 bg-accent" />
+        <Spotlight className="-top-40 left-0 md:left-60 md:-top-20 bg-card-foreground/30" />
 
         <div className="flex h-full">
           <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
@@ -39,16 +39,20 @@ export default function IntroAi({ className }: IntroAiProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-4 text-neutral-500 max-w-lg"
+              className="mt-4 text-neutral-500 hover:text-white transition-all duration-300 max-w-lg"
             >
               Get real-time market insights, automated portfolio management, and AI-driven trading
               strategies at your fingertips.
             </motion.p>
             <Button
               variant="outline"
-              className="border-[#5865F2]/50 text-[#5865F2] w-fit hover:bg-[#5865F2]/10 transition-all duration-300 mt-10"
+              className="border-primary/50 text-primary w-fit hover:bg-primary/10 transition-all duration-300 mt-10"
             >
-              <Link href="https://github.com/0xkar4n/Tasmil Finance/tree/main/discord-bot">
+              <Link
+                href="https://tasmil.gitbook.io/tasmil-docs"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 View Documentation
               </Link>
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

@@ -301,7 +301,7 @@ export default function FlowSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-gradient">
             How Tasmil Finance Works
           </h2>
           <p className="max-w-2xl mx-auto text-zinc-400 text-lg">
