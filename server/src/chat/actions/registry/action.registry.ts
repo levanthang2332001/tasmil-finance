@@ -9,6 +9,7 @@ import { stakingAction } from '../stake/staking.action';
 import { borrowAction } from '../lending/borrow.action';
 import { lendingAction } from '../lending/lending.action';
 import { defaultAction } from '../unknown/default.action';
+import { ustakingAction } from '../stake/unstaking.action';
 
 export class ActionRegistry {
   private actions: ActionMap = {
@@ -16,6 +17,7 @@ export class ActionRegistry {
     liquidity: liquidityAction,
     remove_liquidity: removeLiquidityAction,
     staking: stakingAction,
+    unstaking: ustakingAction,
     borrow: borrowAction,
     lending: lendingAction,
     unknown: defaultAction,
