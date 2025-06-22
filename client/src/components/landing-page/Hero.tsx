@@ -1,11 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import ConnectWallet from "../ConnectWallet";
+import { AptosConnectWallet } from "../wallet";
 
 const Hero = () => {
   return (
-    <section className="overflow-hidden">
+    <section className="overflow-hidden py-80">
       <div className="container relative z-10 mx-auto px-4">
         <div className="flex flex-col items-center text-center">
           <motion.div
@@ -14,7 +14,7 @@ const Hero = () => {
             transition={{ duration: 0.5 }}
             className="mb-8"
           >
-            <span className="px-3 py-1 text-sm font-medium text-crypto-blue bg-crypto-blue/10 rounded-full border border-crypto-blue/20">
+            <span className="px-3 py-1 text-sm font-medium text-accent-foreground bg-accent-foreground/10 rounded-full border border-accent-foreground/20">
               AI-Powered DeFi Trading
             </span>
           </motion.div>
@@ -23,7 +23,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-crypto-blue/70 to-crypto-blue mb-6"
+            className="text-4xl md:text-6xl font-bold bg-clip-text text-gradient mb-6"
           >
             Your Intelligent DeFi
             <br />
@@ -46,7 +46,7 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            <ConnectWallet label="Get Started" />
+            <AptosConnectWallet label="🚀 Get Started" />
           </motion.div>
         </div>
       </div>

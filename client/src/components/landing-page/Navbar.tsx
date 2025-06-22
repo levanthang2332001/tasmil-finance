@@ -10,11 +10,10 @@ interface NavbarProps {
 }
 
 const Navbar = ({ className }: NavbarProps) => {
-  const navItems = [
-    { name: "Features", href: `#${PART.features}` },
-    { name: "AI", href: `#${PART.ai}` },
-    { name: "Steps", href: `#${PART.steps}` },
-  ];
+  const navItems = Object.entries(PART).map(([key, value]) => ({
+    name: key,
+    href: `#${value}`,
+  }));
 
   return (
     <nav

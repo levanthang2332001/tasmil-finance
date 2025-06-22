@@ -16,9 +16,10 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-import ConnectWallet from "../ConnectWallet";
 import Logo from "../Logo";
 import SidebarButton, { SidebarItem } from "./SidebarButton";
+import { Button } from "../ui/button";
+import { AptosConnectWallet } from "../wallet";
 
 const Sidebar: React.FC = () => {
   const SIDEBAR_ITEMS: SidebarItem[] = [
@@ -111,16 +112,16 @@ const Sidebar: React.FC = () => {
               isActive={pathname.includes(item.link!)}
             />
           ))}
-          <ConnectWallet className="w-full" />
+          <AptosConnectWallet label="Disconnect Wallet" />
         </div>
       </div>
 
-      <button
+      <Button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         className="absolute top-1/2 -right-3 transform -translate-y-1/2 bg-crypto-blue text-white p-1 rounded-full shadow-lg hover:bg-blue-600 transition-colors z-50"
       >
         {isSidebarOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
-      </button>
+      </Button>
     </div>
   );
 };
