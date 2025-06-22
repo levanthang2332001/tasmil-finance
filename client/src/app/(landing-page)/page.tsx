@@ -1,11 +1,10 @@
+import { StarsBackground } from "@/components/animate-ui/backgrounds/stars";
+import FlowSection from "@/components/landing-page/FlowSection";
 import Features from "@/components/landing-page/Features";
 import Footer from "@/components/landing-page/Footer";
 import Header from "@/components/landing-page/Header";
 import Hero from "@/components/landing-page/Hero";
-import HeroScroll from "@/components/landing-page/HeroScroll";
 import IntroAi from "@/components/landing-page/IntroAi";
-import StepMoving from "@/components/landing-page/StepMoving";
-import Squares from "@/components/ui/squares-background";
 import { cn } from "@/lib/utils";
 
 export default function Home() {
@@ -14,26 +13,11 @@ export default function Home() {
   return (
     <div className="min-h-screen relative bg-gradient-to-b from-gray-900/70 to-black">
       <Header />
-      <Squares
-        direction="diagonal"
-        speed={0.5}
-        squareSize={40}
-        borderColor="#333"
-        hoverFillColor="#222"
-        className="h-screen"
-      />
-
-      <div className="absolute z-[2] top-0 left-1/2 -translate-x-1/2 transform pt-52">
-        <Hero />
-      </div>
-
-      <div className="absolute z-[1] top-0 left-1/2 -translate-x-1/2 transform mt-96">
-        <HeroScroll />
-      </div>
-
-      <Features className={cn(WIDTH, "mt-96")} />
-      <IntroAi className={WIDTH} />
-      <StepMoving className={WIDTH} />
+      <StarsBackground className="absolute inset-0 z-0" />
+      <Hero />
+      <FlowSection />
+      <IntroAi className={cn(WIDTH)} />
+      <Features className={cn(WIDTH, "py-52 z-10")} />
       <Footer />
     </div>
   );

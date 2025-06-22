@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { NAVISDKClient, Sui } from "navi-sdk";
 import { Message } from "@/types/chat";
-import { useCurrentAccount } from "@mysten/dapp-kit";
 
 interface BotSupplyMessageProps {
   message: Message;
@@ -12,7 +10,6 @@ interface BotSupplyMessageProps {
 }
 
 function BotSupplyMessage({ message, onClick }: BotSupplyMessageProps) {
-  const account = useCurrentAccount();
   const [amount, setAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,14 +18,9 @@ function BotSupplyMessage({ message, onClick }: BotSupplyMessageProps) {
   const numberOfAccounts = process.env.NEXT_PUBLIC_NUMBER_OF_ACCOUNTS || "";
 
   async function handleSupply() {
-    if (!account?.address) {
-      setError("Please connect your wallet.");
-      return;
-    }
     setIsLoading(true);
     setError(null);
     try {
-      
     } catch (e) {
       setError("Supply failed. Please try again.");
       console.error(e);

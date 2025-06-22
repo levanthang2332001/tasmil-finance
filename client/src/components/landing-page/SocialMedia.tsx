@@ -33,7 +33,7 @@ export default function SocialMedia() {
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-gray-400 hover:text-crypto-blue transition-colors"
+          className="text-gray-400 hover:text-primary transition-colors"
         >
           {icon}
         </a>

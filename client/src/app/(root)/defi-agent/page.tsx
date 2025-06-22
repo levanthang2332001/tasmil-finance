@@ -1,12 +1,13 @@
 "use client";
 
-import Dashboard from "@/components/defi-agent";
+import ChatDefi from "@/components/defi-agent/ChatDefi";
+import { ContentLayout } from "@/components/admin-panel/content-layout";
 
 const DefiAgentPage = () => {
   return (
-    <div className="flex flex-1 flex-col h-full overflow-y-auto relative pb-10">
-      <Dashboard />
-    </div>
+    <ContentLayout title="Defi Strategy">
+      <ChatDefi />
+    </ContentLayout>
   );
 };
 
