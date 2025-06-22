@@ -43,5 +43,5 @@ cd client && yarn && yarn dev
 #### Server ([📚 Document](http://localhost:5000/api/docs))
 
 ```sh
-cd server && yarn && yarn start:dev
+cd server && pnpm i && pnpm start:dev
 ```
