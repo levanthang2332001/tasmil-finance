@@ -22,7 +22,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "pnpm run lint"
+      "pnpm run lint",
+      "pnpm run format"
     ]
   },
   "dependencies": {
