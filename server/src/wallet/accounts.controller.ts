@@ -30,7 +30,7 @@ export class AccountsController {
           message: 'User account not found',
         };
       }
-
+      
       const data = this.accountsService.getAccountByPrivateKey(account);
 
       return {

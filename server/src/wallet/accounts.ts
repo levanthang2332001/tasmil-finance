@@ -1,5 +1,10 @@
 import * as dotenv from 'dotenv';
-import { Account, Ed25519PrivateKey } from '@aptos-labs/ts-sdk';
+import {
+  Account,
+  Ed25519PrivateKey,
+  PrivateKey,
+  PrivateKeyVariants,
+} from '@aptos-labs/ts-sdk';
 import { SupabaseClient, VaultSupabase } from './supabase/index';
 import { IAccount } from './entities/account.entities';
 import { Decrypt, Encrypt } from '../utils/index';
@@ -25,7 +30,10 @@ export class Accounts {
 
   private generateAccount(): IAccount {
     const account = Account.generate();
-    const privateKey = account.privateKey.toString();
+    const privateKey = PrivateKey.formatPrivateKey(
+      account.privateKey.toString(),
+      'ed25519' as PrivateKeyVariants,
+    );
     const publicKey = account.publicKey.toString();
     const accountAddress = account.accountAddress.toString();
 
@@ -127,7 +135,11 @@ export class Accounts {
 
   public getAccountByPrivateKey(prKey: string) {
     try {
-      const privateKey = new Ed25519PrivateKey(prKey);
+      const formattedPrivateKey = PrivateKey.formatPrivateKey(
+        prKey,
+        'ed25519' as PrivateKeyVariants,
+      );
+      const privateKey = new Ed25519PrivateKey(formattedPrivateKey);
       const tasmilAddress = Account.fromPrivateKey({
         privateKey: privateKey,
       }).accountAddress.toString();
