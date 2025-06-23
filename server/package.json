@@ -27,6 +27,7 @@
     ]
   },
   "dependencies": {
+    "@aptos-labs/ts-sdk": "^2.0.1",
     "@langchain/core": "^0.3.61",
     "@langchain/openai": "^0.5.15",
     "@merkletrade/ts-sdk": "^1.0.3",
