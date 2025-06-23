@@ -1,48 +1,25 @@
-export enum MESSAGE_TYPE {
+export enum ACTION_TYPE {
   USER = "user",
-  BOT = "bot",
   UNKNOWN = "unknown",
-}
-
-export enum AgentType {
-  NAVI = "navi",
-  CETUS = "cetus",
-  SUILEND = "suiLend",
-}
-
-export enum NAVI_ACTION_TYPE {
-  SUPPLY = "supply",
-  BORROW = "borrow",
-  WITHDRAW = "withdraw",
-  REPAY = "repay",
-}
-
-export enum CETUS_ACTION_TYPE {
   SWAP = "swap",
+  LIQUIDITY = "liquidity",
+  STAKING = "staking",
+  BORROW = "borrow",
+  SUPPLY = "supply",
+  REPAY = "repay",
+  WITHDRAW = "withdraw",
+  CLAIM_REWARD = "claim_reward",
+  PLACE_LIMIT_ORDER = "place_limit_order",
+  PLACE_MARKET_ORDER = "place_market_order",
+  REMOVE_LIQUIDITY = "remove_liquidity",
 }
 
-export interface Message {
+export interface ChatMessage {
   id: string;
   timestamp: Date;
   message: string;
-  actionType: NAVI_ACTION_TYPE | CETUS_ACTION_TYPE | MESSAGE_TYPE;
+  actionType: ACTION_TYPE;
   data?: { [key: string]: string | boolean };
-}
-
-export interface SwapQuote {
-  poolAddress: string;
-  coinTypeIn: string;
-  coinTypeOut: string;
-  symbolA?: string;
-  symbolB?: string;
-  decimalsA: number;
-  decimalsB: number;
-  amountIn: string;
-  amountOut: string;
-  a2b: boolean;
-  byAmountIn: boolean;
-  slippage: string;
-  fee: string;
 }
 
 export interface ChatResponse {
@@ -50,12 +27,10 @@ export interface ChatResponse {
   timestamp: Date;
   message: string;
   intent: {
-    actionType: NAVI_ACTION_TYPE | CETUS_ACTION_TYPE | MESSAGE_TYPE;
-    agentType: AgentType;
+    actionType: ACTION_TYPE;
     confidence: number;
     context: string;
     missingFields: string[];
     params: { [key: string]: string };
   };
-  quote?: SwapQuote;
 }

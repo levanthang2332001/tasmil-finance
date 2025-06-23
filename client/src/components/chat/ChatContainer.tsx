@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Message } from "@/types/chat";
+import { ChatMessage } from "@/types/chat";
 import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
@@ -13,24 +13,19 @@ interface Suggestion {
 }
 
 interface ChatContainerProps {
-  messages: Message[];
+  messages: ChatMessage[];
   isLoading?: boolean;
   suggestions?: Suggestion[];
   onSendMessage: (message: string) => void;
-  onSwapConfirm: (messageId: string) => Promise<void>;
-  onSwapCancel: (messageId: string) => void;
 }
 
 export const ChatContainer = ({
   messages,
   isLoading,
   onSendMessage,
-  onSwapConfirm,
-  onSwapCancel,
   suggestions,
 }: ChatContainerProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -54,13 +49,7 @@ export const ChatContainer = ({
             />
           ) : (
             messages.map((message) => (
-              <MessageType
-                key={message.id}
-                message={message}
-                isLoading={isLoading}
-                onSwapConfirm={onSwapConfirm}
-                onSwapCancel={onSwapCancel}
-              />
+              <MessageType key={message.id} message={message} isLoading={isLoading} />
             ))
           )}
           {isLoading && <BotThinking />}

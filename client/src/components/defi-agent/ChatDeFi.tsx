@@ -2,34 +2,23 @@
 "use client";
 
 import { ChatContainer } from "@/components/chat/ChatContainer";
-import { ChatMessage, ACTION_TYPE } from "@/types/chat";
-import { useEffect, useState } from "react";
+import { SUGGESTION_DEFI_AGENT } from "@/constants/suggestion";
+import { ChatService } from "@/services/chat.service";
+import { ACTION_TYPE, ChatMessage } from "@/types/chat";
+import { useState } from "react";
 
-const ChatAgent = () => {
+const ChatDeFi = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Initialize with welcome message
-  useEffect(() => {
-    const welcomeMessage =
-      "Hello! I'm your DeFi assistant. I can help you with token swaps, price checks, and general DeFi questions. How can I help you today?";
-
-    setMessages([
-      {
-        id: Date.now().toString(),
-        message: welcomeMessage,
-        timestamp: new Date(),
-        actionType: ACTION_TYPE.UNKNOWN,
-      },
-    ]);
-  }, []);
+  console.log("messages: ", messages);
 
   const handleSendMessage = async (content: string) => {
     // Add user message
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
-      message: content,
       timestamp: new Date(),
+      message: content,
       actionType: ACTION_TYPE.USER,
     };
     setMessages((prev) => [...prev, userMessage]);
@@ -37,18 +26,24 @@ const ChatAgent = () => {
     // Send message to API
     setIsLoading(true);
     try {
+      const userAddress = "0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8";
+      const response = await ChatService.sendMessage(userAddress, content);
+
       const botMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
-        message: "Sorry, there was an error processing your message.",
         timestamp: new Date(),
-        actionType: ACTION_TYPE.UNKNOWN,
+        actionType: response.intent.actionType,
+        message: response.message,
       };
+
+      console.log("response: ", response);
+
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       const errorMessage: ChatMessage = {
         id: Date.now().toString(),
-        message: "Sorry, there was an error processing your message.",
         timestamp: new Date(),
+        message: "Sorry, there was an error processing your message.",
         actionType: ACTION_TYPE.UNKNOWN,
       };
       setMessages((prev) => [...prev, errorMessage]);
@@ -59,9 +54,14 @@ const ChatAgent = () => {
 
   return (
     <div className="flex flex-col h-full ">
-      <ChatContainer messages={messages} isLoading={isLoading} onSendMessage={handleSendMessage} />
+      <ChatContainer
+        messages={messages}
+        isLoading={isLoading}
+        onSendMessage={handleSendMessage}
+        suggestions={SUGGESTION_DEFI_AGENT}
+      />
     </div>
   );
 };
 
-export default ChatAgent;
+export default ChatDeFi;

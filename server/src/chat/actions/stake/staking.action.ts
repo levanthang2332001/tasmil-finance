@@ -55,6 +55,10 @@ export class StakingAction extends AbstractBaseAction<StakingParams> {
         amountInInterger,
       );
 
+      if (!data) {
+        return this.createErrorResult('Failed to stake tokens');
+      }
+
       const result = {
         action: 'stake',
         token: params.token,
@@ -63,6 +67,8 @@ export class StakingAction extends AbstractBaseAction<StakingParams> {
         data,
         timestamp: new Date().toISOString(),
       };
+
+      console.log('result: ', result);
 
       return this.createSuccessResult(result);
     } catch (error) {

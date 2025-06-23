@@ -1,4 +1,4 @@
-import { AgentType, ChatResponse } from "@/types/chat";
+import { ChatResponse } from "@/types/chat";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -19,21 +19,10 @@ export class ChatService {
     return response.json();
   }
 
-  static async sendMessage(
-    userId: string,
-    content: string,
-    agentType: AgentType
-  ): Promise<ChatResponse> {
+  static async sendMessage(userAddress: string, content: string): Promise<ChatResponse> {
     return this.request<ChatResponse>("/chat/message", {
       method: "POST",
-      body: JSON.stringify({ userId, content, agentType }),
+      body: JSON.stringify({ user_address: userAddress, content }),
     });
   }
-
-  // static async executeSwap(quote: SwapQuote): Promise<ChatResponse> {
-  //   return this.request<ChatResponse>("/chat/execute-swap", {
-  //     method: "POST",
-  //     body: JSON.stringify(quote),
-  //   });
-  // }
 }

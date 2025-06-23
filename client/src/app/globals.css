@@ -28,24 +28,24 @@
     --card-foreground: 210 40% 98%;
     --popover: 222 47% 6%;
     --popover-foreground: 210 40% 98%;
-    --primary: 342 74% 51%; /* #DF255A */
+    --primary: 10 60% 28%; /* #6E271E */
     --primary-foreground: 210 40% 98%;
-    --secondary: 342 74% 51%; /* #DF255A */
+    --secondary: 10 60% 28%; /* #6E271E */
     --secondary-foreground: 210 40% 98%;
-    --muted: 342 74% 51%; /* #DF255A */
+    --muted: 10 60% 28%; /* #6E271E */
     --muted-foreground: 210 40% 98%;
-    --accent: 342 74% 51%; /* #DF255A */
+    --accent: 10 60% 28%; /* #6E271E */
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 342 74% 51%; /* #DF255A */
-    --chart-1: 342 74% 51%; /* #DF255A */
-    --chart-2: 342 74% 51%; /* #DF255A */
-    --chart-3: 342 74% 51%; /* #DF255A */
-    --chart-4: 342 74% 51%; /* #DF255A */
-    --chart-5: 342 74% 51%; /* #DF255A */
+    --ring: 10 60% 28%; /* #6E271E */
+    --chart-1: 10 60% 28%; /* #6E271E */
+    --chart-2: 10 60% 28%; /* #6E271E */
+    --chart-3: 10 60% 28%; /* #6E271E */
+    --chart-4: 10 60% 28%; /* #6E271E */
+    --chart-5: 10 60% 28%; /* #6E271E */
     --radius: 0.75rem;
   }
   .dark {
@@ -55,24 +55,24 @@
     --card-foreground: 210 40% 98%;
     --popover: 222 47% 6%;
     --popover-foreground: 210 40% 98%;
-    --primary: 342 74% 51%; /* #DF255A */
+    --primary: 10 60% 28%; /* #6E271E */
     --primary-foreground: 210 40% 98%;
-    --secondary: 342 74% 51%; /* #DF255A */
+    --secondary: 10 60% 28%; /* #6E271E */
     --secondary-foreground: 210 40% 98%;
-    --muted: 342 74% 51%; /* #DF255A */
+    --muted: 10 60% 28%; /* #6E271E */
     --muted-foreground: 210 40% 98%;
-    --accent: 342 74% 51%; /* #DF255A */
+    --accent: 10 60% 28%; /* #6E271E */
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 342 74% 51%; /* #DF255A */
-    --chart-1: 342 74% 51%; /* #DF255A */
-    --chart-2: 342 74% 51%; /* #DF255A */
-    --chart-3: 342 74% 51%; /* #DF255A */
-    --chart-4: 342 74% 51%; /* #DF255A */
-    --chart-5: 342 74% 51%; /* #DF255A */
+    --ring: 10 60% 28%; /* #6E271E */
+    --chart-1: 10 60% 28%; /* #6E271E */
+    --chart-2: 10 60% 28%; /* #6E271E */
+    --chart-3: 10 60% 28%; /* #6E271E */
+    --chart-4: 10 60% 28%; /* #6E271E */
+    --chart-5: 10 60% 28%; /* #6E271E */
   }
 }
 
@@ -90,7 +90,8 @@
 @layer utilities {
   .gradient-outline {
     position: relative;
-    background: linear-gradient(#111111, #111111) padding-box,
+    background:
+      linear-gradient(#111111, #111111) padding-box,
       linear-gradient(45deg, #df255a, #df255a) border-box;
     border: 0.5px solid transparent;
     color: var(--primary);
@@ -109,7 +110,7 @@
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#DF255A] to-neutral-400;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#6E271E] to-neutral-400;
   }
 }
 

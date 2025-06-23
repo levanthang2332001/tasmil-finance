@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
-import { Message } from "@/types/chat";
+import { ChatMessage } from "@/types/chat";
 import { motion } from "framer-motion";
 
 interface UserChatProps {
-  message: Message;
+  message: ChatMessage;
   isLoading?: boolean;
 }
 
