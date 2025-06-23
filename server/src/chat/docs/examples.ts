@@ -1,19 +1,23 @@
 export const ChatExamples = {
   requests: {
     swap: {
-      user_address: '0x1234567890abcdef...',
-      content: 'I want to swap 10 USDT to APT',
+      user_address:
+        '0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8',
+      content: 'I want to swap 0.0001 APT to USDT',
     },
     liquidity: {
-      user_address: '0x1234567890abcdef...',
-      content: 'Add 10 USDT and 0.5 APT to liquidity pool',
+      user_address:
+        '0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8',
+      content: 'Add 0.0001 APT and 0.0001 APT to liquidity pool',
     },
     staking: {
-      user_address: '0x1234567890abcdef...',
-      content: 'Stake 1 USDT for 30 days',
+      user_address:
+        '0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8',
+      content: 'Stake 0.0001 APT for 30 days',
     },
     unclear: {
-      user_address: '0x1234567890abcdef...',
+      user_address:
+        '0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8',
       content: 'Hello, how are you?',
     },
   },
