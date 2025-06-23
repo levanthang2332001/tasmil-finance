@@ -73,15 +73,16 @@ export class ChatController {
         };
       }
 
-      const data = handleAction(
+      const data = await handleAction(
         intent.actionType,
         intent.params,
         chatMessage.user_address,
       );
+
       return {
         message: 'Action processed successfully',
         intent,
-        data,
+        data: data,
       };
     } catch (error) {
       return this.handleError(error);
