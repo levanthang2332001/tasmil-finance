@@ -19,7 +19,7 @@ export default function Navigation({
         className={cn(
           "rounded-full",
           activeTab === "spotlight"
-            ? "bg-blue-green-gradient text-white"
+            ? "bg-primary text-white" 
             : "hover:bg-black/20 hover:backdrop-blur-sm"
         )}
         onClick={() => onTabChange("spotlight")}
@@ -31,7 +31,7 @@ export default function Navigation({
         className={cn(
           "rounded-full",
           activeTab === "dashboard"
-            ? "!bg-gradient-to-tr from-crypto-blue/20 to-crypto-blue/20 text-white"
+            ? "!bg-gradient-to-tr from-primary/20 to-primary/20 text-white"
             : "hover:bg-black/20 hover:backdrop-blur-sm"
         )}
         onClick={() => onTabChange("dashboard")}

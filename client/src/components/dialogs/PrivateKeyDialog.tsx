@@ -1,6 +1,7 @@
 "use client";
 
-import { Copy } from "lucide-react";
+import { Copy, Check } from "lucide-react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,18 +19,20 @@ interface PrivateKeyDialogProps {
   privateKey: string | null;
 }
 
-export const PrivateKeyDialog = ({ isOpen, onClose, privateKey }: PrivateKeyDialogProps) => {
+export function PrivateKeyDialog({ isOpen, onClose, privateKey }: PrivateKeyDialogProps) {
   const { toast } = useToast();
+  const [hasCopied, setHasCopied] = useState(false);
 
-  const handleCopy = () => {
-    if (privateKey) {
-      navigator.clipboard.writeText(privateKey);
-      toast({
-        title: "Copied!",
-        description: "Private key copied to clipboard.",
-      });
-    }
-  };
+  function handleCopy() {
+    if (!privateKey) return;
+    navigator.clipboard.writeText(privateKey);
+    setHasCopied(true);
+    toast({
+      title: "Copied!",
+      description: "Private key copied to clipboard.",
+    });
+    setTimeout(() => setHasCopied(false), 1200);
+  }
 
   if (!privateKey) return null;
 
@@ -43,15 +46,16 @@ export const PrivateKeyDialog = ({ isOpen, onClose, privateKey }: PrivateKeyDial
           </DialogDescription>
         </DialogHeader>
         <div className="my-4">
-          <div className="relative p-4 bg-background rounded-md border border-border font-mono text-sm break-all">
+          <div className="relative p-4 pr-8 bg-background rounded-md border border-border font-mono text-sm break-all">
             {privateKey}
             <Button
               variant="ghost"
               size="icon"
               className="absolute top-2 right-2 h-7 w-7"
               onClick={handleCopy}
+              aria-label={hasCopied ? "Copied" : "Copy private key"}
             >
-              <Copy className="h-4 w-4" />
+              {hasCopied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
             </Button>
           </div>
         </div>
@@ -62,4 +66,4 @@ export const PrivateKeyDialog = ({ isOpen, onClose, privateKey }: PrivateKeyDial
       </DialogContent>
     </Dialog>
   );
-};
+}

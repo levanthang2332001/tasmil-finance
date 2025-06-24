@@ -31,7 +31,7 @@ export default function WalletDisplay({ wallet }: WalletDisplayProps) {
   };
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-2 h-full">
       {defaultWallet.isConnected ? (
         <Button
           variant="outline"
@@ -41,11 +41,9 @@ export default function WalletDisplay({ wallet }: WalletDisplayProps) {
           <div className="absolute inset-0 bg-gradient-to-r from-[#1EAEDB]/10 via-[#1EAEDB]/10 to-[#1EAEDB]/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
           <div className="relative z-10 flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-[#1EAEDB] animate-pulse" />
+            <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
             <span className="text-sm font-mono">{defaultWallet.address}</span>
-            <span className="text-sm font-bold">
-              {defaultWallet.balance} ETH
-            </span>
+            <span className="text-sm font-bold">{defaultWallet.balance} ETH</span>
           </div>
         </Button>
       ) : (
@@ -55,7 +53,7 @@ export default function WalletDisplay({ wallet }: WalletDisplayProps) {
           className="flex items-center gap-2 relative overflow-hidden group bg-transparent border border-[#1EAEDB]/50"
         >
           {/* Animated gradient background */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1EAEDB] via-[#1EAEDB] to-[#1EAEDB] bg-[length:200%_100%] animate-gradient"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary to-primary bg-[length:200%_100%] animate-gradient"></div>
 
           <div className="relative z-10 flex items-center gap-2">
             <Wallet className="h-4 w-4" />

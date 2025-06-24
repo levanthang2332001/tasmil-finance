@@ -183,9 +183,9 @@ const Node = React.forwardRef<HTMLDivElement, NodeProps>(
     };
 
     const colorClasses: Record<NodeColor, string> = {
-      purple: "border-purple-500 bg-purple-950/30 text-purple-400 shadow-purple-900/30",
-      pink: "border-pink-500 bg-pink-950/30 text-pink-400 shadow-pink-900/30",
-      blue: "border-blue-500 bg-blue-950/30 text-blue-400 shadow-blue-900/30",
+      purple: "border-primary bg-primary/10 text-primary shadow-primary/30",
+      pink: "border-secondary bg-secondary/10 text-secondary shadow-secondary/30",
+      blue: "border-tertiary bg-tertiary/10 text-tertiary shadow-tertiary/30",
     };
 
     return (

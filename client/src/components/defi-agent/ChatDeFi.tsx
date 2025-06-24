@@ -56,7 +56,7 @@ const ChatDeFi = () => {
   };
 
   return (
-    <div className="flex flex-col h-full ">
+    <div className="flex flex-col h-full">
       <ChatContainer
         messages={messages}
         isLoading={isLoading}

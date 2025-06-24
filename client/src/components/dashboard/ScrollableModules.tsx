@@ -69,11 +69,11 @@ const ScrollableModules: React.FC<ScrollableModulesProps> = ({ modules }) => {
     >
       {/* Doodle-style title */}
       <div className="flex items-center mb-3 overflow-hidden pl-2">
-        <div className="w-3 h-3 rounded-sm bg-crypto-blue/40 mr-2 transform rotate-45"></div>
+        <div className="w-3 h-3 rounded-sm bg-primary/40 mr-2 transform rotate-45"></div>
         <span className="text-white/70 font-handwriting text-lg">
           Insights & Signals
         </span>
-        <div className="ml-3 flex-grow h-px bg-gradient-to-r from-crypto-blue/30 to-transparent"></div>
+        <div className="ml-3 flex-grow h-px bg-gradient-to-r from-primary/30 to-transparent"></div>
       </div>
 
       {/* Navigation arrows - only visible on hover or mobile */}
@@ -148,7 +148,7 @@ const ScrollableModules: React.FC<ScrollableModulesProps> = ({ modules }) => {
       </motion.div>
 
       {/* Decorative biophilic element */}
-      <div className="absolute -bottom-4 right-10 w-20 h-[1px] bg-gradient-to-r from-transparent via-crypto-teal/40 to-transparent"></div>
+      <div className="absolute -bottom-4 right-10 w-20 h-[1px] bg-gradient-to-r from-transparent via-secondary/40 to-transparent"></div>
     </div>
   );
 };

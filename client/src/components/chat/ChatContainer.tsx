@@ -5,8 +5,8 @@ import { LucideIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { ChatInput } from "./ChatInput";
 import { ChatSuggestions } from "./ChatSuggestions";
-import { MessageType } from "./message/MessageType";
 import { BotThinking } from "./message/BotThinking";
+import { MessageType } from "./message/MessageType";
 interface Suggestion {
   text: string;
   icon: LucideIcon;

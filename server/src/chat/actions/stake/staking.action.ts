@@ -71,14 +71,17 @@ export class StakingAction extends AbstractBaseAction<StakingParams> {
       console.log('result: ', result);
 
       return this.createSuccessResult({
-        message: `# Staking Successful! 🎉
-            Transaction Details:
-            - Token: ${params.token}
-            - Amount: ${params.amount}
-            - Duration: ${params.duration || 'flexible'}
-            - Transaction Hash: ${data}
-
-            Your tokens have been successfully staked and you're now earning rewards!`,
+        message: `<h2>Staking Successful! 🎉</h2>
+          <div>
+            <strong>Transaction Details:</strong>
+            <ul>
+              <li><b>Token:</b> ${params.token}</li>
+              <li><b>Amount:</b> ${params.amount}</li>
+              <li><b>Duration:</b> ${params.duration || 'flexible'}</li>
+                <li><b>Transaction Hash:</b> <a href="https://explorer.aptoslabs.com/txn/${data}?network=mainnet" target="_blank">${data}</a></li>
+              </ul>
+            <p>Your tokens have been successfully staked and you're now earning rewards!</p>
+          </div>`,
         data: result,
       });
     } catch (error) {

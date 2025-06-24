@@ -14,9 +14,9 @@ const FilterOptions: React.FC = () => {
     >
       <ToggleGroup type="single" defaultValue="signal">
         <ToggleGroupItem value="signal" className="relative group">
-          <div className="absolute inset-0 bg-crypto-blue/20 rounded-md filter blur-sm group-hover:blur-md transition-all"></div>
+          <div className="absolute inset-0 bg-primary/20 rounded-md filter blur-sm group-hover:blur-md transition-all"></div>
           <div className="relative z-10 flex items-center gap-2">
-            <Zap size={16} className="text-crypto-blue" />
+            <Zap size={16} className="text-primary" />
             <span>Signal</span>
           </div>
         </ToggleGroupItem>
@@ -29,7 +29,7 @@ const FilterOptions: React.FC = () => {
         className="rounded-md border-gray-700 text-white group relative overflow-hidden"
       >
         <div
-          className="absolute inset-0 bg-gradient-to-r from-crypto-blue/20 to-crypto-teal/20 opacity-0 
+          className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 opacity-0 
                       group-hover:opacity-100 transition-opacity duration-300"
         ></div>
         <div
@@ -40,7 +40,7 @@ const FilterOptions: React.FC = () => {
         <span className="relative z-10">Filter</span>
       </Button>
 
-      <div className="absolute right-4 bottom-[-8px] w-8 h-2 bg-crypto-green rounded-full opacity-20 hidden lg:block"></div>
+      <div className="absolute right-4 bottom-[-8px] w-8 h-2 bg-secondary rounded-full opacity-20 hidden lg:block"></div>
     </motion.div>
   );
 };

@@ -45,11 +45,11 @@ const TraderSection: React.FC<TraderSectionProps> = ({
       transition={{ duration: 0.5 }}
     >
       {/* Mixed media scrapbook element */}
-      <div className="absolute -top-3 -right-2 transform rotate-6">
+      {/* <div className="absolute -top-3 -right-2 transform rotate-6">
         <div className="px-2 py-0.5 bg-gray-800/70 text-xs font-handwriting text-crypto-teal/70">
           {title === "Top Traders" ? "Best performers" : "Whale activity"}
         </div>
-      </div>
+      </div> */}
 
       <div className="flex justify-between items-center mb-4">
         <div className="relative">
@@ -66,9 +66,7 @@ const TraderSection: React.FC<TraderSectionProps> = ({
 
         <Button
           variant="link"
-          className={`text-${
-            title === "Top Traders" ? "crypto-blue" : "crypto-teal"
-          }`}
+          className={`text-${title === "Top Traders" ? "crypto-blue" : "crypto-teal"}`}
           asChild
         >
           <a href={viewAllHref} className="group relative overflow-hidden">
