@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/require-await */
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 import { ParamsType } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
 
 export class DefaultAction extends AbstractBaseAction<ParamsType> {
   readonly name = 'unknown';
@@ -10,17 +11,11 @@ export class DefaultAction extends AbstractBaseAction<ParamsType> {
   readonly examples: string[] = [];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  handle(_params: ParamsType): ActionResult {
+  async handle(_params: ParamsType): Promise<ChatResponse> {
     return this.createSuccessResult({
-      action: 'unknown',
       message:
         'Sorry, I could not understand your request. Please try rephrasing or provide more specific details.',
-      suggestions: [
-        'Try: "Swap 100 USDC for ETH"',
-        'Try: "Add liquidity with 50 DAI and 50 USDC"',
-        'Try: "Stake 1000 MATIC for 30 days"',
-      ],
-      timestamp: new Date().toISOString(),
+      data: {},
     });
   }
 

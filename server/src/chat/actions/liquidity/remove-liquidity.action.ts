@@ -1,6 +1,6 @@
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 import { RemoveLiquidityParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
 
 export class RemoveLiquidityAction extends AbstractBaseAction<RemoveLiquidityParams> {
   readonly name = 'remove_liquidity';
@@ -26,7 +26,8 @@ export class RemoveLiquidityAction extends AbstractBaseAction<RemoveLiquidityPar
     'Exit 25% of my WBTC/ETH position',
   ];
 
-  handle(params: RemoveLiquidityParams): ActionResult {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async handle(params: RemoveLiquidityParams): Promise<ChatResponse> {
     try {
       // TODO: Implement actual liquidity removal logic
       const result = {
@@ -47,7 +48,10 @@ export class RemoveLiquidityAction extends AbstractBaseAction<RemoveLiquidityPar
         },
       };
 
-      return this.createSuccessResult(result);
+      return this.createSuccessResult({
+        message: 'Liquidity removed successfully',
+        data: result,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';

@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/require-await */
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { handleAction } from './actions';
+import { ChatApiDocs } from './docs/chat-api.docs';
 import { ChatRequestDto, ChatResponseDto } from './dto/chat.dto';
 import { MessageHistoryEntry } from './entities/chat.entity';
 import { IntentService } from './services/intent.service';
-import { handleAction } from './actions';
-import { ChatApiDocs } from './docs/chat-api.docs';
 
-@ApiTags('chat')
 @Controller('chat')
 export class ChatController {
   private messageHistory: Map<string, MessageHistoryEntry[]> = new Map();
@@ -79,11 +77,7 @@ export class ChatController {
         chatMessage.user_address,
       );
 
-      return {
-        message: 'Action processed successfully',
-        intent,
-        data: data,
-      };
+      return data;
     } catch (error) {
       return this.handleError(error);
     }

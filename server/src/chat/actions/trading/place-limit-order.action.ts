@@ -1,6 +1,6 @@
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 import { PlaceLimitOrderParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
 
 export class PlaceLimitOrderAction extends AbstractBaseAction<PlaceLimitOrderParams> {
   readonly name = 'place_limit_order';
@@ -22,7 +22,8 @@ export class PlaceLimitOrderAction extends AbstractBaseAction<PlaceLimitOrderPar
     'Set a limit sell order for 10 ETH at 4000',
   ];
 
-  handle(params: PlaceLimitOrderParams): ActionResult {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async handle(params: PlaceLimitOrderParams): Promise<ChatResponse> {
     try {
       // TODO: Implement actual limit order logic
       const result = {
@@ -32,7 +33,10 @@ export class PlaceLimitOrderAction extends AbstractBaseAction<PlaceLimitOrderPar
         orderStatus: 'placed',
       };
 
-      return this.createSuccessResult(result);
+      return this.createSuccessResult({
+        message: 'Limit order placed successfully',
+        data: result,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';

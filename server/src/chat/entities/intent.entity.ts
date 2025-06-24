@@ -82,19 +82,20 @@ export type ParamsType =
   | PlaceMarketOrderParams
   | RemoveLiquidityParams;
 
-export type ActionType =
-  | 'swap'
-  | 'liquidity'
-  | 'staking'
-  | 'borrow'
-  | 'supply'
-  | 'repay'
-  | 'withdraw'
-  | 'claim_reward'
-  | 'place_limit_order'
-  | 'place_market_order'
-  | 'remove_liquidity'
-  | 'unknown';
+export enum ActionType {
+  SWAP = 'swap',
+  LIQUIDITY = 'liquidity',
+  STAKING = 'staking',
+  BORROW = 'borrow',
+  SUPPLY = 'supply',
+  REPAY = 'repay',
+  WITHDRAW = 'withdraw',
+  CLAIM_REWARD = 'claim_reward',
+  PLACE_LIMIT_ORDER = 'place_limit_order',
+  PLACE_MARKET_ORDER = 'place_market_order',
+  REMOVE_LIQUIDITY = 'remove_liquidity',
+  UNKNOWN = 'unknown',
+}
 
 export interface DeFiIntent {
   actionType: ActionType;

@@ -24,7 +24,9 @@ async function bootstrap() {
   // Swagger setup
   const config = new DocumentBuilder()
     .setTitle('Tasmil Finance API')
-    .setDescription('API documentation for Tasmil Finance')
+    .setDescription(
+      'Comprehensive API documentation for Tasmil Finance - a DeFi platform offering trading, liquidity provision, staking, lending, and yield farming services with voice-enabled interactions and intelligent intent recognition',
+    )
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

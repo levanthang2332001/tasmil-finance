@@ -1,6 +1,6 @@
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 import { LiquidityParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
 
 export class AddLiquidityAction extends AbstractBaseAction<LiquidityParams> {
   readonly name = 'liquidity';
@@ -24,7 +24,8 @@ export class AddLiquidityAction extends AbstractBaseAction<LiquidityParams> {
     'Pool 50 WBTC and 1000 ETH',
   ];
 
-  handle(params: LiquidityParams): ActionResult {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async handle(params: LiquidityParams): Promise<ChatResponse> {
     try {
       // TODO: Implement actual liquidity addition logic
       const result = {
@@ -36,7 +37,10 @@ export class AddLiquidityAction extends AbstractBaseAction<LiquidityParams> {
         timestamp: new Date().toISOString(),
       };
 
-      return this.createSuccessResult(result);
+      return this.createSuccessResult({
+        message: 'Liquidity added successfully',
+        data: result,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';

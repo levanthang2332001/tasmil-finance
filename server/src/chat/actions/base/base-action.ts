@@ -1,5 +1,6 @@
-import { BaseAction, ActionResult } from '../types/action.interface';
+import { BaseAction } from '../types/action.interface';
 import { ParamsType } from '../../entities/intent.entity';
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 
 export abstract class AbstractBaseAction<
   TParams extends ParamsType = ParamsType,
@@ -10,10 +11,7 @@ export abstract class AbstractBaseAction<
   abstract readonly prompt: string;
   abstract readonly examples: string[];
 
-  abstract handle(
-    params: TParams,
-    user_address: string,
-  ): Promise<ActionResult> | ActionResult;
+  abstract handle(params: TParams, user_address: string): Promise<ChatResponse>;
   abstract validateMissingParams(params: Partial<TParams>): string[];
 
   protected validateRequired(value: any, fieldName: string): string | null {
@@ -47,17 +45,24 @@ export abstract class AbstractBaseAction<
     return null;
   }
 
-  protected createSuccessResult<T>(data: T): ActionResult<T> {
+  protected createSuccessResult<T>({
+    message,
+    data,
+  }: {
+    message: string;
+    data: T;
+  }): ChatResponse {
     return {
+      message,
       success: true,
       data,
     };
   }
 
-  protected createErrorResult(error: string): ActionResult {
+  protected createErrorResult(error: string = 'Action failed'): ChatResponse {
     return {
+      message: error,
       success: false,
-      error,
     };
   }
 

@@ -1,6 +1,6 @@
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 import { RepayParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
 
 export class RepayAction extends AbstractBaseAction<RepayParams> {
   readonly name = 'repay';
@@ -18,7 +18,8 @@ export class RepayAction extends AbstractBaseAction<RepayParams> {
     'Settle my 0.1 WBTC debt using deposited collateral',
   ];
 
-  handle(params: RepayParams): ActionResult {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async handle(params: RepayParams): Promise<ChatResponse> {
     try {
       // TODO: Implement actual repayment logic
       const result = {
@@ -30,7 +31,10 @@ export class RepayAction extends AbstractBaseAction<RepayParams> {
         remainingDebt: '1000.00', // Mock data
       };
 
-      return this.createSuccessResult(result);
+      return this.createSuccessResult({
+        message: 'Repayment successful',
+        data: result,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';

@@ -1,6 +1,6 @@
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 import { PlaceMarketOrderParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
 
 export class PlaceMarketOrderAction extends AbstractBaseAction<PlaceMarketOrderParams> {
   readonly name = 'place_market_order';
@@ -21,7 +21,8 @@ export class PlaceMarketOrderAction extends AbstractBaseAction<PlaceMarketOrderP
     'Execute a market sell for 10 ETH',
   ];
 
-  handle(params: PlaceMarketOrderParams): ActionResult {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async handle(params: PlaceMarketOrderParams): Promise<ChatResponse> {
     try {
       // TODO: Implement actual market order logic
       const result = {
@@ -32,7 +33,10 @@ export class PlaceMarketOrderAction extends AbstractBaseAction<PlaceMarketOrderP
         filledPrice: '60500.50', // Mock data
       };
 
-      return this.createSuccessResult(result);
+      return this.createSuccessResult({
+        message: 'Market order placed successfully',
+        data: result,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';

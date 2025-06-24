@@ -1,9 +1,9 @@
-import { StakingParams } from '../../entities/intent.entity';
+import { ActionType, StakingParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
 import { aptosAgent } from '../../../utils/aptosAgent';
 import { getTokenByTokenName } from '../../../utils/token';
 import { stakeTokensWithThala } from '../../../tools/thala/stake';
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 
 export class StakingAction extends AbstractBaseAction<StakingParams> {
   readonly name = 'staking';
@@ -31,7 +31,7 @@ export class StakingAction extends AbstractBaseAction<StakingParams> {
   async handle(
     params: StakingParams,
     user_address: string,
-  ): Promise<ActionResult<any>> {
+  ): Promise<ChatResponse> {
     try {
       const { token, amount } = params;
 
@@ -60,7 +60,7 @@ export class StakingAction extends AbstractBaseAction<StakingParams> {
       }
 
       const result = {
-        action: 'stake',
+        action: ActionType.STAKING,
         token: params.token,
         amount: params.amount,
         duration: params.duration || 'flexible',
@@ -70,7 +70,18 @@ export class StakingAction extends AbstractBaseAction<StakingParams> {
 
       console.log('result: ', result);
 
-      return this.createSuccessResult(result);
+      return this.createSuccessResult({
+        message: `# Staking Successful! 🎉
+
+            **Transaction Details:**
+            - **Token:** ${params.token}
+            - **Amount:** ${params.amount}
+            - **Duration:** ${params.duration || 'flexible'}
+            - **Transaction Hash:** \`${data}\`
+
+            Your tokens have been successfully staked and you're now earning rewards!`,
+        data: result,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';

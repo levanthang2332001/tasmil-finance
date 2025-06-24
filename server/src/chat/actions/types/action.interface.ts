@@ -1,10 +1,5 @@
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 import { ParamsType } from '../../entities/intent.entity';
-
-export interface ActionResult<T = any> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
 
 export interface BaseAction<TParams extends ParamsType = ParamsType> {
   readonly name: string;
@@ -12,10 +7,7 @@ export interface BaseAction<TParams extends ParamsType = ParamsType> {
   readonly prompt: string;
   readonly examples: string[];
 
-  handle(
-    params: TParams,
-    user_address: string,
-  ): Promise<ActionResult> | ActionResult;
+  handle(params: TParams, user_address: string): Promise<ChatResponse>;
   validateMissingParams(params: Partial<TParams>): string[];
   validateParams?(params: TParams): boolean;
 }
