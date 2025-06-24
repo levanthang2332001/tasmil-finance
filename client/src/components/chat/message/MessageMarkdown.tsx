@@ -75,7 +75,7 @@ export function MessageMarkdown({ children }: MessageMarkdownProps) {
               <TooltipTrigger asChild>
                 <a
                   href={href}
-                  className="text-blue-400 inline-flex items-center gap-1 hover:text-blue-300 hover:underline font-medium transition-colors duration-200"
+                  className="text-blue-400 inline-flex items-center gap-1 hover:text-blue-800 hover:underline font-medium transition-colors duration-200"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

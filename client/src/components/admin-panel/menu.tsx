@@ -12,9 +12,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useToast } from "@/hooks/useToast";
 import { getMenuList } from "@/lib/menu-list";
 import { cn } from "@/lib/utils";
-import { truncateAddress } from "@aptos-labs/ts-sdk";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { PrivateKeyDialog } from "../dialogs/PrivateKeyDialog";
+import AptosWallet from "./aptos-wallet";
 import TasmilWallet from "./tasmil-wallet";
 interface MenuProps {
   isOpen: boolean | undefined;
@@ -178,21 +178,7 @@ export function Menu({ isOpen }: MenuProps) {
               {/* Wallet Section */}
               {isOpen && (
                 <div className="w-full rounded-2xl p-3 mb-4 glass border border-white/5 space-y-2">
-                  {/* Connected wallet address */}
-                  {account?.address && (
-                    <div className="w-full rounded-lg p-3 bg-black/20">
-                      <div>
-                        <div className="flex justify-between items-center">
-                          <p className="text-xs text-white/60">Aptos Wallet</p>
-                        </div>
-                        <p className="text-gradient text-left font-mono font-semibold mt-1">
-                          {truncateAddress(account.address.toString())}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Tasmil wallet */}
+                  <AptosWallet />
                   <TasmilWallet
                     isLoading={isLoading}
                     internalWallet={internalWallet}
@@ -223,6 +209,7 @@ export function Menu({ isOpen }: MenuProps) {
           </ul>
         </nav>
       </ScrollArea>
+      
       <PrivateKeyDialog
         isOpen={isPKDialogOpen}
         onClose={() => setIsPKDialogOpen(false)}
