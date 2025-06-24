@@ -1,9 +1,9 @@
-import { StakingParams } from '../../entities/intent.entity';
-import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
+import { ChatResponse } from 'src/chat/entities/chat.entity';
+import { stakeTokensWithThala } from '../../../tools/thala/stake';
 import { aptosAgent } from '../../../utils/aptosAgent';
 import { getTokenByTokenName } from '../../../utils/token';
-import { stakeTokensWithThala } from '../../../tools/thala/stake';
+import { StakingParams } from '../../entities/intent.entity';
+import { AbstractBaseAction } from '../base/base-action';
 
 export class UnStakingAction extends AbstractBaseAction<StakingParams> {
   readonly name = 'unstaking';
@@ -37,7 +37,7 @@ export class UnStakingAction extends AbstractBaseAction<StakingParams> {
   async handle(
     params: StakingParams,
     user_address: string,
-  ): Promise<ActionResult<any>> {
+  ): Promise<ChatResponse> {
     try {
       const { token, amount } = params;
 
@@ -70,7 +70,10 @@ export class UnStakingAction extends AbstractBaseAction<StakingParams> {
         timestamp: new Date().toISOString(),
       };
 
-      return this.createSuccessResult(result);
+      return this.createSuccessResult({
+        message: 'Tokens unstaked successfully',
+        data: result,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';

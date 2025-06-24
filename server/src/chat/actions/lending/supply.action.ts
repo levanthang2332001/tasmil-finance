@@ -1,6 +1,6 @@
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 import { SupplyParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
 
 export class SupplyAction extends AbstractBaseAction<SupplyParams> {
   readonly name = 'supply';
@@ -24,7 +24,8 @@ export class SupplyAction extends AbstractBaseAction<SupplyParams> {
     'Deposit 5000 DAI with a target interest rate of 5%',
   ];
 
-  handle(params: SupplyParams): ActionResult {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async handle(params: SupplyParams): Promise<ChatResponse> {
     try {
       // TODO: Implement actual lending/supplying logic
       const result = {
@@ -34,7 +35,10 @@ export class SupplyAction extends AbstractBaseAction<SupplyParams> {
         apy: '4.5%', // Mock data
       };
 
-      return this.createSuccessResult(result);
+      return this.createSuccessResult({
+        message: 'Lending/supplying successful',
+        data: result,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';

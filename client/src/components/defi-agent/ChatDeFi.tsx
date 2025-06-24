@@ -32,7 +32,10 @@ const ChatDeFi = () => {
       const botMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         timestamp: new Date(),
-        actionType: response.intent.actionType,
+        actionType:
+          (response.data?.action as ACTION_TYPE) ||
+          (response.intent?.action as ACTION_TYPE) ||
+          ACTION_TYPE.UNKNOWN,
         message: response.message,
       };
 
@@ -53,7 +56,7 @@ const ChatDeFi = () => {
   };
 
   return (
-    <div className="flex flex-col h-full ">
+    <div className="flex flex-col h-full">
       <ChatContainer
         messages={messages}
         isLoading={isLoading}

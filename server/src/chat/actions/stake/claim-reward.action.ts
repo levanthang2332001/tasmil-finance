@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 import { ClaimRewardParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
 
 export class ClaimRewardAction extends AbstractBaseAction<ClaimRewardParams> {
   readonly name = 'claim_reward';
@@ -18,7 +18,8 @@ export class ClaimRewardAction extends AbstractBaseAction<ClaimRewardParams> {
     'Collect my THALA rewards from Thala',
   ];
 
-  handle(params: ClaimRewardParams): ActionResult {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async handle(params: ClaimRewardParams): Promise<ChatResponse> {
     try {
       // TODO: Implement actual claim reward logic
       const result = {
@@ -29,7 +30,10 @@ export class ClaimRewardAction extends AbstractBaseAction<ClaimRewardParams> {
         claimedToken: params.token || 'all',
       };
 
-      return this.createSuccessResult(result);
+      return this.createSuccessResult({
+        message: 'Rewards claimed successfully',
+        data: result,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';

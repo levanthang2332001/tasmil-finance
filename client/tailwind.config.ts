@@ -35,19 +35,19 @@ const config: Config = {
           foreground: "hsl(var(--popover-foreground))",
         },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "hsl(var(--primary))", // #F161C9
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
+          DEFAULT: "hsl(var(--secondary))", // #F4B6CC
           foreground: "hsl(var(--secondary-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
+          DEFAULT: "hsl(var(--muted))", // #F4B6CC
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
+          DEFAULT: "hsl(var(--accent))", // #912CC1
           foreground: "hsl(var(--accent-foreground))",
         },
         destructive: {
@@ -65,11 +65,11 @@ const config: Config = {
           "5": "hsl(var(--chart-5))",
         },
         crypto: {
-          blue: "#1EAEDB",
-          cyan: "#1EAEDB",
-          teal: "#1EAEDB",
-          green: "#1EAEDB",
-          positive: "#1EAEDB",
+          blue: "#912CC1",
+          cyan: "#F4B6CC",
+          teal: "#F4B6CC",
+          green: "#F161C9",
+          positive: "#F161C9",
           negative: "#ef4444",
         },
       },
@@ -78,8 +78,7 @@ const config: Config = {
           "linear-gradient(225deg, rgba(30, 174, 219, 0.15) 0%, rgba(30, 174, 219, 0) 100%)",
         "glass-gradient":
           "linear-gradient(108.9deg, rgba(32, 33, 36, 0.74) -6.2%, rgba(32, 33, 36, 0.5) 85.9%)",
-        "blue-green-gradient":
-          "linear-gradient(90deg, #1EAEDB 0%, #1EAEDB 100%)",
+        "blue-green-gradient": "linear-gradient(90deg, #1EAEDB 0%, #1EAEDB 100%)",
         "top-trader-card":
           "linear-gradient(225deg, rgba(30, 174, 219, 0.15) 0%, rgba(30, 174, 219, 0.05) 100%)",
         "grid-pattern":

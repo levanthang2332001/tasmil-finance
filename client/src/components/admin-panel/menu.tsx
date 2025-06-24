@@ -14,7 +14,8 @@ import { getMenuList } from "@/lib/menu-list";
 import { cn } from "@/lib/utils";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { PrivateKeyDialog } from "../dialogs/PrivateKeyDialog";
-
+import AptosWallet from "./aptos-wallet";
+import TasmilWallet from "./tasmil-wallet";
 interface MenuProps {
   isOpen: boolean | undefined;
 }
@@ -42,13 +43,6 @@ export function Menu({ isOpen }: MenuProps) {
   // --- MOCK DATA AND API ---
   // Change this to `true` to mock the case where the wallet already exists.
   const MOCK_WALLET_EXISTS = false;
-
-  const truncateAddress = (address: string) => {
-    if (!address) return "";
-    const start = address.substring(0, 6);
-    const end = address.substring(address.length - 5);
-    return `${start}...${end}`;
-  };
 
   const fetchInternalWallet = async () => {
     if (!account?.address) return;
@@ -182,51 +176,16 @@ export function Menu({ isOpen }: MenuProps) {
             ))}
             <li className="w-full grow flex flex-col justify-end">
               {/* Wallet Section */}
-              <div className="w-full rounded-2xl p-3 mb-4 glass border border-white/5 space-y-2">
-                <h3 className="text-center font-semibold text-base text-white/90">Wallet</h3>
-
-                {/* Connected wallet address */}
-                {account?.address && (
-                  <div className="w-full rounded-lg p-3 bg-black/20">
-                    <p className="text-gradient text-center font-mono font-semibold">
-                      {truncateAddress(account.address.toString())}
-                    </p>
-                  </div>
-                )}
-
-                {/* Tasmil wallet */}
-                <div className="w-full rounded-lg p-3 bg-black/20">
-                  {isLoading && !internalWallet ? (
-                    <p className="text-center text-sm text-white/70 animate-pulse">
-                      Checking wallet...
-                    </p>
-                  ) : internalWallet ? (
-                    <div>
-                      <div className="flex justify-between items-center">
-                        <p className="text-xs text-white/60">Tasmil Wallet</p>
-                        <Ellipsis className="h-4 w-4 text-white/60 cursor-pointer" />
-                      </div>
-                      <p className="text-gradient text-left font-mono font-semibold mt-1">
-                        {truncateAddress(internalWallet.address)}
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <p className="text-sm mb-3 text-white/70">
-                        You haven&apos;t created a Tasmil Wallet yet.
-                      </p>
-                      <Button
-                        onClick={createInternalWallet}
-                        className="w-full h-10 gradient-outline font-semibold"
-                        disabled={isLoading}
-                        variant="ghost" // Use ghost to remove most default styles
-                      >
-                        {isLoading ? "Creating..." : "Create Tasmil Wallet"}
-                      </Button>
-                    </div>
-                  )}
+              {isOpen && (
+                <div className="w-full rounded-2xl p-3 mb-4 glass border border-white/5 space-y-2">
+                  <AptosWallet />
+                  <TasmilWallet
+                    isLoading={isLoading}
+                    internalWallet={internalWallet}
+                    onCreateInternalWallet={createInternalWallet}
+                  />
                 </div>
-              </div>
+              )}
 
               {/* Disconnect button */}
               <TooltipProvider disableHoverableContent>
@@ -250,6 +209,7 @@ export function Menu({ isOpen }: MenuProps) {
           </ul>
         </nav>
       </ScrollArea>
+      
       <PrivateKeyDialog
         isOpen={isPKDialogOpen}
         onClose={() => setIsPKDialogOpen(false)}

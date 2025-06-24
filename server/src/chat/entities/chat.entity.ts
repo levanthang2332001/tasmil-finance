@@ -9,6 +9,7 @@ export interface ChatResponse {
   intent?: DeFiIntent;
   message: string;
   data?: any;
+  success: boolean;
 }
 
 export interface MessageHistoryEntry {

@@ -19,18 +19,19 @@ export interface ChatMessage {
   timestamp: Date;
   message: string;
   actionType: ACTION_TYPE;
-  data?: { [key: string]: string | boolean };
+  data?: { [key: string]: string | boolean | number };
 }
 
 export interface ChatResponse {
   id: string;
   timestamp: Date;
   message: string;
-  intent: {
-    actionType: ACTION_TYPE;
-    confidence: number;
-    context: string;
-    missingFields: string[];
-    params: { [key: string]: string };
+  data?: { [key: string]: string | boolean };
+  intent?: {
+    action: ACTION_TYPE;
+    confidence?: number;
+    context?: string;
+    missingFields?: string[];
+    params?: { [key: string]: string };
   };
 }

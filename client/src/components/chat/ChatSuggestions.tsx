@@ -48,8 +48,8 @@ export const ChatSuggestions = ({
               )}
             >
               <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/20 group-hover:from-primary/30 group-hover:to-primary/20 transition-all duration-300">
-                  <Icon className="w-6 h-6 text-primary" />
+                <div className="p-3 rounded-xl bg-gradient-to-br from-white to-secondary/10 border border-secondary/20 group-hover:from-secondary/30 group-hover:to-primary/20 transition-all duration-300">
+                  <Icon className="w-6 h-6 text-black group-hover:text-primary" />
                 </div>
                 <span className="text-white/90 font-medium group-hover:text-white transition-colors duration-300">
                   {suggestion.text}

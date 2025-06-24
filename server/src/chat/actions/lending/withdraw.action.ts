@@ -1,6 +1,6 @@
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 import { WithdrawParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
 
 export class WithdrawAction extends AbstractBaseAction<WithdrawParams> {
   readonly name = 'withdraw';
@@ -22,7 +22,8 @@ export class WithdrawAction extends AbstractBaseAction<WithdrawParams> {
     'Get my deposited DAI back',
   ];
 
-  handle(params: WithdrawParams): ActionResult {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async handle(params: WithdrawParams): Promise<ChatResponse> {
     try {
       // TODO: Implement actual withdrawal logic
       const result = {
@@ -33,7 +34,10 @@ export class WithdrawAction extends AbstractBaseAction<WithdrawParams> {
         remainingBalance: '500.00', // Mock data
       };
 
-      return this.createSuccessResult(result);
+      return this.createSuccessResult({
+        message: 'Withdrawal successful',
+        data: result,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';

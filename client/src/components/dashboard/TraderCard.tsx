@@ -1,8 +1,9 @@
 import React from "react";
 
-import { motion } from "framer-motion";
-import { formatCurrency, formatPercentage, truncateAddress } from "@/lib/utils";
 import { Trader } from "@/data/dashboardMockData";
+import { formatCurrency, formatPercentage } from "@/lib/utils";
+import { truncateAddress } from "@aptos-labs/ts-sdk";
+import { motion } from "framer-motion";
 
 interface TraderCardProps {
   trader: Trader;
@@ -44,17 +45,11 @@ const TraderCard: React.FC<TraderCardProps> = ({ trader }) => {
           <div
             className="w-10 h-10 rounded-full flex items-center justify-center mr-2 relative border border-white/10 overflow-hidden"
             style={{
-              background: trader.avatar
-                ? "transparent"
-                : generateAvatarGradient(),
+              background: trader.avatar ? "transparent" : generateAvatarGradient(),
             }}
           >
             {trader.avatar ? (
-              <img
-                src={trader.avatar}
-                alt="Trader"
-                className="w-10 h-10 rounded-full"
-              />
+              <img src={trader.avatar} alt="Trader" className="w-10 h-10 rounded-full" />
             ) : (
               <>
                 {/* AI-generated avatar placeholder with diverse representation */}
@@ -74,9 +69,7 @@ const TraderCard: React.FC<TraderCardProps> = ({ trader }) => {
             </motion.div>
           </div>
           <div className="flex flex-col">
-            <span className="text-white font-medium">
-              {truncateAddress(trader.address)}
-            </span>
+            <span className="text-white font-medium">{truncateAddress(trader.address)}</span>
             <span className="text-xs text-gray-400 font-mono">
               active {Math.floor(Math.random() * 24)}h ago
             </span>
@@ -115,9 +108,7 @@ const TraderCard: React.FC<TraderCardProps> = ({ trader }) => {
           <div className="text-gray-400 text-xs font-handwriting">30D PnL</div>
           <div
             className={`text-lg font-bold ${
-              trader.pnl30d >= 0
-                ? "text-crypto-positive"
-                : "text-crypto-negative"
+              trader.pnl30d >= 0 ? "text-crypto-positive" : "text-crypto-negative"
             }`}
           >
             {formatCurrency(trader.pnl30d)}

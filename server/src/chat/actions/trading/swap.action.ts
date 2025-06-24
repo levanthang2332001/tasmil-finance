@@ -1,6 +1,6 @@
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 import { SwapParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
 
 export class SwapAction extends AbstractBaseAction<SwapParams> {
   readonly name = 'swap';
@@ -8,7 +8,7 @@ export class SwapAction extends AbstractBaseAction<SwapParams> {
   readonly prompt = `Extract the following parameters for a swap action as JSON:
     {
       "fromToken": "string - the token to swap from (e.g., 'ETH', 'USDC')",
-      "toToken": "string - the token to swap to (e.g., 'ETH', 'USDC')", 
+      "toToken": "string - the token to swap to (e.g., 'ETH', 'USDC')",
       "amount": "number - the amount to swap (must be positive)"
     }`;
 
@@ -18,7 +18,8 @@ export class SwapAction extends AbstractBaseAction<SwapParams> {
     'Trade 1000 DAI for WBTC',
   ];
 
-  handle(params: SwapParams): ActionResult {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async handle(params: SwapParams): Promise<ChatResponse> {
     try {
       // TODO: Implement actual swap logic
       const result = {
@@ -29,7 +30,10 @@ export class SwapAction extends AbstractBaseAction<SwapParams> {
         timestamp: new Date().toISOString(),
       };
 
-      return this.createSuccessResult(result);
+      return this.createSuccessResult({
+        message: 'Swap executed successfully',
+        data: result,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';
