@@ -72,12 +72,11 @@ export class StakingAction extends AbstractBaseAction<StakingParams> {
 
       return this.createSuccessResult({
         message: `# Staking Successful! 🎉
-
-            **Transaction Details:**
-            - **Token:** ${params.token}
-            - **Amount:** ${params.amount}
-            - **Duration:** ${params.duration || 'flexible'}
-            - **Transaction Hash:** \`${data}\`
+            Transaction Details:
+            - Token: ${params.token}
+            - Amount: ${params.amount}
+            - Duration: ${params.duration || 'flexible'}
+            - Transaction Hash: ${data}
 
             Your tokens have been successfully staked and you're now earning rewards!`,
         data: result,
