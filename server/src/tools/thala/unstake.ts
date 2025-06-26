@@ -24,13 +24,19 @@ export async function unstakeTokensWithThala(
       transaction,
     });
 
-    if (!response) {
+    const tx = await aptos.waitForTransaction({
+      transactionHash: response.hash,
+    });
+
+    if (!tx.success || !tx.hash) {
       throw new Error('Failed to unstake tokens');
     }
 
-    console.log('response: ', response);
+    console.log('tx: ', tx.hash, tx.success);
 
-    return response;
+    return {
+      hash: tx.hash,
+    };
   } catch (error) {
     console.error(error);
     throw new Error('Failed to unstake tokens: ' + error);
