@@ -6,7 +6,7 @@ export const SUGGESTION_DEFI_AGENT = [
     icon: Wallet,
   },
   {
-    text: "Unstake 50 APT",
+    text: "Unstake 0.0001 APT",
     icon: Coins,
   },
   {
@@ -17,5 +17,4 @@ export const SUGGESTION_DEFI_AGENT = [
     text: "Swap APT to USDC",
     icon: Wallet,
   },
- 
 ];

@@ -17,6 +17,11 @@ export type StakingParams = {
   duration?: number;
 };
 
+export type UnStakingParams = {
+  token: string;
+  amount: number;
+};
+
 export type BorrowParams = {
   token: string;
   amount: number;
@@ -73,6 +78,7 @@ export type ParamsType =
   | SwapParams
   | LiquidityParams
   | StakingParams
+  | UnStakingParams
   | BorrowParams
   | SupplyParams
   | RepayParams
@@ -86,6 +92,7 @@ export enum ActionType {
   SWAP = 'swap',
   LIQUIDITY = 'liquidity',
   STAKING = 'staking',
+  UNSTAKING = 'unstaking',
   BORROW = 'borrow',
   SUPPLY = 'supply',
   REPAY = 'repay',

@@ -72,6 +72,14 @@ export class StakingParamsSchema {
   duration?: number;
 }
 
+export class UnStakingParamsSchema {
+  @ApiProperty({
+    example: 'USDT',
+    description: 'Token to unstake',
+  })
+  token: string;
+}
+
 export class BorrowParamsSchema {
   @ApiProperty({
     example: 'USDC',
@@ -272,6 +280,7 @@ export class DeFiIntentSchema {
       'swap',
       'liquidity',
       'staking',
+      'unstaking',
       'borrow',
       'supply',
       'repay',
@@ -287,6 +296,7 @@ export class DeFiIntentSchema {
     | 'swap'
     | 'liquidity'
     | 'staking'
+    | 'unstaking'
     | 'borrow'
     | 'supply'
     | 'repay'
@@ -317,6 +327,7 @@ export class DeFiIntentSchema {
     | SwapParamsSchema
     | LiquidityParamsSchema
     | StakingParamsSchema
+    | UnStakingParamsSchema
     | BorrowParamsSchema
     | SupplyParamsSchema
     | RepayParamsSchema

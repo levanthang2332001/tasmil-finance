@@ -16,7 +16,7 @@ import {
   useWallet,
 } from "@aptos-labs/wallet-adapter-react";
 import { ArrowLeft, ArrowRight, ChevronDown, Copy, LogOut, User } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
@@ -33,6 +33,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/useToast";
+import { useAptosAuth } from "@/hooks/useAptosAuth";
 
 // Connect Wallet Button
 export function AptosConnectWallet({
@@ -45,6 +46,32 @@ export function AptosConnectWallet({
   const { account, connected, disconnect, wallet } = useWallet();
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Tích hợp xác thực nonce
+  const { token, authLoading, authError } = useAptosAuth();
+
+  // Hiển thị toast khi xác thực thành công
+  // (Chỉ toast khi vừa có token mới)
+  useEffect(() => {
+    if (token) {
+      toast({
+        title: "Wallet authenticated!",
+        description: "You are now securely signed in with your Aptos wallet.",
+        variant: "default",
+      });
+    }
+  }, [token, toast]);
+
+  // Hiển thị toast khi lỗi xác thực
+  useEffect(() => {
+    if (authError) {
+      toast({
+        title: "Wallet authentication failed",
+        description: authError,
+        variant: "destructive",
+      });
+    }
+  }, [authError, toast]);
 
   const closeDialog = useCallback(() => setIsDialogOpen(false), []);
 
@@ -68,8 +95,10 @@ export function AptosConnectWallet({
   return connected ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="galaxy">
-          {account?.ansName || truncateAddress(account?.address?.toString()) || "Unknown"}
+        <Button variant="galaxy" disabled={authLoading}>
+          {authLoading
+            ? "Authenticating..."
+            : account?.ansName || truncateAddress(account?.address?.toString()) || "Unknown"}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

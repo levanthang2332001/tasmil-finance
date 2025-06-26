@@ -15,6 +15,11 @@ export const ChatExamples = {
         '0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8',
       content: 'Stake 0.0001 APT for 30 days',
     },
+    unstaking: {
+      user_address:
+        '0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8',
+      content: 'Unstake 0.0001 APT',
+    },
     unclear: {
       user_address:
         '0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8',
@@ -78,6 +83,25 @@ export const ChatExamples = {
       },
       data: {
         stakingContract: '0xdef456789abc...',
+        estimatedRewards: '25 USDT',
+        lockPeriod: '30 days',
+      },
+    },
+    unstakingSuccess: {
+      message: 'Action processed successfully',
+      intent: {
+        actionType: 'unstaking',
+        params: {
+          token: 'USDT',
+          amount: 500,
+          duration: 30,
+        },
+        confidence: 0.88,
+        missingFields: [],
+        context: 'User wants to unstake USDT for 30 days',
+      },
+      data: {
+        unstakingContract: '0xdef456789abc...',
         estimatedRewards: '25 USDT',
         lockPeriod: '30 days',
       },

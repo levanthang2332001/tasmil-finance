@@ -1,8 +1,8 @@
 import { ChatResponse } from 'src/chat/entities/chat.entity';
-import { stakeTokensWithThala } from '../../../tools/thala/stake';
+import { unstakeTokensWithThala } from 'src/tools/thala/unstake';
 import { aptosAgent } from '../../../utils/aptosAgent';
 import { getTokenByTokenName } from '../../../utils/token';
-import { StakingParams } from '../../entities/intent.entity';
+import { ActionType, StakingParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
 
 export class UnStakingAction extends AbstractBaseAction<StakingParams> {
@@ -55,29 +55,45 @@ export class UnStakingAction extends AbstractBaseAction<StakingParams> {
       const amountInInterger = Math.floor(rawValue * 10 ** findToken.decimals);
       const { aptos, accounts } = await aptosAgent(user_address);
 
-      const data = await stakeTokensWithThala(
+      const data = await unstakeTokensWithThala(
         aptos,
         accounts,
         amountInInterger,
       );
 
+      if (!data) {
+        return this.createErrorResult('Failed to unstake tokens');
+      }
+
       const result = {
-        action: 'stake',
+        action: ActionType.UNSTAKING,
         token: params.token,
         amount: params.amount,
-        duration: params.duration || 'flexible',
         data,
         timestamp: new Date().toISOString(),
       };
 
+      console.log('result: ', result);
+
       return this.createSuccessResult({
-        message: 'Tokens unstaked successfully',
+        message: `<h2>Unstaking Successful! 🎉</h2>
+          <div>
+            <strong>Transaction Details:</strong>
+            <ul>
+              <li><b>Token:</b> ${params.token}</li>
+              <li><b>Amount:</b> ${params.amount}</li>
+              <li><b>Transaction Hash:</b> <a href="https://explorer.aptoslabs.com/txn/${data?.hash}?network=mainnet" target="_blank">${data?.hash}</a></li>
+              </ul>
+            <p>Your tokens have been successfully unstaked!</p>
+          </div>`,
         data: result,
       });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';
-      return this.createErrorResult(`Failed to stake tokens: ${errorMessage}`);
+      return this.createErrorResult(
+        `Failed to unstake tokens: ${errorMessage}`,
+      );
     }
   }
 

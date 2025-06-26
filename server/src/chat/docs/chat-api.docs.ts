@@ -60,6 +60,10 @@ export const ChatApiDocs = {
           summary: 'Successful staking intent extraction',
           value: ChatExamples.responses.stakingSuccess,
         },
+        unstakingSuccess: {
+          summary: 'Successful unstaking intent extraction',
+          value: ChatExamples.responses.unstakingSuccess,
+        },
         unclearIntent: {
           summary: 'Unclear intent',
           value: ChatExamples.responses.unclearIntent,

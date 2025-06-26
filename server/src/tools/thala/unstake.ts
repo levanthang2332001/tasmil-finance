@@ -1,10 +1,14 @@
 import { Aptos, Account } from '@aptos-labs/ts-sdk';
 
+interface UnstakeResponse {
+  hash: string;
+}
+
 export async function unstakeTokensWithThala(
   aptos: Aptos,
   account: Account,
   amount: number,
-): Promise<string> {
+): Promise<UnstakeResponse> {
   try {
     const transaction = await aptos.transaction.build.simple({
       sender: account.accountAddress,
@@ -24,8 +28,9 @@ export async function unstakeTokensWithThala(
       throw new Error('Failed to unstake tokens');
     }
 
-    console.log(response.hash);
-    return response.hash;
+    console.log('response: ', response);
+
+    return response;
   } catch (error) {
     console.error(error);
     throw new Error('Failed to unstake tokens: ' + error);

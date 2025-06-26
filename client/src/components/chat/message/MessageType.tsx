@@ -13,6 +13,7 @@ export function MessageType({ message, isLoading }: MessageTypeProps) {
     [ACTION_TYPE.SWAP]: <BotChat message={message} isLoading={isLoading} />,
     [ACTION_TYPE.LIQUIDITY]: <BotChat message={message} isLoading={isLoading} />,
     [ACTION_TYPE.STAKING]: <BotChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.UNSTAKING]: <BotChat message={message} isLoading={isLoading} />,
     [ACTION_TYPE.BORROW]: <BotChat message={message} isLoading={isLoading} />,
     [ACTION_TYPE.SUPPLY]: <BotChat message={message} isLoading={isLoading} />,
     [ACTION_TYPE.REPAY]: <BotChat message={message} isLoading={isLoading} />,

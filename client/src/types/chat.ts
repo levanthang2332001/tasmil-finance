@@ -4,6 +4,7 @@ export enum ACTION_TYPE {
   SWAP = "swap",
   LIQUIDITY = "liquidity",
   STAKING = "staking",
+  UNSTAKING = "unstaking",
   BORROW = "borrow",
   SUPPLY = "supply",
   REPAY = "repay",

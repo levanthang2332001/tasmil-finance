@@ -1,19 +1,18 @@
-import { Skeleton } from "@/components/ui/skeleton";
 import Navbar from "@/components/sidebar/Navbar";
-import BackButton from "@/components/sidebar/BackButton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function ChatMessageSkeleton({ isBot }: { isBot: boolean }) {
   return (
     <div className={`flex mb-4 ${isBot ? "" : "justify-end"}`}>
       <div className={`flex items-end gap-2 ${isBot ? "" : "flex-row-reverse"}`}>
-        <Skeleton className="w-8 h-8 rounded-full bg-secondary" />
-        <div className="max-w-[80%]">
+        <Skeleton className="w-10 h-10 rounded-full bg-neutral-700/50" />
+        <div className="max-w-[85%]">
           <Skeleton
-            className={`h-6 w-40 mb-2 ${
+            className={`h-8 w-48 mb-2 ${
               isBot ? "rounded-2xl rounded-bl-sm" : "rounded-2xl rounded-br-sm"
-            } bg-secondary`}
+            } bg-neutral-700/50`}
           />
-          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-4 w-20 bg-neutral-700/50" />
         </div>
       </div>
     </div>
@@ -23,39 +22,39 @@ function ChatMessageSkeleton({ isBot }: { isBot: boolean }) {
 function SwapQuoteSkeleton() {
   return (
     <div className="flex items-end gap-2 mb-4">
-      <Skeleton className="w-8 h-8 rounded-full bg-secondary" />
-      <div className="flex flex-col bg-secondary rounded-2xl w-full max-w-md">
-        <div className="p-4 space-y-4">
+      <Skeleton className="w-10 h-10 rounded-full bg-neutral-700/50" />
+      <div className="flex flex-col bg-neutral-700/50 rounded-2xl w-full max-w-lg">
+        <div className="p-6 space-y-5">
           <div className="flex items-center justify-between">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-3 w-12" />
+            <Skeleton className="h-5 w-32 bg-neutral-700/50" />
+            <Skeleton className="h-4 w-16 bg-neutral-700/50" />
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <Skeleton className="h-3 w-12 mb-1" />
-              <Skeleton className="h-6 w-20 mb-1" />
-              <Skeleton className="h-3 w-16" />
+              <Skeleton className="h-4 w-16 mb-2 bg-neutral-700/50" />
+              <Skeleton className="h-8 w-28 mb-2 bg-neutral-700/50" />
+              <Skeleton className="h-4 w-20 bg-neutral-700/50" />
             </div>
-            <Skeleton className="h-6 w-6 rounded-full" />
+            <Skeleton className="h-8 w-8 rounded-full bg-neutral-700/50" />
           </div>
           <div className="flex justify-center">
-            <Skeleton className="h-6 w-6 rounded-full" />
+            <Skeleton className="h-8 w-8 rounded-full bg-neutral-700/50" />
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <Skeleton className="h-3 w-12 mb-1" />
-              <Skeleton className="h-6 w-20 mb-1" />
-              <Skeleton className="h-3 w-16" />
+              <Skeleton className="h-4 w-16 mb-2 bg-neutral-700/50" />
+              <Skeleton className="h-8 w-28 mb-2 bg-neutral-700/50" />
+              <Skeleton className="h-4 w-20 bg-neutral-700/50" />
             </div>
-            <Skeleton className="h-6 w-6 rounded-full" />
+            <Skeleton className="h-8 w-8 rounded-full bg-neutral-700/50" />
           </div>
-          <div className="flex justify-between border-t pt-4">
-            <Skeleton className="h-3 w-20" />
-            <Skeleton className="h-3 w-12" />
+          <div className="flex justify-between border-t pt-5">
+            <Skeleton className="h-4 w-28 bg-neutral-700/50" />
+            <Skeleton className="h-4 w-16 bg-neutral-700/50" />
           </div>
-          <div className="flex gap-2">
-            <Skeleton className="h-10 w-24 rounded-md" />
-            <Skeleton className="h-10 w-24 rounded-md" />
+          <div className="flex gap-3">
+            <Skeleton className="h-12 w-32 rounded-lg bg-neutral-700/50" />
+            <Skeleton className="h-12 w-32 rounded-lg bg-neutral-700/50" />
           </div>
         </div>
       </div>
@@ -65,10 +64,10 @@ function SwapQuoteSkeleton() {
 
 function ChatInputSkeleton() {
   return (
-    <div className="pt-2 px-2 max-w-[740px] w-full mx-auto">
-      <div className="flex gap-2 items-end">
-        <Skeleton className="flex-1 h-12 rounded-md" />
-        <Skeleton className="h-10 w-10 rounded-full" />
+    <div className="pt-3 px-3 max-w-[800px] w-full mx-auto">
+      <div className="flex gap-3 items-end">
+        <Skeleton className="flex-1 h-14 rounded-lg bg-neutral-700/50" />
+        <Skeleton className="h-12 w-12 rounded-full bg-neutral-700/50" />
       </div>
     </div>
   );
@@ -76,14 +75,13 @@ function ChatInputSkeleton() {
 
 function loading() {
   return (
-    <div className="flex flex-1 flex-col h-screen overflow-y-auto bg-black">
+    <div className="flex flex-1 flex-col h-screen overflow-y-auto bg-transparent">
       <Navbar>
-        <BackButton />
-        <Skeleton className="h-6 w-32 ml-4" />
-        <Skeleton className="h-8 w-8 ml-auto" />
+        <Skeleton className="h-7 w-40 ml-4 bg-neutral-700/50" />
+        <Skeleton className="h-10 w-10 ml-auto bg-neutral-700/50" />
       </Navbar>
-      <div className="flex-1 flex flex-col justify-end px-2 sm:px-4 py-4 max-w-full mx-auto w-full">
-        <div className="flex-1 flex flex-col justify-end gap-2 max-w-[740px] w-full mx-auto">
+      <div className="flex-1 flex flex-col justify-end px-3 sm:px-6 py-6 max-w-full mx-auto w-full">
+        <div className="flex-1 flex flex-col justify-end gap-3 max-w-[800px] w-full mx-auto">
           <ChatMessageSkeleton isBot={true} />
           <ChatMessageSkeleton isBot={false} />
           <SwapQuoteSkeleton />
