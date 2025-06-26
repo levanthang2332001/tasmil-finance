@@ -1,8 +1,7 @@
 "use client";
 
 import { Copy, Check } from "lucide-react";
-import { useState } from "react";
-
+import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,20 +18,28 @@ interface PrivateKeyDialogProps {
   privateKey: string | null;
 }
 
-export function PrivateKeyDialog({ isOpen, onClose, privateKey }: PrivateKeyDialogProps) {
+export function PrivateKeyDialog({
+  isOpen,
+  onClose,
+  privateKey,
+}: PrivateKeyDialogProps) {
   const { toast } = useToast();
   const [hasCopied, setHasCopied] = useState(false);
 
-  function handleCopy() {
+  const handleCopy = useCallback(async () => {
     if (!privateKey) return;
-    navigator.clipboard.writeText(privateKey);
-    setHasCopied(true);
-    toast({
-      title: "Copied!",
-      description: "Private key copied to clipboard.",
-    });
-    setTimeout(() => setHasCopied(false), 1200);
-  }
+    try {
+      await navigator.clipboard.writeText(privateKey);
+      setHasCopied(true);
+      toast({
+        title: "Copied!",
+        description: "Private key copied to clipboard.",
+      });
+      setTimeout(() => setHasCopied(false), 1200);
+    } catch {
+      // Optionally handle error here
+    }
+  }, [privateKey, toast]);
 
   if (!privateKey) return null;
 
@@ -55,13 +62,16 @@ export function PrivateKeyDialog({ isOpen, onClose, privateKey }: PrivateKeyDial
               onClick={handleCopy}
               aria-label={hasCopied ? "Copied" : "Copy private key"}
             >
-              {hasCopied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+              {hasCopied ? (
+                <Check className="h-4 w-4 text-green-500" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
             </Button>
           </div>
         </div>
         <div className="p-3 bg-yellow-900/20 text-yellow-400/80 rounded-md text-xs">
-          <strong>Note:</strong> Please fund your wallet with any amount of token to activate in
-          Aptos network.
+          <strong>Note:</strong> Please fund your wallet with any amount of token to activate in Aptos network.
         </div>
       </DialogContent>
     </Dialog>

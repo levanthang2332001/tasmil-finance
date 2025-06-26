@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import ChatAgent from "@/components/ai-agents/ChatAgent";
 import SideRight from "@/components/toolbar/agent/SideAgent";
-import BackButton from "@/components/BackButton";
-import Navbar from "@/components/Navbar";
+import BackButton from "@/components/sidebar/BackButton";
+import Navbar from "@/components/sidebar/Navbar";
 import { ToolbarType } from "@/store/useToolbar";
 import ToolBar from "@/components/toolbar";
 

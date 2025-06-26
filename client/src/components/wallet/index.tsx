@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/useToast";
 
+// Connect Wallet Button
 export function AptosConnectWallet({
   walletSortingOptions = {},
   label = "Connect Wallet",
@@ -67,7 +68,7 @@ export function AptosConnectWallet({
   return connected ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>
+        <Button variant="galaxy">
           {account?.ansName || truncateAddress(account?.address?.toString()) || "Unknown"}
         </Button>
       </DropdownMenuTrigger>
@@ -95,18 +96,20 @@ export function AptosConnectWallet({
   ) : (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button>{label}</Button>
+        <Button variant="galaxy">{label}</Button>
       </DialogTrigger>
       <ConnectWalletDialog close={closeDialog} {...walletSortingOptions} label={label} />
     </Dialog>
   );
 }
 
+// Connect Wallet Dialog
 interface ConnectWalletDialogProps extends WalletSortingOptions {
   close: () => void;
   label: string;
 }
 
+// Connect Wallet Dialog Content
 function ConnectWalletDialog({ close, label, ...walletSortingOptions }: ConnectWalletDialogProps) {
   const { wallets = [], notDetectedWallets = [] } = useWallet();
 
@@ -184,6 +187,7 @@ function ConnectWalletDialog({ close, label, ...walletSortingOptions }: ConnectW
   );
 }
 
+// Wallet Row
 interface WalletRowProps {
   wallet: AdapterWallet | AdapterNotDetectedWallet;
   onConnect?: () => void;

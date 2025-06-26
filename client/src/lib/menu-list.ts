@@ -6,31 +6,30 @@ import {
   Award,
   HelpCircle,
   Settings,
-  LucideIcon
+  LucideIcon,
 } from "lucide-react";
 import { PATHS } from "@/constants/routes";
 
-type Submenu = {
+export type SubmenuType = {
   href: string;
   label: string;
   active?: boolean;
 };
 
-type Menu = {
+export type MenuType = {
   href: string;
   label: string;
   active?: boolean;
   icon: LucideIcon;
-  submenus?: Submenu[];
+  submenus?: SubmenuType[];
 };
 
-type Group = {
+export type GroupType = {
   groupLabel: string;
-  menus: Menu[];
+  menus: MenuType[];
 };
 
-export function getMenuList(pathname: string): Group[] {
-  console.log(pathname);
+export function getMenuList(): GroupType[] {
   return [
     {
       groupLabel: "",
@@ -60,7 +59,7 @@ export function getMenuList(pathname: string): Group[] {
           label: "Portfolio",
           icon: Award,
         },
-      ]
+      ],
     },
     {
       groupLabel: "",
@@ -75,7 +74,7 @@ export function getMenuList(pathname: string): Group[] {
           label: "Help & FAQ",
           icon: HelpCircle,
         },
-      ]
-    }
+      ],
+    },
   ];
 }

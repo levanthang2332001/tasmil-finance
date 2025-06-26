@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import Navbar from "@/components/Navbar";
-import BackButton from "@/components/BackButton";
+import Navbar from "@/components/sidebar/Navbar";
+import BackButton from "@/components/sidebar/BackButton";
 
 function ChatMessageSkeleton({ isBot }: { isBot: boolean }) {
   return (

@@ -18,24 +18,16 @@ export function MessageMarkdown({ children }: MessageMarkdownProps) {
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeRaw]}
         components={{
-          h1: ({ children }) => (
-            <h1 className="text-2xl font-bold mb-4 text-black">{children}</h1>
-          ),
+          h1: ({ children }) => <h1 className="text-2xl font-bold mb-4 text-black">{children}</h1>,
           h2: ({ children }) => (
             <h2 className="text-xl font-semibold mb-3 text-black">{children}</h2>
           ),
-          h3: ({ children }) => (
-            <h3 className="text-lg font-medium mb-2 text-black">{children}</h3>
-          ),
+          h3: ({ children }) => <h3 className="text-lg font-medium mb-2 text-black">{children}</h3>,
           h4: ({ children }) => (
             <h4 className="text-base font-medium mb-2 text-black">{children}</h4>
           ),
-          h5: ({ children }) => (
-            <h5 className="text-sm font-medium mb-1 text-black">{children}</h5>
-          ),
-          h6: ({ children }) => (
-            <h6 className="text-xs font-medium mb-1 text-black">{children}</h6>
-          ),
+          h5: ({ children }) => <h5 className="text-sm font-medium mb-1 text-black">{children}</h5>,
+          h6: ({ children }) => <h6 className="text-xs font-medium mb-1 text-black">{children}</h6>,
           p: ({ children }) => <p className="mb-3 leading-relaxed text-black">{children}</p>,
           code: ({ children, className }) => {
             const isInline = !className;
@@ -84,7 +76,7 @@ export function MessageMarkdown({ children }: MessageMarkdownProps) {
                 </a>
               </TooltipTrigger>
               <TooltipContent>
-                <span>{href}</span>
+                <span>View on Aptos Explorer</span>
               </TooltipContent>
             </Tooltip>
           ),

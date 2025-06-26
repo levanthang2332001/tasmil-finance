@@ -1,10 +1,14 @@
 import { Aptos, Account } from '@aptos-labs/ts-sdk';
 
+interface StakeResponse {
+  hash: string;
+}
+
 export async function stakeTokensWithThala(
   aptos: Aptos,
   account: Account,
   amount: number,
-): Promise<string> {
+): Promise<StakeResponse> {
   try {
     const transaction = await aptos.transaction.build.simple({
       sender: account.accountAddress,
@@ -24,7 +28,7 @@ export async function stakeTokensWithThala(
       throw new Error('Failed to stake tokens');
     }
 
-    return response.hash;
+    return response;
   } catch (error) {
     console.error(error);
     throw new Error('Failed to stake tokens: ' + error);

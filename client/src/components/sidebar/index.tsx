@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-import Logo from "../Logo";
+import Logo from "./Logo";
 import SidebarButton, { SidebarItem } from "./SidebarButton";
 import { Button } from "../ui/button";
 import { AptosConnectWallet } from "../wallet";

@@ -1,6 +1,6 @@
 import { truncateAddress } from "@aptos-labs/ts-sdk";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { ButtonEllipsis } from "./button-ellipsis";
+import { ButtonEllipsis } from "./menu/ButtonEllipsis";
 
 function AptosWallet() {
   const { account } = useWallet();
@@ -12,7 +12,7 @@ function AptosWallet() {
       <div>
         <div className="flex justify-between items-center">
           <p className="text-xs text-white/60">Aptos Wallet</p>
-          <ButtonEllipsis />
+          <ButtonEllipsis address={account.address.toString()} />
         </div>
         <p className="text-gradient text-left font-mono font-semibold mt-1">
           {truncateAddress(account.address.toString())}
