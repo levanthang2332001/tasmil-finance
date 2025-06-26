@@ -149,3 +149,11 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.hidden-scrollbar {
+  scrollbar-width: none;
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+}
