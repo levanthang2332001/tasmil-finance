@@ -5,7 +5,7 @@ export interface LiquidSwapRequest {
   toToken: string;
   amount: number;
   curveType: CurveType;
-  interactiveToken: string;
+  interactiveToken: 'from' | 'to';
   version: number;
 }
 

@@ -71,7 +71,7 @@ export async function calculateLiquidswapRate(
       fromToken: fromTokenAddress,
       toToken: toTokenAddress,
       amount: fromAmount,
-      interactiveToken: interactiveToken as 'from' | 'to',
+      interactiveToken: interactiveToken,
       curveType,
       version: version as 0 | 0.5,
     });
@@ -107,7 +107,7 @@ export async function swapTokensWithLiquidswap(
       toToken: toTokenInfo.moveAddress,
       fromAmount,
       toAmount: Number(toAmount),
-      interactiveToken: quote.interactiveToken as 'from' | 'to',
+      interactiveToken: quote.interactiveToken,
       slippage: 0.05,
       stableSwapType: 'high',
       curveType: quote.curveType,
