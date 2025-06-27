@@ -76,7 +76,7 @@ export class StakingAction extends AbstractBaseAction<StakingParams> {
               <li><b>Token:</b> ${params.token}</li>
               <li><b>Amount:</b> ${params.amount}</li>
               <li><b>Duration:</b> ${params.duration || 'flexible'}</li>
-              <li><b>Transaction Hash:</b> <a href="https://explorer.aptoslabs.com/txn/${data?.hash}?network=mainnet" target="_blank">${data?.hash}</a></li>
+              <li><b>Transaction Hash:</b> <a href="https://explorer.aptoslabs.com/txn/${data?.hash}?network=mainnet" target="_blank" rel="noopener noreferrer">${data?.hash}</a></li>
               </ul>
             <p>Your tokens have been successfully staked and you're now earning rewards!</p>
           </div>`,

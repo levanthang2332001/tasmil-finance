@@ -7,17 +7,13 @@ interface Suggestion {
   icon: LucideIcon;
 }
 
-interface ChatSuggestionsProps {
+interface SuggestionGridProps {
   onSendMessage: (message: string) => void;
   className?: string;
   suggestions: Suggestion[];
 }
 
-export const ChatSuggestions = ({
-  onSendMessage,
-  className,
-  suggestions,
-}: ChatSuggestionsProps) => {
+const SuggestionGrid = ({ onSendMessage, className, suggestions }: SuggestionGridProps) => {
   return (
     <div className={cn("flex flex-col items-center justify-center gap-6 p-8", className)}>
       <div className="flex items-center gap-3 mb-8">
@@ -65,3 +61,5 @@ export const ChatSuggestions = ({
     </div>
   );
 };
+
+export default SuggestionGrid;

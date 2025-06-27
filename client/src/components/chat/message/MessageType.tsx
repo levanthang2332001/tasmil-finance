@@ -22,7 +22,7 @@ export function MessageType({ message, isLoading }: MessageTypeProps) {
     [ACTION_TYPE.PLACE_LIMIT_ORDER]: <BotChat message={message} isLoading={isLoading} />,
     [ACTION_TYPE.PLACE_MARKET_ORDER]: <BotChat message={message} isLoading={isLoading} />,
     [ACTION_TYPE.REMOVE_LIQUIDITY]: <BotChat message={message} isLoading={isLoading} />,
-    [ACTION_TYPE.UNKNOWN]: <BotError />,
+    [ACTION_TYPE.UNKNOWN]: <BotError message={message} isLoading={isLoading} />,
   };
 
   return messageComponents[message.actionType as keyof typeof messageComponents];

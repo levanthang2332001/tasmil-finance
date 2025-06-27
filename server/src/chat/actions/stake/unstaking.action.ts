@@ -69,7 +69,10 @@ export class UnStakingAction extends AbstractBaseAction<StakingParams> {
         action: ActionType.UNSTAKING,
         token: params.token,
         amount: params.amount,
-        data,
+        data: {
+          vm_status: data.vm_status,
+          hash: data.hash,
+        },
         timestamp: new Date().toISOString(),
       };
 
@@ -82,7 +85,7 @@ export class UnStakingAction extends AbstractBaseAction<StakingParams> {
             <ul>
               <li><b>Token:</b> ${params.token}</li>
               <li><b>Amount:</b> ${params.amount}</li>
-              <li><b>Transaction Hash:</b> <a href="https://explorer.aptoslabs.com/txn/${data?.hash}?network=mainnet" target="_blank">${data?.hash}</a></li>
+              <li><b>Transaction Hash:</b> <a href="https://explorer.aptoslabs.com/txn/${data?.hash}?network=mainnet" target="_blank" rel="noopener noreferrer">${data?.hash}</a></li>
               </ul>
             <p>Your tokens have been successfully unstaked!</p>
           </div>`,

@@ -1,6 +1,8 @@
 import { Aptos, Account } from '@aptos-labs/ts-sdk';
+import { getLastErrorMessage } from 'src/utils';
 
 interface UnstakeResponse {
+  vm_status: string;
   hash: string;
 }
 
@@ -32,13 +34,35 @@ export async function unstakeTokensWithThala(
       throw new Error('Failed to unstake tokens');
     }
 
-    console.log('tx: ', tx.hash, tx.success);
-
     return {
+      vm_status: tx.vm_status,
       hash: tx.hash,
     };
   } catch (error) {
     console.error(error);
-    throw new Error('Failed to unstake tokens: ' + error);
+    let formattedMessage = 'An unknown error occurred while unstaking.';
+    let txHash = '';
+    let explorerUrl = '';
+    let txHtml = '';
+    if (
+      error &&
+      typeof error === 'object' &&
+      'message' in error &&
+      typeof (error as { message?: unknown }).message === 'string'
+    ) {
+      const message = (error as { message: string }).message;
+      const match = message.match(
+        /Transaction ([0-9a-fx]+) failed with an error: (.+)/i,
+      );
+      if (Array.isArray(match) && match.length >= 3) {
+        txHash = match[1];
+        formattedMessage = getLastErrorMessage(match[2]);
+        explorerUrl = `https://explorer.aptoslabs.com/txn/${txHash}`;
+        txHtml = `<a href="${explorerUrl}" target="_blank" rel="noopener noreferrer">${txHash}</a>`;
+      } else {
+        formattedMessage = getLastErrorMessage(message);
+      }
+    }
+    throw new Error(`${formattedMessage} <br /> ${txHtml}`);
   }
 }
