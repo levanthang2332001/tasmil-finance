@@ -1,10 +1,16 @@
+import * as dotenv from 'dotenv';
+import { resolve } from 'path';
+
+// Load environment variables from the server directory
+dotenv.config({ path: resolve(__dirname, '../../../.env') });
+
 import { swapTokensWithLiquidswap } from './swap';
 import { aptosAgent } from '../../utils/aptosAgent';
 
 const quote = {
-  fromToken: 'APT',
-  toToken: 'USDT',
-  amount: 100000000,
+  fromToken: 'ALT',
+  toToken: 'APT',
+  amount: 72,
   curveType: 'stable',
   interactiveToken: 'from',
   version: 0,

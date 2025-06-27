@@ -3,14 +3,33 @@ import { SDK } from '@pontem/liquidswap-sdk';
 import { LiquidSwapRequest } from './liquid.entity';
 import { TokenMapping } from './token-mapping';
 import { Account, Aptos } from '@aptos-labs/ts-sdk';
+import { registerCoinStore } from './coinstore';
 
 interface TokenInfo {
   name: string;
   symbol: string;
   moveAddress: string;
+  decimals: number;
 }
 
 const sdk = new SDK({ nodeUrl: 'https://fullnode.mainnet.aptoslabs.com/v1' });
+
+function convertValueToDecimal(value: number, decimals: number): number {
+  return Math.floor(value * Math.pow(10, decimals));
+}
+
+function getTokenInfo(token: string): TokenInfo {
+  const tokenInfo = TokenMapping[token.toUpperCase()] as TokenInfo;
+  if (!tokenInfo) {
+    throw new Error(`Token ${token} not found in TokenMapping`);
+  }
+  return tokenInfo;
+}
+
+const getTokenAddress = (token: string): string => {
+  const tokenInfo = getTokenInfo(token);
+  return tokenInfo.moveAddress;
+};
 
 async function getPoolExists(tokenA: string, tokenB: string): Promise<boolean> {
   try {
@@ -32,14 +51,6 @@ async function getPoolExists(tokenA: string, tokenB: string): Promise<boolean> {
   }
 }
 
-const getTokenAddress = (token: string): string => {
-  const tokenMapping = TokenMapping[token.toUpperCase()] as TokenInfo;
-  if (!tokenMapping) {
-    throw new Error(`Token ${token} not found in TokenMapping`);
-  }
-  return tokenMapping.moveAddress;
-};
-
 export async function calculateLiquidswapRate(
   quote: LiquidSwapRequest,
 ): Promise<string> {
@@ -48,6 +59,7 @@ export async function calculateLiquidswapRate(
   try {
     const fromTokenAddress = getTokenAddress(fromToken);
     const toTokenAddress = getTokenAddress(toToken);
+    const fromAmount = convertValueToDecimal(amount, getTokenInfo(fromToken).decimals);
 
     const poolExists = await getPoolExists(fromTokenAddress, toTokenAddress);
 
@@ -58,7 +70,7 @@ export async function calculateLiquidswapRate(
     const output = await sdk.Swap.calculateRates({
       fromToken: fromTokenAddress,
       toToken: toTokenAddress,
-      amount,
+      amount: fromAmount,
       interactiveToken: interactiveToken as 'from' | 'to',
       curveType,
       version: version as 0 | 0.5,
@@ -71,21 +83,30 @@ export async function calculateLiquidswapRate(
   }
 }
 
-
 export async function swapTokensWithLiquidswap(
   quote: LiquidSwapRequest,
   aptos: Aptos,
   account: Account,
 ): Promise<{ hash: string }> {
   try {
+    const toAmount = await calculateLiquidswapRate(quote);
+    console.log('toAmount', toAmount);
 
-    const output = await calculateLiquidswapRate(quote);
+    // Get token info
+    const fromTokenInfo = getTokenInfo(quote.fromToken);
+    const toTokenInfo = getTokenInfo(quote.toToken);
+
+    // Register CoinStore for the receiving token if needed
+    await registerCoinStore(aptos, account, toTokenInfo.moveAddress);
+
+    // Convert amounts using proper decimals
+    const fromAmount = convertValueToDecimal(quote.amount, fromTokenInfo.decimals);
 
     const txPayload = sdk.Swap.createSwapTransactionPayload({
-      fromToken: quote.fromToken,
-      toToken: quote.toToken,
-      fromAmount: quote.amount,
-      toAmount: Number(output),
+      fromToken: fromTokenInfo.moveAddress,
+      toToken: toTokenInfo.moveAddress,
+      fromAmount,
+      toAmount: Number(toAmount),
       interactiveToken: quote.interactiveToken as 'from' | 'to',
       slippage: 0.05,
       stableSwapType: 'high',
@@ -110,8 +131,6 @@ export async function swapTokensWithLiquidswap(
     const tx = await aptos.waitForTransaction({
       transactionHash: response.hash,
     });
-
-
 
     if (!tx.success || !tx.hash) {
       throw new Error('Failed to swap tokens with Liquidswap');
