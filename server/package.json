@@ -40,6 +40,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.2.0",
     "@nestjs/throttler": "^6.4.0",
+    "@pontem/liquidswap-sdk": "^0.7.3",
     "@pythnetwork/pyth-aptos-js": "^1.4.2",
     "@supabase/supabase-js": "^2.50.0",
     "@types/node-forge": "^1.3.11",
