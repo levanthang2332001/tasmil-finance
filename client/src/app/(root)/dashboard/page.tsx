@@ -1,95 +1,10 @@
-"use client";
-
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import BiophilicBackground from "@/components/dashboard/BiophilicBackground";
-import FilterOptions from "@/components/dashboard/FilterOptions";
-import Navigation from "@/components/dashboard/Navigation";
-import ScrollableModules from "@/components/dashboard/ScrollableModules";
-import SearchBar from "@/components/dashboard/SearchBar";
-import TraderSection from "@/components/dashboard/TraderSection";
-import { modules, topTraders, topWhales } from "@/data/dashboardMockData";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import Dashboard from "@/components/dashboard";
 
 export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState<"spotlight" | "dashboard">("dashboard");
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: "spring", stiffness: 100 },
-    },
-  };
-
   return (
     <ContentLayout title="Dashboard">
-      <div className="min-h-screen relative">
-        {/* Biophilic design elements */}
-        <BiophilicBackground />
-
-        <div className="container mx-auto px-4 py-8 z-10">
-          <motion.div
-            className="flex flex-col space-y-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {/* Navigation */}
-            <motion.div
-              className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0"
-              variants={itemVariants}
-            >
-              <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
-            </motion.div>
-
-            {/* Search */}
-            <motion.div variants={itemVariants}>
-              <SearchBar />
-            </motion.div>
-
-            {/* Filter Options */}
-            <motion.div variants={itemVariants}>
-              <FilterOptions />
-            </motion.div>
-
-            {/* Scrollable Modules */}
-            <motion.div variants={itemVariants}>
-              <ScrollableModules modules={modules} />
-            </motion.div>
-
-            {/* Trader Sections */}
-            <motion.div className="grid grid-cols-1 lg:grid-cols-2 gap-6" variants={itemVariants}>
-              <TraderSection title="Top Traders" traders={topTraders} />
-              <TraderSection title="Top Whales" traders={topWhales} />
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Maximum contrast dark footer */}
-        <div className="w-full py-2 mt-8 bg-black relative z-10 ">
-          <div className="container mx-auto px-4 flex justify-between items-center">
-            <div className="text-xs text-gray-500 font-mono">DEFI.ANALYTICS.PLATFORM</div>
-            <div className="text-xs text-gray-500 flex items-center gap-2">
-              <span className="inline-block w-2 h-2 rounded-full bg-crypto-teal"></span>
-              <span>ALPHA v0.1</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Dashboard />
     </ContentLayout>
   );
 }

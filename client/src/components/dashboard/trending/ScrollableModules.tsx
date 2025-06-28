@@ -70,9 +70,7 @@ const ScrollableModules: React.FC<ScrollableModulesProps> = ({ modules }) => {
       {/* Doodle-style title */}
       <div className="flex items-center mb-3 overflow-hidden pl-2">
         <div className="w-3 h-3 rounded-sm bg-primary/40 mr-2 transform rotate-45"></div>
-        <span className="text-white/70 font-handwriting text-lg">
-          Insights & Signals
-        </span>
+        <span className="text-white/70 font-handwriting text-lg">Insights & Signals</span>
         <div className="ml-3 flex-grow h-px bg-gradient-to-r from-primary/30 to-transparent"></div>
       </div>
 
@@ -137,9 +135,7 @@ const ScrollableModules: React.FC<ScrollableModulesProps> = ({ modules }) => {
           <motion.button
             key={index}
             onClick={() => scrollTo(index)}
-            className={`dot-indicator transition-all ${
-              index === activeIndex ? "active" : ""
-            }`}
+            className={`dot-indicator transition-all ${index === activeIndex ? "active" : ""}`}
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
             aria-label={`Go to slide ${index + 1}`}

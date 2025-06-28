@@ -69,7 +69,7 @@ const TraderCard: React.FC<TraderCardProps> = ({ trader }) => {
             </motion.div>
           </div>
           <div className="flex flex-col">
-            <span className="text-white font-medium">{truncateAddress(trader.address)}</span>
+            <span className="text-white font-medium">{truncateAddress(trader?.address)}</span>
             <span className="text-xs text-gray-400 font-mono">
               active {Math.floor(Math.random() * 24)}h ago
             </span>
