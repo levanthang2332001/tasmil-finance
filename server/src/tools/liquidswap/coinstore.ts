@@ -30,7 +30,30 @@ export async function registerCoinStore(
     console.log(`Registered CoinStore for ${coinType}`);
   } catch (error) {
     throw new Error(
-      `CoinStore might already be registered for ${coinType}: ${error}`
+      `CoinStore might already be registered for ${coinType}: ${error}`,
+    );
+  }
+}
+
+export async function checkCoinStoreRegistered(
+  aptos: Aptos,
+  account: Account,
+  coinType: string,
+): Promise<boolean> {
+  try {
+    const payload = {
+      function:
+        '0x1::coin::is_account_registered' as `${string}::${string}::${string}`,
+      typeArguments: [coinType],
+      functionArguments: [account.accountAddress.toString()],
+    };
+
+    const transaction = await aptos.view({ payload });
+
+    return transaction[0] as boolean;
+  } catch (error) {
+    throw new Error(
+      `CoinStore might not be registered for ${coinType}: ${error}`,
     );
   }
 }
