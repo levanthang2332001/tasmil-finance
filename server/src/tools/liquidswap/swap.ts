@@ -3,7 +3,7 @@ import { SDK } from '@pontem/liquidswap-sdk';
 import { LiquidSwapRequest } from './liquid.entity';
 import { TokenMapping } from './token-mapping';
 import { Account, Aptos } from '@aptos-labs/ts-sdk';
-import { registerCoinStore } from './coinstore';
+import { checkCoinStoreRegistered, registerCoinStore } from './coinstore';
 
 interface TokenInfo {
   name: string;
@@ -16,6 +16,10 @@ const sdk = new SDK({ nodeUrl: 'https://fullnode.mainnet.aptoslabs.com/v1' });
 
 function convertValueToDecimal(value: number, decimals: number): number {
   return Math.floor(value * Math.pow(10, decimals));
+}
+
+function convertDecimalToValue(value: number, decimals: number): number {
+  return Math.floor(value / Math.pow(10, decimals))
 }
 
 function getTokenInfo(token: string): TokenInfo {
@@ -106,12 +110,25 @@ export async function swapTokensWithLiquidswap(
     const toTokenInfo = getTokenInfo(quote.toToken);
 
     // Register CoinStore for the receiving token if needed
-    await registerCoinStore(aptos, account, toTokenInfo.moveAddress);
+    const isCoinStoreRegistered = await checkCoinStoreRegistered(
+      aptos,
+      account,
+      toTokenInfo.moveAddress,
+    );
+
+    if (!isCoinStoreRegistered) {
+      await registerCoinStore(aptos, account, toTokenInfo.moveAddress);
+    }
 
     // Convert amounts using proper decimals
     const fromAmount = convertValueToDecimal(
       quote.amount,
       fromTokenInfo.decimals,
+    );
+
+    const toAmountDecimal = convertDecimalToValue(
+      Number(toAmount),
+      toTokenInfo.decimals,
     );
 
     const txPayload = sdk.Swap.createSwapTransactionPayload({
@@ -150,7 +167,7 @@ export async function swapTokensWithLiquidswap(
 
     return {
       hash: tx.hash,
-      toAmount: toAmount,
+      toAmount: toAmountDecimal.toString(),
     };
   } catch (error) {
     throw new Error('Failed to swap tokens with Liquidswap: ' + error);
