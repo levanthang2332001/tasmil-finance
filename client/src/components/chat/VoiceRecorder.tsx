@@ -5,6 +5,7 @@ import { LoaderCircle, Mic, Square } from "lucide-react";
 import MicRecorder from "mic-recorder-to-mp3";
 import { useState } from "react";
 import { toast } from "sonner";
+import { VoiceService } from "@/services/voice.service";
 
 interface VoiceRecorderProps {
   setMessage: (transcript: string) => void;
@@ -36,11 +37,7 @@ export default function VoiceRecorder({ className, setMessage, disabled }: Voice
 
     try {
       setIsLoading(true);
-      const res = await fetch("http://localhost:5000/voice/transcribe", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
+      const data = await VoiceService.transcribeAudio(formData);
       if (data.transcript) {
         setMessage(data.transcript);
       } else {

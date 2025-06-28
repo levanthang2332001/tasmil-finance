@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "sonner";
 
 interface PrivateKeyDialogProps {
   isOpen: boolean;
@@ -18,12 +18,7 @@ interface PrivateKeyDialogProps {
   privateKey: string | null;
 }
 
-export function PrivateKeyDialog({
-  isOpen,
-  onClose,
-  privateKey,
-}: PrivateKeyDialogProps) {
-  const { toast } = useToast();
+export function PrivateKeyDialog({ isOpen, onClose, privateKey }: PrivateKeyDialogProps) {
   const [hasCopied, setHasCopied] = useState(false);
 
   const handleCopy = useCallback(async () => {
@@ -31,10 +26,7 @@ export function PrivateKeyDialog({
     try {
       await navigator.clipboard.writeText(privateKey);
       setHasCopied(true);
-      toast({
-        title: "Copied!",
-        description: "Private key copied to clipboard.",
-      });
+      toast.success("Private key copied to clipboard.");
       setTimeout(() => setHasCopied(false), 1200);
     } catch {
       // Optionally handle error here
@@ -71,7 +63,8 @@ export function PrivateKeyDialog({
           </div>
         </div>
         <div className="p-3 bg-yellow-900/20 text-yellow-400/80 rounded-md text-xs">
-          <strong>Note:</strong> Please fund your wallet with any amount of token to activate in Aptos network.
+          <strong>Note:</strong> Please fund your wallet with any amount of token to activate in
+          Aptos network.
         </div>
       </DialogContent>
     </Dialog>

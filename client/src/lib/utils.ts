@@ -23,3 +23,5 @@ export function formatAmount(amount: number | string) {
 export function formatPercentage(value: number): string {
   return `${value}%`;
 }
+
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
