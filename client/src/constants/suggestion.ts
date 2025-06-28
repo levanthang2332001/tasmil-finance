@@ -1,4 +1,4 @@
-import { CircleDollarSign, Coins, Wallet } from "lucide-react";
+import { Coins, Wallet } from "lucide-react";
 
 export const SUGGESTION_DEFI_AGENT = [
   {
@@ -17,8 +17,8 @@ export const SUGGESTION_DEFI_AGENT = [
     text: "Swap 0.02 ALT to APT",
     icon: Wallet,
   },
-  {
-    text: "View Staking Position",
-    icon: CircleDollarSign,
-  },
+  // {
+  //   text: "View Staking Position",
+  //   icon: CircleDollarSign,
+  // },
 ];
