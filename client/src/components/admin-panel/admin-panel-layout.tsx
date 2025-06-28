@@ -13,7 +13,7 @@ export default function AdminPanelLayout({ children }: { children: React.ReactNo
   if (!sidebar) return null;
   const { getOpenState, settings } = sidebar;
 
-  const isBlur = pathname.includes(PATHS.DEFI_AGENT);
+  const isBlur = pathname.includes(PATHS.DEFI_AGENT) || pathname.includes(PATHS.PORTFOLIO);
 
   return (
     <div className="bg-[url('/images/bg-app.png')] bg-cover bg-no-repeat bg-fixed bg-center">
