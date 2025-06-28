@@ -60,11 +60,10 @@ export class SwapAction extends AbstractBaseAction<SwapParams> {
           <div>
             <strong>Transaction Details:</strong>
             <ul>
-              <li><b>From Token:</b> ${params.fromToken}</li>
-              <li><b>To Token:</b> ${params.toToken}</li>
-              <li><b>Amount:</b> ${params.amount}</li>
+              <li><b>Send:</b> ${params.amount} ${params.fromToken}</li>
+              <li><b>Receive:</b> ${data?.toAmount} ${params.toToken}</li>
               <li><b>Transaction Hash:</b> <a href="https://explorer.aptoslabs.com/txn/${data?.hash}?network=mainnet" target="_blank" rel="noopener noreferrer">${data?.hash}</a></li>
-              </ul>
+            </ul>
             <p>Your tokens have been successfully swapped!</p>
           </div>`,
         data: result,
