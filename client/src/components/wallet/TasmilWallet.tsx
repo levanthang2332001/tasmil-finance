@@ -6,8 +6,7 @@ import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Button } from "../ui/button";
 import { ButtonEllipsis } from "./menu/ButtonEllipsis";
 import { PrivateKeyDialog } from "./dialogs/PrivateKeyDialog";
-import { useToast } from "@/hooks/useToast";
-
+import { toast } from "sonner";
 interface InternalWallet {
   address: string;
 }
@@ -17,7 +16,6 @@ interface CreateInternalWalletResponse extends InternalWallet {
 
 function TasmilWallet() {
   const { account } = useWallet();
-  const { toast } = useToast();
   const [internalWallet, setInternalWallet] = useState<InternalWallet | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [privateKey, setPrivateKey] = useState<string | null>(null);
@@ -50,13 +48,9 @@ function TasmilWallet() {
       setPrivateKey(mockResponse.privateKey);
       setIsPKDialogOpen(true);
       setIsLoading(false);
-      toast({
-        title: "Tasmil Wallet created successfully!",
-        variant: "default",
-        className: "bg-green-500 text-white",
-      });
+      toast.success("Tasmil Wallet created successfully!");
     }, 2000);
-  }, [account?.address, toast]);
+  }, [account?.address]);
 
   useEffect(() => {
     if (account?.address) fetchInternalWallet();

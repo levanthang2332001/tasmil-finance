@@ -54,12 +54,16 @@ async function getPoolExists(tokenA: string, tokenB: string): Promise<boolean> {
 export async function calculateLiquidswapRate(
   quote: LiquidSwapRequest,
 ): Promise<string> {
-  const { fromToken, toToken, amount, curveType, interactiveToken, version } = quote;
+  const { fromToken, toToken, amount, curveType, interactiveToken, version } =
+    quote;
 
   try {
     const fromTokenAddress = getTokenAddress(fromToken);
     const toTokenAddress = getTokenAddress(toToken);
-    const fromAmount = convertValueToDecimal(amount, getTokenInfo(fromToken).decimals);
+    const fromAmount = convertValueToDecimal(
+      amount,
+      getTokenInfo(fromToken).decimals,
+    );
 
     const poolExists = await getPoolExists(fromTokenAddress, toTokenAddress);
 
@@ -83,14 +87,19 @@ export async function calculateLiquidswapRate(
   }
 }
 
+interface SwapTokensWithLiquidswapResponse {
+  hash: string;
+  toAmount: string;
+}
+
 export async function swapTokensWithLiquidswap(
   quote: LiquidSwapRequest,
   aptos: Aptos,
   account: Account,
-): Promise<{ hash: string }> {
+): Promise<SwapTokensWithLiquidswapResponse> {
   try {
     const toAmount = await calculateLiquidswapRate(quote);
-    console.log('toAmount', toAmount);
+    console.log('>>> toAmount: ', toAmount);
 
     // Get token info
     const fromTokenInfo = getTokenInfo(quote.fromToken);
@@ -100,7 +109,10 @@ export async function swapTokensWithLiquidswap(
     await registerCoinStore(aptos, account, toTokenInfo.moveAddress);
 
     // Convert amounts using proper decimals
-    const fromAmount = convertValueToDecimal(quote.amount, fromTokenInfo.decimals);
+    const fromAmount = convertValueToDecimal(
+      quote.amount,
+      fromTokenInfo.decimals,
+    );
 
     const txPayload = sdk.Swap.createSwapTransactionPayload({
       fromToken: fromTokenInfo.moveAddress,
@@ -138,6 +150,7 @@ export async function swapTokensWithLiquidswap(
 
     return {
       hash: tx.hash,
+      toAmount: toAmount,
     };
   } catch (error) {
     throw new Error('Failed to swap tokens with Liquidswap: ' + error);

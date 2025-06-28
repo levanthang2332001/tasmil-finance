@@ -10,11 +10,15 @@ export const SUGGESTION_DEFI_AGENT = [
     icon: Coins,
   },
   {
-    text: "View Staking Position",
-    icon: CircleDollarSign,
+    text: "Swap 0.02 APT to ALT",
+    icon: Wallet,
   },
   {
-    text: "Swap APT to USDC",
+    text: "Swap 0.02 ALT to APT",
     icon: Wallet,
+  },
+  {
+    text: "View Staking Position",
+    icon: CircleDollarSign,
   },
 ];

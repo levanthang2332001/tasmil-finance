@@ -19,7 +19,7 @@ import React from "react";
 import Logo from "./Logo";
 import SidebarButton, { SidebarItem } from "./SidebarButton";
 import { Button } from "../ui/button";
-import { AptosConnectWallet } from "../wallet";
+import ConnectButton from "../wallet/ConnectButton";
 
 const Sidebar: React.FC = () => {
   const SIDEBAR_ITEMS: SidebarItem[] = [
@@ -112,7 +112,7 @@ const Sidebar: React.FC = () => {
               isActive={pathname.includes(item.link!)}
             />
           ))}
-          <AptosConnectWallet label="Disconnect Wallet" />
+          <ConnectButton label="Disconnect Wallet" />
         </div>
       </div>
 

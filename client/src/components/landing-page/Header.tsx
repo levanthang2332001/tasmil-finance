@@ -3,6 +3,7 @@ import Logo from "../sidebar/Logo";
 import { Button } from "../ui/button";
 import Navbar from "./Navbar";
 import Link from "next/link";
+import { Rocket } from "lucide-react";
 
 const Header = () => {
   return (
@@ -10,7 +11,10 @@ const Header = () => {
       <Logo />
       <Navbar className="absolute left-1/2 -translate-x-1/2" />
       <Link href={PATHS.DASHBOARD} target="_blank" rel="noopener noreferrer">
-        <Button variant="galaxy">Launch App</Button>
+        <Button variant="galaxy">
+          <Rocket className="mr-2 h-4 w-4" />
+          Launch App
+        </Button>
       </Link>
     </div>
   );

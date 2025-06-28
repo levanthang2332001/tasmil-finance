@@ -1,9 +1,8 @@
+import { AppProvider } from "@/providers";
 import type { Metadata } from "next";
-import "./globals.css";
-
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
-import { AppProvider } from "@/providers";
+import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -57,7 +56,7 @@ export default function RootLayout({
       {/* dark mode */}
       <body className={`${inter.variable} antialiased overflow-x-hidden dark`}>
         <AppProvider>
-          <Toaster />
+          <Toaster richColors position="top-right" />
           {children}
         </AppProvider>
       </body>

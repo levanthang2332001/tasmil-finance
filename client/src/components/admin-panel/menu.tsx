@@ -4,15 +4,15 @@ import { CollapseMenuButton } from "@/components/admin-panel/collapse-menu-butto
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { getMenuList, MenuType } from "@/lib/menu-list";
+import { getMenuList, MenuType } from "@/constants/menu-list";
 import { cn } from "@/lib/utils";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Ellipsis, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AptosWallet from "../wallet/AptosWallet";
+import ConnectButton from "../wallet/ConnectButton";
 import TasmilWallet from "../wallet/TasmilWallet";
-import { AptosConnectWallet } from "../wallet";
 
 interface MenuProps {
   isOpen?: boolean;
@@ -141,7 +141,7 @@ export function Menu({ isOpen }: MenuProps) {
             </li>
           ))}
           <li className="w-full grow flex flex-col justify-end">
-            {!account && <AptosConnectWallet label="Connect Aptos Wallet" />}
+            {!account && <ConnectButton label="Connect Aptos Wallet" />}
             {isOpen && account && (
               <div className="w-full flex flex-col gap-2 items-center rounded-2xl p-3 mb-4 glass border border-white/5">
                 <AptosWallet />

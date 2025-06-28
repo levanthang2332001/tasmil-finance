@@ -14,4 +14,32 @@ export class AuthService {
 
     return response.json();
   }
+
+  static async getNonce(address: string) {
+    return this.request(`/api/auth/get-nonce?address=${address}`);
+  }
+
+  static async verifySignature(params: {
+    address: string;
+    publicKey: string;
+    signature: string;
+    message: string;
+    nonce: string;
+  }) {
+    return this.request("/api/auth/verify-signature", {
+      method: "POST",
+      body: JSON.stringify(params),
+    });
+  }
+
+  static async checkUser(address: string) {
+    return this.request(`/api/auth/check-user?address=${address}`);
+  }
+
+  static async generateTasmilWallet(address: string) {
+    return this.request("/api/auth/generate-tasmil-wallet", {
+      method: "POST",
+      body: JSON.stringify({ address }),
+    });
+  }
 }
