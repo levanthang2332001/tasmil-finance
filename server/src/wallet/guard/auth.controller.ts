@@ -8,8 +8,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import * as forge from 'node-forge';
-import * as jwt from 'jsonwebtoken';
+import { sign, Secret, SignOptions } from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
+import { AuthApiDocs } from '../../chat/docs/auth/auth-api.docs';
+import { ApiTags } from '@nestjs/swagger';
+import { RedisCacheService } from 'src/redis/services/redisCacheService';
 dotenv.config();
 
 const NONCE_STORE: {
@@ -22,11 +25,12 @@ const NONCE_STORE: {
 
 const NONCE_EXPIRATION_TIME = 3 * 60 * 1000; // 3 minutes
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
-  private readonly jwtSecret: string;
+  private readonly jwtSecret: Secret;
 
-  constructor() {
+  constructor(private readonly redisCache: RedisCacheService) {
     if (!process.env.JWT_SECRET) {
       throw new Error('JWT_SECRET is not set');
     }
@@ -34,15 +38,22 @@ export class AuthController {
   }
 
   @Get('get-nonce')
+  @AuthApiDocs.getNonce.operation
+  @AuthApiDocs.getNonce.query
+  @AuthApiDocs.getNonce.okResponse
+  @AuthApiDocs.getNonce.badRequestResponse
+  @AuthApiDocs.getNonce.internalServerErrorResponse
   getNonce(@Query('address') address: string) {
     try {
-      const nonce = forge.random.getBytesSync(32);
+      const nonce = forge.random.getBytesSync(16);
       const nonceHex = forge.util.bytesToHex(nonce);
       NONCE_STORE[address] = {
         nonceHex,
         createdAt: Date.now(),
         expiresAt: Date.now() + 3 * 60 * 1000, // 3 minutes
       };
+
+      // const result = await this.redisCache.set(address, nonceHex, 3 * 60);
       return {
         success: true,
         nonce: nonceHex,
@@ -57,6 +68,11 @@ export class AuthController {
   }
 
   @Post('verify-signature')
+  @AuthApiDocs.verifySignature.operation
+  @AuthApiDocs.verifySignature.body
+  @AuthApiDocs.verifySignature.okResponse
+  @AuthApiDocs.verifySignature.unauthorizedResponse
+  @AuthApiDocs.verifySignature.badRequestResponse
   verifySignature(
     @Body()
     body: {
@@ -91,9 +107,10 @@ export class AuthController {
         throw new UnauthorizedException('Invalid signature');
       }
 
-      const token = jwt.sign({ walletAddress }, this.jwtSecret, {
+      const signOptions: SignOptions = {
         expiresIn: NONCE_EXPIRATION_TIME,
-      });
+      };
+      const token = sign({ walletAddress }, this.jwtSecret, signOptions);
 
       delete NONCE_STORE[walletAddress];
 
