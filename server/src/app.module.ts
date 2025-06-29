@@ -7,6 +7,7 @@ import { ChatModule } from './chat/chat.module';
 import { AccountsModule } from './wallet/accounts.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './wallet/guard/auth.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from './wallet/guard/auth.module';
       isGlobal: true,
       ignoreEnvFile: true,
     }),
+    RedisModule.forRoot(),
     ChatModule,
     AccountsModule,
     AuthModule,
