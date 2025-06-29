@@ -19,7 +19,7 @@ function convertValueToDecimal(value: number, decimals: number): number {
 }
 
 function convertDecimalToValue(value: number, decimals: number): number {
-  return Math.floor(value / Math.pow(10, decimals))
+  return Math.floor(value / Math.pow(10, decimals));
 }
 
 function getTokenInfo(token: string): TokenInfo {

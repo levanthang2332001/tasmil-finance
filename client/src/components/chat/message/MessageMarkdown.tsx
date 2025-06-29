@@ -28,7 +28,11 @@ export function MessageMarkdown({ children }: MessageMarkdownProps) {
           ),
           h5: ({ children }) => <h5 className="text-sm font-medium mb-1 text-black">{children}</h5>,
           h6: ({ children }) => <h6 className="text-xs font-medium mb-1 text-black">{children}</h6>,
-          p: ({ children }) => <p className="mb-3 leading-relaxed text-black">{children}</p>,
+          p: ({ children }) => (
+            <p className="mb-3 leading-relaxed text-black break-words whitespace-pre-wrap">
+              {children}
+            </p>
+          ),
           code: ({ children, className }) => {
             const isInline = !className;
             if (isInline)

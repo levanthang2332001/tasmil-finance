@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Filter, Zap } from "lucide-react";
 import { motion } from "framer-motion";
-import { ToggleGroup, ToggleGroupItem } from "../ui/toogle-group";
+import { ToggleGroup, ToggleGroupItem } from "../../ui/toogle-group";
 
 const FilterOptions: React.FC = () => {
   return (
