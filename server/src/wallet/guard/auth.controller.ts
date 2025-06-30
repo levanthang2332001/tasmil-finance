@@ -1,4 +1,3 @@
-import { Ed25519PublicKey, Ed25519Signature } from '@aptos-labs/ts-sdk';
 import {
   Controller,
   Get,
@@ -6,6 +5,7 @@ import {
   Body,
   Query,
   UnauthorizedException,
+  // UseGuards,
 } from '@nestjs/common';
 import * as forge from 'node-forge';
 import { sign, Secret, SignOptions } from 'jsonwebtoken';
@@ -13,6 +13,8 @@ import * as dotenv from 'dotenv';
 import { AuthApiDocs } from '../../chat/docs/auth/auth-api.docs';
 import { ApiTags } from '@nestjs/swagger';
 import { RedisCacheService } from 'src/redis/services/redisCacheService';
+import { AuthService } from './service/auth.service';
+// import { ApiKeyGuard } from './api-key.guard';
 dotenv.config();
 
 const NONCE_STORE: {
@@ -27,8 +29,10 @@ const NONCE_EXPIRATION_TIME = 3 * 60 * 1000; // 3 minutes
 
 @ApiTags('Authentication')
 @Controller('auth')
+// @UseGuards(ApiKeyGuard)
 export class AuthController {
   private readonly jwtSecret: Secret;
+  private readonly authService: AuthService;
 
   constructor(private readonly redisCache: RedisCacheService) {
     if (!process.env.JWT_SECRET) {
@@ -43,23 +47,32 @@ export class AuthController {
   @AuthApiDocs.getNonce.okResponse
   @AuthApiDocs.getNonce.badRequestResponse
   @AuthApiDocs.getNonce.internalServerErrorResponse
-  getNonce(@Query('address') address: string) {
+  async getNonce(@Query('address') address: string) {
     try {
       const nonce = forge.random.getBytesSync(16);
       const nonceHex = forge.util.bytesToHex(nonce);
-      NONCE_STORE[address] = {
-        nonceHex,
-        createdAt: Date.now(),
-        expiresAt: Date.now() + 3 * 60 * 1000, // 3 minutes
-      };
 
-      // const result = await this.redisCache.set(address, nonceHex, 3 * 60);
+      // Convert minutes to milliseconds for Redis TTL
+      const ttlInMs = 3 * 60 * 1000;
+
+      // Store in Redis with TTL in milliseconds
+      await this.redisCache.set(address, nonceHex, ttlInMs);
+
+      // Verify the value was stored
+      const storedNonce = await this.redisCache.get(address);
+      console.log('Stored nonce from Redis:', storedNonce);
+
+      if (!storedNonce) {
+        throw new Error('Failed to store nonce in Redis');
+      }
+
       return {
         success: true,
         nonce: nonceHex,
         message: 'Nonce generated successfully',
       };
     } catch (error) {
+      console.error('Error in getNonce:', error);
       return {
         success: false,
         message: (error as Error).message,
@@ -83,9 +96,9 @@ export class AuthController {
     },
   ) {
     const { walletAddress, publicKey, signature, message } = body;
-    const nonce = NONCE_STORE[walletAddress]?.nonceHex;
+    const nonceStore = NONCE_STORE[walletAddress]?.nonceHex;
 
-    if (!nonce || !message.includes(nonce)) {
+    if (!nonceStore || !message.includes(nonceStore)) {
       throw new UnauthorizedException('Invalid nonce');
     }
 
@@ -94,16 +107,15 @@ export class AuthController {
     }
 
     try {
-      const pubkey = new Ed25519PublicKey(publicKey);
-      const sig = new Ed25519Signature(signature);
-      const encodedMsg = new TextEncoder().encode(message);
-
-      const isValid = pubkey.verifySignature({
-        message: encodedMsg,
-        signature: sig,
+      const isVerified = this.authService.verifyEd25519S ignature({
+        publicKey,
+        message,
+        signature,
       });
 
-      if (!isValid) {
+      console.log('isVerified', isVerified);
+
+      if (!isVerified) {
         throw new UnauthorizedException('Invalid signature');
       }
 
@@ -111,7 +123,7 @@ export class AuthController {
         expiresIn: NONCE_EXPIRATION_TIME,
       };
       const token = sign({ walletAddress }, this.jwtSecret, signOptions);
-
+      console.log('token', token);
       delete NONCE_STORE[walletAddress];
 
       return {

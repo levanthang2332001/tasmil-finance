@@ -11,7 +11,7 @@ export class AuthService {
     if (!response.ok) {
       throw new Error(`API request failed: ${response.statusText}`);
     }
-
+    
     return response.json();
   }
 
