@@ -65,9 +65,10 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
 
         // Step 4: Sign message
         const message = `Welcome to Tasmil Finance!\n\nPlease sign this message to authenticate.\n\nNonce: ${nonce}`;
-        const signature = await signMessage({ message, nonce });
+        const signature = (await signMessage({ message, nonce })).signature;
         if (!signature) throw new Error("User rejected signature");
 
+        console.log("signature", signature);
         // Step 5: Verify signature
         const verified = await AuthService.verifySignature({
           address: walletAccount.address,
