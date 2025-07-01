@@ -107,7 +107,7 @@ export class AuthController {
     }
 
     try {
-      const isVerified = this.authService.verifyEd25519S ignature({
+      const isVerified = this.authService.verifyEd25519Signature({
         publicKey,
         message,
         signature,
