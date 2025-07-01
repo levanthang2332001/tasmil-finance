@@ -20,11 +20,8 @@ export function formatAmount(amount: number | string) {
   return num.toFixed(2);
 }
 
-export function truncateAddress(address: string, length = 4): string {
-  if (address?.length <= length * 2) return address;
-  return `${address?.slice(0, length)}...${address?.slice(-length)}`;
-}
-
 export function formatPercentage(value: number): string {
   return `${value}%`;
 }
+
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

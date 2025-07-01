@@ -1,5 +1,10 @@
 import * as dotenv from 'dotenv';
-import { Account, Ed25519PrivateKey } from '@aptos-labs/ts-sdk';
+import {
+  Account,
+  Ed25519PrivateKey,
+  PrivateKey,
+  PrivateKeyVariants,
+} from '@aptos-labs/ts-sdk';
 import { SupabaseClient, VaultSupabase } from './supabase/index';
 import { IAccount } from './entities/account.entities';
 import { Decrypt, Encrypt } from '../utils/index';
@@ -25,7 +30,10 @@ export class Accounts {
 
   private generateAccount(): IAccount {
     const account = Account.generate();
-    const privateKey = account.privateKey.toString();
+    const privateKey = PrivateKey.formatPrivateKey(
+      account.privateKey.toString(),
+      'ed25519' as PrivateKeyVariants,
+    );
     const publicKey = account.publicKey.toString();
     const accountAddress = account.accountAddress.toString();
 
@@ -96,7 +104,7 @@ export class Accounts {
     };
   }
 
-  public async getAccountByAddress(address: string): Promise<string | null> {
+  public async getPrivateKeyByAddress(address: string): Promise<string | null> {
     const userExist = await this.checkUserExist(address);
     const vault = new VaultSupabase();
 
@@ -107,7 +115,7 @@ export class Accounts {
         throw new Error('Vault data not found');
       }
 
-      const data = JSON.parse(vaultData.secret_value) as {
+      const data = JSON.parse(vaultData as unknown as string) as {
         cipherText: string;
         salt: string;
         iv: string;
@@ -119,6 +127,7 @@ export class Accounts {
         saltB64: data.salt,
         ivB64: data.iv,
       });
+
       return decrypted.prKey;
     }
     return null;
@@ -126,7 +135,11 @@ export class Accounts {
 
   public getAccountByPrivateKey(prKey: string) {
     try {
-      const privateKey = new Ed25519PrivateKey(prKey);
+      const formattedPrivateKey = PrivateKey.formatPrivateKey(
+        prKey,
+        'ed25519' as PrivateKeyVariants,
+      );
+      const privateKey = new Ed25519PrivateKey(formattedPrivateKey);
       const tasmilAddress = Account.fromPrivateKey({
         privateKey: privateKey,
       }).accountAddress.toString();

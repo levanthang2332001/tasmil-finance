@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { Message } from '@/types/chat';
-import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
-import { Bot } from 'lucide-react';
-import MessageMarkdown from './MessageMarkdown';
+import { cn } from "@/lib/utils";
+import { ChatMessage } from "@/types/chat";
+import { motion } from "framer-motion";
+import { Bot } from "lucide-react";
+import MessageMarkdown from "./MessageMarkdown";
 
 interface BotChatProps {
-  message: Message;
+  message: ChatMessage;
   isLoading?: boolean;
 }
 
@@ -26,17 +26,17 @@ export const BotChat = ({ message, isLoading }: BotChatProps) => {
           <motion.div
             layout
             className={cn(
-              'rounded-2xl rounded-bl-sm bg-secondary text-secondary-foreground p-4',
-              'shadow-sm transition-colors',
-              isLoading && 'opacity-50'
+              "rounded-2xl rounded-bl-sm bg-gradient-to-br from-white via-blue-100 to-blue-50 text-gray-900 p-4 border border-blue-100 shadow-md",
+              "shadow-sm transition-colors",
+              isLoading && "opacity-50"
             )}
           >
             <MessageMarkdown>{message.message}</MessageMarkdown>
           </motion.div>
           <span className="text-xs text-muted-foreground mt-2 block">
             {new Date(message.timestamp).toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
+              hour: "2-digit",
+              minute: "2-digit",
             })}
           </span>
         </div>

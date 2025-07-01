@@ -12,7 +12,12 @@ export function TransactionHash({ hash, network }: TransactionHashProps) {
     return (
       <>
         View on Explorer:{" "}
-        <a href={explorerLink} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-300">
+        <a
+          href={explorerLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 dark:text-blue-300"
+        >
           {explorerLink}
         </a>
       </>

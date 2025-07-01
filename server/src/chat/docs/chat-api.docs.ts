@@ -60,6 +60,10 @@ export const ChatApiDocs = {
           summary: 'Successful staking intent extraction',
           value: ChatExamples.responses.stakingSuccess,
         },
+        unstakingSuccess: {
+          summary: 'Successful unstaking intent extraction',
+          value: ChatExamples.responses.unstakingSuccess,
+        },
         unclearIntent: {
           summary: 'Unclear intent',
           value: ChatExamples.responses.unclearIntent,
@@ -71,9 +75,9 @@ export const ChatApiDocs = {
       description: 'Invalid request parameters',
       type: ErrorResponse,
       examples: {
-        invalidUserId: {
-          summary: 'Invalid user ID',
-          value: ChatExamples.errors.invalidUserId,
+        invalidTasmilAddress: {
+          summary: 'Invalid tasmil address',
+          value: ChatExamples.errors.invalidTasmilAddress,
         },
         invalidContent: {
           summary: 'Invalid message content',

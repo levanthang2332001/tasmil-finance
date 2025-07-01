@@ -1,9 +1,8 @@
+import { AppProvider } from "@/providers";
 import type { Metadata } from "next";
-import "./globals.css";
-
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
-import { WalletAptosProviders } from "@/providers";
+import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -14,26 +13,36 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Tasmil Finance | AI-Powered DeFi Trading Platform",
+  title: "Tasmil Finance | AI-Powered DeFi Trading, Swaps & AI Chatbot",
   description:
-    "Experience the future of decentralized finance with Tasmil Finance. AI-driven trading strategies, real-time market analysis, and secure DeFi protocols all in one platform.",
-  icons: {
-    icon: "/favicon.ico",
-  },
+    "Trade smarter with Tasmil Finance: AI-powered DeFi swaps, liquidity management, and real-time market insights. Secure, decentralized, and user-friendly.",
+  icons: { icon: "/favicon.ico" },
   keywords:
-    "DeFi, AI trading, cryptocurrency, blockchain, decentralized finance, trading platform, artificial intelligence",
+    "DeFi, AI trading, crypto swaps, liquidity, blockchain, decentralized finance, trading bot, artificial intelligence, Aptos, wallet connect, DEX, chatbot",
   authors: [{ name: "Tasmil Finance Team" }],
   openGraph: {
-    title: "Tasmil Finance | AI-Powered DeFi Trading Platform",
+    title: "Tasmil Finance | AI-Powered DeFi Trading, Swaps & AI Chatbot",
     description:
-      "Experience the future of decentralized finance with Tasmil Finance. AI-driven trading strategies, real-time market analysis, and secure DeFi protocols all in one platform.",
+      "Trade smarter with Tasmil Finance: AI-powered DeFi swaps, liquidity management, and real-time market insights. Secure, decentralized, and user-friendly.",
     type: "website",
+    url: "https://tasmil.finance",
+    images: [
+      {
+        url: "/og-image.webp",
+        width: 1200,
+        height: 630,
+        alt: "Tasmil Finance AI DeFi Platform",
+        type: "image/webp",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tasmil Finance | AI-Powered DeFi Trading Platform",
+    title: "Tasmil Finance | AI-Powered DeFi Trading, Swaps & AI Chatbot",
     description:
-      "Experience the future of decentralized finance with Tasmil Finance. AI-driven trading strategies, real-time market analysis, and secure DeFi protocols all in one platform.",
+      "Trade smarter with Tasmil Finance: AI-powered DeFi swaps, liquidity management, and real-time market insights. Secure, decentralized, and user-friendly.",
+    images: ["/og-image.webp"],
+    creator: "@TasmilFinance",
   },
 };
 
@@ -46,12 +55,10 @@ export default function RootLayout({
     <html lang="en">
       {/* dark mode */}
       <body className={`${inter.variable} antialiased overflow-x-hidden dark`}>
-        <WalletAptosProviders>
-          <Toaster />
-          {/* <RouteGuard> */}
+        <AppProvider>
+          <Toaster richColors position="top-right" />
           {children}
-          {/* </RouteGuard> */}
-        </WalletAptosProviders>
+        </AppProvider>
       </body>
     </html>
   );

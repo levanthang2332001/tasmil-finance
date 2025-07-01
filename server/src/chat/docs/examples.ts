@@ -1,19 +1,28 @@
 export const ChatExamples = {
   requests: {
     swap: {
-      userId: 'user123',
-      content: 'I want to swap 100 USDT to ETH',
+      user_address:
+        '0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8',
+      content: 'I want to swap 0.0001 APT to USDT',
     },
     liquidity: {
-      userId: 'user456',
-      content: 'Add 1000 USDT and 0.5 ETH to liquidity pool',
+      user_address:
+        '0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8',
+      content: 'Add 0.0001 APT and 0.0001 APT to liquidity pool',
     },
     staking: {
-      userId: 'user789',
-      content: 'Stake 500 USDT for 30 days',
+      user_address:
+        '0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8',
+      content: 'Stake 0.0001 APT for 30 days',
+    },
+    unstaking: {
+      user_address:
+        '0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8',
+      content: 'Unstake 0.0001 APT',
     },
     unclear: {
-      userId: 'user999',
+      user_address:
+        '0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8',
       content: 'Hello, how are you?',
     },
   },
@@ -78,6 +87,25 @@ export const ChatExamples = {
         lockPeriod: '30 days',
       },
     },
+    unstakingSuccess: {
+      message: 'Action processed successfully',
+      intent: {
+        actionType: 'unstaking',
+        params: {
+          token: 'USDT',
+          amount: 500,
+          duration: 30,
+        },
+        confidence: 0.88,
+        missingFields: [],
+        context: 'User wants to unstake USDT for 30 days',
+      },
+      data: {
+        unstakingContract: '0xdef456789abc...',
+        estimatedRewards: '25 USDT',
+        lockPeriod: '30 days',
+      },
+    },
     unclearIntent: {
       message:
         "I couldn't understand your request. Please try again with more details.",
@@ -87,9 +115,9 @@ export const ChatExamples = {
   },
 
   errors: {
-    invalidUserId: {
+    invalidTasmilAddress: {
       statusCode: 400,
-      message: 'userId should not be empty',
+      message: 'user_address should not be empty',
     },
     invalidContent: {
       statusCode: 400,

@@ -17,6 +17,11 @@ export type StakingParams = {
   duration?: number;
 };
 
+export type UnStakingParams = {
+  token: string;
+  amount: number;
+};
+
 export type BorrowParams = {
   token: string;
   amount: number;
@@ -25,11 +30,40 @@ export type BorrowParams = {
   ltv?: number; // Loan-to-Value ratio
 };
 
-export type LendingParams = {
+export type SupplyParams = {
   token: string;
   amount: number;
   duration?: number;
   interestRate?: number;
+};
+
+export type RepayParams = {
+  token: string;
+  amount: number | 'max';
+  repayFrom?: 'wallet' | 'deposited collateral';
+};
+
+export type WithdrawParams = {
+  token: string;
+  amount: number | 'max';
+};
+
+export type ClaimRewardParams = {
+  token?: string;
+  platform?: string;
+};
+
+export type PlaceLimitOrderParams = {
+  token: string;
+  amount: number;
+  price: number;
+  side: 'buy' | 'sell';
+};
+
+export type PlaceMarketOrderParams = {
+  token: string;
+  amount: number;
+  side: 'buy' | 'sell';
 };
 
 export type RemoveLiquidityParams = {
@@ -44,18 +78,31 @@ export type ParamsType =
   | SwapParams
   | LiquidityParams
   | StakingParams
+  | UnStakingParams
   | BorrowParams
-  | LendingParams
+  | SupplyParams
+  | RepayParams
+  | WithdrawParams
+  | ClaimRewardParams
+  | PlaceLimitOrderParams
+  | PlaceMarketOrderParams
   | RemoveLiquidityParams;
 
-export type ActionType =
-  | 'swap'
-  | 'liquidity'
-  | 'staking'
-  | 'borrow'
-  | 'lending'
-  | 'remove_liquidity'
-  | 'unknown';
+export enum ActionType {
+  SWAP = 'swap',
+  LIQUIDITY = 'liquidity',
+  STAKING = 'staking',
+  UNSTAKING = 'unstaking',
+  BORROW = 'borrow',
+  SUPPLY = 'supply',
+  REPAY = 'repay',
+  WITHDRAW = 'withdraw',
+  CLAIM_REWARD = 'claim_reward',
+  PLACE_LIMIT_ORDER = 'place_limit_order',
+  PLACE_MARKET_ORDER = 'place_market_order',
+  REMOVE_LIQUIDITY = 'remove_liquidity',
+  UNKNOWN = 'unknown',
+}
 
 export interface DeFiIntent {
   actionType: ActionType;

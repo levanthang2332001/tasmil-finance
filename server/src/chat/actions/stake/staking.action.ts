@@ -1,6 +1,9 @@
-import { StakingParams } from '../../entities/intent.entity';
+import { ActionType, StakingParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
+import { aptosAgent } from '../../../utils/aptosAgent';
+import { getTokenByTokenName } from '../../../utils/token';
+import { stakeTokensWithThala } from '../../../tools/thala/stake';
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 
 export class StakingAction extends AbstractBaseAction<StakingParams> {
   readonly name = 'staking';
@@ -25,18 +28,60 @@ export class StakingAction extends AbstractBaseAction<StakingParams> {
     'Stake 50 MATIC for rewards',
   ];
 
-  handle(params: StakingParams): ActionResult {
+  async handle(
+    params: StakingParams,
+    user_address: string,
+  ): Promise<ChatResponse> {
     try {
-      // TODO: Implement actual staking logic
+      const { token, amount } = params;
+
+      const findToken = getTokenByTokenName(token);
+
+      if (!findToken) {
+        return this.createErrorResult('Token not found');
+      }
+
+      const rawValue = Number(amount);
+      if (isNaN(rawValue) || rawValue <= 0) {
+        return this.createErrorResult('Invalid value provided');
+      }
+
+      const amountInInterger = Math.floor(rawValue * 10 ** findToken.decimals);
+      const { aptos, accounts } = await aptosAgent(user_address);
+
+      const data = await stakeTokensWithThala(
+        aptos,
+        accounts,
+        amountInInterger,
+      );
+
+      if (!data) {
+        return this.createErrorResult('Failed to stake tokens');
+      }
+
       const result = {
-        action: 'stake',
+        action: ActionType.STAKING,
         token: params.token,
         amount: params.amount,
         duration: params.duration || 'flexible',
+        data,
         timestamp: new Date().toISOString(),
       };
 
-      return this.createSuccessResult(result);
+      return this.createSuccessResult({
+        message: `<h2>Staking Successful! 🎉</h2>
+          <div>
+            <strong>Transaction Details:</strong>
+            <ul>
+              <li><b>Token:</b> ${params.token}</li>
+              <li><b>Amount:</b> ${params.amount}</li>
+              <li><b>Duration:</b> ${params.duration || 'flexible'}</li>
+              <li><b>Transaction Hash:</b> <a href="https://explorer.aptoslabs.com/txn/${data?.hash}?network=mainnet" target="_blank" rel="noopener noreferrer">${data?.hash}</a></li>
+              </ul>
+            <p>Your tokens have been successfully staked and you're now earning rewards!</p>
+          </div>`,
+        data: result,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';

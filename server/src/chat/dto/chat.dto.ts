@@ -4,16 +4,16 @@ import { DeFiIntentSchema } from '../docs/schemas';
 
 export class ChatRequestDto {
   @ApiProperty({
-    example: 'user123',
-    description: 'Unique identifier for the user',
+    example: '0x1234567890abcdef...',
+    description: 'User wallet address',
     minLength: 1,
   })
   @IsString()
   @IsNotEmpty()
-  userId: string;
+  user_address: string;
 
   @ApiProperty({
-    example: 'I want to swap 100 USDT to ETH',
+    example: 'I want to swap 100 USDT to APT',
     description: 'The message content from the user',
     minLength: 1,
   })

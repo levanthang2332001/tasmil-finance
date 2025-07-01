@@ -5,16 +5,17 @@ import { PART } from "@/constants/part";
 import { cn } from "@/lib/utils";
 import { motion, Variants } from "framer-motion";
 import { ArrowLeftRight, BotMessageSquare, Database, Landmark, LineChart } from "lucide-react";
+import Image from "next/image";
 
 const iconVariants: Variants = {
   rest: {
     scale: 1,
-    rotate: 0,
+    // rotate: 0,
     transition: { type: "spring", stiffness: 300, damping: 20 },
   },
   hover: {
     scale: 1.1,
-    rotate: 5,
+    // rotate: 5,
     transition: { type: "spring", stiffness: 300, damping: 10 },
   },
 };
@@ -23,10 +24,11 @@ interface GridItemProps {
   area: string;
   icon: React.ReactNode;
   title: string;
+  image: string;
   description: React.ReactNode;
 }
 
-const GridItem = ({ area, icon, title, description }: GridItemProps) => {
+const GridItem = ({ area, icon, title, image, description }: GridItemProps) => {
   return (
     <motion.li
       initial="rest"
@@ -44,13 +46,20 @@ const GridItem = ({ area, icon, title, description }: GridItemProps) => {
           borderWidth={3}
         />
         <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-[0.75px] bg-background p-6 shadow-sm dark:shadow-[0px_0px_27px_0px_rgba(45,45,45,0.3)] md:p-6">
-          <div className="relative flex flex-1 flex-col justify-between gap-3">
+          <div className="relative group flex flex-1 flex-col justify-between gap-3">
             <motion.div
               variants={iconVariants}
-              className="w-fit rounded-lg border-[0.75px] border-border bg-muted p-2"
+              className="w-fit rounded-lg border-[0.75px] border-border bg-secondary p-2"
             >
               {icon}
             </motion.div>
+            <Image
+              src={image}
+              alt={title}
+              width={80}
+              height={80}
+              className="absolute bg-white/80 group-hover:bg-white rounded-lg top-0 right-0 transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300"
+            />
             <div className="space-y-3">
               <h3 className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-foreground">
                 {title}
@@ -82,7 +91,7 @@ export default function Features({ className }: FeaturesProps) {
         transition={{ duration: 0.5 }}
         className="mb-8 z-20"
       >
-        <span className="px-3 py-1 text-sm font-medium text-primary bg-primary/10 rounded-full border border-primary/20">
+        <span className="px-3 py-1 text-sm font-medium text-accent-foreground bg-accent-foreground/10 rounded-full border border-accent-foreground/20">
           Features
         </span>
       </motion.div>
@@ -106,30 +115,35 @@ export default function Features({ className }: FeaturesProps) {
           area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]"
           icon={<ArrowLeftRight className="h-4 w-4" />}
           title="Token Swap"
+          image="/images/token-swap.png"
           description="Execute trades across multiple DEXs with optimal routing and minimal slippage"
         />
         <GridItem
           area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]"
           icon={<Database className="h-4 w-4" />}
           title="Liquidity Management"
+          image="/images/liquidity-management.png"
           description="Manage your liquidity across multiple DEXs with ease"
         />
         <GridItem
           area="md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]"
           icon={<LineChart className="h-4 w-4" />}
           title="Market Analysis"
+          image="/images/market-analysis.png"
           description="Get detailed market analysis and trading recommendations"
         />
         <GridItem
           area="md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]"
           icon={<BotMessageSquare className="h-4 w-4" />}
           title="AI Agents"
+          image="/images/ai-agents.png"
           description="Experience seamless token swaps, liquidity management, and real-time market insights with our AI-powered DeFi chatbot."
         />
         <GridItem
           area="md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]"
           icon={<Landmark className="h-4 w-4" />}
           title="Lending & Borrowing"
+          image="/images/lending-borrowing.png"
           description="Access a wide range of lending and borrowing options across multiple chains"
         />
       </ul>

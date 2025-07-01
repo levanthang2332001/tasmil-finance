@@ -18,9 +18,6 @@
   :root {
     --container-width: 1440px;
     --header-height: 83px;
-    --brand-cyan: #df255a;
-    --brand-purple: #df255a;
-    --brand-blue: #df255a;
 
     --background: 222 47% 10%;
     --foreground: 210 40% 98%;
@@ -28,24 +25,24 @@
     --card-foreground: 210 40% 98%;
     --popover: 222 47% 6%;
     --popover-foreground: 210 40% 98%;
-    --primary: 342 74% 51%; /* #DF255A */
+    --primary: 311 87% 57%; /* #F161C9 */
     --primary-foreground: 210 40% 98%;
-    --secondary: 342 74% 51%; /* #DF255A */
+    --secondary: 276 63% 45%; /* #912CC1 */
     --secondary-foreground: 210 40% 98%;
-    --muted: 342 74% 51%; /* #DF255A */
+    --muted: 327 77% 85%; /* #F4B6CC */
     --muted-foreground: 210 40% 98%;
-    --accent: 342 74% 51%; /* #DF255A */
+    --accent: 276 63% 45%; /* #912CC1 */
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 342 74% 51%; /* #DF255A */
-    --chart-1: 342 74% 51%; /* #DF255A */
-    --chart-2: 342 74% 51%; /* #DF255A */
-    --chart-3: 342 74% 51%; /* #DF255A */
-    --chart-4: 342 74% 51%; /* #DF255A */
-    --chart-5: 342 74% 51%; /* #DF255A */
+    --ring: 311 87% 57%; /* #F161C9 */
+    --chart-1: 311 87% 57%; /* #F161C9 */
+    --chart-2: 327 77% 85%; /* #F4B6CC */
+    --chart-3: 276 63% 45%; /* #912CC1 */
+    --chart-4: 311 87% 57%; /* #F161C9 */
+    --chart-5: 327 77% 85%; /* #F4B6CC */
     --radius: 0.75rem;
   }
   .dark {
@@ -55,24 +52,24 @@
     --card-foreground: 210 40% 98%;
     --popover: 222 47% 6%;
     --popover-foreground: 210 40% 98%;
-    --primary: 342 74% 51%; /* #DF255A */
+    --primary: 311 87% 57%; /* #F161C9 */
     --primary-foreground: 210 40% 98%;
-    --secondary: 342 74% 51%; /* #DF255A */
+    --secondary: 276 63% 45%; /* #912CC1 */
     --secondary-foreground: 210 40% 98%;
-    --muted: 342 74% 51%; /* #DF255A */
+    --muted: 327 77% 85%; /* #F4B6CC */
     --muted-foreground: 210 40% 98%;
-    --accent: 342 74% 51%; /* #DF255A */
+    --accent: 276 63% 45%; /* #912CC1 */
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 342 74% 51%; /* #DF255A */
-    --chart-1: 342 74% 51%; /* #DF255A */
-    --chart-2: 342 74% 51%; /* #DF255A */
-    --chart-3: 342 74% 51%; /* #DF255A */
-    --chart-4: 342 74% 51%; /* #DF255A */
-    --chart-5: 342 74% 51%; /* #DF255A */
+    --ring: 311 87% 57%; /* #F161C9 */
+    --chart-1: 311 87% 57%; /* #F161C9 */
+    --chart-2: 327 77% 85%; /* #F4B6CC */
+    --chart-3: 276 63% 45%; /* #912CC1 */
+    --chart-4: 311 87% 57%; /* #F161C9 */
+    --chart-5: 327 77% 85%; /* #F4B6CC */
   }
 }
 
@@ -90,7 +87,8 @@
 @layer utilities {
   .gradient-outline {
     position: relative;
-    background: linear-gradient(#111111, #111111) padding-box,
+    background:
+      linear-gradient(#111111, #111111) padding-box,
       linear-gradient(45deg, #df255a, #df255a) border-box;
     border: 0.5px solid transparent;
     color: var(--primary);
@@ -109,7 +107,12 @@
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#DF255A] to-neutral-400;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#F161C9] to-[#912CC1];
+  }
+
+  .bg-app {
+    background: linear-gradient(to bottom, #2a1123, #0d030a);
+    background-attachment: fixed;
   }
 }
 
@@ -144,5 +147,13 @@
 }
 
 .no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hidden-scrollbar {
+  scrollbar-width: none;
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
   display: none;
 }

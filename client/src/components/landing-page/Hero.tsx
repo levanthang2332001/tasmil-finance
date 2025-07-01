@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AptosConnectWallet } from "../wallet";
+import { PATHS } from "@/constants/routes";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -14,7 +16,7 @@ const Hero = () => {
             transition={{ duration: 0.5 }}
             className="mb-8"
           >
-            <span className="px-3 py-1 text-sm font-medium text-primary bg-primary/10 rounded-full border border-primary/20">
+            <span className="px-3 py-1 text-sm font-medium text-accent-foreground bg-accent-foreground/10 rounded-full border border-accent-foreground/20">
               AI-Powered DeFi Trading
             </span>
           </motion.div>
@@ -46,7 +48,9 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            <AptosConnectWallet label="🚀 Get Started" />
+            <Link href={PATHS.DEFI_AGENT} target="_blank" rel="noopener noreferrer">
+              <Button variant="galaxy">🚀 Get Started</Button>
+            </Link>
           </motion.div>
         </div>
       </div>

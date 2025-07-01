@@ -72,6 +72,14 @@ export class StakingParamsSchema {
   duration?: number;
 }
 
+export class UnStakingParamsSchema {
+  @ApiProperty({
+    example: 'USDT',
+    description: 'Token to unstake',
+  })
+  token: string;
+}
+
 export class BorrowParamsSchema {
   @ApiProperty({
     example: 'USDC',
@@ -110,7 +118,7 @@ export class BorrowParamsSchema {
   ltv?: number;
 }
 
-export class LendingParamsSchema {
+export class SupplyParamsSchema {
   @ApiProperty({
     example: 'USDC',
     description: 'Token to lend/supply',
@@ -139,6 +147,92 @@ export class LendingParamsSchema {
     required: false,
   })
   interestRate?: number;
+}
+
+export class RepayParamsSchema {
+  @ApiProperty({
+    example: 'USDC',
+    description: 'Token to repay',
+  })
+  token: string;
+
+  @ApiProperty({
+    example: 500,
+    description: "Amount to repay (or 'max')",
+    oneOf: [{ type: 'number' }, { type: 'string' }],
+  })
+  amount: number | 'max';
+
+  @ApiProperty({
+    example: 'wallet',
+    description: "Where to repay from (e.g., 'wallet', 'deposited collateral')",
+    required: false,
+  })
+  repayFrom?: 'wallet' | 'deposited collateral';
+}
+
+export class WithdrawParamsSchema {
+  @ApiProperty({
+    example: 'USDC',
+    description: 'Token to withdraw',
+  })
+  token: string;
+
+  @ApiProperty({
+    example: 200,
+    description: "Amount to withdraw (or 'max')",
+    oneOf: [{ type: 'number' }, { type: 'string' }],
+  })
+  amount: number | 'max';
+}
+
+export class ClaimRewardParamsSchema {
+  @ApiProperty({
+    example: 'THALA',
+    description: 'Token reward to claim (optional)',
+    required: false,
+  })
+  token?: string;
+
+  @ApiProperty({
+    example: 'Amnis',
+    description: 'Platform from which to claim rewards (optional)',
+    required: false,
+  })
+  platform?: string;
+}
+
+export class PlaceLimitOrderParamsSchema {
+  @ApiProperty({ example: 'BTC', description: 'Token to trade' })
+  token: string;
+
+  @ApiProperty({ example: 1, description: 'Amount to trade' })
+  amount: number;
+
+  @ApiProperty({ example: 60000, description: 'Price for the limit order' })
+  price: number;
+
+  @ApiProperty({
+    example: 'buy',
+    description: "Order side ('buy' or 'sell')",
+    enum: ['buy', 'sell'],
+  })
+  side: 'buy' | 'sell';
+}
+
+export class PlaceMarketOrderParamsSchema {
+  @ApiProperty({ example: 'ETH', description: 'Token to trade' })
+  token: string;
+
+  @ApiProperty({ example: 10, description: 'Amount to trade' })
+  amount: number;
+
+  @ApiProperty({
+    example: 'sell',
+    description: "Order side ('buy' or 'sell')",
+    enum: ['buy', 'sell'],
+  })
+  side: 'buy' | 'sell';
 }
 
 export class RemoveLiquidityParamsSchema {
@@ -186,9 +280,15 @@ export class DeFiIntentSchema {
       'swap',
       'liquidity',
       'staking',
+      'unstaking',
       'borrow',
-      'lending',
+      'supply',
+      'repay',
+      'withdraw',
       'remove_liquidity',
+      'claim_reward',
+      'place_limit_order',
+      'place_market_order',
       'unknown',
     ],
   })
@@ -196,9 +296,15 @@ export class DeFiIntentSchema {
     | 'swap'
     | 'liquidity'
     | 'staking'
+    | 'unstaking'
     | 'borrow'
-    | 'lending'
+    | 'supply'
+    | 'repay'
+    | 'withdraw'
     | 'remove_liquidity'
+    | 'claim_reward'
+    | 'place_limit_order'
+    | 'place_market_order'
     | 'unknown';
 
   @ApiProperty({
@@ -208,7 +314,12 @@ export class DeFiIntentSchema {
       { $ref: '#/components/schemas/LiquidityParamsSchema' },
       { $ref: '#/components/schemas/StakingParamsSchema' },
       { $ref: '#/components/schemas/BorrowParamsSchema' },
-      { $ref: '#/components/schemas/LendingParamsSchema' },
+      { $ref: '#/components/schemas/SupplyParamsSchema' },
+      { $ref: '#/components/schemas/RepayParamsSchema' },
+      { $ref: '#/components/schemas/WithdrawParamsSchema' },
+      { $ref: '#/components/schemas/ClaimRewardParamsSchema' },
+      { $ref: '#/components/schemas/PlaceLimitOrderParamsSchema' },
+      { $ref: '#/components/schemas/PlaceMarketOrderParamsSchema' },
       { $ref: '#/components/schemas/RemoveLiquidityParamsSchema' },
     ],
   })
@@ -216,8 +327,14 @@ export class DeFiIntentSchema {
     | SwapParamsSchema
     | LiquidityParamsSchema
     | StakingParamsSchema
+    | UnStakingParamsSchema
     | BorrowParamsSchema
-    | LendingParamsSchema
+    | SupplyParamsSchema
+    | RepayParamsSchema
+    | WithdrawParamsSchema
+    | ClaimRewardParamsSchema
+    | PlaceLimitOrderParamsSchema
+    | PlaceMarketOrderParamsSchema
     | RemoveLiquidityParamsSchema;
 
   @ApiProperty({

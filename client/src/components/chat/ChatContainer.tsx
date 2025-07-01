@@ -1,36 +1,32 @@
 import { cn } from "@/lib/utils";
-import { Message } from "@/types/chat";
+import { ChatMessage } from "@/types/chat";
 import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { ChatInput } from "./ChatInput";
-import { ChatSuggestions } from "./ChatSuggestions";
-import { MessageType } from "./message/MessageType";
 import { BotThinking } from "./message/BotThinking";
+import { MessageType } from "./message/MessageType";
+import SuggestionGrid from "./SuggestionGrid";
+import SuggestionList from "./SuggesstionList";
 interface Suggestion {
   text: string;
   icon: LucideIcon;
 }
 
 interface ChatContainerProps {
-  messages: Message[];
+  messages: ChatMessage[];
   isLoading?: boolean;
   suggestions?: Suggestion[];
   onSendMessage: (message: string) => void;
-  onSwapConfirm: (messageId: string) => Promise<void>;
-  onSwapCancel: (messageId: string) => void;
 }
 
 export const ChatContainer = ({
   messages,
   isLoading,
   onSendMessage,
-  onSwapConfirm,
-  onSwapCancel,
   suggestions,
 }: ChatContainerProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -43,34 +39,35 @@ export const ChatContainer = ({
   const widthClass = "max-w-[740px] w-full";
 
   return (
-    <div className="flex flex-col h-full w-full">
-      <motion.div className="flex-1 overflow-y-auto p-4 space-y-4 w-full">
+    <div className="flex flex-col h-full w-full bg-transparent">
+      <motion.div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 w-full">
         <div className={cn("space-y-4 mx-auto ", widthClass)}>
           {suggestions && messages.length === 0 ? (
-            <ChatSuggestions
+            <SuggestionGrid
               onSendMessage={onSendMessage}
               className="h-full min-h-[400px]"
               suggestions={suggestions}
             />
           ) : (
             messages.map((message) => (
-              <MessageType
-                key={message.id}
-                message={message}
-                isLoading={isLoading}
-                onSwapConfirm={onSwapConfirm}
-                onSwapCancel={onSwapCancel}
-              />
+              <MessageType key={message.id} message={message} isLoading={isLoading} />
             ))
           )}
           {isLoading && <BotThinking />}
         </div>
         <div ref={messagesEndRef} />
       </motion.div>
+      {suggestions && messages.length > 0 && (
+        <SuggestionList
+          suggestions={suggestions?.map((suggestion) => suggestion.text) || []}
+          onSuggestionClick={onSendMessage}
+          className={cn("mx-auto py-2", widthClass)}
+        />
+      )}
       <ChatInput
         onSendMessage={onSendMessage}
         isLoading={isLoading}
-        className={cn("mx-auto py-4", widthClass)}
+        className={cn("mx-auto py-2", widthClass)}
       />
     </div>
   );

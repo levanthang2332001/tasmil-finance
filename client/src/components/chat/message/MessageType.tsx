@@ -1,45 +1,29 @@
-import { Message, MESSAGE_TYPE, NAVI_ACTION_TYPE } from "@/types/chat";
-import { BotBorrowMessage } from "./BotBorrowMessage";
+import { ChatMessage, ACTION_TYPE } from "@/types/chat";
 import { BotChat } from "./BotChat";
-import { BotRepayMessage } from "./BotRepayMessage";
-// import BotSwapMessage from "./BotSwapMessage";
 import BotError from "./BotError";
-import BotSupplyMessage from "./BotSupplyMessage";
-import { BotWithdrawMessage } from "./BotWithdrawMessage";
 import { UserChat } from "./UserChat";
 interface MessageTypeProps {
-  message: Message;
+  message: ChatMessage;
   isLoading?: boolean;
-  onSwapConfirm?: (messageId: string) => Promise<void>;
-  onSwapCancel?: (messageId: string) => void;
 }
 
 export function MessageType({ message, isLoading }: MessageTypeProps) {
-  switch (message.actionType) {
-    case MESSAGE_TYPE.USER:
-      return <UserChat message={message} isLoading={isLoading} />;
-    case MESSAGE_TYPE.BOT:
-      return <BotChat message={message} isLoading={isLoading} />;
-    // case CETUS_ACTION_TYPE.SWAP:
-    //   if (!onSwapConfirm || !onSwapCancel) return null;
-    //   return (
-    //     <BotSwapMessage
-    //       key={message.id}
-    //       message={message}
-    //       onConfirm={() => onSwapConfirm(message.id)}
-    //       onCancel={() => onSwapCancel(message.id)}
-    //       isLoading={isLoading}
-    //     />
-    //   );
-    case NAVI_ACTION_TYPE.SUPPLY:
-      return <BotSupplyMessage message={message} isLoading={isLoading} />;
-    case NAVI_ACTION_TYPE.BORROW:
-      return <BotBorrowMessage message={message} isLoading={isLoading} />;
-    case NAVI_ACTION_TYPE.REPAY:
-      return <BotRepayMessage message={message} isLoading={isLoading} />;
-    case NAVI_ACTION_TYPE.WITHDRAW:
-      return <BotWithdrawMessage message={message} isLoading={isLoading} />;
-    default:
-      return <BotError />;
-  }
+  const messageComponents = {
+    [ACTION_TYPE.USER]: <UserChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.SWAP]: <BotChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.LIQUIDITY]: <BotChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.STAKING]: <BotChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.UNSTAKING]: <BotChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.BORROW]: <BotChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.SUPPLY]: <BotChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.REPAY]: <BotChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.WITHDRAW]: <BotChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.CLAIM_REWARD]: <BotChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.PLACE_LIMIT_ORDER]: <BotChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.PLACE_MARKET_ORDER]: <BotChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.REMOVE_LIQUIDITY]: <BotChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.UNKNOWN]: <BotError message={message} isLoading={isLoading} />,
+  };
+
+  return messageComponents[message.actionType as keyof typeof messageComponents];
 }
