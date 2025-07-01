@@ -53,8 +53,16 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
       try {
         setSigning(true);
 
+        // Check if Aptos wallet extension is available
+        if (!window.aptos) {
+          toast.error("No Aptos Wallet Found", {
+            description: "Please install an Aptos wallet extension",
+          });
+          return;
+        }
+
         // Step 1: Connect wallet
-         connect(walletName);
+        await connect(walletName);
         needsDisconnect = true;
 
         // Step 2: Get account and authenticate
@@ -73,11 +81,9 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
         if (!nonce) throw new Error("Failed to get nonce");
 
         // Step 4: Sign message
-        // const message = `Welcome to Tasmil Finance!\n\nPlease sign this message to authenticate.\n\nNonce: ${nonce}`;
-        const signature = await signMessage({ message, nonce });
+        const signature = (await signMessage({ message, nonce })).signature;
         if (!signature) throw new Error("User rejected signature");
 
-        console.log("signature", signature);
         // Step 5: Verify signature
         const response = await AuthService.verifySignature({
           walletAddress: walletAccount.address,
@@ -101,9 +107,7 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
 
         if (isCancelled) {
           sessionStorage.setItem(AUTH_CANCELLED_KEY, "true");
-          toast.error("Authentication Cancelled");
         } else {
-          // Show detailed error information
           console.error("Connection error details:", {
             message: error?.message,
             details: error?.details,
@@ -116,7 +120,6 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
             description: error?.message || "Unknown error occurred",
           });
 
-          // If in development, show more details
           if (process.env.NODE_ENV === "development" && error?.details) {
             console.error("Full error details:", error.details);
           }
