@@ -69,7 +69,7 @@ export class AuthController {
       return {
         success: true,
         nonce: nonceHex,
-        message: 'Nonce generated successfully',
+        message: `Welcome to Tasmil Finance!\n\nPlease sign this message to authenticate.\n\nNonce: ${nonceHex}`,
       };
     } catch (error) {
       console.error('Error in getNonce:', error);

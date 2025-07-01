@@ -37,7 +37,13 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
     signMessage,
     wallets,
   } = useWallet();
-  const { setWalletState, setSigning, signing, connected: verified } = useWalletStore();
+  const {
+    setWalletState,
+    setSigning,
+    signing,
+    connected: verified,
+    reset: resetWalletState,
+  } = useWalletStore();
 
   // Handle wallet connection and authentication
   const handleConnect = useCallback(
@@ -46,6 +52,14 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
 
       try {
         setSigning(true);
+
+        // Check if Aptos wallet extension is available
+        if (!window.aptos) {
+          toast.error("No Aptos Wallet Found", {
+            description: "Please install an Aptos wallet extension",
+          });
+          return;
+        }
 
         // Step 1: Connect wallet
         await connect(walletName);
@@ -60,33 +74,32 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
         }
 
         // Step 3: Get nonce
-        const { nonce } = (await AuthService.getNonce(walletAccount.address)) as { nonce: string };
+        const { nonce, message } = (await AuthService.getNonce(walletAccount.address)) as {
+          nonce: string;
+          message: string;
+        };
         if (!nonce) throw new Error("Failed to get nonce");
 
         // Step 4: Sign message
-        const message = `Welcome to Tasmil Finance!\n\nPlease sign this message to authenticate.\n\nNonce: ${nonce}`;
-        const signature = (await signMessage({ message, nonce })).signature;
+        const signature = await signMessage({ message, nonce });
         if (!signature) throw new Error("User rejected signature");
 
-        console.log("signature", signature);
         // Step 5: Verify signature
-        const verified = await AuthService.verifySignature({
-          address: walletAccount.address,
-          publicKey: walletAccount.publicKey || walletAccount.address,
+        const response = await AuthService.verifySignature({
+          walletAddress: walletAccount.address,
+          publicKey: walletAccount.publicKey,
           signature: (signature as any).signature || String(signature),
           message,
           nonce,
         });
 
-        if (!verified) throw new Error("Signature verification failed");
+        if (!response.success) throw new Error("Signature verification failed");
 
         // Success
         localStorage.setItem(WALLET_NAME_KEY, walletName);
         sessionStorage.removeItem(AUTH_CANCELLED_KEY);
         setWalletState({ connected: true, account: walletAccount.address });
-        toast.success("Wallet Connected", {
-          description: "Successfully connected and authenticated your wallet",
-        });
+        toast.success("Wallet Connected", { description: response?.message });
         needsDisconnect = false;
       } catch (error: any) {
         // Handle errors
@@ -94,26 +107,39 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
 
         if (isCancelled) {
           sessionStorage.setItem(AUTH_CANCELLED_KEY, "true");
-          toast.error("Authentication Cancelled");
         } else {
-          toast.error("Connection Failed", { description: error.message });
+          console.error("Connection error details:", {
+            message: error?.message,
+            details: error?.details,
+            statusCode: error?.statusCode,
+            response: error?.response,
+            stack: error?.stack,
+          });
+
+          toast.error("Connection Failed", {
+            description: error?.message || "Unknown error occurred",
+          });
+
+          if (process.env.NODE_ENV === "development" && error?.details) {
+            console.error("Full error details:", error.details);
+          }
         }
 
         // Cleanup
         if (needsDisconnect) {
           try {
-            await disconnect();
+            disconnect();
           } catch (err) {
             console.error("Failed to disconnect:", err);
           }
         }
+        resetWalletState();
         localStorage.removeItem(WALLET_NAME_KEY);
-        setWalletState({ connected: false, account: null });
       } finally {
         setSigning(false);
       }
     },
-    [connect, disconnect, setWalletState, setSigning, signMessage]
+    [connect, disconnect, setWalletState, setSigning, signMessage, resetWalletState]
   );
 
   // Auto-connect if wallet was previously connected
@@ -130,14 +156,14 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
   // Handle disconnect
   const handleDisconnect = useCallback(async () => {
     try {
-      await disconnect();
+      disconnect();
       localStorage.removeItem(WALLET_NAME_KEY);
-      setWalletState({ connected: false, account: null });
+      resetWalletState();
       toast.success("Wallet Disconnected");
     } catch {
-      toast.error("Disconnect Failed");
+      toast.error("Failed to disconnect");
     }
-  }, [disconnect, setWalletState]);
+  }, [disconnect, resetWalletState]);
 
   // Handle connect button click
   const handleConnectClick = useCallback(async () => {
