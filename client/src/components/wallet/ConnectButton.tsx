@@ -10,7 +10,7 @@ import {
 import { AuthService } from "@/services/auth.service";
 import { useWalletStore } from "@/store/useWalletStore";
 import { truncateAddress, useWallet } from "@aptos-labs/wallet-adapter-react";
-import { LogOut, User, Wallet } from "lucide-react";
+import { Loader2, LogOut, User, Wallet } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import ButtonCopy from "./menu/ButtonCopy";
 import { toast } from "sonner";
@@ -53,14 +53,6 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
       try {
         setSigning(true);
 
-        // Check if Aptos wallet extension is available
-        if (!window.aptos) {
-          toast.error("No Aptos Wallet Found", {
-            description: "Please install an Aptos wallet extension",
-          });
-          return;
-        }
-
         // Step 1: Connect wallet
         await connect(walletName);
         needsDisconnect = true;
@@ -81,7 +73,7 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
         if (!nonce) throw new Error("Failed to get nonce");
 
         // Step 4: Sign message
-        const signature = await signMessage({ message, nonce });
+        const signature = (await signMessage({ message, nonce })).signature;
         if (!signature) throw new Error("User rejected signature");
 
         // Step 5: Verify signature
@@ -102,27 +94,14 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
         toast.success("Wallet Connected", { description: response?.message });
         needsDisconnect = false;
       } catch (error: any) {
-        // Handle errors
         const isCancelled = error.message?.includes("rejected") || error.code === 4001;
 
         if (isCancelled) {
           sessionStorage.setItem(AUTH_CANCELLED_KEY, "true");
         } else {
-          console.error("Connection error details:", {
-            message: error?.message,
-            details: error?.details,
-            statusCode: error?.statusCode,
-            response: error?.response,
-            stack: error?.stack,
-          });
-
-          toast.error("Connection Failed", {
-            description: error?.message || "Unknown error occurred",
-          });
-
-          if (process.env.NODE_ENV === "development" && error?.details) {
-            console.error("Full error details:", error.details);
-          }
+          const errorMessage =
+            typeof error === "string" ? error : error?.message || "Unknown error occurred";
+          toast.error("Connection Failed", { description: errorMessage });
         }
 
         // Cleanup
@@ -157,9 +136,9 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
   const handleDisconnect = useCallback(async () => {
     try {
       disconnect();
-      localStorage.removeItem(WALLET_NAME_KEY);
       resetWalletState();
       toast.success("Wallet Disconnected");
+      localStorage.removeItem(WALLET_NAME_KEY);
     } catch {
       toast.error("Failed to disconnect");
     }
@@ -183,7 +162,7 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
   if (walletConnected && !verified) {
     return (
       <Button variant="galaxy" className="gap-2" disabled>
-        <Wallet className="h-4 w-4 animate-pulse" />
+        <Loader2 className="h-4 w-4 animate-spin" />
         Verifying...
       </Button>
     );
@@ -220,8 +199,17 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
 
   return (
     <Button variant="galaxy" className="gap-2" onClick={handleConnectClick} disabled={signing}>
-      <Wallet className="h-4 w-4" />
-      {signing ? "Connecting..." : label}
+      {signing ? (
+        <div className="flex items-center gap-2">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          Connecting...
+        </div>
+      ) : (
+        <div className="flex items-center gap-2">
+          <Wallet className="h-4 w-4" />
+          {label}
+        </div>
+      )}
     </Button>
   );
 }
