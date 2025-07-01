@@ -11,11 +11,7 @@ export class AuthService {
     const data = await response.json();
 
     if (!response.ok) {
-      // Throw error with full details from response
       const error = new Error(data.error || `API request failed: ${response.statusText}`);
-      (error as any).details = data.details;
-      (error as any).statusCode = data.statusCode || response.status;
-      (error as any).response = data;
       throw error;
     }
 
