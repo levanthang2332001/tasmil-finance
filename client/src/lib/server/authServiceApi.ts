@@ -10,11 +10,14 @@ export class AuthServiceApi {
         },
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        // Forward backend error with full details
+        throw new Error(data.message || data.error || `HTTP error! status: ${response.status}`);
       }
 
-      return response.json();
+      return data;
     } catch (error) {
       console.error("Error getting nonce:", error);
       throw error;
@@ -22,11 +25,10 @@ export class AuthServiceApi {
   }
 
   static async verifySignature(params: {
-    address: string;
+    walletAddress: string;
     publicKey: string;
     signature: string;
     message: string;
-    nonce: string;
   }) {
     try {
       const response = await fetch(`${API_BASE_URL}/auth/verify-signature`, {
@@ -37,14 +39,28 @@ export class AuthServiceApi {
         body: JSON.stringify(params),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        // Forward backend error with full details including statusCode
+        const errorData = {
+          success: false,
+          message: data.message || data.error || `HTTP error! status: ${response.status}`,
+          statusCode: data.statusCode || response.status,
+          details: data,
+        };
+        return errorData;
       }
 
-      return response.json();
+      return data;
     } catch (error) {
       console.error("Error verifying token:", error);
-      throw error;
+      // Return structured error response
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : "Unknown error occurred",
+        error: error,
+      };
     }
   }
 }

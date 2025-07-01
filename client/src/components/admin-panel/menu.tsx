@@ -13,6 +13,8 @@ import { usePathname } from "next/navigation";
 import AptosWallet from "../wallet/AptosWallet";
 import ConnectButton from "../wallet/ConnectButton";
 import TasmilWallet from "../wallet/TasmilWallet";
+import { toast } from "sonner";
+import { useWalletStore } from "@/store/useWalletStore";
 
 interface MenuProps {
   isOpen?: boolean;
@@ -123,10 +125,22 @@ function DisconnectWalletButton({
 export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList();
-  const { account, disconnect } = useWallet();
+  const { disconnect } = useWallet();
+  const { connected: walletConnected, reset: resetWalletState } = useWalletStore();
 
   const CLASS_HEIGHT =
     "min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)]";
+
+  const handleDisconnect = async () => {
+    try {
+      await disconnect();
+      resetWalletState();
+      toast.success("Wallet Disconnected");
+    } catch (error) {
+      console.error("Failed to disconnect:", error);
+      toast.error("Failed to disconnect wallet");
+    }
+  };
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
@@ -141,14 +155,16 @@ export function Menu({ isOpen }: MenuProps) {
             </li>
           ))}
           <li className="w-full grow flex flex-col justify-end">
-            {!account && <ConnectButton label="Connect Aptos Wallet" />}
-            {isOpen && account && (
+            {!walletConnected && <ConnectButton label="Connect Aptos Wallet" />}
+            {isOpen && walletConnected && (
               <div className="w-full flex flex-col gap-2 items-center rounded-2xl p-3 mb-4 glass border border-white/5">
                 <AptosWallet />
                 <TasmilWallet />
               </div>
             )}
-            {account && <DisconnectWalletButton isOpen={isOpen} onDisconnect={disconnect} />}
+            {walletConnected && (
+              <DisconnectWalletButton isOpen={isOpen} onDisconnect={handleDisconnect} />
+            )}
           </li>
         </ul>
       </nav>

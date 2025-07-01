@@ -7,23 +7,37 @@ export async function GET(request: NextRequest) {
     const address = searchParams.get("address");
 
     if (!address) {
-      return NextResponse.json({ error: "Address is required" }, { status: 400 });
+      return NextResponse.json(
+        {
+          error: "Address is required",
+          details: {
+            receivedParams: Object.fromEntries(searchParams.entries()),
+          },
+        },
+        { status: 400 }
+      );
     }
 
     const nonce = await AuthServiceApi.getNonce(address);
 
-    // // Generate a random nonce
-    // const nonce = Math.random().toString(36).substring(2) + Date.now().toString(36);
-
-    // // Store the nonce with timestamp
-    // nonceStore.set(address.toLowerCase(), {
-    //   nonce,
-    //   timestamp: Date.now(),
-    // });
-
-    return NextResponse.json({ nonce });
+    return NextResponse.json(nonce);
   } catch (error) {
     console.error("Error generating nonce:", error);
-    return NextResponse.json({ error: "Failed to generate nonce" }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: "Failed to generate nonce",
+        details: {
+          message: error instanceof Error ? error.message : "Unknown error",
+          stack:
+            process.env.NODE_ENV === "development"
+              ? error instanceof Error
+                ? error.stack
+                : undefined
+              : undefined,
+          error: error,
+        },
+      },
+      { status: 500 }
+    );
   }
 }
