@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Globe, Moon, Settings, Shield, Sun } from "lucide-react";
+import { Globe, Moon, Shield, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 // Helper to get theme from localStorage or default
@@ -58,11 +58,6 @@ const SettingsPage = () => {
     <ContentLayout title="Settings">
       <div className="h-full w-full p-6">
         <div className="max-w-2xl mx-auto space-y-6">
-          <div className="flex items-center space-x-2">
-            <Settings className="w-6 h-6 text-primary" />
-            <h1 className="text-2xl font-bold">Settings</h1>
-          </div>
-
           <Card>
             <CardHeader>
               <CardTitle>Appearance</CardTitle>

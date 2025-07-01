@@ -2,7 +2,7 @@
 
 import { ContentLayout } from "@/components/admin-panel/content-layout";
 import Dashboard from "@/components/ai-agents";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/sidebar/Navbar";
 import ToolBar from "@/components/toolbar";
 import SideRight from "@/components/toolbar/agent/SideAgent";
 import { ToolbarType } from "@/store/useToolbar";

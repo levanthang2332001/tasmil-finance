@@ -10,7 +10,17 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+
+  // Set global prefix for all routes
+  app.setGlobalPrefix('api');
+
+  app
+    .enableCors
+    //   {
+    //   origin: ['http://localhost:3000', 'http://localhost:3001'],
+    //   credentials: true,
+    // }
+    ();
 
   // Enable validation
   app.useGlobalPipes(
@@ -24,7 +34,9 @@ async function bootstrap() {
   // Swagger setup
   const config = new DocumentBuilder()
     .setTitle('Tasmil Finance API')
-    .setDescription('API documentation for Tasmil Finance')
+    .setDescription(
+      'Comprehensive API documentation for Tasmil Finance - a DeFi platform offering trading, liquidity provision, staking, lending, and yield farming services with voice-enabled interactions and intelligent intent recognition',
+    )
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

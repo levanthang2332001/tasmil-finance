@@ -1,6 +1,6 @@
+import { ChatResponse } from 'src/chat/entities/chat.entity';
 import { BorrowParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { ActionResult } from '../types/action.interface';
 
 export class BorrowAction extends AbstractBaseAction<BorrowParams> {
   readonly name = 'borrow';
@@ -26,7 +26,8 @@ export class BorrowAction extends AbstractBaseAction<BorrowParams> {
     'Borrow 0.1 WBTC with 75% LTV',
   ];
 
-  handle(params: BorrowParams): ActionResult {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async handle(params: BorrowParams): Promise<ChatResponse> {
     try {
       // TODO: Implement actual borrowing logic
       const result = {
@@ -44,7 +45,10 @@ export class BorrowAction extends AbstractBaseAction<BorrowParams> {
             : undefined,
       };
 
-      return this.createSuccessResult(result);
+      return this.createSuccessResult({
+        message: 'Borrowing successful',
+        data: result,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';

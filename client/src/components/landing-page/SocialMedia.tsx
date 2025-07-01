@@ -1,4 +1,4 @@
-import { DiscordIcon, GithubIcon, LinkedInIcon, TwitterIcon } from "../icon";
+import { DiscordIcon, LinkedInIcon, TwitterIcon } from "../icon";
 
 interface SocialLink {
   href: string;
@@ -17,10 +17,6 @@ const socialLinks: SocialLink[] = [
   {
     href: "https://linkedin.com",
     icon: <LinkedInIcon className="w-6 h-6" />,
-  },
-  {
-    href: "https://github.com",
-    icon: <GithubIcon className="w-6 h-6" />,
   },
 ];
 

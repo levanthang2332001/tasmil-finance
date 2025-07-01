@@ -1,36 +1,48 @@
 "use client";
 
 import { ContentLayout } from "@/components/admin-panel/content-layout";
+import SocialMedia from "@/components/landing-page/SocialMedia";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { HelpCircle, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 const faqs = [
   {
-    question: "What is Hyperliquid?",
+    question: "What is DeFi Agent?",
     answer:
-      "Hyperliquid is a decentralized finance (DeFi) platform offering advanced trading tools, analytics, and AI-powered strategies for crypto traders.",
+      "DeFi Agent is an AI-powered decentralized finance assistant that helps you interact with DeFi protocols on Aptos blockchain. It can help you swap tokens, stake assets, and manage your DeFi positions through natural language conversations.",
   },
   {
-    question: "How do I get started?",
+    question: "How do I connect my wallet?",
     answer:
-      "Sign up with your wallet, explore the dashboard, and connect to supported DeFi protocols. Our onboarding guide will walk you through your first trade.",
+      "To get started, you'll need to connect your Aptos wallet (like Petra, Martian, or Pontem). Click the 'Connect Wallet' button and follow the prompts to securely link your wallet to DeFi Agent.",
   },
   {
-    question: "Is my data secure?",
+    question: "What tokens can I trade?",
     answer:
-      "Yes. We use industry-standard encryption and never store your private keys. All transactions are signed locally on your device.",
+      "DeFi Agent supports trading on Liquidswap, Aptos's leading DEX. You can swap between APT, ALT, and other supported tokens. The available tokens depend on the liquidity pools available on Liquidswap.",
   },
   {
-    question: "What fees are involved?",
+    question: "How do I swap tokens?",
     answer:
-      "Hyperliquid charges minimal protocol fees. Network (gas) fees depend on the blockchain you use. See our documentation for details.",
+      "Simply tell DeFi Agent what you want to do! Try saying 'Swap 1 APT for ALT' or 'Exchange 0.5 ALT to APT'. The AI will understand your intent and execute the swap through Liquidswap.",
   },
   {
-    question: "How can I contact support?",
+    question: "What are the fees?",
     answer:
-      "You can reach our support team via the 'Contact Support' button below or email us at support@hyperliquid.com.",
+      "DeFi Agent itself is free to use. You'll only pay standard Aptos network fees (gas) for transactions and any protocol fees from Liquidswap. These fees are minimal and transparent.",
+  },
+  {
+    question: "Is it safe to use?",
+    answer:
+      "Yes! DeFi Agent prioritizes your security. We hash and securely store your private key in our database using industry-standard encryption. All transactions are signed locally on your device through your connected wallet, and we implement enterprise-grade security practices to protect your data and ensure you can trust our platform.",
+  },
+  {
+    question: "How can I get help?",
+    answer:
+      "If you need assistance, you can contact our support team using the 'Contact Support' button below or email us at support@defiagent.com. We're here to help!",
   },
 ];
 
@@ -46,14 +58,14 @@ function FaqAccordion() {
       {faqs.map((faq, idx) => (
         <div key={faq.question} className="border border-primary/20 rounded-lg bg-primary/5">
           <button
-            className="w-full flex justify-between items-center px-4 py-3 text-left text-primary font-medium focus:outline-none focus:ring-2 focus:ring-primary rounded-lg transition"
+            className="w-full flex justify-between items-center px-4 py-3 text-left text-secondary-foreground font-medium focus:outline-none focus:ring-2 focus:ring-primary rounded-lg transition"
             aria-expanded={openIndex === idx}
             aria-controls={`faq-panel-${idx}`}
             onClick={() => handleToggle(idx)}
           >
-            <span className="text-primary">{faq.question}</span>
+            <span className="text-secondary-foreground">{faq.question}</span>
             <span
-              className={`ml-2 transition-transform text-primary ${
+              className={`ml-2 transition-transform text-secondary-foreground ${
                 openIndex === idx ? "rotate-180" : "rotate-0"
               }`}
             >
@@ -63,7 +75,7 @@ function FaqAccordion() {
           {openIndex === idx && (
             <div
               id={`faq-panel-${idx}`}
-              className="px-4 pb-4 text-muted-foreground animate-fade-in"
+              className="px-4 py-4 text-muted-foreground animate-fade-in"
             >
               {faq.answer}
             </div>
@@ -76,7 +88,7 @@ function FaqAccordion() {
 
 const HelpPage = () => {
   return (
-    <ContentLayout title="Help & FAQ">
+    <ContentLayout title="Find answers to common questions or contact our support team for assistance.">
       <div className="w-full min-h-screen flex items-center justify-center">
         <div className="w-full rounded-xl flex flex-col md:flex-row shadow-xl overflow-hidden min-h-[600px] m-4 h-screen">
           <motion.div
@@ -85,15 +97,8 @@ const HelpPage = () => {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="w-1/2 mx-auto p-6 flex flex-col gap-6 border-b md:border-b-0 md:border-r border-border/20 backdrop-blur-sm h-screen"
           >
-            <div className="flex flex-col items-center text-center space-y-4">
-              <HelpCircle className="w-16 h-16 text-primary" />
-              <h1 className="text-3xl font-bold text-primary">Help & FAQ</h1>
-              <p className="text-muted-foreground max-w-md">
-                Find answers to common questions or contact our support team for assistance.
-              </p>
-            </div>
             <div className="w-full text-left">
-              <h2 className="text-xl font-semibold text-primary mb-2">
+              <h2 className="text-xl font-semibold text-secondary-foreground mb-2">
                 Frequently Asked Questions
               </h2>
               <FaqAccordion />
@@ -105,10 +110,15 @@ const HelpPage = () => {
                 variant="outline"
                 className="flex items-center gap-2 border-purple-500/40 text-purple-300 hover:bg-purple-900/30"
               >
-                <a href="mailto:support@hyperliquid.com">
+                <Link
+                  href="mailto:support@hyperliquid.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Mail className="w-4 h-4" /> Contact Support
-                </a>
+                </Link>
               </Button>
+              <SocialMedia />
             </div>
           </motion.div>
         </div>

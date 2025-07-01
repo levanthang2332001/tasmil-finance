@@ -1,7 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
 import SocialMedia from "./SocialMedia";
-import { AptosConnectWallet } from "../wallet";
+import { PATHS } from "@/constants/routes";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -20,7 +22,9 @@ const Footer = () => {
             Join thousands of traders using AI to optimize their DeFi strategies
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <AptosConnectWallet label="🚀 Get Started" />
+            <Link href={PATHS.DEFI_AGENT} target="_blank" rel="noopener noreferrer">
+              <Button variant="galaxy">🚀 Get Started</Button>
+            </Link>
           </div>
         </motion.div>
       </div>

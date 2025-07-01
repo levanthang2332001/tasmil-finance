@@ -2,11 +2,11 @@
 "use client";
 
 import { ChatContainer } from "@/components/chat/ChatContainer";
-import { Message, MESSAGE_TYPE } from "@/types/chat";
+import { ChatMessage, ACTION_TYPE } from "@/types/chat";
 import { useEffect, useState } from "react";
 
 const ChatAgent = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   // Initialize with welcome message
@@ -19,93 +19,47 @@ const ChatAgent = () => {
         id: Date.now().toString(),
         message: welcomeMessage,
         timestamp: new Date(),
-        actionType: MESSAGE_TYPE.BOT,
+        actionType: ACTION_TYPE.UNKNOWN,
       },
     ]);
   }, []);
 
   const handleSendMessage = async (content: string) => {
     // Add user message
-    const userMessage: Message = {
+    const userMessage: ChatMessage = {
       id: Date.now().toString(),
       message: content,
       timestamp: new Date(),
-      actionType: MESSAGE_TYPE.USER,
+      actionType: ACTION_TYPE.USER,
     };
     setMessages((prev) => [...prev, userMessage]);
 
     // Send message to API
     setIsLoading(true);
     try {
-      const botMessage: Message = {
+      const botMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         message: "Sorry, there was an error processing your message.",
         timestamp: new Date(),
-        actionType: MESSAGE_TYPE.BOT,
+        actionType: ACTION_TYPE.UNKNOWN,
       };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
-      const errorMessage: Message = {
+      const errorMessage: ChatMessage = {
         id: Date.now().toString(),
         message: "Sorry, there was an error processing your message.",
         timestamp: new Date(),
-        actionType: MESSAGE_TYPE.BOT,
+        actionType: ACTION_TYPE.UNKNOWN,
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleSwapConfirm = async (messageId: string) => {
-    setIsLoading(true);
-    try {
-      // Find the swap message to get the quote
-      const swapMessage = messages.find((m) => m.id === messageId);
-      if (!swapMessage || !swapMessage.data) {
-        throw new Error("Swap quote not found");
-      }
-
-      // Execute the swap
-      const confirmationMessage: Message = {
-        id: Date.now().toString(),
-        message: "Sorry, there was an error processing your swap.",
-        timestamp: new Date(),
-        actionType: MESSAGE_TYPE.BOT,
-      };
-      setMessages((prev) => [...prev, confirmationMessage]);
-    } catch (error) {
-      const errorMessage: Message = {
-        id: Date.now().toString(),
-        message: "Sorry, there was an error processing your swap.",
-        timestamp: new Date(),
-        actionType: MESSAGE_TYPE.BOT,
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSwapCancel = (messageId: string) => {
-    const cancelMessage: Message = {
-      id: Date.now().toString(),
-      message: "Swap cancelled. Is there anything else I can help you with?",
-      timestamp: new Date(),
-      actionType: MESSAGE_TYPE.BOT,
-    };
-    setMessages((prev) => [...prev, cancelMessage]);
   };
 
   return (
     <div className="flex flex-col h-full ">
-      <ChatContainer
-        messages={messages}
-        isLoading={isLoading}
-        onSendMessage={handleSendMessage}
-        onSwapConfirm={handleSwapConfirm}
-        onSwapCancel={handleSwapCancel}
-      />
+      <ChatContainer messages={messages} isLoading={isLoading} onSendMessage={handleSendMessage} />
     </div>
   );
 };

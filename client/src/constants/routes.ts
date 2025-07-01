@@ -13,12 +13,7 @@ export const PATHS = {
   ROBOTS: "/robots.txt",
 };
 
-export const PUBLIC_PATHS = [
-  PATHS.LANDING_PAGE,
-  PATHS.NEXT,
-  PATHS.FAVICON,
-  PATHS.ROBOTS,
-];
+export const PUBLIC_PATHS = [PATHS.LANDING_PAGE, PATHS.NEXT, PATHS.FAVICON, PATHS.ROBOTS];
 
 export const PROTECTED_PATHS = [
   PATHS.DASHBOARD,

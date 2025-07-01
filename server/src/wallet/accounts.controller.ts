@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { Accounts } from './accounts';
-import { JwtAuthGuard } from 'src/wallet/guard/jwt-auth.guard';
+// import { JwtAuthGuard } from 'src/wallet/guard/jwt-auth.guard';
 import { GenerateWalletDto } from 'src/utils/input';
 
 interface ITasmilWalletResponse {
@@ -10,7 +11,7 @@ interface ITasmilWalletResponse {
 }
 
 @Controller('accounts')
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 export class AccountsController {
   private readonly accountsService: Accounts;
 
@@ -21,14 +22,15 @@ export class AccountsController {
   @Get('check-user/:address')
   async checkUser(@Param('address') address: string) {
     try {
-      const account = await this.accountsService.getAccountByAddress(address);
+      const account = await this.accountsService.getPrivateKeyByAddress(address);
+
       if (!account) {
         return {
           success: false,
           message: 'User account not found',
         };
       }
-
+      
       const data = this.accountsService.getAccountByPrivateKey(account);
 
       return {

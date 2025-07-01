@@ -8,36 +8,31 @@ interface NavigationProps {
   onTabChange: (tab: "spotlight" | "dashboard") => void;
 }
 
-export default function Navigation({
-  activeTab,
-  onTabChange,
-}: NavigationProps) {
+const tabs = [
+  { id: "spotlight", label: "Spotlight" },
+  { id: "dashboard", label: "Dashboard" },
+] as const;
+
+export default function Navigation({ activeTab, onTabChange }: NavigationProps) {
   return (
     <div className="flex space-x-2">
-      <Button
-        variant={activeTab === "spotlight" ? "default" : "outline"}
-        className={cn(
-          "rounded-full",
-          activeTab === "spotlight"
-            ? "bg-blue-green-gradient text-white"
-            : "hover:bg-black/20 hover:backdrop-blur-sm"
-        )}
-        onClick={() => onTabChange("spotlight")}
-      >
-        Spotlight
-      </Button>
-      <Button
-        variant={activeTab === "dashboard" ? "default" : "outline"}
-        className={cn(
-          "rounded-full",
-          activeTab === "dashboard"
-            ? "!bg-gradient-to-tr from-crypto-blue/20 to-crypto-blue/20 text-white"
-            : "hover:bg-black/20 hover:backdrop-blur-sm"
-        )}
-        onClick={() => onTabChange("dashboard")}
-      >
-        Dashboard
-      </Button>
+      {tabs.map((tab) => (
+        <Button
+          key={tab.id}
+          variant={activeTab === tab.id ? "default" : "outline"}
+          className={cn(
+            "rounded-full",
+            activeTab === tab.id
+              ? tab.id === "dashboard"
+                ? "!bg-gradient-to-tr from-primary/20 to-primary/20 text-white"
+                : "bg-primary text-white"
+              : "hover:bg-black/20 hover:backdrop-blur-sm"
+          )}
+          onClick={() => onTabChange(tab.id)}
+        >
+          {tab.label}
+        </Button>
+      ))}
     </div>
   );
 }

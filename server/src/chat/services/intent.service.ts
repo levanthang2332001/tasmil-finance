@@ -3,8 +3,8 @@ import { ChatOpenAI } from '@langchain/openai';
 import { Injectable } from '@nestjs/common';
 import { LoggerService } from 'src/chat/services/logger.service';
 import { clearResponse } from 'src/utils/function';
-import { DeFiIntent, ActionType, ParamsType } from '../entities/intent.entity';
 import { actionRegistry } from '../actions';
+import { ActionType, DeFiIntent, ParamsType } from '../entities/intent.entity';
 
 @Injectable()
 export class IntentService {
@@ -101,10 +101,10 @@ export class IntentService {
   private validateAndEnhanceIntent(intent: DeFiIntent): DeFiIntent {
     const action = actionRegistry.getAction(intent.actionType);
 
-    if (intent.actionType === 'unknown' || !action) {
+    if (intent.actionType === ActionType.UNKNOWN || !action) {
       return {
         ...intent,
-        actionType: 'unknown',
+        actionType: ActionType.UNKNOWN,
         params: {} as ParamsType,
         missingFields: [],
         context: 'Invalid action type detected',
@@ -125,7 +125,9 @@ export class IntentService {
 
   private buildContext(intent: DeFiIntent, missingFields: string[]): string {
     const actionName =
-      intent.actionType === 'unknown' ? 'unknown action' : intent.actionType;
+      intent.actionType === ActionType.UNKNOWN
+        ? 'unknown action'
+        : intent.actionType;
 
     let context = `I understood you want to ${actionName}`;
 
@@ -144,7 +146,7 @@ export class IntentService {
       context += `. I need more information about: ${missingList}`;
 
       // Provide examples for the action type
-      if (intent.actionType !== 'unknown') {
+      if (intent.actionType !== ActionType.UNKNOWN) {
         const examples = actionRegistry.getActionExamples(intent.actionType);
         if (examples.length > 0) {
           context += `. For example: "${examples[0]}"`;

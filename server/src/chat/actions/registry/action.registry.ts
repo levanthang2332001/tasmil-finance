@@ -7,17 +7,29 @@ import { liquidityAction } from '../liquidity/add-liquidity.action';
 import { removeLiquidityAction } from '../liquidity/remove-liquidity.action';
 import { stakingAction } from '../stake/staking.action';
 import { borrowAction } from '../lending/borrow.action';
-import { lendingAction } from '../lending/lending.action';
+import { supplyAction } from '../lending/supply.action';
+import { repayAction } from '../lending/repay.action';
+import { withdrawAction } from '../lending/withdraw.action';
 import { defaultAction } from '../unknown/default.action';
+import { ustakingAction } from '../stake/unstaking.action';
+import { claimRewardAction } from '../stake/claim-reward.action';
+import { placeLimitOrderAction } from '../trading/place-limit-order.action';
+import { placeMarketOrderAction } from '../trading/place-market-order.action';
 
 export class ActionRegistry {
   private actions: ActionMap = {
     swap: swapAction,
     liquidity: liquidityAction,
     remove_liquidity: removeLiquidityAction,
-    staking: stakingAction,
+    stake: stakingAction,
+    unstake: ustakingAction,
     borrow: borrowAction,
-    lending: lendingAction,
+    supply: supplyAction,
+    repay: repayAction,
+    withdraw: withdrawAction,
+    claim_reward: claimRewardAction,
+    place_limit_order: placeLimitOrderAction,
+    place_market_order: placeMarketOrderAction,
     unknown: defaultAction,
   };
 
