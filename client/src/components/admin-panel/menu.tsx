@@ -155,7 +155,7 @@ export function Menu({ isOpen }: MenuProps) {
             </li>
           ))}
           <li className="w-full grow flex flex-col justify-end">
-            {!walletConnected && <ConnectButton label="Connect Aptos Wallet" />}
+            {!walletConnected && <ConnectButton label={isOpen ? "Connect Aptos Wallet" : ""} />}
             {isOpen && walletConnected && (
               <div className="w-full flex flex-col gap-2 items-center rounded-2xl p-3 mb-4 glass border border-white/5">
                 <AptosWallet />

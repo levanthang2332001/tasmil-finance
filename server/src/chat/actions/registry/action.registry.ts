@@ -15,9 +15,11 @@ import { ustakingAction } from '../stake/unstaking.action';
 import { claimRewardAction } from '../stake/claim-reward.action';
 import { placeLimitOrderAction } from '../trading/place-limit-order.action';
 import { placeMarketOrderAction } from '../trading/place-market-order.action';
+import { walletAction } from '../wallet/wallet.action';
 
 export class ActionRegistry {
   private actions: ActionMap = {
+    wallet: walletAction,
     swap: swapAction,
     liquidity: liquidityAction,
     remove_liquidity: removeLiquidityAction,

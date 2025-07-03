@@ -1,12 +1,12 @@
 import { ContentLayout } from "@/components/admin-panel/content-layout";
 import Portfolio from "@/components/porfolio";
 
-const PortfolioPage = () => {
+const WalletPage = () => {
   return (
-    <ContentLayout title="Portfolio">
+    <ContentLayout title="Wallet">
       <Portfolio />
     </ContentLayout>
   );
 };
 
-export default PortfolioPage;
+export default WalletPage;

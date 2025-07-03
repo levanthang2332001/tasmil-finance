@@ -1,8 +1,8 @@
 export const PATHS = {
   DASHBOARD: "/dashboard",
   AI_AGENT: "/ai-agent",
-  PORTFOLIO: "/portfolio",
-  TRENDING: "/trending",
+  WALLET: "/wallet",
+  COMMUNITY: "/community",
   DEFI_AGENT: "/defi-agent",
   SETTINGS: "/settings",
   HELP: "/help",
@@ -18,8 +18,8 @@ export const PUBLIC_PATHS = [PATHS.LANDING_PAGE, PATHS.NEXT, PATHS.FAVICON, PATH
 export const PROTECTED_PATHS = [
   PATHS.DASHBOARD,
   PATHS.AI_AGENT,
-  PATHS.PORTFOLIO,
-  PATHS.TRENDING,
+  PATHS.WALLET,
+  PATHS.COMMUNITY,
   PATHS.DEFI_AGENT,
   PATHS.SETTINGS,
   PATHS.HELP,

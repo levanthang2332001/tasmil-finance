@@ -4,7 +4,6 @@ import { PATHS } from "@/constants/routes";
 import { cn } from "@/lib/utils";
 import { AnimatePresence } from "framer-motion";
 import {
-  Award,
   Brain,
   ChartNoAxesCombined,
   ChevronLeft,
@@ -40,13 +39,13 @@ const Sidebar: React.FC = () => {
     },
     {
       icon: <ChartNoAxesCombined className="mr-2 h-6 w-6" />,
-      label: "Trending",
-      link: PATHS.TRENDING,
+      label: "Community",
+      link: PATHS.COMMUNITY,
     },
     {
-      icon: <Award className="mr-2 h-6 w-6" />,
-      label: "Portfolio",
-      link: PATHS.PORTFOLIO,
+      icon: <Wallet className="mr-2 h-6 w-6" />,
+      label: "Wallet",
+      link: PATHS.WALLET,
     },
   ];
 

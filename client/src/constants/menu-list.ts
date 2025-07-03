@@ -1,14 +1,5 @@
-import {
-  Wallet,
-  Brain,
-  Landmark,
-  ChartNoAxesCombined,
-  Award,
-  HelpCircle,
-  Settings,
-  LucideIcon,
-} from "lucide-react";
 import { PATHS } from "@/constants/routes";
+import { Brain, HelpCircle, Landmark, LucideIcon, Settings, Users, Wallet } from "lucide-react";
 
 export type SubmenuType = {
   href: string;
@@ -50,14 +41,14 @@ export function getMenuList(): GroupType[] {
           icon: Landmark,
         },
         {
-          href: PATHS.TRENDING,
-          label: "Trending",
-          icon: ChartNoAxesCombined,
+          href: PATHS.COMMUNITY,
+          label: "Community",
+          icon: Users,
         },
         {
-          href: PATHS.PORTFOLIO,
-          label: "Portfolio",
-          icon: Award,
+          href: PATHS.WALLET,
+          label: "Wallet",
+          icon: Wallet,
         },
       ],
     },
