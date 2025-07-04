@@ -1,6 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, MinLength } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  MinLength,
+  IsNumber,
+  Min,
+  IsEnum,
+} from 'class-validator';
 import { DeFiIntentSchema } from '../docs/schemas';
+
+enum CurveType {
+  STABLE = 'stable',
+  UNCORRELATED = 'uncorrelated',
+}
 
 export class ChatRequestDto {
   @ApiProperty({
@@ -21,6 +33,53 @@ export class ChatRequestDto {
   @IsNotEmpty()
   @MinLength(1)
   content: string;
+}
+
+export class PreswapRequestDto {
+  // @ApiProperty({
+  //   example: '0x1234567890abcdef...',
+  //   description: 'User wallet address',
+  //   minLength: 1,
+  // })
+  @IsString()
+  @IsNotEmpty()
+  user_address: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(1)
+  fromToken: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(1)
+  toToken: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @Min(0)
+  fromAmount: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @Min(0)
+  toAmount: number;
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(1)
+  interactiveToken: string;
+
+  @IsEnum(CurveType, {
+    message: 'Invalid curve type',
+  })
+  @IsNotEmpty()
+  curveType: CurveType;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @Min(0)
+  version: 0 | 0.5;
 }
 
 export class ChatResponseDto {
