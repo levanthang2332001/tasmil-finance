@@ -76,6 +76,8 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
         const signature = (await signMessage({ message, nonce }));
         if (!signature) throw new Error("User rejected signature");
 
+        console.log("signature: ", signature);
+
         // Step 5: Verify signature
         const response = await AuthService.verifySignature({
           walletAddress: walletAccount.address,
@@ -158,12 +160,14 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
     await handleConnect(wallets[0].name);
   }, [wallets, handleConnect]);
 
+  const renderTitle = (title: string) => label.trim().length > 0 && title;
+
   // Render states
   if (walletConnected && !verified) {
     return (
       <Button variant="galaxy" className="gap-2" disabled>
         <Loader2 className="h-4 w-4 animate-spin" />
-        Verifying...
+        {renderTitle("Verifying...")}
       </Button>
     );
   }
@@ -202,12 +206,12 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
       {signing ? (
         <div className="flex items-center gap-2">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Connecting...
+          {renderTitle("Connecting...")}
         </div>
       ) : (
         <div className="flex items-center gap-2">
           <Wallet className="h-4 w-4" />
-          {label}
+          {renderTitle(label)}
         </div>
       )}
     </Button>

@@ -1,6 +1,6 @@
 "use client";
 
-import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { GlowingEffect } from "@/components/animate-ui/glowing-effect";
 import { PART } from "@/constants/part";
 import { cn } from "@/lib/utils";
 import { motion, Variants } from "framer-motion";
