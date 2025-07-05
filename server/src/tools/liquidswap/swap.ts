@@ -57,7 +57,7 @@ async function getPoolExists(tokenA: string, tokenB: string): Promise<boolean> {
 
 export async function calculateLiquidswapRate(
   quote: LiquidSwapRequest,
-): Promise<string> {
+): Promise<number> {
   const { fromToken, toToken, amount, curveType, interactiveToken, version } =
     quote;
 
@@ -84,7 +84,12 @@ export async function calculateLiquidswapRate(
       version: version as 0 | 0.5,
     });
 
-    return output;
+    const toAmount = convertDecimalToValue(
+      Number(output),
+      getTokenInfo(toToken).decimals,
+    );
+
+    return toAmount;
   } catch (error) {
     console.error(error);
     throw error;
@@ -126,8 +131,8 @@ export async function swapTokensWithLiquidswap(
       fromTokenInfo.decimals,
     );
 
-    const toAmountDecimal = convertDecimalToValue(
-      Number(toAmount),
+    const toAmountDecimal = convertValueToDecimal(
+      toAmount,
       toTokenInfo.decimals,
     );
 
@@ -135,7 +140,7 @@ export async function swapTokensWithLiquidswap(
       fromToken: fromTokenInfo.moveAddress,
       toToken: toTokenInfo.moveAddress,
       fromAmount,
-      toAmount: Number(toAmount),
+      toAmount: toAmountDecimal,
       interactiveToken: quote.interactiveToken,
       slippage: 0.05,
       stableSwapType: 'high',
