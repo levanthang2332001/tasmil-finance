@@ -6,15 +6,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { getMenuList, MenuType } from "@/constants/menu-list";
 import { cn } from "@/lib/utils";
+import { useWalletStore } from "@/store/useWalletStore";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Ellipsis, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { toast } from "sonner";
 import AptosWallet from "../wallet/AptosWallet";
 import ConnectButton from "../wallet/ConnectButton";
 import TasmilWallet from "../wallet/TasmilWallet";
-import { toast } from "sonner";
-import { useWalletStore } from "@/store/useWalletStore";
 
 interface MenuProps {
   isOpen?: boolean;
@@ -166,6 +166,9 @@ export function Menu({ isOpen }: MenuProps) {
               <DisconnectWalletButton isOpen={isOpen} onDisconnect={handleDisconnect} />
             )}
           </li>
+          {/* <li className="pt-8 w-full flex justify-center item-center">
+            <SocialMedia />
+          </li> */}
         </ul>
       </nav>
     </ScrollArea>

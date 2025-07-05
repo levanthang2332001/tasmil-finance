@@ -2,68 +2,60 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import TransactionHistory from "./TransactionHistory";
 import { toast } from "sonner";
-
-interface Token {
-  symbol: string;
-  name: string;
-  balance: string;
-  usdValue: string;
-  change24h: string;
-  isPositive: boolean;
-}
-
-// Mock data for demonstration
-const mockTokens: Token[] = [
-  {
-    symbol: "APT",
-    name: "Aptos",
-    balance: "125.50",
-    usdValue: "$1,255.00",
-    change24h: "+5.2%",
-    isPositive: true,
-  },
-  {
-    symbol: "USDC",
-    name: "USD Coin",
-    balance: "500.00",
-    usdValue: "$500.00",
-    change24h: "+0.1%",
-    isPositive: true,
-  },
-  {
-    symbol: "WETH",
-    name: "Wrapped Ethereum",
-    balance: "0.75",
-    usdValue: "$2,250.00",
-    change24h: "-2.3%",
-    isPositive: false,
-  },
-];
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import {
+  fetchAptosBalance,
+  fetchAptosCoins,
+  fetchAptosHistory,
+  AptosCoinInfo,
+} from "./aptos-helpers";
 
 const AptosPortfolio = () => {
-  // const { account } = useWallet();
+  const { account } = useWallet();
   const [isDepositing, setIsDepositing] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [coins, setCoins] = useState<AptosCoinInfo[]>([]);
+  const [history, setHistory] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  // if (!account?.address) {
-  //   return (
-  //     <div className="w-full p-6 rounded-lg bg-purple-950/20 border border-purple-500/20">
-  //       <div className="text-center">
-  //         <Wallet className="w-12 h-12 mx-auto mb-4 text-purple-400" />
-  //         <h3 className="text-lg font-semibold text-white mb-2">Aptos Portfolio</h3>
-  //         <p className="text-gray-400 text-sm">Connect your Aptos wallet to view portfolio</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  React.useEffect(() => {
+    if (!account?.address) return;
+    setLoading(true);
+    Promise.all([
+      fetchAptosBalance(account.address.toString()),
+      fetchAptosCoins(account.address.toString()),
+      fetchAptosHistory(account.address.toString()),
+    ])
+      .then(([, coinList, txs]) => {
+        setCoins(coinList);
+        setHistory(txs);
+      })
+      .finally(() => setLoading(false));
+  }, [account?.address]);
 
-  const totalBalance = mockTokens.reduce((sum, token) => {
-    return sum + parseFloat(token.usdValue.replace("$", "").replace(",", ""));
-  }, 0);
+  if (!account?.address) {
+    return (
+      <div className="w-full p-6 rounded-lg bg-purple-950/20 border border-purple-500/20">
+        <div className="text-center">
+          <h3 className="text-lg font-semibold text-white mb-2">Aptos Portfolio</h3>
+          <p className="text-gray-400 text-sm">Connect your Aptos wallet to view portfolio</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="w-full p-6 rounded-lg bg-purple-950/20 border border-purple-500/20 animate-pulse">
+        <div className="text-center text-white">Loading portfolio...</div>
+      </div>
+    );
+  }
+
+  const totalBalance = coins.reduce((sum, token) => sum + token.balance, 0);
 
   const handleDeposit = async () => {
     setIsDepositing(true);
@@ -103,8 +95,9 @@ const AptosPortfolio = () => {
     <div className="w-full p-6 rounded-lg bg-purple-950/20 border border-purple-500/20">
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-white mb-2">Aptos Portfolio</h3>
-        <div className="text-3xl font-bold text-white mb-4">${totalBalance.toLocaleString()}</div>
-
+        <div className="text-3xl font-bold text-white mb-4">
+          {totalBalance.toLocaleString()} APT
+        </div>
         <div className="flex gap-3">
           <Button
             variant="outline"
@@ -126,10 +119,10 @@ const AptosPortfolio = () => {
           </Button>
         </div>
       </div>
-
       <div className="space-y-3 mb-6">
         <h4 className="text-sm font-medium text-gray-300">Your Tokens</h4>
-        {mockTokens.map((token, index) => (
+        {coins.length === 0 && <div className="text-gray-400 text-sm">No tokens found.</div>}
+        {coins.map((token, index) => (
           <div
             key={index}
             className="flex items-center justify-between p-3 rounded-lg bg-black/20 hover:bg-black/30 transition-colors"
@@ -143,22 +136,14 @@ const AptosPortfolio = () => {
                 <div className="text-sm text-gray-400">{token.name}</div>
               </div>
             </div>
-
             <div className="text-right">
               <div className="font-medium text-white">{token.balance}</div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-400">{token.usdValue}</span>
-                <Badge variant={token.isPositive ? "success" : "destructive"} className="text-xs">
-                  {token.change24h}
-                </Badge>
-              </div>
             </div>
           </div>
         ))}
       </div>
-
       {/* Transaction History */}
-      <TransactionHistory walletType="aptos" transactions={[]} />
+      <TransactionHistory walletType="aptos" transactions={history} />
     </div>
   );
 };

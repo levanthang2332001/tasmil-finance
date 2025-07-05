@@ -45,7 +45,7 @@ const Sidebar: React.FC = () => {
     {
       icon: <Wallet className="mr-2 h-6 w-6" />,
       label: "Wallet",
-      link: PATHS.WALLET,
+      link: PATHS.PORTFOLIO,
     },
   ];
 

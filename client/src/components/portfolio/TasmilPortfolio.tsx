@@ -1,45 +1,18 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import TransactionHistory from "./TransactionHistory";
 import { toast } from "sonner";
-
-interface Token {
-  symbol: string;
-  name: string;
-  balance: string;
-  usdValue: string;
-  change24h: string;
-  isPositive: boolean;
-}
+import { fetchAptosCoins, fetchAptosHistory, AptosCoinInfo } from "./aptos-helpers";
+import { AuthService } from "@/services/auth.service";
 
 interface InternalWallet {
   address: string;
 }
-
-// Mock data for demonstration
-const mockTokens: Token[] = [
-  {
-    symbol: "APT",
-    name: "Aptos",
-    balance: "50.25",
-    usdValue: "$502.50",
-    change24h: "+3.1%",
-    isPositive: true,
-  },
-  {
-    symbol: "USDT",
-    name: "Tether USD",
-    balance: "250.00",
-    usdValue: "$250.00",
-    change24h: "0.0%",
-    isPositive: true,
-  },
-];
 
 const TasmilPortfolio = () => {
   const { account } = useWallet();
@@ -47,38 +20,41 @@ const TasmilPortfolio = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDepositing, setIsDepositing] = useState(false);
   const [isSending, setIsSending] = useState(false);
-
-  // Simulate wallet existence for demo
-  const MOCK_WALLET_EXISTS = false;
-
-  const fetchInternalWallet = useCallback(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setInternalWallet(
-        MOCK_WALLET_EXISTS ? { address: "0x8e78f6c5b96d4e12c1b9a9f4c1e7f0c13c12" } : null
-      );
-      setIsLoading(false);
-    }, 1000);
-  }, []);
-
-  // const createInternalWallet = useCallback(() => {
-  //   if (!account?.address) return;
-  //   setIsLoading(true);
-  //   setTimeout(() => {
-  //     setInternalWallet({ address: "0x8e78f6c5b96d4e12c1b9a9f4c1e7f0c13c12" });
-  //     setIsLoading(false);
-  //     toast.success("Tasmil Wallet created successfully!");
-  //   }, 2000);
-  // }, [account?.address]);
+  const [coins, setCoins] = useState<AptosCoinInfo[]>([]);
+  const [history, setHistory] = useState<any[]>([]);
 
   useEffect(() => {
-    if (account?.address) fetchInternalWallet();
-  }, [account?.address, fetchInternalWallet]);
+    if (!account?.address) return;
+    setIsLoading(true);
+    AuthService.generateTasmilWallet(account.address.toString())
+      .then((res: any) => {
+        if (res.success && res.data?.tasmilAddress) {
+          setInternalWallet({ address: res.data.tasmilAddress });
+        } else {
+          setInternalWallet(null);
+        }
+      })
+      .catch(() => setInternalWallet(null))
+      .finally(() => setIsLoading(false));
+  }, [account?.address]);
+
+  useEffect(() => {
+    if (!internalWallet?.address) return;
+    setIsLoading(true);
+    Promise.all([
+      fetchAptosCoins(internalWallet.address),
+      fetchAptosHistory(internalWallet.address),
+    ])
+      .then(([coinList, txs]) => {
+        setCoins(coinList);
+        setHistory(txs);
+      })
+      .finally(() => setIsLoading(false));
+  }, [internalWallet?.address]);
 
   const handleDeposit = async () => {
     setIsDepositing(true);
     try {
-      // Simulate deposit process
       await new Promise((resolve) => setTimeout(resolve, 2000));
       toast.success("Deposit to Tasmil Wallet successful!", {
         description: "Your tokens have been deposited to your Tasmil wallet.",
@@ -95,7 +71,6 @@ const TasmilPortfolio = () => {
   const handleSend = async () => {
     setIsSending(true);
     try {
-      // Simulate send process
       await new Promise((resolve) => setTimeout(resolve, 2000));
       toast.success("Transaction sent successfully!", {
         description: "Your transaction has been processed from Tasmil wallet.",
@@ -109,17 +84,18 @@ const TasmilPortfolio = () => {
     }
   };
 
-  // if (!account?.address) {
-  //   return (
-  //     <div className="w-full p-6 rounded-lg bg-blue-950/20 border border-blue-500/20">
-  //       <div className="text-center">
-  //         <Wallet className="w-12 h-12 mx-auto mb-4 text-blue-400" />
-  //         <h3 className="text-lg font-semibold text-white mb-2">Tasmil Portfolio</h3>
-  //         <p className="text-gray-400 text-sm">Connect your Aptos wallet to access Tasmil portfolio</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (!account?.address) {
+    return (
+      <div className="w-full p-6 rounded-lg bg-blue-950/20 border border-blue-500/20">
+        <div className="text-center">
+          <h3 className="text-lg font-semibold text-white mb-2">Tasmil Portfolio</h3>
+          <p className="text-gray-400 text-sm">
+            Connect your Aptos wallet to access Tasmil portfolio
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading && !internalWallet) {
     return (
@@ -133,39 +109,36 @@ const TasmilPortfolio = () => {
     );
   }
 
-  // if (!internalWallet) {
-  //   return (
-  //     <div className="w-full p-6 rounded-lg bg-blue-950/20 border border-blue-500/20">
-  //       <div className="text-center">
-  //         <Wallet className="w-12 h-12 mx-auto mb-4 text-blue-400" />
-  //         <h3 className="text-lg font-semibold text-white mb-2">Tasmil Portfolio</h3>
-  //         <p className="text-gray-400 text-sm mb-4">
-  //           Create a Tasmil Wallet to manage your portfolio
-  //         </p>
-  //         <Button
-  //           onClick={createInternalWallet}
-  //           className="gap-2 gradient-outline font-semibold"
-  //           disabled={isLoading}
-  //           variant="ghost"
-  //         >
-  //           <Plus className="w-4 h-4" />
-  //           {isLoading ? "Creating..." : "Create Tasmil Wallet"}
-  //         </Button>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (!internalWallet) {
+    return (
+      <div className="w-full p-6 rounded-lg bg-blue-950/20 border border-blue-500/20">
+        <div className="text-center">
+          <h3 className="text-lg font-semibold text-white mb-2">Tasmil Portfolio</h3>
+          <p className="text-gray-400 text-sm mb-4">
+            Create a Tasmil Wallet to manage your portfolio
+          </p>
+          <Button
+            onClick={() => {}}
+            className="gap-2 gradient-outline font-semibold"
+            disabled
+            variant="ghost"
+          >
+            Create Tasmil Wallet
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
-  const totalBalance = mockTokens.reduce((sum, token) => {
-    return sum + parseFloat(token.usdValue.replace("$", "").replace(",", ""));
-  }, 0);
+  const totalBalance = coins.reduce((sum, token) => sum + token.balance, 0);
 
   return (
     <div className="w-full p-6 rounded-lg bg-blue-950/20 border border-blue-500/20">
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-white mb-2">Tasmil Portfolio</h3>
-        <div className="text-3xl font-bold text-white mb-4">${totalBalance.toLocaleString()}</div>
-
+        <div className="text-3xl font-bold text-white mb-4">
+          {totalBalance.toLocaleString()} APT
+        </div>
         <div className="flex gap-3">
           <Button
             variant="outline"
@@ -187,10 +160,10 @@ const TasmilPortfolio = () => {
           </Button>
         </div>
       </div>
-
       <div className="space-y-3 mb-6">
         <h4 className="text-sm font-medium text-gray-300">Your Tokens</h4>
-        {mockTokens.map((token, index) => (
+        {coins.length === 0 && <div className="text-gray-400 text-sm">No tokens found.</div>}
+        {coins.map((token, index) => (
           <div
             key={index}
             className="flex items-center justify-between p-3 rounded-lg bg-black/20 hover:bg-black/30 transition-colors"
@@ -204,22 +177,20 @@ const TasmilPortfolio = () => {
                 <div className="text-sm text-gray-400">{token.name}</div>
               </div>
             </div>
-
             <div className="text-right">
               <div className="font-medium text-white">{token.balance}</div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-400">{token.usdValue}</span>
-                <Badge variant={token.isPositive ? "success" : "destructive"} className="text-xs">
-                  {token.change24h}
+                <span className="text-sm text-gray-400">-</span>
+                <Badge variant="outline" className="text-xs">
+                  -
                 </Badge>
               </div>
             </div>
           </div>
         ))}
       </div>
-
       {/* Transaction History */}
-      <TransactionHistory walletType="tasmil" transactions={[]} />
+      <TransactionHistory walletType="tasmil" transactions={history} />
     </div>
   );
 };

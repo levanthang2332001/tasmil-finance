@@ -5,7 +5,6 @@ import TasmilPortfolio from "./TasmilPortfolio";
 import TransferSection from "./TransferSection";
 
 const Portfolio = () => {
-  // Mock APT balances for transfer component
   const aptosAptBalance = "125.50";
   const tasmilAptBalance = "50.25";
 

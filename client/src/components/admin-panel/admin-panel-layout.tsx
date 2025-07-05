@@ -15,7 +15,7 @@ export default function AdminPanelLayout({ children }: { children: React.ReactNo
 
   const isBlur =
     pathname.includes(PATHS.DEFI_AGENT) ||
-    pathname.includes(PATHS.WALLET) ||
+    pathname.includes(PATHS.PORTFOLIO) ||
     pathname.includes(PATHS.COMMUNITY);
 
   return (
