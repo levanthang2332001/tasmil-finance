@@ -1,8 +1,7 @@
 import { ChatResponse } from 'src/chat/entities/chat.entity';
 import { ActionType, SwapParams } from '../../entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
-import { swapTokensWithLiquidswap } from 'src/tools/liquidswap/swap';
-import { aptosAgent } from 'src/utils/aptosAgent';
+import { calculateLiquidswapRate } from 'src/tools/liquidswap/swap';
 import { CurveType } from '@pontem/liquidswap-sdk/dist/tsc/types/aptos';
 
 export class SwapAction extends AbstractBaseAction<SwapParams> {
@@ -38,34 +37,24 @@ export class SwapAction extends AbstractBaseAction<SwapParams> {
         version: 0,
       };
 
-      const { aptos, accounts } = await aptosAgent(user_address);
+      const toAmount = await calculateLiquidswapRate(payload);
 
-      const data = await swapTokensWithLiquidswap(payload, aptos, accounts);
-
-      if (!data.hash) {
-        return this.createErrorResult('Failed to execute swap');
+      if (!toAmount) {
+        return this.createErrorResult('Failed to calculate swap rate');
       }
 
       const result = {
-        action: ActionType.SWAP,
+        action: ActionType.PRESWAP,
+        address: user_address,
         fromToken: params.fromToken,
         toToken: params.toToken,
-        amount: params.amount,
-        data,
+        fromAmount: params.amount,
+        toAmount,
         timestamp: new Date().toISOString(),
       };
 
       return this.createSuccessResult({
-        message: `<h2>Swap Successful! 🎉</h2>
-          <div>
-            <strong>Transaction Details:</strong>
-            <ul>
-              <li><b>Send:</b> ${params.amount} ${params.fromToken}</li>
-              <li><b>Receive:</b> ${data?.toAmount} ${params.toToken}</li>
-              <li><b>Transaction Hash:</b> <a href="https://explorer.aptoslabs.com/txn/${data?.hash}?network=mainnet" target="_blank" rel="noopener noreferrer">${data?.hash}</a></li>
-            </ul>
-            <p>Your tokens have been successfully swapped!</p>
-          </div>`,
+        message: 'preswap successful',
         data: result,
       });
     } catch (error) {

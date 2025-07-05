@@ -32,9 +32,10 @@ const NONCE_EXPIRATION_TIME = 3 * 60 * 1000; // 3 minutes
 // @UseGuards(ApiKeyGuard)
 export class AuthController {
   private readonly jwtSecret: Secret;
-  private readonly authService: AuthService;
-
-  constructor(private readonly redisCache: RedisCacheService) {
+  constructor(
+    private readonly redisCache: RedisCacheService,
+    private readonly authService: AuthService,
+  ) {
     if (!process.env.JWT_SECRET) {
       throw new Error('JWT_SECRET is not set');
     }
@@ -69,7 +70,7 @@ export class AuthController {
       return {
         success: true,
         nonce: nonceHex,
-        message: `Welcome to Tasmil Finance!\n\nPlease sign this message to authenticate.\n\nNonce: ${nonceHex}`,
+        message: `Welcome to Tasmil Finance!Please sign this message to authenticate.Nonce: ${nonceHex}`,
       };
     } catch (error) {
       console.error('Error in getNonce:', error);
@@ -86,7 +87,7 @@ export class AuthController {
   @AuthApiDocs.verifySignature.okResponse
   @AuthApiDocs.verifySignature.unauthorizedResponse
   @AuthApiDocs.verifySignature.badRequestResponse
-  verifySignature(
+  async verifySignature(
     @Body()
     body: {
       walletAddress: string;
@@ -96,7 +97,13 @@ export class AuthController {
     },
   ) {
     const { walletAddress, publicKey, signature, message } = body;
-    const nonceStore = NONCE_STORE[walletAddress]?.nonceHex;
+    const nonceStore = this.authService.getNonceFromMessage(message);
+
+    console.log('nonceStore', nonceStore);
+
+    if (!nonceStore) {
+      throw new UnauthorizedException('Invalid nonce');
+    }
 
     if (!nonceStore || !message.includes(nonceStore)) {
       throw new UnauthorizedException('Invalid nonce');
@@ -107,13 +114,20 @@ export class AuthController {
     }
 
     try {
+      const isValidNonce = await this.authService.isValidNonce(
+        walletAddress,
+        nonceStore,
+      );
+
+      if (!isValidNonce) {
+        throw new UnauthorizedException('Invalid nonce');
+      }
+
       const isVerified = this.authService.verifyEd25519Signature({
         publicKey,
         message,
         signature,
       });
-
-      console.log('isVerified', isVerified);
 
       if (!isVerified) {
         throw new UnauthorizedException('Invalid signature');

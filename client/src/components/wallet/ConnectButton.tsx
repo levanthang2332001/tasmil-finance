@@ -73,15 +73,15 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
         if (!nonce) throw new Error("Failed to get nonce");
 
         // Step 4: Sign message
-        const signature = (await signMessage({ message, nonce })).signature;
+        const signature = (await signMessage({ message, nonce }));
         if (!signature) throw new Error("User rejected signature");
 
         // Step 5: Verify signature
         const response = await AuthService.verifySignature({
           walletAddress: walletAccount.address,
           publicKey: walletAccount.publicKey,
-          signature: (signature as any).signature || String(signature),
-          message,
+          signature: (signature.signature as any).signature || String(signature.signature),
+          message: signature.fullMessage,
           nonce,
         });
 
