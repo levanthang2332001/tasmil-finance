@@ -8,6 +8,7 @@ import { AccountsModule } from './wallet/accounts.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './wallet/guard/auth.module';
 import { RedisModule } from './redis/redis.module';
+import { CommunityModule } from './community/community.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { RedisModule } from './redis/redis.module';
     ChatModule,
     AccountsModule,
     AuthModule,
+    CommunityModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
