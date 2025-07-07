@@ -243,12 +243,20 @@ export class TwitterSupabase {
     return batch.id as number;
   }
 
-  public async getAllBatches(): Promise<AiAnalysisBatch[]> {
-    const { data, error } = await this.supabaseClient
+  public async getAllBatches(
+    limit: number,
+    cursor: number,
+  ): Promise<AiAnalysisBatch[]> {
+    let query = this.supabaseClient
       .checkClient()
       .from('ai_selected_tweet')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .limit(limit);
+
+    if (cursor > 0) query = query.lt('id', cursor);
+
+    const { data, error } = await query;
 
     if (error) throw error;
     return data as AiAnalysisBatch[];

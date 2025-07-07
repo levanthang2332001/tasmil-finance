@@ -16,7 +16,7 @@ export class CronService {
     private readonly twitterSupabase: TwitterSupabase,
   ) {}
 
-  @Cron(CronExpression.EVERY_12_HOURS)
+  @Cron(CronExpression.EVERY_30_MINUTES)
   async handleTweetAnalysis() {
     this.logger.log('Starting automatic tweet analysis...');
 
@@ -50,6 +50,12 @@ export class CronService {
           score: item.score,
           tweet: item.tweet!,
         }));
+
+      filteredSelectedData.sort((a, b) => {
+        const dateA = new Date(a.tweet?.created_at || '').getTime();
+        const dateB = new Date(b.tweet?.created_at || '').getTime();
+        return dateA - dateB;
+      });
 
       const filteredSelectedTweetIds = {
         ...selectedTweetIds,

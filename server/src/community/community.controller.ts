@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TwitterSupabase } from 'src/supabase/twitter';
 import { AiAnalysisBatch } from './interface';
@@ -15,8 +15,11 @@ export class CommunityController {
     description: 'Successfully retrieved batches',
     type: Array<AiAnalysisBatch>,
   })
-  async getAllBatches(): Promise<AiAnalysisBatch[]> {
-    return await this.twitterSupabase.getAllBatches();
+  async getAllBatches(
+    @Query('limit') limit: number,
+    @Query('cursor') cursor: number,
+  ): Promise<AiAnalysisBatch[]> {
+    return await this.twitterSupabase.getAllBatches(limit, cursor);
   }
 
   @Get('tweets/:batch_id')
