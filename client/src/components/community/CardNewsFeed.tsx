@@ -2,8 +2,9 @@
 import LoadingItem from "@/components/community/LoadingItem";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import { BadgeCheck, Heart, MessageCircle, Repeat2, Share } from "lucide-react";
+import { BadgeCheck } from "lucide-react";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export interface BentoItem {
   id: string;
@@ -15,9 +16,6 @@ export interface BentoItem {
   time?: string;
   avatar?: string;
   verified?: boolean;
-  likes?: number;
-  retweets?: number;
-  replies?: number;
   hasImage?: boolean;
   imageUrl?: string;
   tags?: string[];
@@ -25,6 +23,7 @@ export interface BentoItem {
   cta?: string;
   colSpan?: number;
   hasPersistentHover?: boolean;
+  tweetUrl?: string;
 }
 
 interface BentoGridProps {
@@ -35,8 +34,6 @@ interface BentoGridProps {
 
 function CardNewsFeed({ items, onScrollEnd, loading }: BentoGridProps) {
   const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({});
-  const [likedItems, setLikedItems] = useState<{ [key: string]: boolean }>({});
-  const [retweetedItems, setRetweetedItems] = useState<{ [key: string]: boolean }>({});
 
   // Distribute items into two columns, appending new items to the shorter column
   const [columns, setColumns] = useState<[BentoItem[], BentoItem[]]>([[], []]);
@@ -75,10 +72,6 @@ function CardNewsFeed({ items, onScrollEnd, loading }: BentoGridProps) {
   const toggleDescription = (id: string) =>
     setExpandedItems((prev) => ({ ...prev, [id]: !prev[id] }));
 
-  const toggleLike = (id: string) => setLikedItems((prev) => ({ ...prev, [id]: !prev[id] }));
-
-  const toggleRetweet = (id: string) => setRetweetedItems((prev) => ({ ...prev, [id]: !prev[id] }));
-
   useEffect(() => {
     const handleScroll = (event: Event) => {
       const container = event.target as HTMLElement;
@@ -95,8 +88,6 @@ function CardNewsFeed({ items, onScrollEnd, loading }: BentoGridProps) {
   function renderItem(item: BentoItem) {
     const isLongDescription = item.description.length > 200;
     const isExpanded = expandedItems[item.id];
-    const isLiked = likedItems[item.id];
-    const isRetweeted = retweetedItems[item.id];
     const displayDescription =
       isLongDescription && !isExpanded ? `${item.description.slice(0, 200)}...` : item.description;
 
@@ -104,8 +95,13 @@ function CardNewsFeed({ items, onScrollEnd, loading }: BentoGridProps) {
       <div
         key={item.id}
         className={cn(
-          "mb-4 border border-gray-100/80 dark:border-white/10 rounded-xl p-4 hover:bg-gray-50/50 dark:hover:bg-white/[0.02] transition-colors duration-200"
+          "mb-4 border border-gray-100/80 dark:border-white/10 rounded-xl p-4 hover:bg-gray-50/50 dark:hover:bg-white/[0.02] transition-colors duration-200 cursor-pointer"
         )}
+        onClick={() => {
+          if (item.tweetUrl) {
+            window.open(item.tweetUrl, '_blank');
+          }
+        }}
       >
         <div className="flex space-x-3">
           {/* Avatar */}
@@ -147,57 +143,17 @@ function CardNewsFeed({ items, onScrollEnd, loading }: BentoGridProps) {
               {/* Image if exists */}
               {item.hasImage && item.imageUrl && (
                 <div className="mt-3 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
-                  <img
+                  <Image
                     src={item.imageUrl}
                     alt="Feed"
                     className="w-full object-cover aspect-video"
                     loading="lazy"
+                    width={600}
+                    height={400}
                     style={{ background: "linear-gradient(to bottom right, #f3f4f6, #e5e7eb)" }}
                   />
                 </div>
               )}
-            </div>
-            {/* Engagement buttons */}
-            <div className="flex items-center justify-between max-w-md mt-2">
-              <button className="flex items-center space-x-2 text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-200 group">
-                <div className="p-2 rounded-full group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors duration-200">
-                  <MessageCircle className="w-4 h-4" />
-                </div>
-                <span className="text-sm">{item.replies || 0}</span>
-              </button>
-              <button
-                onClick={() => toggleRetweet(item.id)}
-                className={cn(
-                  "flex items-center space-x-2 transition-colors duration-200 group",
-                  isRetweeted
-                    ? "text-green-500"
-                    : "text-gray-500 hover:text-green-500 dark:text-gray-400 dark:hover:text-green-400"
-                )}
-              >
-                <div className="p-2 rounded-full group-hover:bg-green-50 dark:group-hover:bg-green-900/20 transition-colors duration-200">
-                  <Repeat2 className="w-4 h-4" />
-                </div>
-                <span className="text-sm">{(item.retweets || 0) + (isRetweeted ? 1 : 0)}</span>
-              </button>
-              <button
-                onClick={() => toggleLike(item.id)}
-                className={cn(
-                  "flex items-center space-x-2 transition-colors duration-200 group",
-                  isLiked
-                    ? "text-red-500"
-                    : "text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400"
-                )}
-              >
-                <div className="p-2 rounded-full group-hover:bg-red-50 dark:group-hover:bg-red-900/20 transition-colors duration-200">
-                  <Heart className={cn("w-4 h-4", isLiked && "fill-current")} />
-                </div>
-                <span className="text-sm">{(item.likes || 0) + (isLiked ? 1 : 0)}</span>
-              </button>
-              <button className="flex items-center space-x-2 text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-200 group">
-                <div className="p-2 rounded-full group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors duration-200">
-                  <Share className="w-4 h-4" />
-                </div>
-              </button>
             </div>
           </div>
         </div>
