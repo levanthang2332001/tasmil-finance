@@ -273,4 +273,14 @@ export class TwitterSupabase {
     if (error) throw error;
     return data as AiAnalysisBatch[];
   }
+
+  public async getCursor(): Promise<string> {
+    const { count, error } = await this.supabaseClient
+      .checkClient()
+      .from('ai_selected_tweet')
+      .select('*', { count: 'exact', head: true });
+
+    if (error) throw error;
+    return count?.toString() || '0';
+  }
 }

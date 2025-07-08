@@ -34,4 +34,16 @@ export class CommunityController {
   ): Promise<AiAnalysisBatch[]> {
     return await this.twitterSupabase.getTweetsByBatch(batch_id);
   }
+
+  @Get('batches/cursor')
+  @ApiOperation({ summary: 'Get latest cursor' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved latest cursor',
+    type: String,
+  })
+  async getLatestCursor(): Promise<{ cursor: string }> {
+    const cursor = await this.twitterSupabase.getCursor();
+    return { cursor };
+  }
 }
