@@ -5,18 +5,25 @@ import CardNewsFeed, { BentoItem } from "@/components/community/CardNewsFeed";
 import { useEffect, useState, useRef } from "react";
 import { CommunityService } from "@/services/community.service";
 
+const PAGE_SIZE = 10;
+
 const CommunityPage = () => {
   const [items, setItems] = useState<BentoItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [cursor, setCursor] = useState<number | null>(null);
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const loadMoreItems = async () => {
-    if (loading) return;
+    if (loading || cursor === null || cursor === 0) return;
     try {
       setLoading(true);
-      const newItems = await CommunityService.getCommunityBatches();
-      if (newItems.length > 0) {
+      const newItems = (await CommunityService.getBatches(
+        PAGE_SIZE,
+        cursor
+      )) as BentoItem[];
+      if (newItems && newItems.length > 0) {
         setItems((prev) => [...prev, ...newItems]);
+        setCursor(Math.max(0, cursor - PAGE_SIZE));
       }
     } catch (error) {
       console.error("Error loading more items:", error);
@@ -26,18 +33,30 @@ const CommunityPage = () => {
   };
 
   useEffect(() => {
-    const loadInitialItems = async () => {
+    const initializePage = async () => {
       try {
         setLoading(true);
-        const initialItems = await CommunityService.getCommunityBatches();
-        setItems(initialItems);
+        const maxCursor = await CommunityService.getLatestCursor();
+        const cursorValue = parseInt(maxCursor);
+        setCursor(cursorValue);
+
+        const newItems = (await CommunityService.getBatches(
+          PAGE_SIZE,
+          cursorValue
+        )) as BentoItem[];
+        console.log("Initial items:", newItems);
+        if (newItems && newItems.length > 0) {
+          setItems(newItems);
+          setCursor(Math.max(0, cursorValue - PAGE_SIZE));
+        }
       } catch (error) {
-        console.error("Error loading initial items:", error);
+        console.error("Error initializing page:", error);
       } finally {
         setLoading(false);
       }
     };
-    loadInitialItems();
+
+    initializePage();
   }, []);
 
   const handleScroll = () => {
@@ -49,9 +68,16 @@ const CommunityPage = () => {
   };
 
   return (
-    <ContentLayout title="🔥 Hot tweets" className="overflow-hidden px-0">
+    <ContentLayout
+      title={`🔥 Hot tweets (${items.length} loaded${cursor === 0 ? " - All caught up!" : ""})`}
+      className="overflow-hidden px-0"
+    >
       <div className="h-full w-full">
-        <CardNewsFeed items={items} onScrollEnd={handleScroll} loading={loading} />
+        <CardNewsFeed
+          items={items}
+          onScrollEnd={handleScroll}
+          loading={loading}
+        />
       </div>
     </ContentLayout>
   );
