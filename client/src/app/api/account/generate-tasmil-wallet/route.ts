@@ -3,28 +3,22 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { walletAddress, publicKey, signature, message } = body;
+    const { address } = (await request.json()) as { address: string };
 
-    const response = await fetch(`${API_BASE_URL}/auth/verify-signature`, {
+    const response = await fetch(`${API_BASE_URL}/accounts/generate-tasmil-wallet`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Cookie: request.headers.get("cookie") || "",
       },
-      body: JSON.stringify({
-        walletAddress,
-        publicKey,
-        signature,
-        message,
-      }),
+      body: JSON.stringify({ address }),
       credentials: "include",
     });
 
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Error verifying signature:", error);
-    return NextResponse.json({ error: "Failed to verify signature" }, { status: 500 });
+    console.error("Error generating tasmil wallet:", error);
+    return NextResponse.json({ error: "Failed to generate tasmil wallet" }, { status: 500 });
   }
 }

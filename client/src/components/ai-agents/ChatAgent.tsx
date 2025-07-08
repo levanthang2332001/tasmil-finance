@@ -2,6 +2,7 @@
 "use client";
 
 import { ChatContainer } from "@/components/chat/ChatContainer";
+import { formatError } from "@/lib/utils";
 import { ChatMessage, ACTION_TYPE } from "@/types/chat";
 import { useEffect, useState } from "react";
 
@@ -45,13 +46,13 @@ const ChatAgent = () => {
       };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
-      const errorMessage: ChatMessage = {
+      const response: ChatMessage = {
         id: Date.now().toString(),
-        message: "Sorry, there was an error processing your message.",
+        message: formatError(error),
         timestamp: new Date(),
         actionType: ACTION_TYPE.UNKNOWN,
       };
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, response]);
     } finally {
       setIsLoading(false);
     }

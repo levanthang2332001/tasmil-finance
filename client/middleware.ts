@@ -1,29 +1,32 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { PUBLIC_PATHS } from "@/constants/routes";
+import { AUTH_COOKIE_NAME } from "@/constants/auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  // const isPublicPath = PUBLIC_PATHS.some((path) => request.nextUrl.pathname.startsWith(path));
+  const { pathname } = request.nextUrl;
 
-  // if (isPublicPath) {
-  //   return NextResponse.next();
-  // }
+  // Check if it's an API route that requires authentication
+  const isProtectedApiRoute =
+    pathname.startsWith("/api/chat") || pathname.startsWith("/api/portfolio");
 
-  // const storage = JSON.parse(localStorage.getItem("sui-dapp-kit:wallet-connection-info") || "null");
-  // const authToken = storage?.state?.lastConnectedAccountAddress;
+  if (isProtectedApiRoute) {
+    // Check for authentication cookie
+    const authCookie = request.cookies.get(AUTH_COOKIE_NAME);
+    console.log(">>> authCookie: ", authCookie);
 
-  // if (!authToken) {
-  //   const loginUrl = new URL("/", request.url);
-  //   loginUrl.searchParams.set("callback", request.nextUrl.pathname);
-  //   return NextResponse.redirect(loginUrl);
-  // }
+    if (!authCookie?.value) {
+      // For API routes, return 401
+      if (isProtectedApiRoute) {
+        return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+      }
 
-  // if (request.nextUrl.pathname.startsWith("/api")) {
-  //   if (!authToken) {
-  //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  //   }
-  // }
+      // For protected pages, redirect to landing page
+      const loginUrl = new URL("/", request.url);
+      loginUrl.searchParams.set("callback", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
 
   return NextResponse.next();
 }

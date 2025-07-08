@@ -1,15 +1,18 @@
+import { API_BASE_URL } from "@/constants/routes";
 import { NextResponse } from "next/server";
-import { VoiceServiceApi } from "@/lib/server/voiceServiceApi";
 
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
 
-    if (!formData.get("file")) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-    }
-
-    const response = await VoiceServiceApi.transcribeAudio(formData);
+    const response = await fetch(`${API_BASE_URL}/voice/transcribe`, {
+      method: "POST",
+      body: formData,
+      headers: {
+        Cookie: req.headers.get("cookie") || "",
+      },
+      credentials: "include",
+    });
 
     return NextResponse.json(response, { status: 200 });
   } catch (error) {

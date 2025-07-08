@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { AccountService } from "@/services/account.service";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
-import TransactionHistory from "./TransactionHistory";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { fetchAptosCoins, fetchAptosHistory, AptosCoinInfo } from "./aptos-helpers";
-import { AuthService } from "@/services/auth.service";
+import { AptosCoinInfo, fetchAptosCoins, fetchAptosHistory } from "./aptos-helpers";
+import TransactionHistory from "./TransactionHistory";
 
 interface InternalWallet {
   address: string;
@@ -26,7 +26,7 @@ const TasmilPortfolio = () => {
   useEffect(() => {
     if (!account?.address) return;
     setIsLoading(true);
-    AuthService.generateTasmilWallet(account.address.toString())
+    AccountService.generateTasmilWallet(account.address.toString())
       .then((res: any) => {
         if (res.success && res.data?.tasmilAddress) {
           setInternalWallet({ address: res.data.tasmilAddress });

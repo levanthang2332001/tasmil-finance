@@ -1,14 +1,14 @@
-import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ChatModule } from './chat/chat.module';
-import { AccountsModule } from './wallet/accounts.module';
-import { APP_GUARD } from '@nestjs/core';
-import { AuthModule } from './wallet/guard/auth.module';
-import { RedisModule } from './redis/redis.module';
 import { CommunityModule } from './community/community.module';
+import { RedisModule } from './redis/redis.module';
+import { AccountsModule } from './wallet/accounts.module';
+import { AuthModule } from './wallet/guard/auth.module';
 
 @Module({
   imports: [

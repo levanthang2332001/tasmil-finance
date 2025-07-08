@@ -13,14 +13,4 @@ export const PATHS = {
   ROBOTS: "/robots.txt",
 };
 
-export const PUBLIC_PATHS = [PATHS.LANDING_PAGE, PATHS.NEXT, PATHS.FAVICON, PATHS.ROBOTS];
-
-export const PROTECTED_PATHS = [
-  PATHS.DASHBOARD,
-  PATHS.AI_AGENT,
-  PATHS.PORTFOLIO,
-  PATHS.COMMUNITY,
-  PATHS.DEFI_AGENT,
-  PATHS.SETTINGS,
-  PATHS.HELP,
-];
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";

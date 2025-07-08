@@ -5,6 +5,7 @@ import {
   Post,
   HttpException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { handleAction } from './actions';
 import { ChatApiDocs } from './docs/chat-api.docs';
@@ -17,6 +18,7 @@ import { MessageHistoryEntry } from './entities/chat.entity';
 import { IntentService } from './services/intent.service';
 import { aptosAgent } from '../utils/aptosAgent';
 import { swapTokensWithLiquidswap } from '../tools/liquidswap/swap';
+import { JwtAuthGuard } from '../wallet/guard/jwt-auth.guard';
 
 @Controller('chat')
 export class ChatController {
@@ -55,6 +57,7 @@ export class ChatController {
   }
 
   @Post('message')
+  @UseGuards(JwtAuthGuard)
   @ChatApiDocs.sendMessage.operation
   @ChatApiDocs.sendMessage.body
   @ChatApiDocs.sendMessage.okResponse

@@ -25,3 +25,10 @@ export function formatPercentage(value: number): string {
 }
 
 export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export const formatError = (error: unknown = 'Sorry, there was an error processing your message. Please try again.') => {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return String(error);
+};

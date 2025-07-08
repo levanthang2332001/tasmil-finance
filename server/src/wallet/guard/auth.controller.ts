@@ -6,6 +6,7 @@ import {
   Query,
   UnauthorizedException,
   // UseGuards,
+  Res,
 } from '@nestjs/common';
 import * as forge from 'node-forge';
 import { sign, Secret, SignOptions } from 'jsonwebtoken';
@@ -14,7 +15,7 @@ import { AuthApiDocs } from '../../chat/docs/auth/auth-api.docs';
 import { ApiTags } from '@nestjs/swagger';
 import { RedisCacheService } from 'src/redis/services/redisCacheService';
 import { AuthService } from './service/auth.service';
-// import { ApiKeyGuard } from './api-key.guard';
+import { Response } from 'express';
 dotenv.config();
 
 const NONCE_STORE: {
@@ -25,11 +26,12 @@ const NONCE_STORE: {
   };
 } = {};
 
-const NONCE_EXPIRATION_TIME = 3 * 60 * 1000; // 3 minutes
+const NONCE_EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 24 hours
+const JWT_EXPIRATION_TIME = '24h';
+const NONCE_TTL = 3 * 60 * 1000; // 3 minutes for nonce only
 
 @ApiTags('Authentication')
 @Controller('auth')
-// @UseGuards(ApiKeyGuard)
 export class AuthController {
   private readonly jwtSecret: Secret;
   constructor(
@@ -54,7 +56,7 @@ export class AuthController {
       const nonceHex = forge.util.bytesToHex(nonce);
 
       // Convert minutes to milliseconds for Redis TTL
-      const ttlInMs = 3 * 60 * 1000;
+      const ttlInMs = NONCE_TTL;
 
       // Store in Redis with TTL in milliseconds
       await this.redisCache.set(address, nonceHex, ttlInMs);
@@ -95,6 +97,7 @@ export class AuthController {
       signature: string;
       message: string;
     },
+    @Res({ passthrough: true }) res: Response,
   ) {
     const { walletAddress, publicKey, signature, message } = body;
     const nonceStore = this.authService.getNonceFromMessage(message);
@@ -134,15 +137,22 @@ export class AuthController {
       }
 
       const signOptions: SignOptions = {
-        expiresIn: NONCE_EXPIRATION_TIME,
+        expiresIn: JWT_EXPIRATION_TIME,
       };
       const token = sign({ walletAddress }, this.jwtSecret, signOptions);
-      console.log('token', token);
       delete NONCE_STORE[walletAddress];
+
+      // Set token in HTTP-only cookie
+      res.cookie('tasmil-token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: NONCE_EXPIRATION_TIME,
+        path: '/',
+      });
 
       return {
         success: true,
-        token: token,
         message: 'Signature verified successfully',
       };
     } catch (error) {
@@ -150,5 +160,16 @@ export class AuthController {
         'Signature verification failed: ' + (error as Error).message,
       );
     }
+  }
+
+  @Post('logout')
+  logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('tasmil-token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+    });
+    return { success: true, message: 'Logged out successfully' };
   }
 }

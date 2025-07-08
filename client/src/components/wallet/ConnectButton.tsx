@@ -28,7 +28,6 @@ interface ConnectButtonProps {
 }
 
 const AUTH_CANCELLED_KEY = "wallet_auth_cancelled";
-const WALLET_NAME_KEY = "walletName";
 
 export default function ConnectButton({
   label = "Connect Aptos Wallet",
@@ -81,8 +80,6 @@ export default function ConnectButton({
         const signature = await signMessage({ message, nonce });
         if (!signature) throw new Error("User rejected signature");
 
-        console.log("signature: ", signature);
-
         // Step 5: Verify signature
         const response = await AuthService.verifySignature({
           walletAddress: walletAccount.address,
@@ -95,7 +92,6 @@ export default function ConnectButton({
         if (!response.success) throw new Error("Signature verification failed");
 
         // Success
-        localStorage.setItem(WALLET_NAME_KEY, walletName);
         sessionStorage.removeItem(AUTH_CANCELLED_KEY);
         setWalletState({ connected: true, account: walletAccount.address });
         toast.success("Wallet Connected", { description: response?.message });
@@ -120,7 +116,6 @@ export default function ConnectButton({
           }
         }
         resetWalletState();
-        localStorage.removeItem(WALLET_NAME_KEY);
       } finally {
         setSigning(false);
       }
@@ -132,8 +127,8 @@ export default function ConnectButton({
     try {
       disconnect();
       resetWalletState();
+      await AuthService.logout();
       toast.success("Wallet Disconnected");
-      localStorage.removeItem(WALLET_NAME_KEY);
     } catch {
       toast.error("Failed to disconnect");
     }

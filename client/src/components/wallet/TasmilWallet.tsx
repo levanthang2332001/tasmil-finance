@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthService } from "@/services/auth.service";
+import { AccountService } from "@/services/account.service";
 import { useWalletStore } from "@/store/useWalletStore";
 import { truncateAddress } from "@aptos-labs/ts-sdk";
 import { Loader2 } from "lucide-react";
@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { PrivateKeyDialog } from "./dialogs/PrivateKeyDialog";
 import { ButtonEllipsis } from "./menu/ButtonEllipsis";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 // TODO: Resolve private key issue
 
@@ -37,17 +38,18 @@ interface TasmilWalletResponse {
 
 function TasmilWallet() {
   const { account } = useWalletStore();
+  const { account: connectedWallet } = useWallet();
   const [internalWallet, setInternalWallet] = useState<InternalWallet | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [privateKey, setPrivateKey] = useState<string | null>(null);
   const [isPKDialogOpen, setIsPKDialogOpen] = useState<boolean>(false);
 
   const fetchInternalWallet = useCallback(async () => {
-    if (!account) return;
+    if (!account || !connectedWallet) return;
 
     setIsLoading(true);
     try {
-      const user = (await AuthService.checkUser(account)) as UserResponse;
+      const user = (await AccountService.checkUser(account)) as UserResponse;
 
       if (user.success && user.data) {
         setInternalWallet({ address: user.data.tasmilAddress });
@@ -64,11 +66,11 @@ function TasmilWallet() {
   }, [account]);
 
   const createInternalWallet = useCallback(async () => {
-    if (!account) return;
+    if (!account || !connectedWallet) return;
 
     setIsLoading(true);
     try {
-      const response = (await AuthService.generateTasmilWallet(account)) as TasmilWalletResponse;
+      const response = (await AccountService.generateTasmilWallet(account)) as TasmilWalletResponse;
 
       if (response.success && response.data) {
         setInternalWallet({ address: response?.data?.tasmilAddress || "" });
@@ -84,15 +86,17 @@ function TasmilWallet() {
     } finally {
       setIsLoading(false);
     }
-  }, [account]);
+  }, [account, connectedWallet]);
 
   useEffect(() => {
-    if (account) {
+    if (account && connectedWallet) {
       fetchInternalWallet();
+    } else {
+      setInternalWallet(null);
     }
-  }, [account, fetchInternalWallet]);
+  }, [account, connectedWallet, fetchInternalWallet]);
 
-  if (!account) return null;
+  if (!account || !connectedWallet) return null;
 
   if (isLoading && !internalWallet) {
     return (

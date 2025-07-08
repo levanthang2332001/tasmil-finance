@@ -3,6 +3,7 @@
 
 import { ChatContainer } from "@/components/chat/ChatContainer";
 import { SUGGESTION_DEFI_AGENT } from "@/constants/suggestion";
+import { formatError } from "@/lib/utils";
 import { ChatService } from "@/services/chat.service";
 import { ACTION_TYPE, ChatMessage } from "@/types/chat";
 import { useState } from "react";
@@ -39,17 +40,15 @@ const ChatDeFi = () => {
         message: response.message,
       };
 
-      console.log("response: ", response);
-
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
-      const errorMessage: ChatMessage = {
+      const response: ChatMessage = {
         id: Date.now().toString(),
+        message: formatError(error),
         timestamp: new Date(),
-        message: "Sorry, there was an error processing your message.",
         actionType: ACTION_TYPE.UNKNOWN,
       };
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, response]);
     } finally {
       setIsLoading(false);
     }

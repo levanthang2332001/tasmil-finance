@@ -2,6 +2,7 @@ export class VoiceService {
   private static async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const response = await fetch(`${endpoint}`, {
       ...options,
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -12,6 +13,10 @@ export class VoiceService {
   }
 
   static async transcribeAudio(formData: FormData): Promise<{ transcript: string }> {
+    if (!formData.get("file")) {
+      throw new Error("Missing required fields");
+    }
+
     return this.request<{ transcript: string }>("/api/chat/voice", {
       method: "POST",
       body: formData,

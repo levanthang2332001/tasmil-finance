@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as path from 'path';
 import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 // Configure dotenv with explicit path
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
@@ -14,13 +15,10 @@ async function bootstrap() {
   // Set global prefix for all routes
   app.setGlobalPrefix('api');
 
-  app
-    .enableCors
-    //   {
-    //   origin: ['http://localhost:3000', 'http://localhost:3001'],
-    //   credentials: true,
-    // }
-    ();
+  app.enableCors({
+    origin: ['http://localhost:3000', 'https://tasmil-finance.vercel.app'],
+    credentials: true,
+  });
 
   // Enable validation
   app.useGlobalPipes(
@@ -30,6 +28,9 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+  // Add cookie-parser middleware
+  app.use(cookieParser());
 
   // Swagger setup
   const config = new DocumentBuilder()
