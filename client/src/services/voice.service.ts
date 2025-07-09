@@ -2,7 +2,6 @@ export class VoiceService {
   private static async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const response = await fetch(`${endpoint}`, {
       ...options,
-      credentials: "include",
     });
 
     if (!response.ok) {

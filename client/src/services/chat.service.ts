@@ -8,7 +8,6 @@ export class ChatService {
         "Content-Type": "application/json",
         ...options.headers,
       },
-      credentials: "include",
     });
 
     if (!response.ok) {

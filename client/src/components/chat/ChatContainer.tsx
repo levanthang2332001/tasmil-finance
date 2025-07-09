@@ -49,8 +49,13 @@ export const ChatContainer = ({
               suggestions={suggestions}
             />
           ) : (
-            messages.map((message) => (
-              <MessageType key={message.id} message={message} isLoading={isLoading} />
+            messages.map((message, index) => (
+              <MessageType
+                key={message.id}
+                message={message}
+                isLoading={isLoading}
+                isLatestMessage={index === messages.length - 1}
+              />
             ))
           )}
           {isLoading && <BotThinking />}

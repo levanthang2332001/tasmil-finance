@@ -6,11 +6,13 @@ import { SUGGESTION_DEFI_AGENT } from "@/constants/suggestion";
 import { formatError } from "@/lib/utils";
 import { ChatService } from "@/services/chat.service";
 import { ACTION_TYPE, ChatMessage } from "@/types/chat";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { useState } from "react";
 
 const ChatDeFi = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { account } = useWallet();
 
   console.log("messages: ", messages);
 
@@ -27,17 +29,17 @@ const ChatDeFi = () => {
     // Send message to API
     setIsLoading(true);
     try {
-      const userAddress = "0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8";
+      const userAddress = String(account?.address) || "";
       const response = await ChatService.sendMessage(userAddress, content);
 
       const botMessage: ChatMessage = {
+        ...response,
         id: (Date.now() + 1).toString(),
         timestamp: new Date(),
         actionType:
           (response.data?.action as ACTION_TYPE) ||
           (response.intent?.action as ACTION_TYPE) ||
           ACTION_TYPE.UNKNOWN,
-        message: response.message,
       };
 
       setMessages((prev) => [...prev, botMessage]);

@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common';
 import { ChatController } from './chat.controller';
 import { IntentService } from './services/intent.service';
 import { VoiceService } from './services/voice.service';
+import { SwapService } from './services/swap.service';
 import { VoiceController } from './voice.controller';
 import { JwtModule } from '@nestjs/jwt';
+import { SwapController } from './swap.controller';
 
 @Module({
   imports: [
@@ -12,8 +14,8 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: { expiresIn: '24h' },
     }),
   ],
-  controllers: [ChatController, VoiceController],
-  providers: [IntentService, VoiceService],
+  controllers: [ChatController, VoiceController, SwapController],
+  providers: [IntentService, VoiceService, SwapService],
   exports: [IntentService],
 })
 export class ChatModule {}

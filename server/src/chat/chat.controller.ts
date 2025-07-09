@@ -2,11 +2,14 @@
 import {
   Body,
   Controller,
-  Post,
   HttpException,
   HttpStatus,
+  Post,
   UseGuards,
 } from '@nestjs/common';
+import { swapTokensWithLiquidswap } from '../tools/liquidswap/swap';
+import { aptosAgent } from '../utils/aptosAgent';
+import { JwtAuthGuard } from '../wallet/guard/jwt-auth.guard';
 import { handleAction } from './actions';
 import { ChatApiDocs } from './docs/chat-api.docs';
 import {
@@ -16,9 +19,6 @@ import {
 } from './dto/chat.dto';
 import { MessageHistoryEntry } from './entities/chat.entity';
 import { IntentService } from './services/intent.service';
-import { aptosAgent } from '../utils/aptosAgent';
-import { swapTokensWithLiquidswap } from '../tools/liquidswap/swap';
-import { JwtAuthGuard } from '../wallet/guard/jwt-auth.guard';
 
 @Controller('chat')
 export class ChatController {
@@ -96,11 +96,11 @@ export class ChatController {
   }
 
   @Post('swap')
-  // @ChatApiDocs.preswap.operation
-  // @ChatApiDocs.preswap.body
-  // @ChatApiDocs.preswap.okResponse
-  // @ChatApiDocs.preswap.badRequestResponse
-  // @ChatApiDocs.preswap.internalServerErrorResponse
+  // @ChatApiDocs.pre_swap.operation
+  // @ChatApiDocs.pre_swap.body
+  // @ChatApiDocs.pre_swap.okResponse
+  // @ChatApiDocs.pre_swap.badRequestResponse
+  // @ChatApiDocs.pre_swap.internalServerErrorResponse
   async swap(@Body() swapMessage: PreswapRequestDto): Promise<ChatResponseDto> {
     try {
       const {

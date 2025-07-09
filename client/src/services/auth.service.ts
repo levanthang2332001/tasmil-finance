@@ -6,7 +6,6 @@ export class AuthService {
         "Content-Type": "application/json",
         ...options.headers,
       },
-      credentials: "include",
     });
 
     const data = await response.json();
@@ -34,7 +33,13 @@ export class AuthService {
     message: string;
     nonce: string;
   }): Promise<{ success: boolean; message: string; token: string }> {
-    if (!params.walletAddress || !params.publicKey || !params.signature || !params.message || !params.nonce) {
+    if (
+      !params.walletAddress ||
+      !params.publicKey ||
+      !params.signature ||
+      !params.message ||
+      !params.nonce
+    ) {
       throw new Error("Missing required parameters");
     }
 

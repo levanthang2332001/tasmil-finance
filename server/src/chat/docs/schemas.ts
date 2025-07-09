@@ -277,7 +277,7 @@ export class DeFiIntentSchema {
     example: 'swap',
     description: 'Type of DeFi action',
     enum: [
-      'preswap',
+      'pre_swap',
       'swap',
       'liquidity',
       'staking',
@@ -294,7 +294,7 @@ export class DeFiIntentSchema {
     ],
   })
   actionType:
-    | 'preswap'
+    | 'pre_swap'
     | 'swap'
     | 'liquidity'
     | 'staking'

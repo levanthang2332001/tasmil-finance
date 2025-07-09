@@ -20,7 +20,6 @@ export class SwapAction extends AbstractBaseAction<SwapParams> {
     'Trade 1 APT for ALT',
   ];
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   async handle(
     params: SwapParams,
     user_address: string,
@@ -44,7 +43,7 @@ export class SwapAction extends AbstractBaseAction<SwapParams> {
       }
 
       const result = {
-        action: ActionType.PRESWAP,
+        action: ActionType.PRE_SWAP,
         address: user_address,
         fromToken: params.fromToken,
         toToken: params.toToken,
@@ -52,9 +51,11 @@ export class SwapAction extends AbstractBaseAction<SwapParams> {
         toAmount,
         timestamp: new Date().toISOString(),
       };
-
       return this.createSuccessResult({
-        message: 'preswap successful',
+        message: `<h2 class="text-lg font-semibold mb-2">Swap Estimate Ready! 💱</h2>
+          <div class="mb-4">
+            Please review the details above. If everything looks correct, you can proceed to confirm and execute the swap.
+          </div>`,
         data: result,
       });
     } catch (error) {

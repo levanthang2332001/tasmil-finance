@@ -22,7 +22,17 @@ export async function POST(request: NextRequest) {
     });
 
     const data = await response.json();
-    return NextResponse.json(data);
+
+    // Lấy Set-Cookie từ backend
+    const setCookie = response.headers.get("set-cookie");
+    const nextResponse = NextResponse.json(data);
+
+    // Forward Set-Cookie về client
+    if (setCookie) {
+      nextResponse.headers.set("set-cookie", setCookie);
+    }
+
+    return nextResponse;
   } catch (error) {
     console.error("Error verifying signature:", error);
     return NextResponse.json({ error: "Failed to verify signature" }, { status: 500 });

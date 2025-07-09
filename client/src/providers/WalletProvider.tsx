@@ -4,14 +4,16 @@ import { AptosWalletAdapterProvider, useWallet } from "@aptos-labs/wallet-adapte
 import { PropsWithChildren, useEffect } from "react";
 import { Network } from "@aptos-labs/ts-sdk";
 import { useWalletStore } from "@/store/useWalletStore";
+import { AuthService } from "@/services/auth.service";
 
 export function WalletProvider({ children }: PropsWithChildren) {
-  const {connected } = useWallet();
+  const { connected } = useWallet();
   const { reset: resetWalletState } = useWalletStore();
 
   useEffect(() => {
     if (!connected) {
       resetWalletState();
+      AuthService.logout();
     }
   }, [connected, resetWalletState]);
 
