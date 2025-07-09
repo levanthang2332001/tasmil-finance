@@ -19,7 +19,7 @@ function convertValueToDecimal(value: number, decimals: number): number {
 }
 
 function convertDecimalToValue(value: number, decimals: number): number {
-  return Math.floor(value / Math.pow(10, decimals));
+  return value / Math.pow(10, decimals);
 }
 
 function getTokenInfo(token: string): TokenInfo {
@@ -70,6 +70,7 @@ export async function calculateLiquidswapRate(
     );
 
     const poolExists = await getPoolExists(fromTokenAddress, toTokenAddress);
+    console.log('poolExists', poolExists);
 
     if (!poolExists) {
       throw new Error(`Pool ${fromToken} to ${toToken} does not exist`);
@@ -84,10 +85,13 @@ export async function calculateLiquidswapRate(
       version: version as 0 | 0.5,
     });
 
+    console.log('output', output);
     const toAmount = convertDecimalToValue(
       Number(output),
       getTokenInfo(toToken).decimals,
     );
+
+    console.log('toAmount', toAmount);
 
     return toAmount;
   } catch (error) {
