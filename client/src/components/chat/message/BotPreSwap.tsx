@@ -55,7 +55,9 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
   const [hasError, setHasError] = useState<string | null>(null);
   const [isPolling, setIsPolling] = useState<boolean>(false);
   const [permanentFailure, setPermanentFailure] = useState<boolean>(false);
+  const [isRetrying, setIsRetrying] = useState<boolean>(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [messageSuccess, setMessageSuccess] = useState<string | null>(null);
 
   const fromToken = swapData?.fromToken;
   const toToken = swapData?.toToken;
@@ -69,26 +71,14 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
       ? `1 ${fromToken} = ${(Number(buyAmount) / Number(sellAmount)).toFixed(6)} ${toToken}`
       : "";
 
-  // Debug logging for swapData changes
-  useEffect(() => {
-    console.log("swapData changed:", swapData);
-  }, [swapData]);
-
   // Fetch latest swap data from API
   const fetchLatestSwapData = useCallback(async () => {
     const currentSwapData = swapData;
 
     if (!fromToken || !toToken || !sellAmount || !currentSwapData?.address) {
-      console.log("fetchLatestSwapData: Missing required data", {
-        fromToken,
-        toToken,
-        sellAmount,
-        user_address: currentSwapData?.address,
-      });
       return currentSwapData;
     }
 
-    console.log("fetchLatestSwapData: Fetching new price data...");
     setIsPolling(true);
     setHasError(null);
 
@@ -113,7 +103,6 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
       }
 
       if (result.data) {
-        console.log("fetchLatestSwapData: Got new data", result.data);
         // Merge new data, but preserve fiat if present
         const newData = {
           ...currentSwapData,
@@ -143,26 +132,16 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
     swapData?.toFiat,
   ]);
 
-  // Poll for price every 5s
+  // Poll for price every 12s
   useEffect(() => {
     if (hasSwapped || permanentFailure || !isLatestMessage) return;
-    console.log("useEffect: Setting up price polling", {
-      hasSwapped,
-      permanentFailure,
-      isLatestMessage,
-      fromToken,
-      toToken,
-      sellAmount,
-    });
 
     let isMounted = true;
 
     function updatePrice() {
-      console.log("updatePrice: Called at", new Date().toISOString());
       fetchLatestSwapData()
         .then((newData) => {
           if (isMounted && newData) {
-            console.log("updatePrice: Setting new swap data", newData);
             setSwapData(newData);
           }
         })
@@ -177,11 +156,9 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
     updatePrice();
 
     // Set up interval
-    console.log("useEffect: Setting up 5s interval");
-    intervalRef.current = setInterval(updatePrice, 10000);
+    intervalRef.current = setInterval(updatePrice, 12000);
 
     return () => {
-      console.log("useEffect: Cleanup - clearing interval");
       isMounted = false;
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -207,7 +184,7 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
       curveType: swapData?.curveType || "stable",
       version: swapData?.version || 0,
     };
-    const result = await executeSwap(params);
+    const result: any = await executeSwap(params);
     setIsSwapping(false);
 
     if (result.error) {
@@ -216,6 +193,9 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
       return;
     }
     setHasSwapped(true);
+    setMessageSuccess(
+      `<a href="https://explorer.aptoslabs.com/txn/${result?.data?.transactionHash}?network=mainnet" target="_blank" rel="noopener noreferrer">${result?.data?.transactionHash}</a>`
+    );
   }, [
     hasSwapped,
     isSwapping,
@@ -229,6 +209,24 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
     swapData?.version,
   ]);
 
+  const handleRetry = useCallback(async () => {
+    setIsRetrying(true);
+    setHasError(null);
+    try {
+      const newData = await fetchLatestSwapData();
+      setSwapData(newData);
+      // If fetchLatestSwapData sets error, keep it, else clear permanentFailure
+      if (!newData || hasError) setPermanentFailure(true);
+      else setPermanentFailure(false);
+    } catch (err) {
+      console.error("handleRetry: Error", err);
+      setHasError("Failed to update swap data");
+      setPermanentFailure(true);
+    } finally {
+      setIsRetrying(false);
+    }
+  }, [fetchLatestSwapData, hasError]);
+
   const isButtonDisabled =
     isLoading ||
     isSwapping ||
@@ -239,8 +237,21 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
     permanentFailure ||
     !isLatestMessage;
 
+  const isRetryButtonDisabled =
+    isRetrying ||
+    isPolling ||
+    hasSwapped ||
+    !fromToken ||
+    !toToken ||
+    !sellAmount ||
+    !isLatestMessage;
+
   return (
-    <div className="w-full max-w-md bg-white rounded-3xl shadow-lg p-2 flex flex-col overflow-hidden gap-2">
+    <div
+      className={cn(
+        "w-full max-w-md bg-white rounded-3xl shadow-lg p-2 flex flex-col overflow-hidden gap-2"
+      )}
+    >
       <div className="relative space-y-1">
         <AmountPanel label="Sell" amount={sellAmount} fiat={sellFiat} token={TOKENS?.[fromToken]} />
         <div className="flex justify-center absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 transform z-[1]">
@@ -251,7 +262,7 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
         <AmountPanel label="Buy" amount={buyAmount} fiat={buyFiat} token={TOKENS?.[toToken]} />
       </div>
       <div className="mt-2 h-[110px]">
-        {!hasSwapped && (
+        {!hasSwapped && !hasError && (
           <Button
             className="w-full bg-primary/80 text-white font-semibold py-3 rounded-2xl hover:bg-primary/50 transition"
             disabled={isButtonDisabled}
@@ -267,14 +278,26 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
             )}
           </Button>
         )}
+        {!hasSwapped && hasError && (
+          <Button
+            className="w-full bg-red-600/90 text-white font-semibold py-3 rounded-2xl hover:bg-red-600/70 transition"
+            disabled={isRetryButtonDisabled}
+            onClick={handleRetry}
+            variant="destructive"
+          >
+            {isRetrying || isPolling ? (
+              <div className="flex items-center justify-center gap-2">
+                <FaSpinner className="animate-spin" aria-label="Loading" />
+                <span>Retrying...</span>
+              </div>
+            ) : (
+              hasError
+            )}
+          </Button>
+        )}
         {hasSwapped && (
           <div className="w-full text-center py-3 rounded-2xl bg-green-100 text-green-700 font-semibold">
             Swap completed
-          </div>
-        )}
-        {hasError && (
-          <div className="w-full text-center py-2 rounded-2xl bg-red-100 text-red-700 font-medium mt-2">
-            {hasError}
           </div>
         )}
         {!isPolling && (
@@ -282,6 +305,11 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
             <span>
               {rate.split("=")[0]} = <span className="font-semibold">{rate.split("=")[1]}</span>
             </span>
+          </div>
+        )}
+        {messageSuccess && (
+          <div className="w-full flex items-center justify-center text-center mt-3">
+            <MessageMarkdown>{messageSuccess}</MessageMarkdown>
           </div>
         )}
       </div>

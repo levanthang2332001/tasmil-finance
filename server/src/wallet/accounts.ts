@@ -97,7 +97,6 @@ export class Accounts {
       secret_value: formattedEnscypt,
     });
 
-    console.log('inserted vault successfully');
     return {
       tasmilAddress: taslmil_account.accountAddress,
       id: insertVault?.id || '',

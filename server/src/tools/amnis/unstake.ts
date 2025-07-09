@@ -25,7 +25,6 @@ export async function unstakeTokensWithAmnis(
       throw new Error('Failed to unstake tokens');
     }
 
-    console.log(response.hash);
     return response.hash;
   } catch (error) {
     console.error(error);

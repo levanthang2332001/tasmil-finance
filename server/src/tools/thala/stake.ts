@@ -25,8 +25,6 @@ export async function stakeTokensWithThala(
       transaction,
     });
 
-    console.log('response: ', response);
-
     const tx = await aptos.waitForTransaction({
       transactionHash: response.hash,
     });

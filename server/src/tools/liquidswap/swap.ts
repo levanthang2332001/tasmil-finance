@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { SDK } from '@pontem/liquidswap-sdk';
 import { LiquidSwapRequest } from './liquid.entity';
 import { TokenMapping } from './token-mapping';
@@ -70,7 +69,6 @@ export async function calculateLiquidswapRate(
     );
 
     const poolExists = await getPoolExists(fromTokenAddress, toTokenAddress);
-    console.log('poolExists', poolExists);
 
     if (!poolExists) {
       throw new Error(`Pool ${fromToken} to ${toToken} does not exist`);
@@ -85,13 +83,10 @@ export async function calculateLiquidswapRate(
       version: version as 0 | 0.5,
     });
 
-    console.log('output', output);
     const toAmount = convertDecimalToValue(
       Number(output),
       getTokenInfo(toToken).decimals,
     );
-
-    console.log('toAmount', toAmount);
 
     return toAmount;
   } catch (error) {
@@ -112,7 +107,6 @@ export async function swapTokensWithLiquidswap(
 ): Promise<SwapTokensWithLiquidswapResponse> {
   try {
     const toAmount = await calculateLiquidswapRate(quote);
-    console.log('>>> toAmount: ', toAmount);
 
     // Get token info
     const fromTokenInfo = getTokenInfo(quote.fromToken);

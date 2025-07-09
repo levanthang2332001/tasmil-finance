@@ -13,7 +13,6 @@ export async function middleware(request: NextRequest) {
   if (isProtectedApiRoute) {
     // Check for authentication cookie
     const authCookie = request.cookies.get(AUTH_COOKIE_NAME);
-    console.log(">>> authCookie: ", authCookie);
 
     if (!authCookie?.value) {
       // For API routes, return 401

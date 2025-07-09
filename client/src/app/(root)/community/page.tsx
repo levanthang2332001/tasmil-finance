@@ -44,7 +44,6 @@ const CommunityPage = () => {
           PAGE_SIZE,
           cursorValue
         )) as BentoItem[];
-        console.log("Initial items:", newItems);
         if (newItems && newItems.length > 0) {
           setItems(newItems);
           setCursor(Math.max(0, cursorValue - PAGE_SIZE));
