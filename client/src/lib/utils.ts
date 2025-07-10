@@ -32,3 +32,7 @@ export const formatError = (error: unknown = 'Sorry, there was an error processi
   }
   return String(error);
 };
+
+export const isAptosLink = (href: string) => {
+  return href.startsWith("https://aptos")
+};

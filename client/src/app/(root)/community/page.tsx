@@ -1,9 +1,9 @@
 "use client";
 
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import CardNewsFeed, { BentoItem } from "@/components/community/CardNewsFeed";
-import { useEffect, useState, useRef } from "react";
+import NewsFeed, { BentoItem } from "@/components/community/NewsFeed";
 import { CommunityService } from "@/services/community.service";
+import { useEffect, useRef, useState } from "react";
 
 const PAGE_SIZE = 10;
 
@@ -17,10 +17,7 @@ const CommunityPage = () => {
     if (loading || cursor === null || cursor === 0) return;
     try {
       setLoading(true);
-      const newItems = (await CommunityService.getBatches(
-        PAGE_SIZE,
-        cursor
-      )) as BentoItem[];
+      const newItems = (await CommunityService.getBatches(PAGE_SIZE, cursor)) as BentoItem[];
       if (newItems && newItems.length > 0) {
         setItems((prev) => [...prev, ...newItems]);
         setCursor(Math.max(0, cursor - PAGE_SIZE));
@@ -40,10 +37,7 @@ const CommunityPage = () => {
         const cursorValue = parseInt(maxCursor);
         setCursor(cursorValue);
 
-        const newItems = (await CommunityService.getBatches(
-          PAGE_SIZE,
-          cursorValue
-        )) as BentoItem[];
+        const newItems = (await CommunityService.getBatches(PAGE_SIZE, cursorValue)) as BentoItem[];
         if (newItems && newItems.length > 0) {
           setItems(newItems);
           setCursor(Math.max(0, cursorValue - PAGE_SIZE));
@@ -72,11 +66,7 @@ const CommunityPage = () => {
       className="overflow-hidden px-0"
     >
       <div className="h-full w-full">
-        <CardNewsFeed
-          items={items}
-          onScrollEnd={handleScroll}
-          loading={loading}
-        />
+        <NewsFeed items={items} onScrollEnd={handleScroll} loading={loading} />
       </div>
     </ContentLayout>
   );

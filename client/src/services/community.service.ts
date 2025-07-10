@@ -1,10 +1,7 @@
-import { BentoItem } from "@/components/community/CardNewsFeed";
+import { BentoItem } from "@/components/community/NewsFeed";
 
 export class CommunityService {
-  private static async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<T> {
+  private static async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const response = await fetch(`${endpoint}`, {
       ...options,
       headers: {
@@ -17,9 +14,7 @@ export class CommunityService {
     const data = await response.json();
 
     if (!response.ok) {
-      const error = new Error(
-        data.error || `API request failed: ${response.statusText}`
-      );
+      const error = new Error(data.error || `API request failed: ${response.statusText}`);
       throw error;
     }
 
@@ -49,10 +44,7 @@ export class CommunityService {
     }));
   }
 
-  static async getBatches(
-    limit?: number,
-    cursor?: number
-  ): Promise<BentoItem[]> {
+  static async getBatches(limit?: number, cursor?: number): Promise<BentoItem[]> {
     let url = "/api/community/batches";
     const params = new URLSearchParams();
 
@@ -92,9 +84,7 @@ export class CommunityService {
   }
 
   static async getLatestCursor(): Promise<string> {
-    const response = await this.request<{ cursor: string }>(
-      "/api/community/batches/cursor"
-    );
+    const response = await this.request<{ cursor: string }>("/api/community/batches/cursor");
     return response.cursor;
   }
 }
