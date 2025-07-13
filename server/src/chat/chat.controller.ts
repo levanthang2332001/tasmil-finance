@@ -1,22 +1,9 @@
 /* eslint-disable @typescript-eslint/require-await */
-import {
-  Body,
-  Controller,
-  HttpException,
-  HttpStatus,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
-import { swapTokensWithLiquidswap } from '../tools/liquidswap/swap';
-import { aptosAgent } from '../utils/aptosAgent';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../wallet/guard/jwt-auth.guard';
 import { handleAction } from './actions';
 import { ChatApiDocs } from './docs/chat-api.docs';
-import {
-  ChatRequestDto,
-  ChatResponseDto,
-  PreswapRequestDto,
-} from './dto/chat.dto';
+import { ChatRequestDto, ChatResponseDto } from './dto/chat.dto';
 import { MessageHistoryEntry } from './entities/chat.entity';
 import { IntentService } from './services/intent.service';
 
@@ -66,6 +53,12 @@ export class ChatController {
   async sendMessage(
     @Body() chatMessage: ChatRequestDto,
   ): Promise<ChatResponseDto> {
+    if (!chatMessage.user_address) {
+      return {
+        message: 'Please connect your wallet to use this feature.',
+        intent: undefined,
+      };
+    }
     try {
       this.updateMessageHistory(chatMessage.user_address, chatMessage.content);
       const recentContext = this.getRecentMessages(chatMessage.user_address);
@@ -92,65 +85,6 @@ export class ChatController {
       return data;
     } catch (error) {
       return this.handleError(error);
-    }
-  }
-
-  @Post('swap')
-  // @ChatApiDocs.pre_swap.operation
-  // @ChatApiDocs.pre_swap.body
-  // @ChatApiDocs.pre_swap.okResponse
-  // @ChatApiDocs.pre_swap.badRequestResponse
-  // @ChatApiDocs.pre_swap.internalServerErrorResponse
-  async swap(@Body() swapMessage: PreswapRequestDto): Promise<ChatResponseDto> {
-    try {
-      const {
-        user_address,
-        fromToken,
-        toToken,
-        fromAmount,
-        curveType,
-        version,
-      } = swapMessage;
-
-      const { aptos, accounts } = await aptosAgent(user_address);
-
-      const swapRequest = {
-        fromToken,
-        toToken,
-        amount: fromAmount,
-        curveType,
-        interactiveToken: 'from' as const,
-        version,
-      };
-
-      const result = await swapTokensWithLiquidswap(
-        swapRequest,
-        aptos,
-        accounts,
-      );
-
-      if (!result || !result.hash) {
-        throw new HttpException(
-          'Swap failed: Invalid response',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
-
-      return {
-        message: 'Swap executed successfully',
-        data: {
-          transactionHash: result.hash,
-          toAmount: result.toAmount,
-        },
-      };
-    } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
-      throw new HttpException(
-        `Swap failed: ${error instanceof Error ? error.message : 'Unknown error occurred'}`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
     }
   }
 }

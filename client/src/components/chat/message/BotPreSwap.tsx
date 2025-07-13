@@ -10,11 +10,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { FaChevronDown, FaSpinner } from "react-icons/fa";
 import { Button } from "../../ui/button";
 import { MessageMarkdown } from "./MessageMarkdown";
+import Image from "next/image";
 
 function TokenSelector({ token }: { token: TokenInfo }) {
   return (
     <button className="flex items-center gap-2 px-3 py-1 bg-white rounded-full border border-gray-200 shadow-sm hover:bg-gray-50 transition">
-      {token?.image && <img src={token.image} alt={token.symbol} className="w-4 h-4" />}
+      {token?.image && (
+        <Image src={token.image} alt={token.symbol} className="w-4 h-4 rounded-full" width={16} height={16} />
+      )}
       <span className="font-medium text-gray-800">{token.symbol}</span>
     </button>
   );

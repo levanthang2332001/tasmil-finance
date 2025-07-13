@@ -7,7 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { getMenuList, MenuType } from "@/constants/menu-list";
 import { cn } from "@/lib/utils";
 import { useWalletStore } from "@/store/useWalletStore";
-import { Ellipsis } from "lucide-react";
+import { Ellipsis, Wallet } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ConnectButton from "../wallet/ConnectButton";
@@ -118,9 +118,17 @@ export function Menu({ isOpen }: MenuProps) {
           <li className="w-full grow flex flex-col justify-end gap-3">
             {isOpen && walletConnected && <TasmilWallet />}
             {walletConnected ? (
-              <div className="w-full flex flex-col gap-2 items-center rounded-2xl p-3 glass border border-white/5">
-                <p className="text-sm text-white/60">Aptos Wallet</p>
-                <ConnectButton className="w-full" />
+              <div className="w-full overflow-hidden flex flex-col gap-2 items-center rounded-2xl p-3 glass border border-white/5">
+                {isOpen ? (
+                  <>
+                    <p className={cn("text-sm text-white/60", isOpen ? "" : "hidden")}>
+                      Aptos Wallet
+                    </p>
+                    <ConnectButton className="w-full" />
+                  </>
+                ) : (
+                  <Wallet className="h-4 w-4" />
+                )}
               </div>
             ) : (
               <ConnectButton label={isOpen ? "Connect Aptos Wallet" : ""} />

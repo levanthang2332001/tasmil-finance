@@ -7,7 +7,7 @@ import { useWalletStore } from "@/store/useWalletStore";
 import { AuthService } from "@/services/auth.service";
 
 export function WalletProvider({ children }: PropsWithChildren) {
-  const { connected } = useWallet();
+  const { connected , } = useWallet();
   const { reset: resetWalletState } = useWalletStore();
 
   useEffect(() => {

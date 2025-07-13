@@ -1,38 +1,100 @@
 "use client";
-import React from "react";
-import AptosPortfolio from "./AptosPortfolio";
-import TasmilPortfolio from "./TasmilPortfolio";
-import TransferSection from "./TransferSection";
+
+import {
+  calculatePortfolioStats,
+  calculateRiskProfile,
+  calculateTokenData,
+  fetchAptosCoins,
+} from "@/lib/aptos-helpers";
+import { useWalletStore } from "@/store/useWalletStore";
+import { useEffect, useMemo, useState } from "react";
+import { TokenData } from "@/types/portfolio";
+import ChartOverview from "./ChartOverview";
+import { PortfolioStatsCard } from "./PortfolioOverview";
+import { EmptyPortfolioState } from "./state/EmptyPortfolioState";
+import { ErrorState } from "./state/ErrorState";
+import { LoadingState } from "./state/LoadingStates";
+import { NoWalletState } from "./state/NoWalletState";
+import TokenBreakdown from "./token-breakdown/TokenBreakdown";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 const Portfolio = () => {
-  const aptosAptBalance = "125.50";
-  const tasmilAptBalance = "50.25";
+  const [tokens, setTokens] = useState<TokenData[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasData, setHasData] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { account } = useWallet();
+  const { tasmilAddress, signing } = useWalletStore();
+
+  const riskProfile = useMemo(() => calculateRiskProfile(tokens), [tokens]);
+  const portfolioStats = useMemo(() => calculatePortfolioStats(tokens), [tokens]);
+
+  const fetchPortfolioData = async () => {
+    if (signing) return;
+    if (!tasmilAddress || !account) {
+      setError("No wallet address available");
+      setHasData(false);
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const coins = await fetchAptosCoins(tasmilAddress);
+
+      if (!coins || coins.length === 0) {
+        setHasData(false);
+        setTokens([]);
+      } else {
+        // Calculate token data with real prices
+        const tokenData = await calculateTokenData(coins);
+        setTokens(tokenData);
+        setHasData(tokenData.length > 0);
+      }
+    } catch (error) {
+      console.error("Error fetching portfolio data:", error);
+      setError("Failed to fetch portfolio data");
+      setHasData(false);
+      setTokens([]);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchPortfolioData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tasmilAddress]);
+
+  if (isLoading || signing) {
+    return <LoadingState />;
+  }
+
+  if (!tasmilAddress || !account) {
+    return <NoWalletState />;
+  }
+
+  if (error) {
+    return <ErrorState error={error} onRetry={fetchPortfolioData} />;
+  }
+
+  if (!hasData || tokens.length === 0) {
+    return <EmptyPortfolioState isLoading={isLoading} onRefresh={fetchPortfolioData} />;
+  }
 
   return (
-    <div className="h-full w-full p-6">
-      <div className="w-full max-w-7xl mx-auto">
-        {/* Desktop Layout */}
-        <div className="hidden lg:flex gap-6 items-start">
-          <div className="flex-1">
-            <AptosPortfolio />
-          </div>
-          <div className="flex-shrink-0">
-            <TransferSection aptosBalance={aptosAptBalance} tasmilBalance={tasmilAptBalance} />
-          </div>
-          <div className="flex-1">
-            <TasmilPortfolio />
-          </div>
-        </div>
-
-        {/* Mobile/Tablet Layout */}
-        <div className="lg:hidden space-y-6">
-          <AptosPortfolio />
-          <div className="flex justify-center">
-            <TransferSection aptosBalance={aptosAptBalance} tasmilBalance={tasmilAptBalance} />
-          </div>
-          <TasmilPortfolio />
-        </div>
+    <div className="w-full min-h-screen max-w-7xl mx-auto space-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <PortfolioStatsCard
+          stats={portfolioStats}
+          riskProfile={riskProfile}
+          fetchPortfolioData={fetchPortfolioData}
+          isLoading={isLoading}
+        />
+        <ChartOverview tokens={tokens} />
       </div>
+
+      <TokenBreakdown tokens={tokens} />
     </div>
   );
 };

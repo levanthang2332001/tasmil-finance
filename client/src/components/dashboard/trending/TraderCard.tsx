@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Trader } from "@/data/dashboardMockData";
-import { formatCurrency, formatPercentage } from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import { truncateAddress } from "@aptos-labs/ts-sdk";
 import { motion } from "framer-motion";
 
@@ -117,8 +117,7 @@ const TraderCard: React.FC<TraderCardProps> = ({ trader }) => {
         <div>
           <div className="text-gray-400 text-xs font-handwriting">Win rate</div>
           <div className="text-lg font-bold text-white flex items-center">
-            {formatPercentage(trader.winRate)}
-            {/* Simple geometry indicator */}
+            {trader.winRate} %{/* Simple geometry indicator */}
             <div className="ml-1 h-3 w-[30px] bg-gray-800 rounded-full overflow-hidden">
               <div
                 className={`h-full ${

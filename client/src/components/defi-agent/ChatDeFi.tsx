@@ -14,8 +14,6 @@ const ChatDeFi = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { account } = useWallet();
 
-  console.log("messages: ", messages);
-
   const handleSendMessage = async (content: string) => {
     // Add user message
     const userMessage: ChatMessage = {
@@ -26,9 +24,19 @@ const ChatDeFi = () => {
     };
     setMessages((prev) => [...prev, userMessage]);
 
-    // Send message to API
-    setIsLoading(true);
+    if (!account) {
+      const response: ChatMessage = {
+        id: Date.now().toString(),
+        message: "Please connect your wallet to use this feature.",
+        timestamp: new Date(),
+        actionType: ACTION_TYPE.UNKNOWN,
+      };
+      setMessages((prev) => [...prev, response]);
+      return;
+    }
+
     try {
+      setIsLoading(true);
       const userAddress = String(account?.address) || "";
       const response = await ChatService.sendMessage(userAddress, content);
 

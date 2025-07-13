@@ -12,21 +12,11 @@ export function formatCurrency(amount: number | string) {
   }).format(Number(amount));
 }
 
-export function formatAmount(amount: number | string) {
-  const num = Number(amount);
-  if (num < 0.01) {
-    return num.toString(); // Show full precision for small numbers
-  }
-  return num.toFixed(2);
-}
-
-export function formatPercentage(value: number): string {
-  return `${value}%`;
-}
-
 export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export const formatError = (error: unknown = 'Sorry, there was an error processing your message. Please try again.') => {
+export const formatError = (
+  error: unknown = "Sorry, there was an error processing your message. Please try again."
+) => {
   if (error instanceof Error) {
     return error.message;
   }
@@ -34,5 +24,5 @@ export const formatError = (error: unknown = 'Sorry, there was an error processi
 };
 
 export const isAptosLink = (href: string) => {
-  return href.startsWith("https://aptos")
+  return href.startsWith("https://aptos");
 };
