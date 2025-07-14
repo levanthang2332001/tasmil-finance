@@ -2,6 +2,7 @@ export enum ACTION_TYPE {
   USER = "user",
   UNKNOWN = "unknown",
   SWAP = "swap",
+  PRE_SWAP = "pre_swap",
   LIQUIDITY = "liquidity",
   STAKING = "staking",
   UNSTAKING = "unstaking",
@@ -13,14 +14,6 @@ export enum ACTION_TYPE {
   PLACE_LIMIT_ORDER = "place_limit_order",
   PLACE_MARKET_ORDER = "place_market_order",
   REMOVE_LIQUIDITY = "remove_liquidity",
-}
-
-export interface ChatMessage {
-  id: string;
-  timestamp: Date;
-  message: string;
-  actionType: ACTION_TYPE;
-  data?: { [key: string]: string | boolean | number };
 }
 
 export interface ChatResponse {
@@ -35,4 +28,8 @@ export interface ChatResponse {
     missingFields?: string[];
     params?: { [key: string]: string };
   };
+}
+
+export interface ChatMessage extends ChatResponse {
+  actionType: ACTION_TYPE;
 }

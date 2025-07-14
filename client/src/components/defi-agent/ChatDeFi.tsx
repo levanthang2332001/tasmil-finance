@@ -3,15 +3,16 @@
 
 import { ChatContainer } from "@/components/chat/ChatContainer";
 import { SUGGESTION_DEFI_AGENT } from "@/constants/suggestion";
+import { formatError } from "@/lib/utils";
 import { ChatService } from "@/services/chat.service";
 import { ACTION_TYPE, ChatMessage } from "@/types/chat";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { useState } from "react";
 
 const ChatDeFi = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log("messages: ", messages);
+  const { account } = useWallet();
 
   const handleSendMessage = async (content: string) => {
     // Add user message
@@ -23,33 +24,41 @@ const ChatDeFi = () => {
     };
     setMessages((prev) => [...prev, userMessage]);
 
-    // Send message to API
-    setIsLoading(true);
+    if (!account) {
+      const response: ChatMessage = {
+        id: Date.now().toString(),
+        message: "Please connect your wallet to use this feature.",
+        timestamp: new Date(),
+        actionType: ACTION_TYPE.UNKNOWN,
+      };
+      setMessages((prev) => [...prev, response]);
+      return;
+    }
+
     try {
-      const userAddress = "0x096bb31c6b9e3e7cac6857fd2bae9dd2a79c0e74a075193504895606765c9fd8";
+      setIsLoading(true);
+      const userAddress = String(account?.address) || "";
       const response = await ChatService.sendMessage(userAddress, content);
 
       const botMessage: ChatMessage = {
+        ...response,
         id: (Date.now() + 1).toString(),
         timestamp: new Date(),
         actionType:
           (response.data?.action as ACTION_TYPE) ||
           (response.intent?.action as ACTION_TYPE) ||
           ACTION_TYPE.UNKNOWN,
-        message: response.message,
       };
-
-      console.log("response: ", response);
 
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
-      const errorMessage: ChatMessage = {
+      const response: ChatMessage = {
         id: Date.now().toString(),
+        message: formatError(error),
         timestamp: new Date(),
-        message: "Sorry, there was an error processing your message.",
         actionType: ACTION_TYPE.UNKNOWN,
       };
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, response]);
     } finally {
       setIsLoading(false);
     }

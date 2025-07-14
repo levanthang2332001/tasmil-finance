@@ -8,12 +8,10 @@ import { Toaster } from "sonner";
 export function AppProvider({ children }: PropsWithChildren) {
   return (
     <ReactQueryClientProvider>
-      {/* <RouteGuard>   */}
       <WalletProvider>
         {children}
         <Toaster richColors position="top-right" />
       </WalletProvider>
-      {/* </RouteGuard> */}
     </ReactQueryClientProvider>
   );
 }

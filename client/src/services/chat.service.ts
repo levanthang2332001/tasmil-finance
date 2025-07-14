@@ -18,6 +18,10 @@ export class ChatService {
   }
 
   static async sendMessage(userAddress: string, content: string): Promise<ChatResponse> {
+    if (!userAddress) {
+      throw new Error("User address is required");
+    }
+
     return this.request<ChatResponse>("/api/chat/messages", {
       method: "POST",
       body: JSON.stringify({ userAddress, content }),

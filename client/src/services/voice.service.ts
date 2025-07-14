@@ -12,6 +12,10 @@ export class VoiceService {
   }
 
   static async transcribeAudio(formData: FormData): Promise<{ transcript: string }> {
+    if (!formData.get("file")) {
+      throw new Error("Missing required fields");
+    }
+
     return this.request<{ transcript: string }>("/api/chat/voice", {
       method: "POST",
       body: formData,

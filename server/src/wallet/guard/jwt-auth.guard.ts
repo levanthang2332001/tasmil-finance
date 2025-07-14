@@ -8,8 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
 interface IJwtPayload {
-  sub: string;
-  username: string;
+  walletAddress: string;
 }
 
 @Injectable()
@@ -18,23 +17,29 @@ export class JwtAuthGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>();
-    const token = this.extractTokenFromHeader(request);
+    const token = this.extractTokenFromCookie(request);
 
     if (!token) {
-      throw new UnauthorizedException('Access token required');
+      throw new UnauthorizedException(
+        'Authentication required. Please sign in with your Tasmil account.',
+      );
     }
 
     try {
       const payload = this.jwtService.verify<IJwtPayload>(token);
+
+      if (!payload?.walletAddress) {
+        throw new UnauthorizedException('Invalid token format');
+      }
+
       request.user = payload;
-    } catch {
-      throw new UnauthorizedException('Invalid token');
+      return true;
+    } catch (error) {
+      throw new UnauthorizedException('Token verification failed', error);
     }
-    return true;
   }
 
-  private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
+  private extractTokenFromCookie(request: Request): string | undefined {
+    return request.cookies?.['tasmil-token'] as string;
   }
 }

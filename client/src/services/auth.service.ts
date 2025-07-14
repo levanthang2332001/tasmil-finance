@@ -19,6 +19,10 @@ export class AuthService {
   }
 
   static async getNonce(address: string) {
+    if (!address) {
+      throw new Error("Address is required");
+    }
+
     return this.request(`/api/auth/get-nonce?address=${address}`);
   }
 
@@ -29,20 +33,29 @@ export class AuthService {
     message: string;
     nonce: string;
   }): Promise<{ success: boolean; message: string; token: string }> {
+    if (
+      !params.walletAddress ||
+      !params.publicKey ||
+      !params.signature ||
+      !params.message ||
+      !params.nonce
+    ) {
+      throw new Error("Missing required parameters");
+    }
+
+    if (!params.message.includes(params.nonce)) {
+      throw new Error("Message does not contain nonce");
+    }
+
     return this.request("/api/auth/verify-signature", {
       method: "POST",
       body: JSON.stringify(params),
     });
   }
 
-  static async checkUser(address: string) {
-    return this.request(`/api/auth/check-user?address=${address}`);
-  }
-
-  static async generateTasmilWallet(address: string) {
-    return this.request("/api/auth/generate-tasmil-wallet", {
+  static async logout() {
+    return this.request("/api/auth/logout", {
       method: "POST",
-      body: JSON.stringify({ address }),
     });
   }
 }

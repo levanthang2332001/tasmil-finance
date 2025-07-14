@@ -25,7 +25,6 @@ export async function stakeTokensWithAmnis(
       throw new Error('Failed to stake tokens');
     }
 
-    console.log(response.hash);
     return response.hash;
   } catch (error) {
     console.error(error);

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { SDK } from '@pontem/liquidswap-sdk';
 import { LiquidSwapRequest } from './liquid.entity';
 import { TokenMapping } from './token-mapping';
@@ -19,7 +18,7 @@ function convertValueToDecimal(value: number, decimals: number): number {
 }
 
 function convertDecimalToValue(value: number, decimals: number): number {
-  return Math.floor(value / Math.pow(10, decimals));
+  return value / Math.pow(10, decimals);
 }
 
 function getTokenInfo(token: string): TokenInfo {
@@ -108,7 +107,6 @@ export async function swapTokensWithLiquidswap(
 ): Promise<SwapTokensWithLiquidswapResponse> {
   try {
     const toAmount = await calculateLiquidswapRate(quote);
-    console.log('>>> toAmount: ', toAmount);
 
     // Get token info
     const fromTokenInfo = getTokenInfo(quote.fromToken);
