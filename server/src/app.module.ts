@@ -9,6 +9,7 @@ import { CommunityModule } from './community/community.module';
 import { RedisModule } from './redis/redis.module';
 import { AccountsModule } from './wallet/accounts.module';
 import { AuthModule } from './wallet/guard/auth.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthModule } from './wallet/guard/auth.module';
     AccountsModule,
     AuthModule,
     CommunityModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

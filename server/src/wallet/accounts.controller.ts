@@ -30,7 +30,7 @@ export class AccountsController {
           message: 'User account not found',
         };
       }
-      
+
       const data = this.accountsService.getAccountByPrivateKey(account);
 
       return {
@@ -55,7 +55,7 @@ export class AccountsController {
       const account = await this.accountsService.getAccount(address);
       return {
         success: true,
-        data: account as { tasmilAddress: string; id: string },
+        data: account as { tasmilAddress: string; id: string; privateKey: string },
         message: 'Tasmil wallet generated successfully',
       };
     } catch (error) {
