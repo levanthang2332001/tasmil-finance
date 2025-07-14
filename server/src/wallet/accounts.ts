@@ -13,6 +13,7 @@ dotenv.config();
 interface IAccountResult {
   id: string;
   tasmilAddress: string;
+  privateKey: string;
 }
 
 export class Accounts {
@@ -86,7 +87,7 @@ export class Accounts {
       password: this.password,
     });
 
-    const formattedEnscypt = JSON.stringify({
+    const formattedEncrypted = JSON.stringify({
       cipherText: encrypted.cipherText,
       salt: encrypted.salt,
       iv: encrypted.iv,
@@ -94,12 +95,13 @@ export class Accounts {
 
     const insertVault = await vault.insertVault({
       secret_name: address,
-      secret_value: formattedEnscypt,
+      secret_value: formattedEncrypted,
     });
 
     return {
-      tasmilAddress: taslmil_account.accountAddress,
       id: insertVault?.id || '',
+      tasmilAddress: taslmil_account.accountAddress,
+      privateKey: formattedEncrypted,
     };
   }
 
