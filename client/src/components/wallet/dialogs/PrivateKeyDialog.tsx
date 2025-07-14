@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { Decrypt } from "@/utils/descript";
 
 interface PrivateKeyDialogProps {
   isOpen: boolean;
@@ -18,7 +19,11 @@ interface PrivateKeyDialogProps {
   privateKey: string | null;
 }
 
-export function PrivateKeyDialog({ isOpen, onClose, privateKey }: PrivateKeyDialogProps) {
+export function PrivateKeyDialog({
+  isOpen,
+  onClose,
+  privateKey,
+}: PrivateKeyDialogProps) {
   const [hasCopied, setHasCopied] = useState(false);
 
   const handleCopy = useCallback(async () => {
@@ -35,6 +40,20 @@ export function PrivateKeyDialog({ isOpen, onClose, privateKey }: PrivateKeyDial
 
   if (!privateKey) return null;
 
+  const password = process.env.NEXT_PUBLIC_PASSWORD_ENCRYPT;
+  const parsedPrivateKey = JSON.parse(privateKey);
+
+  if (!password) {
+    throw new Error("Password is not set");
+  }
+  const decryptedPrivateKey = Decrypt({
+    cipherText: parsedPrivateKey.cipherText,
+    password: password,
+    saltB64: parsedPrivateKey.salt,
+    ivB64: parsedPrivateKey.iv,
+  });
+
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px] bg-card border-border">
@@ -46,7 +65,7 @@ export function PrivateKeyDialog({ isOpen, onClose, privateKey }: PrivateKeyDial
         </DialogHeader>
         <div className="my-4">
           <div className="relative p-4 pr-8 bg-background rounded-md border border-border font-mono text-sm break-all">
-            {privateKey}
+            {decryptedPrivateKey.prKey}
             <Button
               variant="ghost"
               size="icon"
@@ -63,8 +82,8 @@ export function PrivateKeyDialog({ isOpen, onClose, privateKey }: PrivateKeyDial
           </div>
         </div>
         <div className="p-3 bg-yellow-900/20 text-yellow-400/80 rounded-md text-xs">
-          <strong>Note:</strong> Please fund your wallet with any amount of token to activate in
-          Aptos network.
+          <strong>Note:</strong> Please fund your wallet with any amount of
+          token to activate in Aptos network.
         </div>
       </DialogContent>
     </Dialog>
