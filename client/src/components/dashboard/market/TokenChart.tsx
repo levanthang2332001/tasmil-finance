@@ -70,7 +70,7 @@ export function TokenChart({
   };
 
   return (
-    <Card className="relative overflow-hidden bg-gradient-to-br from-slate-900/95 to-slate-800/95 border-slate-700/50 backdrop-blur-sm">
+    <Card className="relative overflow-hidden bg-gray-950 border-slate-700/50 backdrop-blur-sm">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(6,182,212,0.1),transparent)] opacity-50" />
 
@@ -101,7 +101,7 @@ export function TokenChart({
                 key={range}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                   timeRange === range
-                    ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/25"
+                    ? "bg-primary text-white shadow-lg shadow-primary/25"
                     : "text-slate-400 hover:text-white hover:bg-slate-700/50"
                 }`}
                 onClick={() => onTimeRangeChange(range)}

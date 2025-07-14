@@ -14,6 +14,7 @@ export default function AdminPanelLayout({ children }: { children: React.ReactNo
   const { getOpenState, settings } = sidebar;
 
   const isBlur =
+    pathname.includes(PATHS.DASHBOARD) ||
     pathname.includes(PATHS.DEFI_AGENT) ||
     pathname.includes(PATHS.PORTFOLIO) ||
     pathname.includes(PATHS.COMMUNITY);

@@ -15,34 +15,15 @@ export const metadata: Metadata = {
   title: "Tasmil Finance | AI-Powered DeFi Trading, Swaps & AI Chatbot",
   description:
     "Trade smarter with Tasmil Finance: AI-powered DeFi swaps, liquidity management, and real-time market insights. Secure, decentralized, and user-friendly.",
-  icons: { icon: "/favicon.ico" },
+  icons: {
+    icon: {
+      url: "/images/logo.png",
+      type: "image/png",
+    },
+  },
   keywords:
     "DeFi, AI trading, crypto swaps, liquidity, blockchain, decentralized finance, trading bot, artificial intelligence, Aptos, wallet connect, DEX, chatbot",
   authors: [{ name: "Tasmil Finance Team" }],
-  openGraph: {
-    title: "Tasmil Finance | AI-Powered DeFi Trading, Swaps & AI Chatbot",
-    description:
-      "Trade smarter with Tasmil Finance: AI-powered DeFi swaps, liquidity management, and real-time market insights. Secure, decentralized, and user-friendly.",
-    type: "website",
-    url: "https://tasmil.finance",
-    images: [
-      {
-        url: "/og-image.webp",
-        width: 1200,
-        height: 630,
-        alt: "Tasmil Finance AI DeFi Platform",
-        type: "image/webp",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Tasmil Finance | AI-Powered DeFi Trading, Swaps & AI Chatbot",
-    description:
-      "Trade smarter with Tasmil Finance: AI-powered DeFi swaps, liquidity management, and real-time market insights. Secure, decentralized, and user-friendly.",
-    images: ["/og-image.webp"],
-    creator: "@TasmilFinance",
-  },
 };
 
 export default function RootLayout({

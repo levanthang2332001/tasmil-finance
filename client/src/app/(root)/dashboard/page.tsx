@@ -1,12 +1,12 @@
 "use client";
 
+import { ContentLayout } from "@/components/admin-panel/content-layout";
 import { MarketOverview } from "@/components/dashboard/market/MarketOverview";
 
 export default function DashboardPage() {
   return (
-    <div className="container py-6">
-      {/* <h1 className="text-2xl font-bold mb-6">Market Overview</h1> */}
+    <ContentLayout title={`📈 Market Overview`} className="overflow-hidden px-0">
       <MarketOverview />
-    </div>
+    </ContentLayout>
   );
 }

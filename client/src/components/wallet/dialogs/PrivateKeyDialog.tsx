@@ -26,17 +26,17 @@ export function PrivateKeyDialog({
 }: PrivateKeyDialogProps) {
   const [hasCopied, setHasCopied] = useState(false);
 
-  const handleCopy = useCallback(async () => {
-    if (!privateKey) return;
+  const handleCopy = useCallback(async (key: string) => {
+    if (!key) return;
     try {
-      await navigator.clipboard.writeText(privateKey);
+      await navigator.clipboard.writeText(key);
       setHasCopied(true);
       toast.success("Private key copied to clipboard.");
       setTimeout(() => setHasCopied(false), 1200);
     } catch {
       // Optionally handle error here
     }
-  }, [privateKey, toast]);
+  }, [toast]);
 
   if (!privateKey) return null;
 
@@ -70,7 +70,7 @@ export function PrivateKeyDialog({
               variant="ghost"
               size="icon"
               className="absolute top-2 right-2 h-7 w-7"
-              onClick={handleCopy}
+              onClick={() => handleCopy(decryptedPrivateKey.prKey)}
               aria-label={hasCopied ? "Copied" : "Copy private key"}
             >
               {hasCopied ? (

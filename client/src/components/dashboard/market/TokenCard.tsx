@@ -18,14 +18,7 @@ interface PriceHistory {
   price: number;
 }
 
-export function TokenCard({
-  symbol,
-  name,
-  price,
-  change,
-  isSelected,
-  onClick,
-}: TokenCardProps) {
+export function TokenCard({ symbol, name, price, change, isSelected, onClick }: TokenCardProps) {
   const isPositive = change >= 0;
   const [historicalData, setHistoricalData] = useState<PriceHistory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -82,18 +75,12 @@ export function TokenCard({
 
   return (
     <Card
-      className={`relative overflow-hidden bg-gradient-to-br from-slate-900/90 to-slate-800/90 border-slate-700/50 hover:border-slate-600/50 transition-all duration-300 cursor-pointer group ${
-        isSelected
-          ? "ring-2 ring-cyan-500/50 border-cyan-500/50 bg-gradient-to-br from-cyan-950/20 to-slate-900/90"
-          : ""
+      className={`relative bg-gray-950 overflow-hidden border-primary/20 hover:border-primary/40 transition-all duration-300 cursor-pointer group ${
+        isSelected ? "ring-2 ring-primary/30 border-primary/30" : ""
       }`}
       onClick={onClick}
     >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(6,182,212,0.1),transparent)] opacity-60" />
-
       <div className="relative p-5">
-        {/* Header */}
         <div className="flex justify-between items-start mb-3">
           <div className="space-y-1">
             <h3 className="text-white font-semibold text-lg">{name}</h3>
@@ -112,16 +99,11 @@ export function TokenCard({
 
         {/* Price */}
         <div className="mb-4">
-          <div className="text-3xl font-bold text-white mb-1">
-            ${formatNumber(price)}
-          </div>
+          <div className="text-3xl font-bold text-white mb-1">${formatNumber(price)}</div>
           <div
-            className={`text-sm font-medium ${
-              isPositive ? "text-emerald-400" : "text-red-400"
-            }`}
+            className={`text-sm font-medium ${isPositive ? "text-emerald-400" : "text-red-400"}`}
           >
-            {isPositive ? "+" : "-"}$
-            {formatNumber(Math.abs((change * price) / 100))}
+            {isPositive ? "+" : "-"}${formatNumber(Math.abs((change * price) / 100))}
           </div>
         </div>
 
