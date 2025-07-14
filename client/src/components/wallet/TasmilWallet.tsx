@@ -1,81 +1,119 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { AccountService } from "@/services/account.service";
+import { useWalletStore } from "@/store/useWalletStore";
 import { truncateAddress } from "@aptos-labs/ts-sdk";
-import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { Button } from "../ui/button";
-import { ButtonEllipsis } from "./menu/ButtonEllipsis";
-import { PrivateKeyDialog } from "./dialogs/PrivateKeyDialog";
+import { Loader2 } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-interface InternalWallet {
-  address: string;
+import { Button } from "../ui/button";
+import { PrivateKeyDialog } from "./dialogs/PrivateKeyDialog";
+import { ButtonEllipsis } from "./menu/ButtonEllipsis";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+
+// TODO: Resolve private key issue
+
+interface UserResponse {
+  success: boolean;
+  message?: string;
+  data?: {
+    id: string;
+    tasmilAddress: string;
+  };
 }
-interface CreateInternalWalletResponse extends InternalWallet {
-  privateKey: string;
+
+interface TasmilWalletResponse {
+  success: boolean;
+  message?: string;
+  data?: {
+    id: string;
+    tasmilAddress: string;
+    privateKey: string;
+  };
 }
 
 function TasmilWallet() {
-  const { account } = useWallet();
-  const [internalWallet, setInternalWallet] = useState<InternalWallet | null>(null);
+  const { account, tasmilAddress, setTasmilAddress, signing } = useWalletStore();
+  const { account: connectedWallet } = useWallet();
   const [isLoading, setIsLoading] = useState(false);
   const [privateKey, setPrivateKey] = useState<string | null>(null);
-  const [isPKDialogOpen, setIsPKDialogOpen] = useState(false);
+  const [isPKDialogOpen, setIsPKDialogOpen] = useState<boolean>(false);
 
-  // Simulate wallet existence for demo
-  const MOCK_WALLET_EXISTS = false;
+  const fetchInternalWallet = useCallback(async () => {
+    if (!account || !connectedWallet || signing) return;
 
-  const fetchInternalWallet = useCallback(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setInternalWallet(
-        MOCK_WALLET_EXISTS
-          ? { address: "0x8e78f6c5b96d4e12c1b9a9f4c1e7f0c13c12" }
-          : null
-      );
+    try {
+      setIsLoading(true);
+      const user = (await AccountService.checkUser(account)) as UserResponse;
+
+      if (user.success && user.data) {
+        const address = user.data.tasmilAddress;
+        setTasmilAddress(address);
+      } else {
+        setTasmilAddress(null);
+      }
+    } catch (error) {
+      console.error("Error checking user:", error);
+      toast.error("Failed to check wallet status");
+      setTasmilAddress(null);
+    } finally {
       setIsLoading(false);
-    }, 1000);
-  }, []);
+    }
+  }, [account, signing]);
 
-  const createInternalWallet = useCallback(() => {
-    if (!account?.address) return;
+  const createInternalWallet = useCallback(async () => {
+    if (!account || !connectedWallet || signing) return;
+
     setIsLoading(true);
-    setTimeout(() => {
-      const mockResponse: CreateInternalWalletResponse = {
-        address: "0x8e78f6c5b96d4e12c1b9a9f4c1e7f0c13c12",
-        privateKey: "0xb76b9f932065a3381452fa0281021315b8dc08ac6689a3074fa8354053ccbaeb",
-      };
-      setInternalWallet({ address: mockResponse.address });
-      setPrivateKey(mockResponse.privateKey);
-      setIsPKDialogOpen(true);
+    try {
+      const response = (await AccountService.generateTasmilWallet(account)) as TasmilWalletResponse;
+
+      if (response.success && response.data) {
+        setTasmilAddress(response?.data?.tasmilAddress || "");
+        setPrivateKey(response?.data?.privateKey || "");
+        setIsPKDialogOpen(true);
+        toast.success("Tasmil Wallet created successfully!");
+      } else {
+        toast.error(response.message || "Failed to create Tasmil Wallet");
+      }
+    } catch (error) {
+      console.error("Error creating tasmil wallet:", error);
+      toast.error("Failed to create Tasmil Wallet");
+    } finally {
       setIsLoading(false);
-      toast.success("Tasmil Wallet created successfully!");
-    }, 2000);
-  }, [account?.address]);
+    }
+  }, [account, connectedWallet, signing]);
 
   useEffect(() => {
-    if (account?.address) fetchInternalWallet();
-  }, [account?.address, fetchInternalWallet]);
+    if (account && connectedWallet && !signing) {
+      fetchInternalWallet();
+    } else {
+      setTasmilAddress(null);
+    }
+  }, [account, connectedWallet, fetchInternalWallet]);
 
-  if (!account?.address) return null;
+  if (!account || !connectedWallet) return null;
 
-  if (isLoading && !internalWallet)
+  if (isLoading && !tasmilAddress) {
     return (
-      <div className="w-full rounded-lg p-3 bg-black/20">
-        <p className="text-center text-sm text-white/70 animate-pulse">Checking wallet...</p>
+      <div className="w-full h-[140px] flex flex-col gap-2 items-center justify-center rounded-2xl p-3 mb-4 glass border border-white/5">
+        <Loader2 className="w-4 h-4 animate-spin" />
+        <p className="text-center text-sm text-white/70">Checking wallet...</p>
       </div>
     );
+  }
 
   return (
-    <>
-      {internalWallet ? (
+    <div className="w-full flex flex-col gap-2 items-center rounded-2xl p-3 glass border border-white/5">
+      {tasmilAddress ? (
         <div className="w-full rounded-lg p-3 bg-black/20">
           <div>
             <div className="flex justify-between items-center">
               <p className="text-xs text-white/60">Tasmil Wallet</p>
-              <ButtonEllipsis address={internalWallet.address} />
+              <ButtonEllipsis address={tasmilAddress || ""} />
             </div>
             <p className="text-gradient text-left font-mono font-semibold mt-1">
-              {truncateAddress(internalWallet.address)}
+              {truncateAddress(tasmilAddress || "")}
             </p>
           </div>
         </div>
@@ -101,7 +139,7 @@ function TasmilWallet() {
         onClose={() => setIsPKDialogOpen(false)}
         privateKey={privateKey}
       />
-    </>
+    </div>
   );
 }
 

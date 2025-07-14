@@ -36,16 +36,11 @@ export function BotError({ message, onTryAgain, isLoading }: BotErrorProps) {
       animate={{ opacity: 1, y: 0 }}
       className={cn("flex mb-4 animate-in")}
     >
-      <div className="flex items-end gap-2">
+      <div className="flex items-start gap-2">
         <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
           <Bot className="w-5 h-5 text-secondary-foreground" />
         </div>
-        <div
-          className={cn(
-            "max-w-[80%]",
-            isLoading && "bg-opacity-50",
-          )}
-        >
+        <div className={cn("max-w-[80%]", isLoading && "bg-opacity-50")}>
           <motion.div
             layout
             className={cn(

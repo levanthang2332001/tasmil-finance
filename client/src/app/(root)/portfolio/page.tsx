@@ -1,5 +1,5 @@
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import Portfolio from "@/components/porfolio";
+import Portfolio from "@/components/portfolio";
 
 const PortfolioPage = () => {
   return (

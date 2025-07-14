@@ -18,7 +18,7 @@ export const BotChat = ({ message, isLoading }: BotChatProps) => {
       animate={{ opacity: 1, y: 0 }}
       className="flex mb-4 animate-in"
     >
-      <div className="flex items-end gap-2">
+      <div className="flex items-start gap-2">
         <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
           <Bot className="w-5 h-5 text-secondary-foreground" />
         </div>

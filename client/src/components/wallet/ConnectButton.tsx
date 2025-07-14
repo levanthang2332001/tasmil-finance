@@ -7,13 +7,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 import { AuthService } from "@/services/auth.service";
 import { useWalletStore } from "@/store/useWalletStore";
 import { truncateAddress, useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Loader2, LogOut, User, Wallet } from "lucide-react";
 import { useCallback, useEffect } from "react";
-import ButtonCopy from "./menu/ButtonCopy";
 import { toast } from "sonner";
+import ButtonCopy from "./menu/ButtonCopy";
 
 declare global {
   interface Window {
@@ -23,12 +24,15 @@ declare global {
 
 interface ConnectButtonProps {
   label?: string;
+  className?: string;
 }
 
 const AUTH_CANCELLED_KEY = "wallet_auth_cancelled";
-const WALLET_NAME_KEY = "walletName";
 
-export default function ConnectButton({ label = "Connect Aptos Wallet" }: ConnectButtonProps) {
+export default function ConnectButton({
+  label = "Connect Aptos Wallet",
+  className,
+}: ConnectButtonProps) {
   const {
     account,
     connected: walletConnected,
@@ -73,24 +77,23 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
         if (!nonce) throw new Error("Failed to get nonce");
 
         // Step 4: Sign message
-        const signature = (await signMessage({ message, nonce })).signature;
+        const signature = await signMessage({ message, nonce });
         if (!signature) throw new Error("User rejected signature");
 
         // Step 5: Verify signature
         const response = await AuthService.verifySignature({
           walletAddress: walletAccount.address,
           publicKey: walletAccount.publicKey,
-          signature: (signature as any).signature || String(signature),
-          message,
+          signature: (signature.signature as any).signature || String(signature.signature),
+          message: signature.fullMessage,
           nonce,
         });
 
         if (!response.success) throw new Error("Signature verification failed");
 
         // Success
-        localStorage.setItem(WALLET_NAME_KEY, walletName);
         sessionStorage.removeItem(AUTH_CANCELLED_KEY);
-        setWalletState({ connected: true, account: walletAccount.address });
+        setWalletState({ connected: true, account: walletAccount.address, tasmilAddress: null });
         toast.success("Wallet Connected", { description: response?.message });
         needsDisconnect = false;
       } catch (error: any) {
@@ -113,7 +116,7 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
           }
         }
         resetWalletState();
-        localStorage.removeItem(WALLET_NAME_KEY);
+        disconnect();
       } finally {
         setSigning(false);
       }
@@ -121,30 +124,17 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
     [connect, disconnect, setWalletState, setSigning, signMessage, resetWalletState]
   );
 
-  // Auto-connect if wallet was previously connected
-  useEffect(() => {
-    const savedWallet = localStorage.getItem(WALLET_NAME_KEY);
-    const wasCancelled = sessionStorage.getItem(AUTH_CANCELLED_KEY);
-
-    if (savedWallet && !walletConnected && !signing && !wasCancelled && wallets.length > 0) {
-      const wallet = wallets.find((w) => w.name === savedWallet);
-      if (wallet) handleConnect(savedWallet);
-    }
-  }, [wallets, walletConnected, signing, handleConnect]);
-
-  // Handle disconnect
   const handleDisconnect = useCallback(async () => {
     try {
       disconnect();
       resetWalletState();
+      await AuthService.logout();
       toast.success("Wallet Disconnected");
-      localStorage.removeItem(WALLET_NAME_KEY);
     } catch {
       toast.error("Failed to disconnect");
     }
   }, [disconnect, resetWalletState]);
 
-  // Handle connect button click
   const handleConnectClick = useCallback(async () => {
     sessionStorage.removeItem(AUTH_CANCELLED_KEY);
 
@@ -158,12 +148,21 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
     await handleConnect(wallets[0].name);
   }, [wallets, handleConnect]);
 
+  const renderTitle = (title: string) => label.trim().length > 0 && title;
+
+
+  useEffect(() => {
+    if (account) {
+      setWalletState({ connected: true, account: account.address.toString(), tasmilAddress: null });
+    }
+  }, [account, setWalletState]);
+
   // Render states
   if (walletConnected && !verified) {
     return (
-      <Button variant="galaxy" className="gap-2" disabled>
+      <Button variant="galaxy" className={cn("gap-2", className)} disabled>
         <Loader2 className="h-4 w-4 animate-spin" />
-        Verifying...
+        {renderTitle("Verifying...")}
       </Button>
     );
   }
@@ -172,7 +171,7 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="galaxy" className="gap-2">
+          <Button variant="galaxy" className={cn("gap-2", className)}>
             <Wallet className="h-4 w-4" />
             {account.ansName || truncateAddress(account.address?.toString()) || "Unknown"}
           </Button>
@@ -198,16 +197,21 @@ export default function ConnectButton({ label = "Connect Aptos Wallet" }: Connec
   }
 
   return (
-    <Button variant="galaxy" className="gap-2" onClick={handleConnectClick} disabled={signing}>
+    <Button
+      variant="galaxy"
+      className={cn("gap-2", className)}
+      onClick={handleConnectClick}
+      disabled={signing}
+    >
       {signing ? (
         <div className="flex items-center gap-2">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Connecting...
+          {renderTitle("Connecting...")}
         </div>
       ) : (
         <div className="flex items-center gap-2">
           <Wallet className="h-4 w-4" />
-          {label}
+          {renderTitle(label)}
         </div>
       )}
     </Button>

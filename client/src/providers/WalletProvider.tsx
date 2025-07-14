@@ -1,19 +1,24 @@
 "use client";
 
-import { AptosWalletAdapterProvider } from "@aptos-labs/wallet-adapter-react";
-import { PropsWithChildren } from "react";
+import { AptosWalletAdapterProvider, useWallet } from "@aptos-labs/wallet-adapter-react";
+import { PropsWithChildren, useEffect } from "react";
 import { Network } from "@aptos-labs/ts-sdk";
-// import { toast } from "sonner";
+import { useWalletStore } from "@/store/useWalletStore";
+import { AuthService } from "@/services/auth.service";
 
 export function WalletProvider({ children }: PropsWithChildren) {
+  const { connected , } = useWallet();
+  const { reset: resetWalletState } = useWalletStore();
+
+  useEffect(() => {
+    if (!connected) {
+      resetWalletState();
+      AuthService.logout();
+    }
+  }, [connected, resetWalletState]);
+
   return (
-    <AptosWalletAdapterProvider
-      autoConnect={true}
-      dappConfig={{ network: Network.TESTNET }}
-      // onError={(error: unknown) => {
-      //   toast.error((error as string) || "Unknown wallet error");
-      // }}
-    >
+    <AptosWalletAdapterProvider autoConnect={false} dappConfig={{ network: Network.TESTNET }}>
       {children}
     </AptosWalletAdapterProvider>
   );

@@ -1,40 +1,38 @@
+import { API_BASE_URL } from "@/constants/routes";
 import { NextRequest, NextResponse } from "next/server";
-import { AuthServiceApi } from "@/lib/server/authServiceApi";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { walletAddress, publicKey, signature, message, nonce } = body;
+    const { walletAddress, publicKey, signature, message } = body;
 
-    // Validate required fields
-    if (!walletAddress || !publicKey || !signature || !message) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-    }
-
-    // Verify the message contains the nonce
-    if (!message.includes(nonce)) {
-      return NextResponse.json({ error: "Message does not contain nonce" }, { status: 401 });
-    }
-
-    // For now, we'll just check that we have a signature
-    const isValid = signature;
-
-    if (!isValid) {
-      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
-    }
-
-    const response = await AuthServiceApi.verifySignature({
-      walletAddress,
-      publicKey,
-      signature,
-      message,
+    const response = await fetch(`${API_BASE_URL}/auth/verify-signature`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: request.headers.get("cookie") || "",
+      },
+      body: JSON.stringify({
+        walletAddress,
+        publicKey,
+        signature,
+        message,
+      }),
+      credentials: "include",
     });
 
-    if (!response.success) {
-      return NextResponse.json({ error: response.message }, { status: response.statusCode || 401 });
+    const data = await response.json();
+
+    // Lấy Set-Cookie từ backend
+    const setCookie = response.headers.get("set-cookie");
+    const nextResponse = NextResponse.json(data);
+
+    // Forward Set-Cookie về client
+    if (setCookie) {
+      nextResponse.headers.set("set-cookie", setCookie);
     }
 
-    return NextResponse.json(response);
+    return nextResponse;
   } catch (error) {
     console.error("Error verifying signature:", error);
     return NextResponse.json({ error: "Failed to verify signature" }, { status: 500 });

@@ -76,8 +76,6 @@ export class UnStakingAction extends AbstractBaseAction<StakingParams> {
         timestamp: new Date().toISOString(),
       };
 
-      console.log('result: ', result);
-
       return this.createSuccessResult({
         message: `<h2>Unstaking Successful! 🎉</h2>
           <div>

@@ -6,6 +6,7 @@ import rehypeRaw from "rehype-raw";
 import { truncateAddress } from "@aptos-labs/ts-sdk";
 import { ExternalLink } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { isAptosLink } from "@/lib/utils";
 
 interface MessageMarkdownProps {
   children: string;
@@ -79,9 +80,11 @@ export function MessageMarkdown({ children }: MessageMarkdownProps) {
                   <ExternalLink className="w-4 h-4" />
                 </a>
               </TooltipTrigger>
-              <TooltipContent>
-                <span>View on Aptos Explorer</span>
-              </TooltipContent>
+              {href && isAptosLink(href) && (
+                <TooltipContent>
+                  <span>View on Aptos Explorer</span>
+                </TooltipContent>
+              )}
             </Tooltip>
           ),
           table: ({ children }) => (

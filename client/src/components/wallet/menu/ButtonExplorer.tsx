@@ -22,7 +22,7 @@ function ButtonExplorer({ address }: ButtonExplorerProps) {
 
   return (
     <DropdownMenuItem onClick={handleViewExplorer}>
-      <ExternalLink className="w-4 h-4 mr-3 text-muted-foreground" />
+      <ExternalLink className="w-4 h-4 text-muted-foreground" />
       View Explorer
     </DropdownMenuItem>
   );

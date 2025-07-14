@@ -9,6 +9,7 @@ const nextConfig = {
       "api.dicebear.com",
       "pbs.twimg.com",
       "cdn.discordapp.com",
+      "assets.panora.exchange",
     ],
   },
   webpack: (config) => {

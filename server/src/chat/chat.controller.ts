@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/require-await */
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../wallet/guard/jwt-auth.guard';
 import { handleAction } from './actions';
 import { ChatApiDocs } from './docs/chat-api.docs';
 import { ChatRequestDto, ChatResponseDto } from './dto/chat.dto';
@@ -9,11 +10,8 @@ import { IntentService } from './services/intent.service';
 @Controller('chat')
 export class ChatController {
   private messageHistory: Map<string, MessageHistoryEntry[]> = new Map();
-  private readonly intentService: IntentService;
 
-  constructor() {
-    this.intentService = new IntentService();
-  }
+  constructor(private readonly intentService: IntentService) {}
 
   private getRecentMessages(user_address: string, limit: number = 3): string {
     const userMessages = this.messageHistory.get(user_address) || [];
@@ -46,6 +44,7 @@ export class ChatController {
   }
 
   @Post('message')
+  @UseGuards(JwtAuthGuard)
   @ChatApiDocs.sendMessage.operation
   @ChatApiDocs.sendMessage.body
   @ChatApiDocs.sendMessage.okResponse
@@ -54,6 +53,12 @@ export class ChatController {
   async sendMessage(
     @Body() chatMessage: ChatRequestDto,
   ): Promise<ChatResponseDto> {
+    if (!chatMessage.user_address) {
+      return {
+        message: 'Please connect your wallet to use this feature.',
+        intent: undefined,
+      };
+    }
     try {
       this.updateMessageHistory(chatMessage.user_address, chatMessage.content);
       const recentContext = this.getRecentMessages(chatMessage.user_address);

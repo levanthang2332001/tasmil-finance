@@ -28,7 +28,9 @@ const Footer = () => {
           </div>
         </motion.div>
       </div>
-      <SocialMedia />
+      <div className="mt-16">
+        <SocialMedia />
+      </div>
     </section>
   );
 };

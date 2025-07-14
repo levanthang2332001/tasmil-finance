@@ -90,6 +90,7 @@ export type ParamsType =
 
 export enum ActionType {
   SWAP = 'swap',
+  PRE_SWAP = 'pre_swap',
   LIQUIDITY = 'liquidity',
   STAKING = 'staking',
   UNSTAKING = 'unstaking',

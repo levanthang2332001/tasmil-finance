@@ -1,8 +1,8 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { SplineScene } from "@/components/ui/splite";
-import { Spotlight } from "@/components/ui/spotlight";
+import { SplineScene } from "@/components/animate-ui/splite";
+import { Spotlight } from "@/components/animate-ui/spotlight";
 import { PART } from "@/constants/part";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";

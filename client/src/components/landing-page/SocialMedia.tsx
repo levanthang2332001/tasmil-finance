@@ -1,4 +1,4 @@
-import { DiscordIcon, LinkedInIcon, TwitterIcon } from "../icon";
+import { DiscordIcon, LinkedInIcon, XIcon } from "../icon";
 
 interface SocialLink {
   href: string;
@@ -7,8 +7,8 @@ interface SocialLink {
 
 const socialLinks: SocialLink[] = [
   {
-    href: "https://twitter.com",
-    icon: <TwitterIcon className="w-6 h-6" />,
+    href: "https://x.com",
+    icon: <XIcon className="w-6 h-6" />,
   },
   {
     href: "https://discord.com",
@@ -22,7 +22,7 @@ const socialLinks: SocialLink[] = [
 
 export default function SocialMedia() {
   return (
-    <div className="mt-16 flex justify-center gap-6">
+    <div className="flex justify-center gap-6">
       {socialLinks.map(({ href, icon }) => (
         <a
           key={href}

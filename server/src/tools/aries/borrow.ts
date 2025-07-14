@@ -26,7 +26,6 @@ export async function borrowTokensWithAries(
       throw new Error('Failed to borrow tokens');
     }
 
-    console.log(response.hash);
     return response.hash;
   } catch (error) {
     console.error(error);

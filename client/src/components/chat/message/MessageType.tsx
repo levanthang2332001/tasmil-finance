@@ -2,14 +2,17 @@ import { ChatMessage, ACTION_TYPE } from "@/types/chat";
 import { BotChat } from "./BotChat";
 import BotError from "./BotError";
 import { UserChat } from "./UserChat";
+import BotPreSwap from "./BotPreSwap";
 interface MessageTypeProps {
   message: ChatMessage;
   isLoading?: boolean;
+  isLatestMessage?: boolean;
 }
 
-export function MessageType({ message, isLoading }: MessageTypeProps) {
+export function MessageType({ message, isLoading, isLatestMessage }: MessageTypeProps) {
   const messageComponents = {
     [ACTION_TYPE.USER]: <UserChat message={message} isLoading={isLoading} />,
+    [ACTION_TYPE.PRE_SWAP]: <BotPreSwap message={message} isLoading={isLoading} isLatestMessage={isLatestMessage} />,
     [ACTION_TYPE.SWAP]: <BotChat message={message} isLoading={isLoading} />,
     [ACTION_TYPE.LIQUIDITY]: <BotChat message={message} isLoading={isLoading} />,
     [ACTION_TYPE.STAKING]: <BotChat message={message} isLoading={isLoading} />,

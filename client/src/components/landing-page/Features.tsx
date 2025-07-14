@@ -1,6 +1,6 @@
 "use client";
 
-import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { GlowingEffect } from "@/components/animate-ui/glowing-effect";
 import { PART } from "@/constants/part";
 import { cn } from "@/lib/utils";
 import { motion, Variants } from "framer-motion";
@@ -121,9 +121,9 @@ export default function Features({ className }: FeaturesProps) {
         <GridItem
           area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]"
           icon={<Database className="h-4 w-4" />}
-          title="Liquidity Management"
+          title="Staking Tokens"
           image="/images/liquidity-management.png"
-          description="Manage your liquidity across multiple DEXs with ease"
+          description="Stake your tokens to earn rewards and support the network"
         />
         <GridItem
           area="md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]"
@@ -137,14 +137,14 @@ export default function Features({ className }: FeaturesProps) {
           icon={<BotMessageSquare className="h-4 w-4" />}
           title="AI Agents"
           image="/images/ai-agents.png"
-          description="Experience seamless token swaps, liquidity management, and real-time market insights with our AI-powered DeFi chatbot."
+          description="Experience seamless token swaps, staking tokens, and real-time market insights with our AI-powered DeFi chatbot."
         />
         <GridItem
           area="md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]"
           icon={<Landmark className="h-4 w-4" />}
-          title="Lending & Borrowing"
+          title="Community"
           image="/images/lending-borrowing.png"
-          description="Access a wide range of lending and borrowing options across multiple chains"
+          description="Join our community and stay updated with the latest news and events"
         />
       </ul>
     </div>

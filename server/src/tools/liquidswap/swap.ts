@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { SDK } from '@pontem/liquidswap-sdk';
 import { LiquidSwapRequest } from './liquid.entity';
 import { TokenMapping } from './token-mapping';
@@ -19,7 +18,7 @@ function convertValueToDecimal(value: number, decimals: number): number {
 }
 
 function convertDecimalToValue(value: number, decimals: number): number {
-  return Math.floor(value / Math.pow(10, decimals));
+  return value / Math.pow(10, decimals);
 }
 
 function getTokenInfo(token: string): TokenInfo {
@@ -57,7 +56,7 @@ async function getPoolExists(tokenA: string, tokenB: string): Promise<boolean> {
 
 export async function calculateLiquidswapRate(
   quote: LiquidSwapRequest,
-): Promise<string> {
+): Promise<number> {
   const { fromToken, toToken, amount, curveType, interactiveToken, version } =
     quote;
 
@@ -84,7 +83,12 @@ export async function calculateLiquidswapRate(
       version: version as 0 | 0.5,
     });
 
-    return output;
+    const toAmount = convertDecimalToValue(
+      Number(output),
+      getTokenInfo(toToken).decimals,
+    );
+
+    return toAmount;
   } catch (error) {
     console.error(error);
     throw error;
@@ -103,7 +107,6 @@ export async function swapTokensWithLiquidswap(
 ): Promise<SwapTokensWithLiquidswapResponse> {
   try {
     const toAmount = await calculateLiquidswapRate(quote);
-    console.log('>>> toAmount: ', toAmount);
 
     // Get token info
     const fromTokenInfo = getTokenInfo(quote.fromToken);
@@ -126,8 +129,8 @@ export async function swapTokensWithLiquidswap(
       fromTokenInfo.decimals,
     );
 
-    const toAmountDecimal = convertDecimalToValue(
-      Number(toAmount),
+    const toAmountDecimal = convertValueToDecimal(
+      toAmount,
       toTokenInfo.decimals,
     );
 
@@ -135,7 +138,7 @@ export async function swapTokensWithLiquidswap(
       fromToken: fromTokenInfo.moveAddress,
       toToken: toTokenInfo.moveAddress,
       fromAmount,
-      toAmount: Number(toAmount),
+      toAmount: toAmountDecimal,
       interactiveToken: quote.interactiveToken,
       slippage: 0.05,
       stableSwapType: 'high',

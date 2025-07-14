@@ -6,15 +6,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { getMenuList, MenuType } from "@/constants/menu-list";
 import { cn } from "@/lib/utils";
-import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { Ellipsis, LogOut } from "lucide-react";
+import { useWalletStore } from "@/store/useWalletStore";
+import { Ellipsis, Wallet } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import AptosWallet from "../wallet/AptosWallet";
 import ConnectButton from "../wallet/ConnectButton";
 import TasmilWallet from "../wallet/TasmilWallet";
-import { toast } from "sonner";
-import { useWalletStore } from "@/store/useWalletStore";
 
 interface MenuProps {
   isOpen?: boolean;
@@ -98,49 +95,13 @@ function MenuItem({
   );
 }
 
-function DisconnectWalletButton({
-  isOpen,
-  onDisconnect,
-}: {
-  isOpen?: boolean;
-  onDisconnect: () => void;
-}) {
-  return (
-    <TooltipProvider disableHoverableContent>
-      <Tooltip delayDuration={100}>
-        <TooltipTrigger asChild>
-          <Button onClick={onDisconnect} variant="outline" className="w-full justify-start h-10">
-            <span className={cn(isOpen ? "mr-4" : "")}>
-              <LogOut size={18} />
-            </span>
-            {isOpen && <p className="whitespace-nowrap opacity-100">Disconnect Wallet</p>}
-          </Button>
-        </TooltipTrigger>
-        {!isOpen && <TooltipContent side="right">Disconnect Wallet</TooltipContent>}
-      </Tooltip>
-    </TooltipProvider>
-  );
-}
-
 export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList();
-  const { disconnect } = useWallet();
-  const { connected: walletConnected, reset: resetWalletState } = useWalletStore();
+  const { connected: walletConnected } = useWalletStore();
 
   const CLASS_HEIGHT =
     "min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)]";
-
-  const handleDisconnect = async () => {
-    try {
-      await disconnect();
-      resetWalletState();
-      toast.success("Wallet Disconnected");
-    } catch (error) {
-      console.error("Failed to disconnect:", error);
-      toast.error("Failed to disconnect wallet");
-    }
-  };
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
@@ -154,16 +115,23 @@ export function Menu({ isOpen }: MenuProps) {
               ))}
             </li>
           ))}
-          <li className="w-full grow flex flex-col justify-end">
-            {!walletConnected && <ConnectButton label="Connect Aptos Wallet" />}
-            {isOpen && walletConnected && (
-              <div className="w-full flex flex-col gap-2 items-center rounded-2xl p-3 mb-4 glass border border-white/5">
-                <AptosWallet />
-                <TasmilWallet />
+          <li className="w-full grow flex flex-col justify-end gap-3">
+            {isOpen && walletConnected && <TasmilWallet />}
+            {walletConnected ? (
+              <div className="w-full overflow-hidden flex flex-col gap-2 items-center rounded-2xl p-3 glass border border-white/5">
+                {isOpen ? (
+                  <>
+                    <p className={cn("text-sm text-white/60", isOpen ? "" : "hidden")}>
+                      Aptos Wallet
+                    </p>
+                    <ConnectButton className="w-full" />
+                  </>
+                ) : (
+                  <Wallet className="h-4 w-4" />
+                )}
               </div>
-            )}
-            {walletConnected && (
-              <DisconnectWalletButton isOpen={isOpen} onDisconnect={handleDisconnect} />
+            ) : (
+              <ConnectButton label={isOpen ? "Connect Aptos Wallet" : ""} />
             )}
           </li>
         </ul>

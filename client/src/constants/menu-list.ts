@@ -1,14 +1,5 @@
-import {
-  Wallet,
-  Brain,
-  Landmark,
-  ChartNoAxesCombined,
-  Award,
-  HelpCircle,
-  Settings,
-  LucideIcon,
-} from "lucide-react";
 import { PATHS } from "@/constants/routes";
+import { Landmark, LucideIcon, PieChart, Users, Wallet } from "lucide-react";
 
 export type SubmenuType = {
   href: string;
@@ -39,42 +30,42 @@ export function getMenuList(): GroupType[] {
           label: "Dashboard",
           icon: Wallet,
         },
-        {
-          href: PATHS.AI_AGENT,
-          label: "Ai Agents",
-          icon: Brain,
-        },
+        // {
+        //   href: PATHS.AI_AGENT,
+        //   label: "Ai Agents",
+        //   icon: Brain,
+        // },
         {
           href: PATHS.DEFI_AGENT,
           label: "Defi Agent",
           icon: Landmark,
         },
         {
-          href: PATHS.TRENDING,
-          label: "Trending",
-          icon: ChartNoAxesCombined,
+          href: PATHS.COMMUNITY,
+          label: "Community",
+          icon: Users,
         },
         {
           href: PATHS.PORTFOLIO,
           label: "Portfolio",
-          icon: Award,
+          icon: PieChart,
         },
       ],
     },
-    {
-      groupLabel: "",
-      menus: [
-        {
-          href: PATHS.SETTINGS,
-          label: "Settings",
-          icon: Settings,
-        },
-        {
-          href: PATHS.HELP,
-          label: "Help & FAQ",
-          icon: HelpCircle,
-        },
-      ],
-    },
+    // {
+    //   groupLabel: "",
+    //   menus: [
+    //     {
+    //       href: PATHS.SETTINGS,
+    //       label: "Settings",
+    //       icon: Settings,
+    //     },
+    //     {
+    //       href: PATHS.HELP,
+    //       label: "Help & FAQ",
+    //       icon: HelpCircle,
+    //     },
+    //   ],
+    // },
   ];
 }

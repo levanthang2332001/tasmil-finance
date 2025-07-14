@@ -14,7 +14,7 @@ export const SUGGESTION_DEFI_AGENT = [
     icon: Wallet,
   },
   {
-    text: "Swap 0.02 ALT to APT",
+    text: "Swap 28 ALT to APT",
     icon: Wallet,
   },
   // {
