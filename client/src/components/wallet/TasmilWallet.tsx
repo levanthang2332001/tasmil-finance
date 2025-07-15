@@ -33,7 +33,8 @@ interface TasmilWalletResponse {
 }
 
 function TasmilWallet() {
-  const { account, tasmilAddress, setTasmilAddress, signing } = useWalletStore();
+  const { account, tasmilAddress, setTasmilAddress, signing } =
+    useWalletStore();
   const { account: connectedWallet } = useWallet();
   const [isLoading, setIsLoading] = useState(false);
   const [privateKey, setPrivateKey] = useState<string | null>(null);
@@ -66,7 +67,9 @@ function TasmilWallet() {
 
     setIsLoading(true);
     try {
-      const response = (await AccountService.generateTasmilWallet(account)) as TasmilWalletResponse;
+      const response = (await AccountService.generateTasmilWallet(
+        account,
+      )) as TasmilWalletResponse;
 
       if (response.success && response.data) {
         setTasmilAddress(response?.data?.tasmilAddress || "");
@@ -94,7 +97,7 @@ function TasmilWallet() {
 
   if (!account || !connectedWallet) return null;
 
-  if (isLoading && !tasmilAddress) {
+  if ((isLoading && !tasmilAddress) || signing) {
     return (
       <div className="w-full h-[140px] flex flex-col gap-2 items-center justify-center rounded-2xl p-3 mb-4 glass border border-white/5">
         <Loader2 className="w-4 h-4 animate-spin" />
