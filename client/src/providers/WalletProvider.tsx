@@ -1,24 +1,19 @@
 "use client";
 
-import { AptosWalletAdapterProvider, useWallet } from "@aptos-labs/wallet-adapter-react";
-import { PropsWithChildren, useEffect } from "react";
+import { AptosWalletAdapterProvider } from "@aptos-labs/wallet-adapter-react";
+import { PropsWithChildren } from "react";
 import { Network } from "@aptos-labs/ts-sdk";
-import { useWalletStore } from "@/store/useWalletStore";
-import { AuthService } from "@/services/auth.service";
+import { WalletConnectionHandler } from "./WalletConnectionHandler";
+
+export { WalletConnectionHandler };
 
 export function WalletProvider({ children }: PropsWithChildren) {
-  const { connected , } = useWallet();
-  const { reset: resetWalletState } = useWalletStore();
-
-  useEffect(() => {
-    if (!connected) {
-      resetWalletState();
-      AuthService.logout();
-    }
-  }, [connected, resetWalletState]);
-
   return (
-    <AptosWalletAdapterProvider autoConnect={false} dappConfig={{ network: Network.TESTNET }}>
+    <AptosWalletAdapterProvider
+      autoConnect={true}
+      dappConfig={{ network: Network.MAINNET }}
+    >
+      <WalletConnectionHandler />
       {children}
     </AptosWalletAdapterProvider>
   );

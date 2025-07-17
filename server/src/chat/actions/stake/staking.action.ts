@@ -85,7 +85,7 @@ export class StakingAction extends AbstractBaseAction<StakingParams> {
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';
-      return this.createErrorResult(`Failed to stake tokens: ${errorMessage}`);
+      return this.createErrorResult(errorMessage);
     }
   }
 
