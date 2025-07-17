@@ -37,8 +37,8 @@ const SuggestionGrid = ({ onSendMessage, className, suggestions }: SuggestionGri
                 "bg-gradient-to-br from-neutral-900/40 to-neutral-800/30",
                 "border border-neutral-700/50 backdrop-blur-sm",
                 "transition-all duration-300 ease-out",
-                "hover:scale-[1.02] hover:shadow-lg hover:shadow-primary/20",
-                "hover:border-primary/30 hover:bg-gradient-to-br hover:from-primary/10 hover:to-primary/5",
+                "hover:scale-[1.02] hover:shadow-lg hover:shadow-secondary/20",
+                "hover:border-secondary/30 hover:bg-gradient-to-br hover:from-secondary/30 hover:to-secondary/10",
                 "active:scale-[0.98] active:duration-150",
                 "shadow-[0_4px_20px_rgba(30,174,219,0.15)]"
               )}

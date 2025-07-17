@@ -54,15 +54,15 @@ function SuggestionList({ suggestions, onSuggestionClick, className }: Suggestio
     <div className={cn("relative", className)}>
       <div
         ref={suggestionsContainerRef}
-        className="flex gap-2 px-4 py-2 overflow-x-auto hidden-scrollbar relative"
+        className="flex gap-2 px-4 py-2 overflow-x-auto no-scrollbar relative"
       >
         {suggestions.map((suggestion: string) => (
           <button
             key={suggestion}
             className={cn(
-              "px-3 py-1 rounded-md whitespace-nowrap font-medium transition-colors",
+              "px-3 py-2 rounded-md whitespace-nowrap font-medium transition-colors",
               "bg-primary/10 text-primary-foreground hover:bg-primary/20",
-              "border border-primary/20 shadow-sm"
+              "border border-secondary/20 shadow-sm"
             )}
             onClick={() => onSuggestionClick(suggestion)}
           >

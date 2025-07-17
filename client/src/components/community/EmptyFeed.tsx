@@ -1,7 +1,6 @@
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "../ui/button";
 
 const EmptyFeed = () => {
   return (
@@ -22,23 +21,23 @@ const EmptyFeed = () => {
           <Sparkles className="w-8 h-8 text-purple-400/80" />
         </span>
       </div>
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">No Hot Tweets Yet</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        No Hot Tweets Yet
+      </h2>
       <p className="text-gray-500 dark:text-gray-400 text-center max-w-md mb-4">
         Looks like there are no trending posts right now.
         <br />
         Be the first to share something awesome with the community!
       </p>
-      <Button variant="outline" className="flex gap-2">
-        <Link
-          href="https://x.com/intent/tweet?text=Check%20out%20this%20community!"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition"
-        >
-          <Sparkles className="w-4 h-4 mr-2" />
-          Share on Twitter
-        </Link>
-      </Button>
+      <Link
+        href="https://x.com/intent/tweet?text=Check%20out%20this%20community!"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center px-4 py-2 rounded-lg background-gradient2 text-white font-semibold shadow hover:background-gradient3 transition"
+      >
+        <Sparkles className="w-4 h-4 mr-2" />
+        Share on Twitter
+      </Link>
     </div>
   );
 };

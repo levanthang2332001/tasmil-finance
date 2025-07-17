@@ -35,19 +35,19 @@ const config: Config = {
           foreground: "hsl(var(--popover-foreground))",
         },
         primary: {
-          DEFAULT: "hsl(var(--primary))", // #F161C9
+          DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))", // #F4B6CC
+          DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))", // #F4B6CC
+          DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))", // #912CC1
+          DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
         destructive: {
@@ -76,11 +76,8 @@ const config: Config = {
       backgroundImage: {
         "gradient-cards":
           "linear-gradient(225deg, rgba(30, 174, 219, 0.15) 0%, rgba(30, 174, 219, 0) 100%)",
-        "glass-gradient":
-          "linear-gradient(108.9deg, rgba(32, 33, 36, 0.74) -6.2%, rgba(32, 33, 36, 0.5) 85.9%)",
-        "blue-green-gradient": "linear-gradient(90deg, #1EAEDB 0%, #1EAEDB 100%)",
-        "top-trader-card":
-          "linear-gradient(225deg, rgba(30, 174, 219, 0.15) 0%, rgba(30, 174, 219, 0.05) 100%)",
+        "blue-green-gradient":
+          "linear-gradient(90deg, #1EAEDB 0%, #1EAEDB 100%)",
         "grid-pattern":
           "linear-gradient(to right, rgba(30, 174, 219, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(30, 174, 219, 0.1) 1px, transparent 1px)",
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -91,71 +88,6 @@ const config: Config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        "pulse-slow": {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.8" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
-        shimmer: {
-          "0%": { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
-        },
-        "rotate-slow": {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
-        },
-        "scattered-reveal": {
-          "0%": {
-            opacity: "0",
-            transform: "translate(var(--x, 0), var(--y, 0)) scale(0.8)",
-          },
-          "100%": { opacity: "1", transform: "translate(0, 0) scale(1)" },
-        },
-        "dark-reveal": {
-          "0%": { opacity: "0", backgroundColor: "rgba(0, 0, 0, 0.7)" },
-          "100%": { opacity: "1", backgroundColor: "rgba(0, 0, 0, 0)" },
-        },
-        "wipe-in-right": {
-          "0%": { transform: "scaleX(0)", transformOrigin: "left" },
-          "100%": { transform: "scaleX(1)", transformOrigin: "left" },
-        },
-        glitch: {
-          "0%, 100%": { transform: "translate(0)" },
-          "20%": { transform: "translate(-2px, 2px)" },
-          "40%": { transform: "translate(-2px, -2px)" },
-          "60%": { transform: "translate(2px, 2px)" },
-          "80%": { transform: "translate(2px, -2px)" },
-        },
-        gradient: {
-          "0%, 100%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        "pulse-slow": "pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        float: "float 6s ease-in-out infinite",
-        shimmer: "shimmer 3s linear infinite",
-        "rotate-slow": "rotate-slow 20s linear infinite",
-        "scattered-reveal": "scattered-reveal 0.7s forwards",
-        "dark-reveal": "dark-reveal 1.2s ease-out forwards",
-        "wipe-in-right": "wipe-in-right 0.6s ease-out forwards",
-        glitch: "glitch 0.4s ease-in-out",
-        gradient: "gradient 3s ease infinite",
       },
       boxShadow: {
         "glow-blue": "0 0 8px rgba(30, 174, 219, 0.4)",

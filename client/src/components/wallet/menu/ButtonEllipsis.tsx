@@ -23,7 +23,7 @@ export function ButtonEllipsis({ address }: ButtonEllipsisProps) {
           <TooltipTrigger asChild>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                <Ellipsis className="h-4 w-4 text-white/60" />
+                <Ellipsis className="h-4 w-4 " />
               </Button>
             </DropdownMenuTrigger>
           </TooltipTrigger>

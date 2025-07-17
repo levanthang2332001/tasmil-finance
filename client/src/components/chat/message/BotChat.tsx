@@ -26,7 +26,7 @@ export const BotChat = ({ message, isLoading }: BotChatProps) => {
           <motion.div
             layout
             className={cn(
-              "rounded-2xl rounded-bl-sm bg-gradient-to-br from-white via-blue-100 to-blue-50 text-gray-900 p-4 border border-blue-100 shadow-md",
+              "rounded-2xl rounded-bl-sm background-gradient3 text-gray-900 p-4 border border-blue-100 shadow-md",
               "shadow-sm transition-colors",
               isLoading && "opacity-50"
             )}
