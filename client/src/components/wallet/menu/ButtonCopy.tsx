@@ -20,7 +20,7 @@ const ButtonCopy = ({ address }: ButtonCopyProps) => {
 
   return (
     <DropdownMenuItem onClick={copyAddress}>
-      <Copy className="w-4 h-4 text-muted-foreground" />
+      <Copy className="w-4 h-4 " />
       Copy Address
     </DropdownMenuItem>
   );

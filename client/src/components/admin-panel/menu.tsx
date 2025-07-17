@@ -3,7 +3,12 @@
 import { CollapseMenuButton } from "@/components/admin-panel/collapse-menu-button";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { getMenuList, MenuType } from "@/constants/menu-list";
 import { cn } from "@/lib/utils";
 import { useWalletStore } from "@/store/useWalletStore";
@@ -12,12 +17,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ConnectButton from "../wallet/ConnectButton";
 import TasmilWallet from "../wallet/TasmilWallet";
+import Image from "next/image";
 
 interface MenuProps {
   isOpen?: boolean;
 }
 
-function GroupLabel({ groupLabel, isOpen }: { groupLabel: string; isOpen?: boolean }) {
+function GroupLabel({
+  groupLabel,
+  isOpen,
+}: {
+  groupLabel: string;
+  isOpen?: boolean;
+}) {
   if (!groupLabel) return <p className="pb-2" />;
   if (isOpen)
     return (
@@ -50,7 +62,7 @@ function MenuItem({
   isOpen?: boolean;
   pathname: string;
 }) {
-  const { href, label, icon: Icon, active, submenus } = menu;
+  const { href, label, image, active, submenus } = menu;
   const isActive = Boolean(active ?? pathname.startsWith(href));
 
   if (!submenus?.length)
@@ -61,18 +73,34 @@ function MenuItem({
             <TooltipTrigger asChild>
               <Button
                 variant={isActive ? "secondary" : "ghost"}
-                className="w-full justify-start h-10 mb-1"
+                className={cn("w-full justify-start h-11 mb-1")}
                 asChild
               >
-                <Link href={href} className="flex items-center">
-                  <span className={isOpen ? "mr-4" : ""}>
-                    <Icon size={18} />
-                  </span>
+                <Link href={href} className="flex items-center justify-between">
                   {isOpen && (
-                    <span className="max-w-[200px] truncate translate-x-0 opacity-100">
+                    <span
+                      className={cn(
+                        "max-w-[200px] truncate translate-x-0 opacity-100",
+                        isActive ? "text-black" : "text-gradient ml-2",
+                      )}
+                    >
                       {label}
                     </span>
                   )}
+                  <div className="relative w-[70px] h-[70px] flex items-center">
+                    <Image
+                      src={image}
+                      alt={label}
+                      width={70}
+                      height={70}
+                      className={cn(
+                        "absolute left-0 transition-all duration-500 ease-in-out",
+                        isActive
+                          ? "opacity-100 translate-x-0"
+                          : "opacity-0 -translate-x-4 pointer-events-none",
+                      )}
+                    />
+                  </div>
                 </Link>
               </Button>
             </TooltipTrigger>
@@ -85,9 +113,8 @@ function MenuItem({
   return (
     <div className="w-full" key={href}>
       <CollapseMenuButton
-        icon={Icon}
+        image={image}
         label={label}
-        active={isActive}
         submenus={submenus}
         isOpen={isOpen}
       />
@@ -98,7 +125,7 @@ function MenuItem({
 export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList();
-  const { connected: walletConnected, signing } = useWalletStore();
+  const { connected, signing } = useWalletStore();
 
   const CLASS_HEIGHT =
     "min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)]";
@@ -106,24 +133,32 @@ export function Menu({ isOpen }: MenuProps) {
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
       <nav className="py-4 h-full w-full">
-        <ul className={cn("flex flex-col items-start space-y-1 px-2", CLASS_HEIGHT)}>
+        <ul
+          className={cn(
+            "flex flex-col items-start space-y-1 px-2",
+            CLASS_HEIGHT,
+          )}
+        >
           {menuList.map(({ groupLabel, menus }, index) => (
             <li className={cn("w-full", groupLabel ? "pt-5" : "")} key={index}>
               <GroupLabel groupLabel={groupLabel} isOpen={isOpen} />
               {menus.map((menu) => (
-                <MenuItem key={menu.href} menu={menu} isOpen={isOpen} pathname={pathname} />
+                <MenuItem
+                  key={menu.href}
+                  menu={menu}
+                  isOpen={isOpen}
+                  pathname={pathname}
+                />
               ))}
             </li>
           ))}
           <li className="w-full grow flex flex-col justify-end gap-3">
-            {isOpen && walletConnected && !signing && <TasmilWallet />}
-            {walletConnected ? (
+            {isOpen && connected && !signing && <TasmilWallet />}
+            {connected ? (
               <div className="w-full overflow-hidden flex flex-col gap-2 items-center rounded-2xl p-3 glass border border-white/5">
                 {isOpen ? (
                   <>
-                    <p className={cn("text-sm text-white/60", isOpen ? "" : "hidden")}>
-                      Aptos Wallet
-                    </p>
+                    <p className="text-sm text-white/60">Aptos Wallet</p>
                     <ConnectButton className="w-full" />
                   </>
                 ) : (

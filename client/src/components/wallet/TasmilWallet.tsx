@@ -99,7 +99,7 @@ function TasmilWallet() {
 
   if ((isLoading && !tasmilAddress) || signing) {
     return (
-      <div className="w-full h-[140px] flex flex-col gap-2 items-center justify-center rounded-2xl p-3 mb-4 glass border border-white/5">
+      <div className="w-full h-[140px] flex flex-col gap-2 items-center justify-center rounded-2xl p-3 mb-4 border border-white/5">
         <Loader2 className="w-4 h-4 animate-spin" />
         <p className="text-center text-sm text-white/70">Checking wallet...</p>
       </div>
@@ -107,7 +107,7 @@ function TasmilWallet() {
   }
 
   return (
-    <div className="w-full flex flex-col gap-2 items-center rounded-2xl p-3 glass border border-white/5">
+    <div className=" w-full flex flex-col gap-2 items-center rounded-2xl p-3 glass border border-white/5">
       {tasmilAddress ? (
         <div className="w-full rounded-lg p-3 bg-black/20">
           <div>

@@ -20,7 +20,7 @@ export default function AdminPanelLayout({ children }: { children: React.ReactNo
     pathname.includes(PATHS.COMMUNITY);
 
   return (
-    <div className="bg-[url('/images/bg-app.png')] bg-cover bg-no-repeat bg-fixed bg-center">
+    <div className="">
       <Sidebar />
       <main
         className={cn(
