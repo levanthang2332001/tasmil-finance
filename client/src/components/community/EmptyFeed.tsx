@@ -33,7 +33,7 @@ const EmptyFeed = () => {
         href="https://x.com/intent/tweet?text=Check%20out%20this%20community!"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center px-4 py-2 rounded-lg background-gradient2 text-white font-semibold shadow hover:background-gradient3 transition"
+        className="inline-flex items-center px-4 py-2 rounded-lg background-gradient2 text-white font-semibold shadow hover:bg-opacity-80 transition"
       >
         <Sparkles className="w-4 h-4 mr-2" />
         Share on Twitter
