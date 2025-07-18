@@ -86,9 +86,11 @@ export type ParamsType =
   | ClaimRewardParams
   | PlaceLimitOrderParams
   | PlaceMarketOrderParams
-  | RemoveLiquidityParams;
+  | RemoveLiquidityParams
+  | BridgeParams;
 
 export enum ActionType {
+  BRIDGE = 'bridge',
   SWAP = 'swap',
   PRE_SWAP = 'pre_swap',
   LIQUIDITY = 'liquidity',
@@ -111,4 +113,23 @@ export interface DeFiIntent {
   confidence: number;
   missingFields: string[];
   context: string;
+}
+export interface BridgeParams {
+  tokenA: string;
+  tokenB: string;
+  srcChainKey: string;
+  dstChainKey: string;
+  amount: string;
+  dstAddress: string;
+  user_address: string;
+}
+export interface BridgeStargateParams {
+  srcToken: string;
+  dstToken: string;
+  srcAddress: string;
+  dstAddress: string;
+  srcChainKey: string;
+  dstChainKey: string;
+  srcAmount: string;
+  dstAmountMin: string;
 }
