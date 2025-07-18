@@ -272,11 +272,41 @@ export class RemoveLiquidityParamsSchema {
   minAmountB?: number;
 }
 
+export class BridgeParamsSchema {
+  @ApiProperty({ example: 'USDT', description: 'Token to bridge' })
+  tokenA: string;
+
+  @ApiProperty({ example: 'USDC', description: 'Token to bridge' })
+  tokenB: string;
+
+  @ApiProperty({ example: 'aptos', description: 'Source chain key' })
+  srcChainKey: string;
+
+  @ApiProperty({ example: 'evm', description: 'Destination chain key' })
+  dstChainKey: string;
+
+  @ApiProperty({ example: '100', description: 'Amount to bridge' })
+  amount: string;
+
+  @ApiProperty({
+    example: '0x1234567890123456789012345678901234567890',
+    description: 'Destination address',
+  })
+  dstAddress: string;
+
+  @ApiProperty({
+    example: '0x1234567890123456789012345678901234567890',
+    description: 'User wallet address',
+  })
+  user_address: string;
+}
+
 export class DeFiIntentSchema {
   @ApiProperty({
     example: 'swap',
     description: 'Type of DeFi action',
     enum: [
+      'bridge',
       'pre_swap',
       'swap',
       'liquidity',
@@ -294,6 +324,7 @@ export class DeFiIntentSchema {
     ],
   })
   actionType:
+    | 'bridge'
     | 'pre_swap'
     | 'swap'
     | 'liquidity'
@@ -323,6 +354,7 @@ export class DeFiIntentSchema {
       { $ref: '#/components/schemas/PlaceLimitOrderParamsSchema' },
       { $ref: '#/components/schemas/PlaceMarketOrderParamsSchema' },
       { $ref: '#/components/schemas/RemoveLiquidityParamsSchema' },
+      { $ref: '#/components/schemas/BridgeParamsSchema' },
     ],
   })
   params:
@@ -337,7 +369,8 @@ export class DeFiIntentSchema {
     | ClaimRewardParamsSchema
     | PlaceLimitOrderParamsSchema
     | PlaceMarketOrderParamsSchema
-    | RemoveLiquidityParamsSchema;
+    | RemoveLiquidityParamsSchema
+    | BridgeParamsSchema;
 
   @ApiProperty({
     example: 0.95,
