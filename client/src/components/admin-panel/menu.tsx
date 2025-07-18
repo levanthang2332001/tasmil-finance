@@ -98,7 +98,7 @@ function MenuItem({
 export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList();
-  const { connected: walletConnected } = useWalletStore();
+  const { connected: walletConnected, signing } = useWalletStore();
 
   const CLASS_HEIGHT =
     "min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)]";
@@ -116,7 +116,7 @@ export function Menu({ isOpen }: MenuProps) {
             </li>
           ))}
           <li className="w-full grow flex flex-col justify-end gap-3">
-            {isOpen && walletConnected && <TasmilWallet />}
+            {isOpen && walletConnected && !signing && <TasmilWallet />}
             {walletConnected ? (
               <div className="w-full overflow-hidden flex flex-col gap-2 items-center rounded-2xl p-3 glass border border-white/5">
                 {isOpen ? (

@@ -6,7 +6,7 @@ import { AbstractBaseAction } from '../base/base-action';
 export class DefaultAction extends AbstractBaseAction<ParamsType> {
   readonly name = 'unknown';
   readonly similar: string[] = [];
-  readonly prompt = `The user's intent could not be determined. Return an empty params object: {}`;
+  readonly prompt = `Act as a DeFi expert and provide helpful guidance. If the requested action is not supported by the platform, explain it professionally and suggest alternatives.`;
 
   readonly examples: string[] = [];
 
@@ -14,7 +14,7 @@ export class DefaultAction extends AbstractBaseAction<ParamsType> {
   async handle(_params: ParamsType): Promise<ChatResponse> {
     return this.createSuccessResult({
       message:
-        'Sorry, I could not understand your request. Please try rephrasing or provide more specific details.',
+        'As a DeFi expert, I can help you understand DeFi concepts, investment strategies, or guide you in using various protocols. However, the specific feature you requested may not be supported on this platform yet. Please describe what you want to do in more detail, or I can assist you with:\n\n• Swap tokens (APT, ALT)\n• Staking\n• Feel free to ask me about any aspect of DeFi!',
       data: {},
     });
   }
