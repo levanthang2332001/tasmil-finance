@@ -34,61 +34,61 @@ interface IndicatorStyle {
 }
 
 // Separate Announcement Bar component
-const AnnouncementBar = () => {
-  // Cache images
-  const saliteImage = "/images/landing-v3/navbar/salite.png";
-  const fireIcon = "/images/landing-v3/navbar/fire-icon.gif";
+// const AnnouncementBar = () => {
+//   // Cache images
+//   const saliteImage = "/images/landing-v3/navbar/salite.png";
+//   const fireIcon = "/images/landing-v3/navbar/fire-icon.gif";
 
-  return (
-    <div
-      className="w-full relative backdrop-blur-md flex justify-center items-center h-12 gap-6 overflow-hidden"
-      style={{
-        background: "rgba(0, 0, 0, 0.3)",
-      }}  
-    >
-      <div className="absolute top-[-20px] right-[-50px] w-[600px] h-auto opacity-30 z-0">
-        <Image
-          src={saliteImage}
-          alt="salite"
-          width={600}
-          height={400}
-          loading="lazy"
-          className="object-cover w-full h-auto"
-        />
-      </div>
-      <div className="flex items-center gap-2 z-10">
-        <div className="h-5 w-5 relative">
-          <Image
-            src={fireIcon}
-            alt="Emoji"
-            width={20}
-            height={20}
-            className="object-contain"
-          />
-        </div>
-        <Typography
-          font="geistMono"
-          size="base-geist"
-          color="submerged"
-          className="text-xs md:text-base"
-        >
-          Tasmil Finance is LIVE now!
-        </Typography>
-      </div>
+//   return (
+//     <div
+//       className="w-full relative backdrop-blur-md flex justify-center items-center h-12 gap-6 overflow-hidden"
+//       style={{
+//         background: "rgba(0, 0, 0, 0.3)",
+//       }}  
+//     >
+//       <div className="absolute top-[-20px] right-[-50px] w-[600px] h-auto opacity-30 z-0">
+//         <Image
+//           src={saliteImage}
+//           alt="salite"
+//           width={600}
+//           height={400}
+//           loading="lazy"
+//           className="object-cover w-full h-auto"
+//         />
+//       </div>
+//       <div className="flex items-center gap-2 z-10">
+//         <div className="h-5 w-5 relative">
+//           <Image
+//             src={fireIcon}
+//             alt="Emoji"
+//             width={20}
+//             height={20}
+//             className="object-contain"
+//           />
+//         </div>
+//         <Typography
+//           font="geistMono"
+//           size="base-geist"
+//           color="submerged"
+//           className="text-xs md:text-base"
+//         >
+//           Tasmil Finance is LIVE now!
+//         </Typography>
+//       </div>
 
-      <Link href={PATHS.DEFI_AGENT} className="group z-10">
-        <Button
-          variant="gradient"
-          size="sm"
-          className="font-mono text-black text-xs md:text-sm font-semibold uppercase transition-all duration-300 hover:tracking-wider"
-        >
-          EXPLORE NOW
-          <FiArrowUpRight className="w-4 h-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-        </Button>
-      </Link>
-    </div>
-  );
-};
+//       <Link href={PATHS.DEFI_AGENT} className="group z-10">
+//         <Button
+//           variant="gradient"
+//           size="sm"
+//           className="font-mono text-black text-xs md:text-sm font-semibold uppercase transition-all duration-300 hover:tracking-wider"
+//         >
+//           EXPLORE NOW
+//           <FiArrowUpRight className="w-4 h-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+//         </Button>
+//       </Link>
+//     </div>
+//   );
+// };
 
 type SectionId =
   | "hero"
@@ -417,7 +417,7 @@ const MainNavbar = ({
             className="font-mono text-black font-semibold text-sm uppercase py-2 px-4 rounded-lg transition-all duration-300 hover:tracking-wider"
             onClick={() => router.push(PATHS.DEFI_AGENT)}
           >
-            LAUNCH TERMINAL
+            LAUNCH APP
           </Button>
       </div>
 
@@ -621,13 +621,13 @@ export const Navbar = ({ onSectionClick }: NavbarProps) => {
   return (
     <div className="fixed top-0 left-0 w-full z-30 flex flex-col">
       {/* Announcement Bar */}
-      <div
+      {/* <div
         className={`transform transition-transform duration-300 ease-in-out ${
           isAnnouncementVisible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
         <AnnouncementBar />
-      </div>
+      </div> */}
 
       {/* Main Navbar */}
       <div
