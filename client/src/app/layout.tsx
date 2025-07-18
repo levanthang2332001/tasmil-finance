@@ -1,7 +1,6 @@
 import { AppProvider } from "@/providers";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { ThemeProvider as NextThemeProvider } from "next-themes";
 import "./globals.css";
 
 const geistMono = localFont({
@@ -77,16 +76,10 @@ export default function RootLayout({
       className={`${darkerGrotesk.variable} ${geistMono.variable} ${labGrotesk.variable} ${ppNeue.variable} ${sfPro.variable}`}
     >
       <body
-        className="font-sfPro fcol relative min-h-screen antialiased bg-background text-foreground"
+        className="font-sfPro relative min-h-screen antialiased bg-background text-foreground"
         suppressHydrationWarning
       >
-        <NextThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-        >
           <AppProvider>{children}</AppProvider>
-        </NextThemeProvider>
       </body>
     </html>
   );

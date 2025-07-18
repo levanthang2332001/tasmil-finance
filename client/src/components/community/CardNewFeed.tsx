@@ -28,7 +28,9 @@ export function CardNewFeed({ item }: CardNewFeedProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const isLongDescription = item.description.length > 280;
   const displayDescription =
-    isLongDescription && !isExpanded ? `${item.description.slice(0, 280)}...` : item.description;
+    isLongDescription && !isExpanded
+      ? `${item.description.slice(0, 280)}...`
+      : item.description;
 
   function handleCardClick() {
     if (item.tweetUrl) window.open(item.tweetUrl, "_blank");
@@ -42,7 +44,7 @@ export function CardNewFeed({ item }: CardNewFeedProps) {
   return (
     <div
       className={cn(
-        "relative flex size-full max-w-lg flex-col gap-2 overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-4 backdrop-blur-md bg-white/90 dark:bg-gray-900/90 hover:bg-white dark:hover:bg-gray-800/90 transition-colors duration-200 cursor-pointer"
+        "relative flex size-full max-w-lg flex-col gap-2 overflow-hidden rounded-xl border border-gray-800 p-4 mb-4 backdrop-blur-md bg-gray-900/95 hover:bg-gray-800/95 transition-colors duration-200 cursor-pointer shadow-sm hover:shadow-md",
       )}
       onClick={handleCardClick}
       data-testid="card-new-feed"
@@ -58,21 +60,15 @@ export function CardNewFeed({ item }: CardNewFeedProps) {
           </Avatar>
           <div>
             <div className="flex items-center whitespace-nowrap font-semibold">
-              <span className="text-gray-900 dark:text-white text-base">
-                {item.author}
-              </span>
+              <span className="text-white text-base">{item.author}</span>
               {item.verified && (
                 <BadgeCheck className="ml-1 inline w-5 h-5 text-blue-500" />
               )}
             </div>
             <div className="flex items-center space-x-1">
-              <span className="text-sm text-gray-500 dark:text-gray-400">
-                @{item.handle}
-              </span>
-              <span className="text-gray-500 dark:text-gray-400">·</span>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
-                {item.time}
-              </span>
+              <span className="text-sm text-gray-400">@{item.handle}</span>
+              <span className="text-gray-400">·</span>
+              <span className="text-sm text-gray-400">{item.time}</span>
             </div>
           </div>
         </div>
@@ -83,13 +79,13 @@ export function CardNewFeed({ item }: CardNewFeedProps) {
 
       {/* Content */}
       <div className="break-words leading-normal tracking-tight">
-        <div className="text-gray-900 dark:text-white text-base leading-relaxed whitespace-pre-wrap">
+        <div className="text-white text-base leading-relaxed whitespace-pre-wrap">
           {displayDescription}
         </div>
         {isLongDescription && (
           <button
             onClick={handleToggle}
-            className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 text-base mt-2 transition-colors duration-200"
+            className="text-blue-400 hover:text-blue-300 text-base mt-2 transition-colors duration-200"
             type="button"
           >
             {isExpanded ? "Show less" : "Show more"}
@@ -100,7 +96,7 @@ export function CardNewFeed({ item }: CardNewFeedProps) {
       {/* Media */}
       {item.hasImage && item.imageUrl && (
         <div className="flex flex-1 items-center justify-center mt-3">
-          <div className="relative w-full rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
+          <div className="relative w-full rounded-2xl overflow-hidden border border-gray-700">
             <Image
               src={item.imageUrl}
               alt="Tweet media"

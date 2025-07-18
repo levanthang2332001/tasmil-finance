@@ -61,7 +61,7 @@ export const ChatInput = ({ onSendMessage, isLoading, className }: ChatInputProp
             onChange={handleTextareaChange}
             onKeyDown={handleKeyDown}
             placeholder="Ask Tasmil AI anything..."
-            className="min-h-[65px] max-h-32 pe-12 !bg-neutral-900/20 border-neutral-800 shadow-[0_0_5px_#1EAEDB80] resize-none text-white placeholder:text-white/50 border-none focus-visible:ring-background focus-visible:ring-1 outline-background "
+            className="min-h-[65px] max-h-32 pe-12 text-lg !bg-neutral-900/20 border-neutral-800 shadow-[0_0_5px_#1EAEDB80] resize-none text-white placeholder:text-white/50 border-none focus-visible:ring-background focus-visible:ring-1 outline-background "
             disabled={isLoading}
           />
 

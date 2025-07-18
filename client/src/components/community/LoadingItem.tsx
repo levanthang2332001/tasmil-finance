@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const LoadingItem = () => {
   return (
-    <div className="relative flex size-full max-w-lg flex-col gap-2 overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-4 backdrop-blur-md bg-white/90 dark:bg-gray-900/90">
+    <div className="relative flex size-full max-w-lg flex-col gap-2 overflow-hidden rounded-xl border border-gray-800 p-4 mb-4 backdrop-blur-md bg-gray-900/95">
       {/* Header */}
       <div className="flex flex-row justify-between tracking-tight">
         <div className="flex items-center space-x-3">
