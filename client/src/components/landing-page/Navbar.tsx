@@ -632,7 +632,7 @@ export const Navbar = ({ onSectionClick }: NavbarProps) => {
       {/* Main Navbar */}
       <div
         className={`transform transition-all duration-300 ease-in-out ${
-          isAnnouncementVisible ? "translate-y-0" : "-translate-y-12"
+          isAnnouncementVisible ? "translate-y-0" : "-translate-y-20"
         }`}
       >
         <MainNavbar
