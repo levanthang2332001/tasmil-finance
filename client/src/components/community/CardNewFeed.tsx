@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { BadgeCheck } from "lucide-react";
+import { BsTwitterX } from "react-icons/bs";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -25,9 +26,9 @@ interface CardNewFeedProps {
 
 export function CardNewFeed({ item }: CardNewFeedProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const isLongDescription = item.description.length > 200;
+  const isLongDescription = item.description.length > 280;
   const displayDescription =
-    isLongDescription && !isExpanded ? `${item.description.slice(0, 200)}...` : item.description;
+    isLongDescription && !isExpanded ? `${item.description.slice(0, 280)}...` : item.description;
 
   function handleCardClick() {
     if (item.tweetUrl) window.open(item.tweetUrl, "_blank");
@@ -41,61 +42,80 @@ export function CardNewFeed({ item }: CardNewFeedProps) {
   return (
     <div
       className={cn(
-        "mb-4 border border-gray-100/80 dark:border-white/10 rounded-xl p-4 hover:bg-gray-50/50 dark:hover:bg-white/[0.02] transition-colors duration-200 cursor-pointer"
+        "relative flex size-full max-w-lg flex-col gap-2 overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-4 backdrop-blur-md bg-white/90 dark:bg-gray-900/90 hover:bg-white dark:hover:bg-gray-800/90 transition-colors duration-200 cursor-pointer"
       )}
       onClick={handleCardClick}
       data-testid="card-new-feed"
     >
-      <div className="flex space-x-3">
-        <div className="flex-shrink-0">
-          <Avatar className="w-10 h-10">
+      {/* Header */}
+      <div className="flex flex-row justify-between tracking-tight">
+        <div className="flex items-center space-x-3">
+          <Avatar className="w-12 h-12">
             <AvatarImage src={item.avatar} alt={item.author} />
             <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm font-medium">
               {item.author?.charAt(0).toUpperCase() || "A"}
             </AvatarFallback>
           </Avatar>
+          <div>
+            <div className="flex items-center whitespace-nowrap font-semibold">
+              <span className="text-gray-900 dark:text-white text-base">
+                {item.author}
+              </span>
+              {item.verified && (
+                <BadgeCheck className="ml-1 inline w-5 h-5 text-blue-500" />
+              )}
+            </div>
+            <div className="flex items-center space-x-1">
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                @{item.handle}
+              </span>
+              <span className="text-gray-500 dark:text-gray-400">·</span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {item.time}
+              </span>
+            </div>
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center flex-wrap space-x-2 mb-1">
-            <span className="font-semibold text-gray-900 dark:text-gray-100 text-sm truncate">
-              {item.author}
-            </span>
-            {item.verified && <BadgeCheck className="w-4 h-4 text-blue-500 flex-shrink-0" />}
-            <span className="text-gray-500 dark:text-gray-400 text-sm truncate">{item.handle}</span>
-            <span className="text-gray-500 dark:text-gray-400 text-sm">·</span>
-            <span className="text-gray-500 dark:text-gray-400 text-sm">{item.time}</span>
-          </div>
-          <div className="mb-3">
-            <p className="text-gray-900 dark:text-gray-100 text-[15px] leading-normal whitespace-pre-wrap">
-              {displayDescription}
-            </p>
-            {isLongDescription && (
-              <button
-                onClick={handleToggle}
-                className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 text-[15px] mt-1 transition-colors duration-200"
-                type="button"
-              >
-                {isExpanded ? "Show less" : "Show more"}
-              </button>
-            )}
-            {item.hasImage && item.imageUrl && (
-              <div className="mt-3 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
-                <Image
-                  src={item.imageUrl}
-                  alt="Feed"
-                  className="w-full object-cover aspect-video"
-                  loading="lazy"
-                  width={600}
-                  height={400}
-                  style={{
-                    background: "linear-gradient(to bottom right, #f3f4f6, #e5e7eb)",
-                  }}
-                />
-              </div>
-            )}
-          </div>
+        <div className="flex items-start">
+          <BsTwitterX className="w-5 h-5 text-[#1DA1F2] hover:scale-110 transition-transform" />
         </div>
       </div>
+
+      {/* Content */}
+      <div className="break-words leading-normal tracking-tight">
+        <div className="text-gray-900 dark:text-white text-base leading-relaxed whitespace-pre-wrap">
+          {displayDescription}
+        </div>
+        {isLongDescription && (
+          <button
+            onClick={handleToggle}
+            className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 text-base mt-2 transition-colors duration-200"
+            type="button"
+          >
+            {isExpanded ? "Show less" : "Show more"}
+          </button>
+        )}
+      </div>
+
+      {/* Media */}
+      {item.hasImage && item.imageUrl && (
+        <div className="flex flex-1 items-center justify-center mt-3">
+          <div className="relative w-full rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
+            <Image
+              src={item.imageUrl}
+              alt="Tweet media"
+              className="w-full object-cover"
+              loading="lazy"
+              width={500}
+              height={300}
+              style={{
+                aspectRatio: "16/9",
+                objectFit: "cover",
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

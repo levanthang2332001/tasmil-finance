@@ -14,14 +14,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative bg-gradient-to-b from-gray-900/70 to-black">
-      {/* <Header />
-      <StarsBackground className="absolute inset-0 z-0" />
-      <Hero />
-      <FlowSection />
-      <IntroAi className={cn(WIDTH)} />
-      <Features className={cn(WIDTH, "py-52 z-10")} />
-      <Footer /> */}
-      <LandingPage />;
+      <LandingPage />
     </div>
   );
 }

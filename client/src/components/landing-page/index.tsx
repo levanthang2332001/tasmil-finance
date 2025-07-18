@@ -5,25 +5,18 @@ import { useEffect, useState, useRef } from "react";
 import { Navbar } from "./navbar";
 import { HeroSection } from "./hero-section";
 import { VideoSection } from "./video-section";
-// import { AboutSection } from "./about-section";
-// import { CoreTechnologySection } from "./core-technology-section";
 import { FooterSection } from "./footer-section";
 import { AbstractSection } from "./abstract-section";
 import { FAQSection } from "./faq-section";
-// import { SupportSection } from "./support-section";
 import { BenefitSection } from "./benefit-section";
-// import { NumberSection } from "./number-section";
 
 type SectionId =
   | "hero"
   | "video"
-  | "about"
-  | "number"
-  | "coreTechnology"
-  | "benefit"
+  | "benefits"
   | "abstract"
   | "faq"
-  | "support";
+  | "footer";
 
 export default function LandingPage() {
   const [visibleSections, setVisibleSections] = useState<{
@@ -31,26 +24,20 @@ export default function LandingPage() {
   }>({
     hero: false,
     video: false,
-    about: false,
-    number: false,
-    coreTechnology: false,
-    benefit: false,
+    benefits: false,
     abstract: false,
     faq: false,
-    support: false,
+    footer: false,
   });
 
   // Refs for sections
   const sectionRefs = {
     hero: useRef<HTMLDivElement>(null),
     video: useRef<HTMLDivElement>(null),
-    about: useRef<HTMLDivElement>(null),
-    number: useRef<HTMLDivElement>(null),
-    coreTechnology: useRef<HTMLDivElement>(null),
-    benefit: useRef<HTMLDivElement>(null),
+    benefits: useRef<HTMLDivElement>(null),
     abstract: useRef<HTMLDivElement>(null),
     faq: useRef<HTMLDivElement>(null),
-    support: useRef<HTMLDivElement>(null),
+    footer: useRef<HTMLDivElement>(null),
   };
 
   // Add intersection observer to handle section animations on scroll
@@ -89,27 +76,27 @@ export default function LandingPage() {
   }, []);
 
   // Function to scroll to section with better handling
-  const scrollToSection = (sectionId: SectionId) => {
-    const section = sectionRefs[sectionId]?.current;
-    if (section) {
-      // Calculate offset based on announcement bar visibility
-      const announcementHeight = 48; // Height of announcement bar
-      const navbarHeight = 72; // Height of navbar
-      const totalOffset =
-        navbarHeight + (window.scrollY === 0 ? announcementHeight : 0);
+  // const scrollToSection = (sectionId: SectionId) => {
+  //   const section = sectionRefs[sectionId]?.current;
+  //   if (section) {
+  //     // Calculate offset based on announcement bar visibility
+  //     const announcementHeight = 48; // Height of announcement bar
+  //     const navbarHeight = 72; // Height of navbar
+  //     const totalOffset =
+  //       navbarHeight + (window.scrollY === 0 ? announcementHeight : 0);
 
-      setTimeout(() => {
-        const elementPosition = section.getBoundingClientRect().top;
-        const offsetPosition =
-          elementPosition + window.pageYOffset - totalOffset;
+  //     setTimeout(() => {
+  //       const elementPosition = section.getBoundingClientRect().top;
+  //       const offsetPosition =
+  //         elementPosition + window.pageYOffset - totalOffset;
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-        });
-      }, 50);
-    }
-  };
+  //       window.scrollTo({
+  //         top: offsetPosition,
+  //         behavior: "smooth",
+  //       });
+  //     }, 50);
+  //   }
+  // };
 
   // Reset active tab initially (clear any previously active tab)
   useEffect(() => {
@@ -160,16 +147,14 @@ export default function LandingPage() {
 
       // Update current section and dispatch event for navbar
       if (currentSectionId) {
-        // setCurrentSection(currentSectionId);
-
         // Map section names to tab names
-        if (currentSectionId === "coreTechnology") {
+        if (currentSectionId === "benefits") {
           document.dispatchEvent(
-            new CustomEvent("sectionChange", { detail: "BYDATA FRAMEWORK" }),
+            new CustomEvent("sectionChange", { detail: "DEFI AGENTS" }),
           );
-        } else if (currentSectionId === "benefit") {
+        } else if (currentSectionId === "video") {
           document.dispatchEvent(
-            new CustomEvent("sectionChange", { detail: "USE CASE" }),
+            new CustomEvent("sectionChange", { detail: "DASHBOARD" }),
           );
         } else {
           // Clear active tab if not in a relevant section
@@ -219,7 +204,7 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen bg-black text-foreground relative overflow-hidden">
       {/* Content */}
       <div className="relative flex flex-col min-h-screen">
-        <Navbar onSectionClick={(id: SectionId) => scrollToSection(id)} />
+        <Navbar />
 
         <div
           ref={sectionRefs.hero}
@@ -236,8 +221,8 @@ export default function LandingPage() {
         </div>
 
         <div
-          ref={sectionRefs.benefit}
-          className={getSectionAnimationClass("benefit")}
+          ref={sectionRefs.benefits}
+          className={getSectionAnimationClass("benefits")}
         >
           <BenefitSection />
         </div>
@@ -254,56 +239,10 @@ export default function LandingPage() {
           <FAQSection />
         </div>
 
-        <FooterSection />
-
-        {/* <div
-          ref={sectionRefs.about}
-          className={getSectionAnimationClass("about")}
-        >
-          <AboutSection />
+        <div ref={sectionRefs.footer} className={getSectionAnimationClass("footer")}>
+          <FooterSection />
         </div>
-
-        <div
-          ref={sectionRefs.number}
-          className={getSectionAnimationClass("number")}
-        >
-          <NumberSection />
-        </div>
-
-        <div
-          ref={sectionRefs.coreTechnology}
-          className={getSectionAnimationClass("coreTechnology")}
-        >
-          <CoreTechnologySection />
-        </div>
-
-        <div
-          ref={sectionRefs.benefit}
-          className={getSectionAnimationClass("benefit")}
-        >
-          <BenefitSection />
-        </div>
-
-        <div
-          ref={sectionRefs.abstract}
-          className={getSectionAnimationClass("abstract")}
-        >
-          <AbstractSection />
-        </div>
-
-        <div
-          ref={sectionRefs.support}
-          className={getSectionAnimationClass("support")}
-        >
-          <SupportSection />
-        </div>
-
-        <div ref={sectionRefs.faq} className={getSectionAnimationClass("faq")}>
-          <FAQSection />
-        </div>
-
-        <FooterSection /> */}
       </div>
     </div>
-  );
+  )
 }

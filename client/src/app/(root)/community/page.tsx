@@ -22,6 +22,7 @@ const CommunityPage = () => {
         setItems((prev) => [...prev, ...newItems]);
         setCursor(Math.max(0, cursor - PAGE_SIZE));
       }
+      console.log('newItems', newItems);
     } catch (error) {
       console.error("Error loading more items:", error);
     } finally {
@@ -42,6 +43,7 @@ const CommunityPage = () => {
           setItems(newItems);
           setCursor(Math.max(0, cursorValue - PAGE_SIZE));
         }
+        console.log('newItems', newItems);
       } catch (error) {
         console.error("Error initializing page:", error);
       } finally {

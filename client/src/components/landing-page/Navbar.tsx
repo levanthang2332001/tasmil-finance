@@ -8,6 +8,7 @@ import { FiArrowUpRight, FiMenu, FiX } from "react-icons/fi";
 import { BsTwitterX } from "react-icons/bs";
 import { FaTelegram } from "react-icons/fa";
 import React from "react";
+import { PATHS } from "@/constants/routes";
 // import { socialConfig, fundingConfig } from "@/config";
 import {
   Tooltip,
@@ -75,7 +76,7 @@ const AnnouncementBar = () => {
         </Typography>
       </div>
 
-      <Link href="/ai-agents" className="group z-10">
+      <Link href={PATHS.DEFI_AGENT} className="group z-10">
         <Button
           variant="gradient"
           size="sm"
@@ -111,7 +112,7 @@ interface MainNavbarProps {
 const MainNavbar = ({
   isMobileMenuOpen,
   toggleMobileMenu,
-  onSectionClick,
+  // onSectionClick,
 }: MainNavbarProps) => {
   const router = useRouter();
   type TabName = "DASHBOARD" | "DEFI AGENTS" | "COMMUNITY" | "PORTFOLIO";
@@ -197,24 +198,16 @@ const MainNavbar = ({
     // Handle routing or scrolling based on selected tab
     switch (tab) {
       case "DASHBOARD":
-        if (onSectionClick) {
-          requestAnimationFrame(() => {
-            onSectionClick("coreTechnology");
-          });
-        }
+        router.push(PATHS.DASHBOARD);
         break;
       case "DEFI AGENTS":
-        if (onSectionClick) {
-          requestAnimationFrame(() => {
-            onSectionClick("benefit");
-          });
-        }
+        router.push(PATHS.DEFI_AGENT);
         break;
       case "COMMUNITY":
-        router.push("/air-drop");
+        router.push(PATHS.COMMUNITY);
         break;
       case "PORTFOLIO":
-        router.push("/air-drop");
+        router.push(PATHS.PORTFOLIO);
         break;
       default:
         break;
@@ -290,7 +283,7 @@ const MainNavbar = ({
 
           <div ref={frameworkRef} className="relative">
             <Link
-              href="#framework-section"
+              href={`${PATHS.DASHBOARD}`}
               className="flex items-center px-4 py-3 relative hover:bg-white/10 transition-all duration-300 group"
               onClick={(e) => {
                 e.preventDefault();
@@ -314,7 +307,7 @@ const MainNavbar = ({
           </div>
           <div ref={useCaseRef} className="relative">
             <Link
-              href="#usecase-section"
+              href={`${PATHS.DEFI_AGENT}`}
               className="flex items-center px-4 py-3 hover:bg-white/10 transition-all duration-300 group"
               onClick={(e) => {
                 e.preventDefault();
@@ -338,7 +331,7 @@ const MainNavbar = ({
           </div>
           <div ref={rewardRef} className="relative">
             <Link
-              href="/air-drop"
+              href={PATHS.COMMUNITY}
               className="flex items-center gap-2 px-4 py-3 hover:bg-white/10 transition-all duration-300 group"
               onClick={(e) => {
                 e.preventDefault();
@@ -362,7 +355,7 @@ const MainNavbar = ({
           </div>
           <div ref={rewardRef} className="relative">
             <Link
-              href="/air-drop"
+              href={PATHS.PORTFOLIO}
               className="flex items-center gap-2 px-4 py-3 hover:bg-white/10 transition-all duration-300 group"
               onClick={(e) => {
                 e.preventDefault();
@@ -418,23 +411,14 @@ const MainNavbar = ({
 
       {/* CTA Button (Desktop) - Right side */}
       <div className="hidden md:block">
-        {/* {activeAccount?.address ? ( */}
-        {true ? (
-          // When wallet is connected, show Launch Terminal button
           <Button
             variant="gradient"
             size="default"
             className="font-mono text-black font-semibold text-sm uppercase py-2 px-4 rounded-lg transition-all duration-300 hover:tracking-wider"
-            // onClick={handleLaunchApp}
+            onClick={() => router.push(PATHS.DEFI_AGENT)}
           >
             LAUNCH TERMINAL
           </Button>
-        ) : (
-          // When wallet is not connected, show Connect button with LAUNCH TERMINAL label
-          <div className="bg-white hover:bg-white/90 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
-            <ConnectButton label="LAUNCH TERMINAL" />
-          </div>
-        )}
       </div>
 
       {/* Mobile Menu Modal with slide-down animation */}
@@ -522,7 +506,7 @@ const MainNavbar = ({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Link
-                        href={""}
+                        href={PATHS.X}
                         aria-label="Twitter"
                         className="group"
                       >
@@ -540,7 +524,7 @@ const MainNavbar = ({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Link
-                        href={""}
+                        href={PATHS.TELEGRAM}
                         aria-label="Telegram"
                         className="group"
                       >

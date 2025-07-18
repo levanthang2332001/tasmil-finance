@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Typography } from "../ui/typography";
 import { Button } from "../ui/button";
 import { useMobile } from "@/hooks/useMobile";
+import { PATHS } from "@/constants/routes";
 
 export const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -129,7 +130,7 @@ export const HeroSection = () => {
                 logo="/images/logo.png"
                 logoAlt="Tasmil Finance Logo"
                 logoSize={24}
-                onClick={() => router.push("/ai-agents")}
+                onClick={() => router.push(PATHS.DEFI_AGENT)}
                 className="px-2 rounded-lg shadow-[0_0_15px_rgba(181,234,255,0.5)] hover:shadow-[0_0_25px_rgba(181,234,255,0.7)] font-mono text-black text-base uppercase transition-all duration-300 hover:tracking-wider"
               >
                 LAUNCH TASMIL FINANCE
@@ -174,7 +175,7 @@ export const HeroSection = () => {
                   logo="/images/logo.png"
                   logoAlt="Tasmil Finance Logo"
                   logoSize={24}
-                  onClick={() => router.push("/ai-agents")}
+                  onClick={() => router.push(PATHS.DEFI_AGENT)}
                   className="px-2 rounded-lg shadow-[0_0_15px_rgba(181,234,255,0.5)] hover:shadow-[0_0_25px_rgba(181,234,255,0.7)] font-mono text-black text-base uppercase transition-all duration-300 hover:tracking-wider"
                 >
                   LAUNCH TASMIL FINANCE

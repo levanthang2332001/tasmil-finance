@@ -171,7 +171,7 @@ export const FAQSection = () => {
                       // variant="h3"
                       font="darkerGrotesk"
                       weight="medium"
-                      className="text-black text-lg md:text-3.8xl mb-1"
+                      className="text-black text-lg md:text-xl mb-1"
                     >
                       {faq.question}
                     </Typography>
@@ -197,7 +197,7 @@ export const FAQSection = () => {
                   >
                     <Typography
                       font="darkerGrotesk"
-                      className="text-white text-lg md:text-xl"
+                      className="text-white text-lg"
                     >
                       {faq.answer}
                     </Typography>

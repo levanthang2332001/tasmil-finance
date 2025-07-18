@@ -1,53 +1,42 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-const LoadingItem = ({ index }: { index?: number }) => {
+const LoadingItem = () => {
   return (
-    <div
-      className={`border-b border-gray-100/80 dark:border-white/10 p-4 ${
-        index && index === 0 ? "border-t" : ""
-      }`}
-    >
-      <div className="flex space-x-3">
-        {/* Avatar skeleton */}
-        <div className="flex-shrink-0">
-          <Skeleton className="w-10 h-10 rounded-full" />
-        </div>
-
-        {/* Content skeleton */}
-        <div className="flex-1 min-w-0">
-          {/* Header skeleton */}
-          <div className="flex items-center space-x-2 mb-2">
-            <Skeleton className="h-4 w-20" />
-            <Skeleton className="h-3 w-16" />
-            <Skeleton className="h-3 w-8" />
-          </div>
-
-          {/* Content skeleton */}
-          <div className="space-y-2 mb-3">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-3/4" />
-            <Skeleton className="h-4 w-1/2" />
-          </div>
-
-          {/* Engagement buttons skeleton */}
-          <div className="flex items-center justify-between max-w-md">
-            <div className="flex items-center space-x-2">
-              <Skeleton className="w-8 h-8 rounded-full" />
-              <Skeleton className="h-3 w-4" />
+    <div className="relative flex size-full max-w-lg flex-col gap-2 overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-4 backdrop-blur-md bg-white/90 dark:bg-gray-900/90">
+      {/* Header */}
+      <div className="flex flex-row justify-between tracking-tight">
+        <div className="flex items-center space-x-3">
+          <Skeleton className="w-12 h-12 rounded-full" />
+          <div>
+            <div className="flex items-center space-x-2 mb-1">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-4 w-4 rounded-full" />
             </div>
-            <div className="flex items-center space-x-2">
-              <Skeleton className="w-8 h-8 rounded-full" />
-              <Skeleton className="h-3 w-4" />
+            <div className="flex items-center space-x-1">
+              <Skeleton className="h-3 w-16" />
+              <Skeleton className="h-3 w-1" />
+              <Skeleton className="h-3 w-8" />
             </div>
-            <div className="flex items-center space-x-2">
-              <Skeleton className="w-8 h-8 rounded-full" />
-              <Skeleton className="h-3 w-4" />
-            </div>
-            <Skeleton className="w-8 h-8 rounded-full" />
           </div>
         </div>
+        <Skeleton className="w-5 h-5 rounded-sm" />
       </div>
+
+      {/* Content */}
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-4 w-1/2" />
+      </div>
+
+      {/* Optional media */}
+      {Math.random() > 0.6 && (
+        <div className="mt-3">
+          <Skeleton className="w-full h-48 rounded-2xl" />
+        </div>
+      )}
     </div>
   );
 };
+
 export default LoadingItem;

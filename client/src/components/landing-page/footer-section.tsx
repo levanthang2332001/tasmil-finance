@@ -4,6 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Typography } from "../ui/typography";
 import { ArrowUp } from "lucide-react";
+import { BsTwitterX } from "react-icons/bs";
+import { FaTelegram } from "react-icons/fa";
+import { PATHS } from "@/constants/routes";
 import {
   Tooltip,
   TooltipContent,
@@ -78,7 +81,7 @@ export function FooterSection() {
             as="h2"
             variant="h2"
             weight="bold"
-            className="text-4xl md:text-6xl leading-tight text-white mb-6"
+            className="text-3xl md:text-4xl leading-tight text-white mb-6"
           >
             REVOLUTIONIZE YOUR DEFI EXPERIENCE WITH TASMIL FINANCE
           </Typography>
@@ -212,12 +215,12 @@ export function FooterSection() {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Link
-                        href="https://twitter.com"
+                        href={PATHS.X}
                         aria-label="Twitter"
                         className="group"
                       >
                         <div className="relative flex items-center justify-center h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/5 hover:bg-white/20">
-                          <span className="text-white text-lg">𝕏</span>
+                          <BsTwitterX className="text-white text-lg" />
                           <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40"></div>
                         </div>
                       </Link>
@@ -230,12 +233,12 @@ export function FooterSection() {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Link
-                        href="https://telegram.org"
+                        href={PATHS.TELEGRAM}
                         aria-label="Telegram"
                         className="group"
                       >
                         <div className="relative flex items-center justify-center h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/5 hover:bg-white/20">
-                          <span className="text-white text-lg">✈</span>
+                          <FaTelegram className="text-white text-lg" />
                           <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40"></div>
                         </div>
                       </Link>
@@ -288,12 +291,12 @@ export function FooterSection() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
-                    href="https://twitter.com"
+                    href={PATHS.X}
                     aria-label="Twitter"
                     className="group"
                   >
                     <div className="relative flex items-center justify-center h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/5 hover:bg-white/20">
-                      <span className="text-white text-lg group-hover:scale-110 transition-transform">𝕏</span>
+                      <BsTwitterX className="text-white text-lg group-hover:scale-110 transition-transform" />
                       <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40"></div>
                     </div>
                   </Link>
@@ -306,12 +309,12 @@ export function FooterSection() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
-                    href="https://telegram.org"
+                    href={PATHS.TELEGRAM}
                     aria-label="Telegram"
                     className="group"
                   >
                     <div className="relative flex items-center justify-center h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/5 hover:bg-white/20">
-                      <span className="text-white text-lg group-hover:scale-110 transition-transform">✈</span>
+                      <FaTelegram className="text-white text-lg group-hover:scale-110 transition-transform" />
                       <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40"></div>
                     </div>
                   </Link>

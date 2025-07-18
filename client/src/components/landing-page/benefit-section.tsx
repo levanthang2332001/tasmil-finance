@@ -193,7 +193,7 @@ export const BenefitSection = () => {
                           cardsLoaded[index]
                             ? "opacity-100 translate-x-0"
                             : "opacity-0 -translate-x-4"
-                        } group-hover:bg-gradient-to-r group-hover:from-[#B5EAFF] group-hover:to-[#00BFFF] group-hover:bg-clip-text group-hover:text-transparent`}
+                        }`}
                       >
                         {feature.label}
                       </Typography>
@@ -241,14 +241,14 @@ export const BenefitSection = () => {
                     <Typography
                       as="h3"
                       weight="semibold"
-                      className="text-white text-xl md:text-2xl mb-3 font-semibold transition-all duration-500 group-hover:bg-gradient-to-r group-hover:from-[#B5EAFF] group-hover:to-[#00BFFF] group-hover:bg-clip-text group-hover:text-transparent"
+                      className="text-white text-xl md:text-2xl mb-3 font-semibold transition-all duration-500"
                     >
                       {feature.title}
                     </Typography>
                     <Typography
                       as="p"
                       font="mono"
-                      className="text-[#b1bab4bf] text-xs md:text-sm leading-5 transition-all duration-500 group-hover:bg-gradient-to-r group-hover:from-[#B5EAFF] group-hover:to-[#00BFFF] group-hover:bg-clip-text group-hover:text-transparent"
+                      className="text-[#b1bab4bf] text-xs md:text-sm leading-5 transition-all duration-500"
                     >
                       {feature.description}
                     </Typography>
