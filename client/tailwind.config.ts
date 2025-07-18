@@ -1,7 +1,9 @@
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 import svgToDataUri from "mini-svg-data-uri";
-import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
+
+// Use require with proper typing to avoid TypeScript issues
+const flattenColorPalette = require("tailwindcss/lib/util/flattenColorPalette") as (colors: any) => Record<string, string>;
 
 const config = {
   darkMode: ["class"],
@@ -168,11 +170,9 @@ const config = {
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
-          DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
@@ -182,11 +182,9 @@ const config = {
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
-          DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
