@@ -73,7 +73,7 @@ export const BenefitSection = () => {
       label: "AI Agent System",
       title: "Conversational DeFi Intelligence",
       description:
-        "Transform complex DeFi operations into simple conversations. Execute sophisticated strategies across SUI's leading protocols with natural language commands while maintaining non-custodial control.",
+        "Transform complex DeFi operations into simple conversations. Execute sophisticated strategies across APTOS's leading protocols with natural language commands while maintaining non-custodial control.",
       background: bg1,
     },
     {
@@ -86,10 +86,10 @@ export const BenefitSection = () => {
     },
     {
       icon: FiGlobe,
-      label: "SUI Ecosystem Integration",
-      title: "Native SUI DeFi Gateway",
+      label: "APTOS Ecosystem Integration",
+      title: "Native APTOS DeFi Gateway",
       description:
-        "Seamless integration with SUI's entire DeFi ecosystem. Real-time portfolio tracking, cross-protocol yield optimization, and intelligent routing through our self-custody wallet.",
+        "Seamless integration with APTOS's entire DeFi ecosystem. Real-time portfolio tracking, cross-protocol yield optimization, and intelligent routing through our self-custody wallet.",
       background: bg3,
     },
   ];

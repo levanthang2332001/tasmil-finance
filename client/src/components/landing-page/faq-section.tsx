@@ -15,13 +15,13 @@ const faqs: FAQItem[] = [
     id: "001",
     question: "What is Tasmil Finance?",
     answer:
-      "Tasmil Finance is an AI-powered DeFi platform built specifically for the SUI blockchain ecosystem. It serves as your smart gateway to SUI’s leading DeFi protocols, combining intelligent trading agents with seamless access to Cetus, NAVI, Bluefin, Walrus, and other major protocols through natural language interactions.",
+      "Tasmil Finance is an AI-powered DeFi platform built specifically for the APTOS blockchain ecosystem. It serves as your smart gateway to APTOS’s leading DeFi protocols, combining intelligent trading agents with seamless access to LiquidSwap, Thala, Shelby, and other major protocols through natural language interactions.",
   },
   {
     id: "002",
     question: "How does the AI agent system work?",
     answer:
-      "Our AI agents act as your personal DeFi assistants. Simply describe what you want to do in natural language - like “swap 100 SUI for USDC” or “find the best yield farming opportunity” - and the agents handle the complex protocol interactions automatically. They combine real-time on-chain data with social sentiment analysis to make intelligent decisions on your behalf.",
+      "Our AI agents act as your personal DeFi assistants. Simply describe what you want to do in natural language - like “swap 100 APTOS for USDC” or “find the best yield farming opportunity” - and the agents handle the complex protocol interactions automatically. They combine real-time on-chain data with social sentiment analysis to make intelligent decisions on your behalf.",
   },
   {
     id: "003",
@@ -33,7 +33,7 @@ const faqs: FAQItem[] = [
     id: "004",
     question: "What makes Tasmil different from other DeFi platforms?",
     answer:
-      "Tasmil is the first comprehensive AI-powered gateway specifically built for SUI’s DeFi ecosystem. Unlike traditional DeFi interfaces that require technical knowledge, our conversational agents make sophisticated strategies accessible to everyone. Plus, our creator economy lets you build and monetize your own trading agents.",
+      "Tasmil is the first comprehensive AI-powered gateway specifically built for APTOS’s DeFi ecosystem. Unlike traditional DeFi interfaces that require technical knowledge, our conversational agents make sophisticated strategies accessible to everyone. Plus, our creator economy lets you build and monetize your own trading agents.",
   },
   {
     id: "005",
@@ -49,15 +49,15 @@ const faqs: FAQItem[] = [
   },
   {
     id: "007",
-    question: "Which SUI protocols does Tasmil integrate with?",
+    question: "Which APTOS protocols does Tasmil integrate with?",
     answer:
-      "Tasmil directly integrates with all major SUI DeFi protocols including Cetus (DEX), NAVI (lending), Bluefin (derivatives), Walrus (storage), and many others. Our agents can execute complex multi-protocol strategies seamlessly, from yield farming to arbitrage opportunities.",
+      "Tasmil directly integrates with all major APTOS DeFi protocols including LiquidSwap (DEX), Thala (lending), Shelby (storage), and many others. Our agents can execute complex multi-protocol strategies seamlessly, from yield farming to arbitrage opportunities.",
   },
   {
     id: "008",
     question: "How do I get started with Tasmil Finance?",
     answer:
-      "Simply connect your SUI wallet or create a new one through our platform. Start chatting with our AI agents to explore available strategies, or browse our agent marketplace to find strategies created by other users. Your first interactions help our AI learn your preferences and risk tolerance.",
+      "Simply connect your APTOS wallet or create a new one through our platform. Start chatting with our AI agents to explore available strategies, or browse our agent marketplace to find strategies created by other users. Your first interactions help our AI learn your preferences and risk tolerance.",
   },
   {
     id: "009",
