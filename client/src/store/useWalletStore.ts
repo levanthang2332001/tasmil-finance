@@ -53,7 +53,8 @@ export const useWalletStore = create<WalletState>()(
       partialize: (state) => ({
         connected: state.connected,
         account: state.account,
+        tasmilAddress: state.tasmilAddress,
       }),
-    }
-  )
+    },
+  ),
 );

@@ -17,7 +17,7 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import { Typography } from "../ui/typography";
-import { Button } from "../ui/button";
+import { Button } from "../ui/button-v2";
 import ConnectButton from "../wallet/ConnectButton";
 
 // Add these styles at the top of the file
@@ -44,7 +44,7 @@ interface IndicatorStyle {
 //       className="w-full relative backdrop-blur-md flex justify-center items-center h-12 gap-6 overflow-hidden"
 //       style={{
 //         background: "rgba(0, 0, 0, 0.3)",
-//       }}  
+//       }}
 //     >
 //       <div className="absolute top-[-20px] right-[-50px] w-[600px] h-auto opacity-30 z-0">
 //         <Image
@@ -95,7 +95,7 @@ type SectionId =
   | "about"
   | "number"
   | "coreTechnology"
-  | "benefit" 
+  | "benefit"
   | "abstract"
   | "faq"
   | "support";
@@ -335,7 +335,7 @@ const MainNavbar = ({
               className="flex items-center gap-2 px-4 py-3 hover:bg-white/10 transition-all duration-300 group"
               onClick={(e) => {
                 e.preventDefault();
-                  handleTabClick("COMMUNITY");
+                handleTabClick("COMMUNITY");
               }}
             >
               <Typography
@@ -348,7 +348,7 @@ const MainNavbar = ({
                 }
               >
                 <span className="uppercase transition-colors duration-300">
-                COMMUNITY
+                  COMMUNITY
                 </span>
               </Typography>
             </Link>
@@ -359,7 +359,7 @@ const MainNavbar = ({
               className="flex items-center gap-2 px-4 py-3 hover:bg-white/10 transition-all duration-300 group"
               onClick={(e) => {
                 e.preventDefault();
-                  handleTabClick("PORTFOLIO");
+                handleTabClick("PORTFOLIO");
               }}
             >
               <Typography
@@ -372,7 +372,7 @@ const MainNavbar = ({
                 }
               >
                 <span className="uppercase transition-colors duration-300">
-                PORTFOLIO
+                  PORTFOLIO
                 </span>
               </Typography>
             </Link>
@@ -411,14 +411,14 @@ const MainNavbar = ({
 
       {/* CTA Button (Desktop) - Right side */}
       <div className="hidden md:block">
-          <Button
-            variant="gradient"
-            size="default"
-            className="font-mono text-black font-semibold text-sm uppercase py-2 px-4 rounded-lg transition-all duration-300 hover:tracking-wider"
-            onClick={() => router.push(PATHS.DEFI_AGENT)}
-          >
-            LAUNCH APP
-          </Button>
+        <Button
+          variant="gradient"
+          size="default"
+          className="font-mono text-black font-semibold text-sm uppercase py-2 px-4 rounded-lg transition-all duration-300 hover:tracking-wider"
+          onClick={() => router.push(PATHS.DEFI_AGENT)}
+        >
+          LAUNCH APP
+        </Button>
       </div>
 
       {/* Mobile Menu Modal with slide-down animation */}
@@ -468,7 +468,7 @@ const MainNavbar = ({
               ) : (
                 // When wallet is not connected, show Connect button with LAUNCH TERMINAL label
                 <div className="bg-white hover:bg-white/90 rounded-lg overflow-hidden shadow-[0px_8px_8px_-4px_#b8bfc980] hover:shadow-[0px_10px_15px_-3px_#b8bfc980] transition-all duration-300 hover:scale-105">
-                  <ConnectButton label="LAUNCH TERMINAL"/>
+                  <ConnectButton label="LAUNCH TERMINAL" />
                 </div>
               )}
             </header>
@@ -543,22 +543,27 @@ const MainNavbar = ({
 
               {/* byData logo */}
               <Link
-        href="/"
-        className={`flex flex-row items-center gap-2 md:absolute md:left-1/2 md:top-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2`}
-      >
-        <div className="relative w-8 h-8 md:w-10 md:h-10 flex items-center justify-center">
-          <Image src={"/images/logo.png"} alt="logo" width={40} height={40} />
-        </div>
-        <Typography
-          font="darkerGrotesk"
-          size="2xl"
-          weight="bold"
-          gradient={true}
-          className="transition-all duration-300"
-        >
-          Tasmil Finance
-        </Typography>
-      </Link>
+                href="/"
+                className={`flex flex-row items-center gap-2 md:absolute md:left-1/2 md:top-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2`}
+              >
+                <div className="relative w-8 h-8 md:w-10 md:h-10 flex items-center justify-center">
+                  <Image
+                    src={"/images/logo.png"}
+                    alt="logo"
+                    width={40}
+                    height={40}
+                  />
+                </div>
+                <Typography
+                  font="darkerGrotesk"
+                  size="2xl"
+                  weight="bold"
+                  gradient={true}
+                  className="transition-all duration-300"
+                >
+                  Tasmil Finance
+                </Typography>
+              </Link>
             </div>
           </div>
         </>

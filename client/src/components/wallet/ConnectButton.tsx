@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { AuthService } from "@/services/auth.service";
+import { AccountService } from "@/services/account.service";
 import { useWalletStore } from "@/store/useWalletStore";
 import { truncateAddress, useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Loader2, LogOut, User, Wallet } from "lucide-react";
@@ -28,6 +29,15 @@ interface ConnectButtonProps {
 }
 
 const AUTH_CANCELLED_KEY = "wallet_auth_cancelled";
+
+interface UserResponse {
+  success: boolean;
+  message?: string;
+  data?: {
+    id: string;
+    tasmilAddress: string;
+  };
+}
 
 export default function ConnectButton({
   label = "Connect Aptos Wallet",
@@ -95,12 +105,26 @@ export default function ConnectButton({
 
         if (!response.success) throw new Error("Signature verification failed");
 
+        // Step 6: Check user and get Tasmil address after successful verification
+        let tasmilAddress = null;
+        try {
+          const user = (await AccountService.checkUser(
+            walletAccount.address,
+          )) as UserResponse;
+          if (user.success && user.data) {
+            tasmilAddress = user.data.tasmilAddress;
+          }
+        } catch (error) {
+          console.error("Error checking user:", error);
+          // Don't fail the connection if check-user fails
+        }
+
         // Success
         sessionStorage.removeItem(AUTH_CANCELLED_KEY);
         setWalletState({
           connected: true,
           account: walletAccount.address,
-          tasmilAddress: null,
+          tasmilAddress,
         });
         toast.success("Wallet Connected", { description: response?.message });
         needsDisconnect = false;

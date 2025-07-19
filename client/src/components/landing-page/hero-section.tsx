@@ -5,7 +5,7 @@ import Image from "next/image";
 import { FiArrowDown } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { Typography } from "../ui/typography";
-import { Button } from "../ui/button";
+import { Button } from "../ui/button-v2";
 import { useMobile } from "@/hooks/useMobile";
 import { PATHS } from "@/constants/routes";
 
@@ -69,9 +69,9 @@ export const HeroSection = () => {
           placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
         />
-        
+
         {/* Black gradient overlay from bottom to 30% */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" 
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
              style={{
                background: "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.3) 80%, transparent 100%)"
              }}
@@ -114,7 +114,7 @@ export const HeroSection = () => {
               >
                 Trading Companion
               </Typography>
-              
+
               <div className="my-3 max-w-lg">
                 <Typography
                   variant="p"
@@ -123,7 +123,7 @@ export const HeroSection = () => {
                   Experience seamless token swaps, liquidity management, and real-time market insights with our AI-powered DeFi chatbot.
                 </Typography>
               </div>
-              
+
               <Button
                 variant="gradient"
                 size="lg"
@@ -159,7 +159,7 @@ export const HeroSection = () => {
                     Trading Companion
                   </Typography>
                 </div>
-                
+
                 <div className="max-w-xl">
                   <Typography
                     variant="p"
