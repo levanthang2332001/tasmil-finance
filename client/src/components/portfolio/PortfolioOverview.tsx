@@ -60,7 +60,7 @@ export function PortfolioStatsCard({
     <Card className="glass border-primary/20 shadow-lg shadow-primary/5 rounded-xl">
       <CardContent className="p-4 sm:p-5 md:p-6">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-muted font-medium">Net Worth</span>
+          <span className="text-lg text-muted font-medium">Net Worth</span>
           <Button
             variant="outline"
             size="sm"
@@ -125,7 +125,7 @@ export function PortfolioStatsCard({
 function Metric({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="text-left">
-      <div className="text-xs text-muted mb-1 font-medium">{label}</div>
+      <div className="text-base text-muted mb-1 font-medium">{label}</div>
       <div className="text-lg font-bold text-foreground">{value}</div>
     </div>
   );

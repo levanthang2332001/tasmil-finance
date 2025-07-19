@@ -108,7 +108,7 @@ function TokenBreakdown({ tokens }: { tokens: TokenData[] }) {
   return (
     <div className="w-full space-y-4">
       <h1 className="text-2xl font-bold">Token Breakdown</h1>
-      <p className="text-sm text-gray-400 mb-4">Click on any token to view it on Aptos Explorer</p>
+      <p className="text-base text-gray-400 mb-4">Click on any token to view it on Aptos Explorer</p>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           {renderTableHeader()}

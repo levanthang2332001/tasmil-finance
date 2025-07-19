@@ -51,15 +51,13 @@ const SuggestionGrid = ({
             )}
           >
             <div className="flex items-center gap-4">
-              <div className="p-1 rounded-xl bg-gradient-to-br from-white to-secondary/10 border border-secondary/20 transition-all duration-300">
-                <Image
-                  src={suggestion.linkImage}
-                  alt={suggestion.text}
-                  width={48}
-                  height={48}
-                  className="w-12 h-12"
-                />
-              </div>
+              <Image
+                src={suggestion.linkImage}
+                alt={suggestion.text}
+                width={48}
+                height={48}
+                className="w-12 h-12"
+              />
               <span className="text-white/90 font-medium group-hover:text-white transition-colors duration-300">
                 {suggestion.text}
               </span>
