@@ -1,7 +1,10 @@
 import { BentoItem } from "@/components/community/NewsFeed";
 
 export class CommunityService {
-  private static async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  private static async request<T>(
+    endpoint: string,
+    options: RequestInit = {},
+  ): Promise<T> {
     const response = await fetch(`${endpoint}`, {
       ...options,
       headers: {
@@ -14,7 +17,9 @@ export class CommunityService {
     const data = await response.json();
 
     if (!response.ok) {
-      const error = new Error(data.error || `API request failed: ${response.statusText}`);
+      const error = new Error(
+        data.error || `API request failed: ${response.statusText}`,
+      );
       throw error;
     }
 
@@ -44,7 +49,20 @@ export class CommunityService {
     }));
   }
 
-  static async getBatches(limit?: number, cursor?: number): Promise<BentoItem[]> {
+  static formatIsoToDate(isoString: string) {
+    const date = new Date(isoString);
+
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // getUTCMonth() trả về từ 0 đến 11
+    const year = date.getUTCFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
+
+  static async getBatches(
+    limit?: number,
+    cursor?: number,
+  ): Promise<BentoItem[]> {
     let url = "/api/community/batches";
     const params = new URLSearchParams();
 
@@ -63,13 +81,7 @@ export class CommunityService {
       icon: null,
       author: item.user_name,
       handle: item.x_handle,
-      time: item.date
-        ? new Date(item.date).toLocaleDateString("vi-VN", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          })
-        : "",
+      time: item.date ? this.formatIsoToDate(item.date) : "",
       avatar: item.user_avatar_url,
       verified: item.is_verify,
       hasImage: !!item.photo_url,
@@ -84,7 +96,9 @@ export class CommunityService {
   }
 
   static async getLatestCursor(): Promise<string> {
-    const response = await this.request<{ cursor: string }>("/api/community/batches/cursor");
+    const response = await this.request<{ cursor: string }>(
+      "/api/community/batches/cursor",
+    );
     return response.cursor;
   }
 }
