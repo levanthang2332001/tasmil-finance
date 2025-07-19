@@ -69,6 +69,8 @@ export class BridgeService {
           quote,
           decimalsSrcToken: dataA.decimals,
           decimalsDstToken: dataB.decimals,
+          symbolSrcToken: dataA.symbol,
+          symbolDstToken: dataB.symbol,
         },
       };
     } catch (error) {
