@@ -158,7 +158,7 @@ export function Menu({ isOpen }: MenuProps) {
               <div className="w-full overflow-hidden flex flex-col gap-2 items-center rounded-2xl p-3 glass border border-white/5">
                 {isOpen ? (
                   <>
-                    <p className="text-sm text-white/60">Aptos Wallet</p>
+                    <p className="text-base text-white/60">Aptos Wallet</p>
                     <ConnectButton className="w-full" />
                   </>
                 ) : (

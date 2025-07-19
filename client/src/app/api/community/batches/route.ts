@@ -1,8 +1,6 @@
 import { API_BASE_URL } from "@/constants/routes";
 import { NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic';
-
 export async function GET(request: Request) {
   try {
     // Get URL object from request to access search params

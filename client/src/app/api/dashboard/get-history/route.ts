@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { API_BASE_URL } from "@/constants/routes";
 
-export const dynamic = 'force-dynamic';
-
 interface HistoricalDataItem {
   date: string;
   open: number;

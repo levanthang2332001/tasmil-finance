@@ -12,7 +12,7 @@ import { AuthService } from "@/services/auth.service";
 import { useWalletStore } from "@/store/useWalletStore";
 import { truncateAddress, useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Loader2, LogOut, User, Wallet } from "lucide-react";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { toast } from "sonner";
 import ButtonCopy from "./menu/ButtonCopy";
 
@@ -70,7 +70,9 @@ export default function ConnectButton({
         }
 
         // Step 3: Get nonce
-        const { nonce, message } = (await AuthService.getNonce(walletAccount.address)) as {
+        const { nonce, message } = (await AuthService.getNonce(
+          walletAccount.address,
+        )) as {
           nonce: string;
           message: string;
         };
@@ -84,7 +86,9 @@ export default function ConnectButton({
         const response = await AuthService.verifySignature({
           walletAddress: walletAccount.address,
           publicKey: walletAccount.publicKey,
-          signature: (signature.signature as any).signature || String(signature.signature),
+          signature:
+            (signature.signature as any).signature ||
+            String(signature.signature),
           message: signature.fullMessage,
           nonce,
         });
@@ -93,17 +97,24 @@ export default function ConnectButton({
 
         // Success
         sessionStorage.removeItem(AUTH_CANCELLED_KEY);
-        setWalletState({ connected: true, account: walletAccount.address, tasmilAddress: null });
+        setWalletState({
+          connected: true,
+          account: walletAccount.address,
+          tasmilAddress: null,
+        });
         toast.success("Wallet Connected", { description: response?.message });
         needsDisconnect = false;
       } catch (error: any) {
-        const isCancelled = error.message?.includes("rejected") || error.code === 4001;
+        const isCancelled =
+          error.message?.includes("rejected") || error.code === 4001;
 
         if (isCancelled) {
           sessionStorage.setItem(AUTH_CANCELLED_KEY, "true");
         } else {
           const errorMessage =
-            typeof error === "string" ? error : error?.message || "Unknown error occurred";
+            typeof error === "string"
+              ? error
+              : error?.message || "Unknown error occurred";
           toast.error("Connection Failed", { description: errorMessage });
         }
 
@@ -121,7 +132,14 @@ export default function ConnectButton({
         setSigning(false);
       }
     },
-    [connect, disconnect, setWalletState, setSigning, signMessage, resetWalletState]
+    [
+      connect,
+      disconnect,
+      setWalletState,
+      setSigning,
+      signMessage,
+      resetWalletState,
+    ],
   );
 
   const handleDisconnect = useCallback(async () => {
@@ -150,13 +168,6 @@ export default function ConnectButton({
 
   const renderTitle = (title: string) => label.trim().length > 0 && title;
 
-
-  useEffect(() => {
-    if (account) {
-      setWalletState({ connected: true, account: account.address.toString(), tasmilAddress: null });
-    }
-  }, [account, setWalletState]);
-
   // Render states
   if (walletConnected && !verified) {
     return (
@@ -173,7 +184,9 @@ export default function ConnectButton({
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" className={cn("gap-2", className)}>
             <Wallet className="h-4 w-4" />
-            {account.ansName || truncateAddress(account.address?.toString()) || "Unknown"}
+            {account.ansName ||
+              truncateAddress(account.address?.toString()) ||
+              "Unknown"}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

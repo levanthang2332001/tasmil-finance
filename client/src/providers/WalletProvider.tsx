@@ -18,7 +18,7 @@ export function WalletProvider({ children }: PropsWithChildren) {
   }, [connected, resetWalletState]);
 
   return (
-    <AptosWalletAdapterProvider autoConnect={false} dappConfig={{ network: Network.TESTNET }}>
+    <AptosWalletAdapterProvider autoConnect={true} dappConfig={{ network: Network.TESTNET }}>
       {children}
     </AptosWalletAdapterProvider>
   );

@@ -112,7 +112,7 @@ function TasmilWallet() {
         <div className="w-full rounded-lg p-3 bg-black/20">
           <div>
             <div className="flex justify-between items-center">
-              <p className="text-xs text-white/60">Tasmil Wallet</p>
+              <p className="text-base text-white/60">Tasmil Wallet</p>
               <ButtonEllipsis address={tasmilAddress || ""} />
             </div>
             <p className="text-gradient text-left font-mono font-semibold mt-1">

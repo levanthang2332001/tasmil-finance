@@ -61,7 +61,7 @@ function SuggestionList({ suggestions, onSuggestionClick, className }: Suggestio
             key={suggestion}
             className={cn(
               "px-3 py-2 rounded-md whitespace-nowrap font-medium transition-colors",
-              "bg-primary/10 text-primary-foreground hover:bg-primary/20",
+              "bg-primary/10 text-primary-foreground hover:bg-secondary/20",
               "border border-secondary/20 shadow-sm"
             )}
             onClick={() => onSuggestionClick(suggestion)}
