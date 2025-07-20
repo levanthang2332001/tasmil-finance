@@ -1,6 +1,7 @@
 export enum ACTION_TYPE {
   USER = "user",
   UNKNOWN = "unknown",
+  BRIDGE = "bridge",
   SWAP = "swap",
   PRE_SWAP = "pre_swap",
   LIQUIDITY = "liquidity",
