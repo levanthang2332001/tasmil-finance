@@ -20,8 +20,29 @@ export const TokenMapping = {
   USDC: {
     name: 'USDC',
     symbol: 'USDC',
-    hexAddress:
-      '0xbae207659db88bea0cbead6da0ed00aac12edcdda169e591cd41c94180b46f3b',
+    moveAddress:
+      '0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDC',
+    decimals: 6,
+  },
+  USDD: {
+    name: 'USDD',
+    symbol: 'USDD',
+    moveAddress:
+      '0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDD',
+    decimals: 6,
+  },
+  WETH: {
+    name: 'WETH',
+    symbol: 'WETH',
+    moveAddress:
+      '0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::WETH',
+    decimals: 6,
+  },
+  WBTC: {
+    name: 'WBTC',
+    symbol: 'WBTC',
+    moveAddress:
+      '0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::WBTC',
     decimals: 6,
   },
   ALT: {
