@@ -20,6 +20,91 @@ export class BridgeService {
     this.logger = new LoggerService(BridgeService.name);
   }
 
+  private parseErrorMessage(error: any): string {
+    if (!(error instanceof Error)) {
+      return 'Unknown error occurred';
+    }
+
+    const errorStr = error.message.toLowerCase();
+
+    if (
+      errorStr.includes('einsufficient_balance') ||
+      errorStr.includes('insufficient_balance')
+    ) {
+      return "Insufficient balance. You don't have enough tokens to complete this transaction.";
+    }
+
+    if (
+      errorStr.includes('transaction_expired') ||
+      errorStr.includes('expired')
+    ) {
+      return 'Transaction expired. Please try again with a new quote.';
+    }
+
+    if (errorStr.includes('invalid_signature')) {
+      return 'Invalid signature. Please reconnect your wallet and try again.';
+    }
+
+    if (errorStr.includes('network') || errorStr.includes('connection')) {
+      return 'Network error. Please check your connection and try again.';
+    }
+
+    if (errorStr.includes('gas') && errorStr.includes('insufficient')) {
+      return 'Insufficient gas. Please ensure you have enough APT for transaction fees.';
+    }
+
+    if (errorStr.includes('slippage')) {
+      return 'Price changed too much (slippage). Please try again with a new quote.';
+    }
+
+    if (
+      errorStr.includes('rate_limit') ||
+      errorStr.includes('too_many_requests')
+    ) {
+      return 'Too many requests. Please wait a moment and try again.';
+    }
+
+    if (
+      errorStr.includes('unauthorized') ||
+      errorStr.includes('authentication')
+    ) {
+      return 'Authentication failed. Please reconnect your wallet.';
+    }
+
+    if (
+      errorStr.includes('token not supported') ||
+      errorStr.includes('unsupported token')
+    ) {
+      return 'Token not supported for bridging on this chain.';
+    }
+
+    if (
+      errorStr.includes('invalid amount') ||
+      errorStr.includes('amount too small')
+    ) {
+      return 'Invalid amount. Please enter a valid amount to bridge.';
+    }
+
+    if (errorStr.includes('route not found') || errorStr.includes('no route')) {
+      return 'No bridge route available for this token pair.';
+    }
+
+    if (errorStr.includes('chain not supported')) {
+      return 'Chain not supported. Please select a supported destination chain.';
+    }
+
+    // Return original error message if it's user-friendly
+    if (
+      error.message &&
+      error.message.length > 0 &&
+      error.message.length < 200
+    ) {
+      return error.message;
+    }
+
+    return 'Operation failed. Please try again.';
+  }
+
   async quoteBridge(bridgeMessage: BridgeRequestDto): Promise<ChatResponseDto> {
     try {
       this.logger.log('Starting bridge quote calculation');
@@ -75,9 +160,13 @@ export class BridgeService {
       };
     } catch (error) {
       this.logger.error(error);
+      const errorMessage = this.parseErrorMessage(error);
+
       return {
-        message: 'Failed to calculate bridge quote',
-        data: null,
+        message: errorMessage,
+        data: {
+          error: errorMessage,
+        },
       };
     }
   }
@@ -111,9 +200,13 @@ export class BridgeService {
       };
     } catch (error) {
       this.logger.error(error);
+      const errorMessage = this.parseErrorMessage(error);
+
       return {
-        message: 'Failed to execute bridge',
-        data: null,
+        message: errorMessage,
+        data: {
+          error: errorMessage,
+        },
       };
     }
   }
