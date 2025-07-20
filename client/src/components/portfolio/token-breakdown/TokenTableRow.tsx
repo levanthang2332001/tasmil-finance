@@ -66,7 +66,7 @@ export function TokenTableRow({ token }: TokenTableRowProps) {
             />
           )}
           <div className="flex flex-col ">
-            <div className="flex items-center gap-2 group-hover:text-primary/80">
+            <div className="flex items-center gap-2 group-hover:text-muted">
               <span className="font-medium">{token.symbol}</span>
               <ExternalLink className="w-3 h-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>

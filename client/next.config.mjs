@@ -10,6 +10,7 @@ const nextConfig = {
       "pbs.twimg.com",
       "cdn.discordapp.com",
       "assets.panora.exchange",
+      "startup-template-sage.vercel.app",
     ],
   },
   webpack: (config) => {

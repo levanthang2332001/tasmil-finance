@@ -195,7 +195,7 @@ export default function ConnectButton({
   // Render states
   if (walletConnected && !verified) {
     return (
-      <Button variant="galaxy" className={cn("gap-2", className)} disabled>
+      <Button variant="secondary" className={cn("gap-2", className)} disabled>
         <Loader2 className="h-4 w-4 animate-spin" />
         {renderTitle("Verifying...")}
       </Button>
@@ -206,7 +206,7 @@ export default function ConnectButton({
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="galaxy" className={cn("gap-2", className)}>
+          <Button variant="secondary" className={cn("gap-2", className)}>
             <Wallet className="h-4 w-4" />
             {account.ansName ||
               truncateAddress(account.address?.toString()) ||
@@ -235,7 +235,7 @@ export default function ConnectButton({
 
   return (
     <Button
-      variant="galaxy"
+      variant="secondary"
       className={cn("gap-2", className)}
       onClick={handleConnectClick}
       disabled={signing}

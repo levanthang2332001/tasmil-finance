@@ -1,14 +1,52 @@
 import { AppProvider } from "@/providers";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-  adjustFontFallback: true,
+const geistMono = localFont({
+  src: "../../public/fonts/GeistMono.ttf",
+  variable: "--font-geist-mono",
+});
+
+const darkerGrotesk = localFont({
+  src: "../../public/fonts/DarkerGrotesque.ttf",
+  variable: "--font-darker-grotesk",
+});
+
+const labGrotesk = localFont({
+  src: "../../public/fonts/lab-grotesk.otf",
+  variable: "--font-lab-grotesk",
+});
+
+const ppNeue = localFont({
+  src: "../../public/fonts/PPNeueMontreal.otf",
+  variable: "--font-pp-neue",
+});
+
+const sfPro = localFont({
+  src: [
+    {
+      path: "../../public/fonts/SF-Pro-Display-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/SF-Pro-Display-Medium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/SF-Pro-Display-Semibold.otf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/SF-Pro-Display-Bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-sf-pro",
 });
 
 export const metadata: Metadata = {
@@ -32,10 +70,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      {/* dark mode */}
-      <body className={`${inter.variable} antialiased overflow-x-hidden dark`}>
-        <AppProvider>{children}</AppProvider>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${darkerGrotesk.variable} ${geistMono.variable} ${labGrotesk.variable} ${ppNeue.variable} ${sfPro.variable}`}
+    >
+      <body
+        className="font-sfPro relative min-h-screen antialiased bg-background text-foreground"
+        suppressHydrationWarning
+      >
+          <AppProvider>{children}</AppProvider>
       </body>
     </html>
   );

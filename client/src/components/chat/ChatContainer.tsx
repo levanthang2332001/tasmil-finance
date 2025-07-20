@@ -1,16 +1,16 @@
 import { cn } from "@/lib/utils";
 import { ChatMessage } from "@/types/chat";
 import { motion } from "framer-motion";
-import { LucideIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { ChatInput } from "./ChatInput";
 import { BotThinking } from "./message/BotThinking";
 import { MessageType } from "./message/MessageType";
 import SuggestionGrid from "./SuggestionGrid";
 import SuggestionList from "./SuggesstionList";
+
 interface Suggestion {
   text: string;
-  icon: LucideIcon;
+  linkImage: string;
 }
 
 interface ChatContainerProps {
