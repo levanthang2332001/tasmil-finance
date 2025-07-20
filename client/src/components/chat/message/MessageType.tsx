@@ -4,6 +4,8 @@ import BotError from "./BotError";
 import { UserChat } from "./UserChat";
 import BotPreSwap from "./BotPreSwap";
 import BotBridge from "./BotBridge";
+import { BotHelp } from "./BotHelp";
+
 interface MessageTypeProps {
   message: ChatMessage;
   isLoading?: boolean;
@@ -57,6 +59,7 @@ export function MessageType({
     [ACTION_TYPE.REMOVE_LIQUIDITY]: (
       <BotChat message={message} isLoading={isLoading} />
     ),
+    [ACTION_TYPE.HELP]: <BotHelp message={message} isLoading={isLoading} />,
     [ACTION_TYPE.UNKNOWN]: <BotError message={message} isLoading={isLoading} />,
   };
 

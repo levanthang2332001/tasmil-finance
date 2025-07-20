@@ -59,18 +59,4 @@ export const TokenMapping = {
       '0x881ac202b1f1e6ad4efcff7a1d0579411533f2502417a19211cfc49751ddb5f4::coin::MOJO',
     decimals: 8,
   },
-  LSD: {
-    name: 'LSD',
-    symbol: 'LSD',
-    moveAddress:
-      '0x53a30a6e5936c0a4c5140daed34de39d17ca7fcae08f947c02e979cef98a3719::coin::LSD',
-    decimals: 8,
-  },
-  HAIR: {
-    name: 'HAIR',
-    symbol: 'HAIR',
-    moveAddress:
-      '0x96baeee6d7a4a8cd712144d1225cfcb6c26d0c6fefd463bd77a878e4526c7411::hair_coin::HairCoin',
-    decimals: 8,
-  },
 };

@@ -301,6 +301,20 @@ export class BridgeParamsSchema {
   user_address: string;
 }
 
+export class HelpParamsSchema {
+  @ApiProperty({
+    example: 'bridge',
+    description: 'The topic or feature the user needs help with',
+  })
+  topic: string;
+
+  @ApiProperty({
+    example: 'How to bridge tokens between chains',
+    description: 'The specific help request',
+  })
+  request: string;
+}
+
 export class DeFiIntentSchema {
   @ApiProperty({
     example: 'swap',
@@ -321,6 +335,7 @@ export class DeFiIntentSchema {
       'place_limit_order',
       'place_market_order',
       'unknown',
+      'help',
     ],
   })
   actionType:
@@ -338,7 +353,8 @@ export class DeFiIntentSchema {
     | 'claim_reward'
     | 'place_limit_order'
     | 'place_market_order'
-    | 'unknown';
+    | 'unknown'
+    | 'help';
 
   @ApiProperty({
     description: 'Parameters for the action',
@@ -355,6 +371,7 @@ export class DeFiIntentSchema {
       { $ref: '#/components/schemas/PlaceMarketOrderParamsSchema' },
       { $ref: '#/components/schemas/RemoveLiquidityParamsSchema' },
       { $ref: '#/components/schemas/BridgeParamsSchema' },
+      { $ref: '#/components/schemas/HelpParamsSchema' },
     ],
   })
   params:
@@ -370,7 +387,8 @@ export class DeFiIntentSchema {
     | PlaceLimitOrderParamsSchema
     | PlaceMarketOrderParamsSchema
     | RemoveLiquidityParamsSchema
-    | BridgeParamsSchema;
+    | BridgeParamsSchema
+    | HelpParamsSchema;
 
   @ApiProperty({
     example: 0.95,

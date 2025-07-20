@@ -74,6 +74,11 @@ export type RemoveLiquidityParams = {
   minAmountB?: number;
 };
 
+export type HelpParams = {
+  topic: string;
+  request: string;
+};
+
 export type ParamsType =
   | SwapParams
   | LiquidityParams
@@ -87,7 +92,8 @@ export type ParamsType =
   | PlaceLimitOrderParams
   | PlaceMarketOrderParams
   | RemoveLiquidityParams
-  | BridgeParams;
+  | BridgeParams
+  | HelpParams;
 
 export enum ActionType {
   BRIDGE = 'bridge',
@@ -104,6 +110,7 @@ export enum ActionType {
   PLACE_LIMIT_ORDER = 'place_limit_order',
   PLACE_MARKET_ORDER = 'place_market_order',
   REMOVE_LIQUIDITY = 'remove_liquidity',
+  HELP = 'help',
   UNKNOWN = 'unknown',
 }
 

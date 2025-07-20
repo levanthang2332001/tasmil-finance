@@ -17,6 +17,7 @@ import { placeLimitOrderAction } from '../trading/place-limit-order.action';
 import { placeMarketOrderAction } from '../trading/place-market-order.action';
 import { walletAction } from '../wallet/wallet.action';
 import { bridgeStargateAction } from '../stargate/bridge';
+import { helpAction } from '../unknown/help.action';
 
 export class ActionRegistry {
   private actions: ActionMap = {
@@ -34,6 +35,7 @@ export class ActionRegistry {
     claim_reward: claimRewardAction,
     place_limit_order: placeLimitOrderAction,
     place_market_order: placeMarketOrderAction,
+    help: helpAction,
     unknown: defaultAction,
   };
 
