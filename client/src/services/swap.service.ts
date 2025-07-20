@@ -28,13 +28,17 @@ function getApiUrl(path = ""): string {
   return `/api/chat/swap${path}`;
 }
 
-async function fetchSwapApi<T>(path: string, options: RequestInit = {}): Promise<T> {
+async function fetchSwapApi<T>(
+  path: string,
+  options: RequestInit = {},
+): Promise<T> {
   const response = await fetch(getApiUrl(path), {
     ...options,
     headers: {
       "Content-Type": "application/json",
       ...options.headers,
     },
+    credentials: "include",
   });
   let data: T;
   try {
@@ -43,11 +47,15 @@ async function fetchSwapApi<T>(path: string, options: RequestInit = {}): Promise
     throw new Error("Invalid JSON response from swap API");
   }
   if (!response.ok)
-    throw new Error((data as any)?.error || `Swap API request failed: ${response.statusText}`);
+    throw new Error(
+      (data as any)?.error || `Swap API request failed: ${response.statusText}`,
+    );
   return data;
 }
 
-export async function getPreSwapRate(params: SwapRequest): Promise<SwapResponse> {
+export async function getPreSwapRate(
+  params: SwapRequest,
+): Promise<SwapResponse> {
   const parseResult = swapRequestSchema.safeParse(params);
   if (!parseResult.success)
     return {
