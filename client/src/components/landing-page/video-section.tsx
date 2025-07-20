@@ -5,7 +5,10 @@ import { HeroVideoDialog } from "../ui/hero-video-dialog";
 
 export const VideoSection = () => {
   return (
-    <div className="relative min-h-screen flex items-center justify-center w-full py-20 px-4 md:px-8">
+    <div 
+      className="relative min-h-screen flex items-center justify-center w-full py-20 px-4 md:px-8"
+      data-section-id="video"
+    >
       {/* Background overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/60" />
 
@@ -38,14 +41,14 @@ export const VideoSection = () => {
           <HeroVideoDialog
             className="block dark:hidden"
             animationStyle="from-center"
-            videoSrc="https://www.youtube.com/watch?v=qu1r2K83KNE"
+            videoSrc="https://www.youtube.com/embed/qu1r2K83KNE?si=Uya5x8Q3OgZnkYNc"
             thumbnailSrc="/images/landing-v3/video-thumbnail.png"
             thumbnailAlt="Tasmil Finance Demo Video"
           />
           <HeroVideoDialog
             className="hidden dark:block"
             animationStyle="from-center"
-            videoSrc="https://www.youtube.com/watch?v=qu1r2K83KNE"
+            videoSrc="https://www.youtube.com/embed/qu1r2K83KNE?si=Uya5x8Q3OgZnkYNc"
             thumbnailSrc="/images/landing-v3/video-thumbnail.png"
             thumbnailAlt="Tasmil Finance Demo Video"
           />
@@ -57,13 +60,13 @@ export const VideoSection = () => {
             <Typography
               variant="h3"
               font="sfPro"
-              className="text-white text-xl font-semibold mb-3"
+              className="text-white text-2xl md:text-3xl font-semibold mb-4"
             >
               AI-Powered Trading
             </Typography>
             <Typography
               variant="p"
-              className="text-gray-400 text-sm leading-relaxed"
+              className="text-gray-400 text-base md:text-lg leading-relaxed"
             >
               Experience intelligent trading decisions with our advanced AI
               algorithms that analyze market trends in real-time.
@@ -74,13 +77,13 @@ export const VideoSection = () => {
             <Typography
               variant="h3"
               font="sfPro"
-              className="text-white text-xl font-semibold mb-3"
+              className="text-white text-2xl md:text-3xl font-semibold mb-4"
             >
               Seamless Integration
             </Typography>
             <Typography
               variant="p"
-              className="text-gray-400 text-sm leading-relaxed"
+              className="text-gray-400 text-base md:text-lg leading-relaxed"
             >
               Connect with major DeFi protocols and manage your portfolio from a
               single, intuitive interface.
@@ -91,13 +94,13 @@ export const VideoSection = () => {
             <Typography
               variant="h3"
               font="sfPro"
-              className="text-white text-xl font-semibold mb-3"
+              className="text-white text-2xl md:text-3xl font-semibold mb-4"
             >
               Real-Time Analytics
             </Typography>
             <Typography
               variant="p"
-              className="text-gray-400 text-sm leading-relaxed"
+              className="text-gray-400 text-base md:text-lg leading-relaxed"
             >
               Get instant insights into market conditions, portfolio
               performance, and trading opportunities.

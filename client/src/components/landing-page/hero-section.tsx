@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { Typography } from "../ui/typography";
 import { Button } from "../ui/button-v2";
 import { useMobile } from "@/hooks/useMobile";
-import { PATHS } from "@/constants/routes";
+import { PATHS, SECTION_IDS } from "@/constants/routes";
 
 export const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -44,11 +44,16 @@ export const HeroSection = () => {
     }
   }, []);
 
-  // Scroll to about section function
-  const scrollToAbout = () => {
-    const aboutSection = document.getElementById("about-section");
-    if (aboutSection) {
-      aboutSection.scrollIntoView({
+  // Scroll to video section function
+  const scrollToVideo = () => {
+    const videoSection = document.querySelector(`[data-section-id="${SECTION_IDS.VIDEO}"]`);
+    if (videoSection) {
+      const navbarHeight = 72;
+      const elementPosition = videoSection.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+      
+      window.scrollTo({
+        top: offsetPosition,
         behavior: "smooth",
       });
     }
@@ -120,7 +125,7 @@ export const HeroSection = () => {
                   variant="p"
                   className="text-center text-xl text-gray-300"
                 >
-                  Experience seamless token swaps, liquidity management, and real-time market insights with our AI-powered DeFi chatbot.
+                  Experience seamless token swaps, and real-time market insights with our AI-powered DeFi chatbot.
                 </Typography>
               </div>
 
@@ -203,9 +208,9 @@ export const HeroSection = () => {
           )}
 
           <button
-            onClick={scrollToAbout}
+            onClick={scrollToVideo}
             className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-white/20 hover:scale-110 hover:border-primary/50 transition-all duration-1000 animate-floating-arrow cursor-pointer"
-            aria-label="Scroll to about section"
+            aria-label="Scroll to video section"
           >
             <FiArrowDown className="text-white w-6 h-6" />
           </button>
