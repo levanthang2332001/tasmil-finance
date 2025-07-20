@@ -413,7 +413,7 @@ function BotPreSwap({
           isLatestMessage={isLatestMessage}
         />
 
-        <span className="text-xs text-slate-500 mt-1">
+        <span className="text-base text-muted-foreground mt-2 block">
           {new Date(message.timestamp).toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",

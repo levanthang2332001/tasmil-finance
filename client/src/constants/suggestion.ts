@@ -1,24 +1,18 @@
-import { Coins, Wallet } from "lucide-react";
-
 export const SUGGESTION_DEFI_AGENT = [
   {
     text: "Stake 0.0001 APT",
-    icon: Wallet,
+    linkImage: "/images/suggestion/stake.png",
   },
   {
     text: "Unstake 0.0001 APT",
-    icon: Coins,
+    linkImage: "/images/suggestion/stake.png",
   },
   {
     text: "Swap 0.02 APT to ALT",
-    icon: Wallet,
+    linkImage: "/images/suggestion/swap.png",
   },
   {
     text: "Swap 28 ALT to APT",
-    icon: Wallet,
+    linkImage: "/images/suggestion/swap.png",
   },
-  // {
-  //   text: "View Staking Position",
-  //   icon: CircleDollarSign,
-  // },
 ];

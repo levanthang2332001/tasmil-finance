@@ -3,6 +3,7 @@
 import { ContentLayout } from "@/components/admin-panel/content-layout";
 import NewsFeed, { BentoItem } from "@/components/community/NewsFeed";
 import { CommunityService } from "@/services/community.service";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const PAGE_SIZE = 10;
@@ -17,11 +18,15 @@ const CommunityPage = () => {
     if (loading || cursor === null || cursor === 0) return;
     try {
       setLoading(true);
-      const newItems = (await CommunityService.getBatches(PAGE_SIZE, cursor)) as BentoItem[];
+      const newItems = (await CommunityService.getBatches(
+        PAGE_SIZE,
+        cursor,
+      )) as BentoItem[];
       if (newItems && newItems.length > 0) {
         setItems((prev) => [...prev, ...newItems]);
         setCursor(Math.max(0, cursor - PAGE_SIZE));
       }
+      console.log("newItems", newItems);
     } catch (error) {
       console.error("Error loading more items:", error);
     } finally {
@@ -37,11 +42,15 @@ const CommunityPage = () => {
         const cursorValue = parseInt(maxCursor);
         setCursor(cursorValue);
 
-        const newItems = (await CommunityService.getBatches(PAGE_SIZE, cursorValue)) as BentoItem[];
+        const newItems = (await CommunityService.getBatches(
+          PAGE_SIZE,
+          cursorValue,
+        )) as BentoItem[];
         if (newItems && newItems.length > 0) {
           setItems(newItems);
           setCursor(Math.max(0, cursorValue - PAGE_SIZE));
         }
+        console.log("newItems", newItems);
       } catch (error) {
         console.error("Error initializing page:", error);
       } finally {
@@ -62,7 +71,20 @@ const CommunityPage = () => {
 
   return (
     <ContentLayout
-      title={`🔥 Hot tweets (${items.length} loaded${cursor === 0 ? " - All caught up!" : ""})`}
+      title={
+        <div className="flex items-center gap-2">
+          <Image
+            src="/images/community.png"
+            alt="logo"
+            width={58}
+            height={58}
+          />
+          <h1 className="text-2xl font-semibold">
+            Hot tweets ({items.length} loaded
+            {cursor === 0 ? " - All caught up!" : ""})
+          </h1>
+        </div>
+      }
       className="overflow-hidden px-0"
     >
       <div className="h-full w-full">

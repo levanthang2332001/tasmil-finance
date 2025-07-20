@@ -2,7 +2,7 @@ import { Navbar } from "@/components/admin-panel/navbar";
 import { cn } from "@/lib/utils";
 
 interface ContentLayoutProps {
-  title: string;
+  title: string | React.ReactNode;
   children: React.ReactNode;
   className?: string;
 }

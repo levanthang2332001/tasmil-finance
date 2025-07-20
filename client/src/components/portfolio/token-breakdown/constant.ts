@@ -10,7 +10,7 @@ export const mockTokenData: TokenData[] = [
     amount: "100",
   },
   {
-    name: "stSUI",
+    name: "stAPTOS",
     price: "$2.763",
     amount: "100",
   },
