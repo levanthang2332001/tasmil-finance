@@ -2,6 +2,7 @@ import { ChatResponse } from 'src/chat/entities/chat.entity';
 import {
   BridgeParams,
   BridgeStargateParams,
+  ActionType,
 } from 'src/chat/entities/intent.entity';
 import { AbstractBaseAction } from '../base/base-action';
 import { getBridgeQuote } from 'src/tools/stargate/bridge';
@@ -12,12 +13,12 @@ export class BridgeStargateAction extends AbstractBaseAction<BridgeParams> {
   readonly similar = ['bridge', 'transfer', 'send', 'transfer token'];
   readonly prompt = `Extract the following parameters for bridging as JSON:
     {
-      "tokenA": "string - the source token (e.g., 'USDC')",
-      "tokenB": "string - the destination token (e.g., 'USDC')",
-      "amount": "number - the amount to bridge (must be positive)",
+      "tokenA": "string - the source token (e.g., 'USDT')",
+      "tokenB": "string - the destination token (e.g., 'USDT')",
+      "amount": "string - the amount to bridge (e.g., '0.1')",
       "dstAddress": "string - the destination address (e.g., '0x1234567890123456789012345678901234567890')",
-      "srcChainKey": "string - the source chain key (e.g., 'aptos')",
-      "dstChainKey": "string - the destination chain key (e.g., 'evm')",
+      "srcChainKey": "string - the source chain key, always 'aptos'",
+      "dstChainKey": "string - the destination chain key: 'bsc' for BSC, 'ethereum' for Ethereum, 'polygon' for Polygon, 'base' for Base",
     }`;
 
   readonly examples = [
@@ -88,6 +89,10 @@ export class BridgeStargateAction extends AbstractBaseAction<BridgeParams> {
       const srcToken = dataA.address;
       const dstToken = dataB.address;
 
+      const srcAmount = (
+        Number(amount) * Math.pow(10, dataA.decimals)
+      ).toString();
+
       const { quote } = await getBridgeQuote({
         srcToken: srcToken,
         dstToken: dstToken,
@@ -95,16 +100,36 @@ export class BridgeStargateAction extends AbstractBaseAction<BridgeParams> {
         dstAddress: dstAddress,
         srcChainKey: srcChainKey,
         dstChainKey: dstChainKey,
-        srcAmount: amount,
-        dstAmountMin: amount,
+        srcAmount: srcAmount,
+        dstAmountMin: srcAmount,
       });
 
+      const result = {
+        action: ActionType.BRIDGE,
+        // Bridge request parameters for BotBridge component
+        tokenA,
+        tokenB,
+        amount,
+        srcChainKey,
+        dstChainKey,
+        dstAddress,
+        user_address,
+        // Quote data
+        quote,
+        decimalsSrcToken: dataA.decimals,
+        decimalsDstToken: dataB.decimals,
+        symbolSrcToken: dataA.symbol,
+        symbolDstToken: dataB.symbol,
+      };
+
       return this.createSuccessResult({
-        message: 'Bridge transaction created successfully',
-        data: quote,
+        message: `I'll help you bridge ${amount} ${tokenA} from ${srcChainKey} to ${dstChainKey}. Here's the quote:`,
+        data: result,
       });
     } catch (error) {
       return this.createErrorResult(error);
     }
   }
 }
+
+export const bridgeStargateAction = new BridgeStargateAction();

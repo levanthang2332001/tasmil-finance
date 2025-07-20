@@ -16,11 +16,13 @@ import { claimRewardAction } from '../stake/claim-reward.action';
 import { placeLimitOrderAction } from '../trading/place-limit-order.action';
 import { placeMarketOrderAction } from '../trading/place-market-order.action';
 import { walletAction } from '../wallet/wallet.action';
+import { bridgeStargateAction } from '../stargate/bridge';
 
 export class ActionRegistry {
   private actions: ActionMap = {
     wallet: walletAction,
     swap: swapAction,
+    bridge: bridgeStargateAction,
     liquidity: liquidityAction,
     remove_liquidity: removeLiquidityAction,
     stake: stakingAction,

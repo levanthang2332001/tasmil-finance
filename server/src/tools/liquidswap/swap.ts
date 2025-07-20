@@ -60,6 +60,7 @@ export async function calculateLiquidswapRate(
   const { fromToken, toToken, amount, curveType, interactiveToken, version } =
     quote;
 
+  console.log('calculateLiquidswapRate', quote);
   try {
     const fromTokenAddress = getTokenAddress(fromToken);
     const toTokenAddress = getTokenAddress(toToken);
@@ -69,7 +70,7 @@ export async function calculateLiquidswapRate(
     );
 
     const poolExists = await getPoolExists(fromTokenAddress, toTokenAddress);
-
+    console.log('poolExists', poolExists);
     if (!poolExists) {
       throw new Error(`Pool ${fromToken} to ${toToken} does not exist`);
     }
@@ -80,9 +81,9 @@ export async function calculateLiquidswapRate(
       amount: fromAmount,
       interactiveToken: interactiveToken,
       curveType,
-      version: version as 0 | 0.5,
+      version: version as 0.5,
     });
-
+    console.log('output', output);
     const toAmount = convertDecimalToValue(
       Number(output),
       getTokenInfo(toToken).decimals,
@@ -143,7 +144,7 @@ export async function swapTokensWithLiquidswap(
       slippage: 0.05,
       stableSwapType: 'high',
       curveType: quote.curveType,
-      version: quote.version as 0 | 0.5,
+      version: quote.version as 0.5,
     });
 
     const data = await aptos.transaction.build.simple({

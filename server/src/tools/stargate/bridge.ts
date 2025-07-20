@@ -159,7 +159,7 @@ export const executeBridgeFromAptos = async (
   aptos: Aptos,
   account: Account,
   quote: StargateQuote,
-): Promise<{ hash: string }> => {
+): Promise<{ hash: string; error?: string }> => {
   try {
     const { srcToken } = quote;
     const hexData = quote.steps?.[0].transaction.data;
@@ -236,6 +236,7 @@ export const executeBridgeFromAptos = async (
 
     return {
       hash: tx.hash,
+      error: tx.vm_status,
     };
   } catch (error) {
     console.error('Error executing bridge from Aptos:', error);
