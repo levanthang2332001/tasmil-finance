@@ -9,6 +9,7 @@ import { FooterSection } from "./footer-section";
 import { AbstractSection } from "./abstract-section";
 import { FAQSection } from "./faq-section";
 import { BenefitSection } from "./benefit-section";
+import { SECTION_IDS } from "@/constants/routes";
 
 type SectionId =
   | "hero"
@@ -148,13 +149,13 @@ export default function LandingPage() {
       // Update current section and dispatch event for navbar
       if (currentSectionId) {
         // Map section names to tab names
-        if (currentSectionId === "benefits") {
+        if (currentSectionId === SECTION_IDS.BENEFITS) {
           document.dispatchEvent(
-            new CustomEvent("sectionChange", { detail: "DEFI AGENTS" }),
+            new CustomEvent("sectionChange", { detail: "DEFI AGENT" }),
           );
-        } else if (currentSectionId === "video") {
+        } else if (currentSectionId === SECTION_IDS.VIDEO) {
           document.dispatchEvent(
-            new CustomEvent("sectionChange", { detail: "DASHBOARD" }),
+            new CustomEvent("sectionChange", { detail: "DEMO" }),
           );
         } else {
           // Clear active tab if not in a relevant section
