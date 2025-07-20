@@ -8,7 +8,7 @@ import { FiArrowUpRight, FiMenu, FiX } from "react-icons/fi";
 import { BsTwitterX } from "react-icons/bs";
 import { FaTelegram } from "react-icons/fa";
 import React from "react";
-import { PATHS } from "@/constants/routes";
+import { PATHS, SECTION_IDS } from "@/constants/routes";
 // import { socialConfig, fundingConfig } from "@/config";
 import {
   Tooltip,
@@ -115,8 +115,8 @@ const MainNavbar = ({
   // onSectionClick,
 }: MainNavbarProps) => {
   const router = useRouter();
-  type TabName = "DASHBOARD" | "DEFI AGENTS" | "COMMUNITY" | "PORTFOLIO";
-  const [activeTab, setActiveTab] = useState<TabName>("DASHBOARD");
+  type TabName = "DEMO" | "DEFI AGENT" | "DOCS";
+  const [activeTab, setActiveTab] = useState<TabName>("DEMO");
   const [indicatorStyle, setIndicatorStyle] = useState<IndicatorStyle>({
     left: "0px",
     width: "40px",
@@ -197,17 +197,25 @@ const MainNavbar = ({
 
     // Handle routing or scrolling based on selected tab
     switch (tab) {
-      case "DASHBOARD":
-        router.push(PATHS.DASHBOARD);
+      case "DEMO":
+        // Scroll to video section
+        const videoSection = document.querySelector(`[data-section-id="${SECTION_IDS.VIDEO}"]`);
+        if (videoSection) {
+          const navbarHeight = 72;
+          const elementPosition = videoSection.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }
         break;
-      case "DEFI AGENTS":
+      case "DEFI AGENT":
         router.push(PATHS.DEFI_AGENT);
         break;
-      case "COMMUNITY":
-        router.push(PATHS.COMMUNITY);
-        break;
-      case "PORTFOLIO":
-        router.push(PATHS.PORTFOLIO);
+      case "DOCS":
+        window.open(PATHS.DOCS, '_blank');
         break;
       default:
         break;
@@ -223,11 +231,11 @@ const MainNavbar = ({
   // Get the active tab ref based on current selection
   const getActiveTabRef = () => {
     switch (activeTab) {
-      case "DASHBOARD":
+      case "DEMO":
         return frameworkRef;
-      case "DEFI AGENTS":
+      case "DEFI AGENT":
         return useCaseRef;
-      case "COMMUNITY":
+      case "DOCS":
         return rewardRef;
       default:
         return null;
@@ -236,14 +244,10 @@ const MainNavbar = ({
 
   // Navigation menu items data
   const menuItems = [
-    { label: "DASHBOARD", icon: <FiArrowUpRight className="w-5 h-5" /> },
-    { label: "DEFI AGENTS", icon: <FiArrowUpRight className="w-5 h-5" /> },
+    { label: "DEMO", icon: <FiArrowUpRight className="w-5 h-5" /> },
+    { label: "DEFI AGENT", icon: <FiArrowUpRight className="w-5 h-5" /> },
     {
-      label: "COMMUNITY",
-      icon: <FiArrowUpRight className="w-5 h-5" />,
-    },
-    {
-      label: "PORTFOLIO",
+      label: "DOCS",
       icon: <FiArrowUpRight className="w-5 h-5" />,
     },
   ];
@@ -281,26 +285,26 @@ const MainNavbar = ({
             />
           </div>
 
-          <div ref={frameworkRef} className="relative">
+                    <div ref={frameworkRef} className="relative">
             <Link
-              href={`${PATHS.DASHBOARD}`}
+              href={`${PATHS.DEMO}`}
               className="flex items-center px-4 py-3 relative hover:bg-white/10 transition-all duration-300 group"
               onClick={(e) => {
                 e.preventDefault();
-                handleTabClick("DASHBOARD");
+                handleTabClick("DEMO");
               }}
             >
               <Typography
                 font="geistMono"
                 size="sm"
                 className={
-                  activeTab === "DASHBOARD"
+                  activeTab === "DEMO"
                     ? "text-embossed"
                     : "text-submerged group-hover:text-embossed/80"
                 }
               >
                 <span className="uppercase transition-colors duration-300">
-                  DASHBOARD
+                  DEMO
                 </span>
               </Typography>
             </Link>
@@ -311,68 +315,44 @@ const MainNavbar = ({
               className="flex items-center px-4 py-3 hover:bg-white/10 transition-all duration-300 group"
               onClick={(e) => {
                 e.preventDefault();
-                handleTabClick("DEFI AGENTS");
+                handleTabClick("DEFI AGENT");
               }}
             >
               <Typography
                 font="geistMono"
                 size="sm"
                 className={
-                  activeTab === "DEFI AGENTS"
+                  activeTab === "DEFI AGENT"
                     ? "text-embossed"
                     : "text-submerged group-hover:text-embossed/80"
                 }
               >
                 <span className="uppercase transition-colors duration-300">
-                  DEFI AGENTS
+                  DEFI AGENT
                 </span>
               </Typography>
             </Link>
           </div>
           <div ref={rewardRef} className="relative">
             <Link
-              href={PATHS.COMMUNITY}
+              href={PATHS.DOCS}
               className="flex items-center gap-2 px-4 py-3 hover:bg-white/10 transition-all duration-300 group"
               onClick={(e) => {
                 e.preventDefault();
-                handleTabClick("COMMUNITY");
+                handleTabClick("DOCS");
               }}
             >
               <Typography
                 font="geistMono"
                 size="sm"
                 className={
-                  activeTab === "COMMUNITY"
+                  activeTab === "DOCS"
                     ? "text-embossed"
                     : "text-submerged group-hover:text-embossed/80"
                 }
               >
                 <span className="uppercase transition-colors duration-300">
-                  COMMUNITY
-                </span>
-              </Typography>
-            </Link>
-          </div>
-          <div ref={rewardRef} className="relative">
-            <Link
-              href={PATHS.PORTFOLIO}
-              className="flex items-center gap-2 px-4 py-3 hover:bg-white/10 transition-all duration-300 group"
-              onClick={(e) => {
-                e.preventDefault();
-                handleTabClick("PORTFOLIO");
-              }}
-            >
-              <Typography
-                font="geistMono"
-                size="sm"
-                className={
-                  activeTab === "PORTFOLIO"
-                    ? "text-embossed"
-                    : "text-submerged group-hover:text-embossed/80"
-                }
-              >
-                <span className="uppercase transition-colors duration-300">
-                  PORTFOLIO
+                  DOCS
                 </span>
               </Typography>
             </Link>

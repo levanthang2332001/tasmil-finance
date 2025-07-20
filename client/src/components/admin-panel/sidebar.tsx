@@ -36,7 +36,7 @@ export function Sidebar() {
           asChild
         >
           <Link
-            href="/dashboard"
+            href="/"
             className="!p-0 flex flex-row justify-start items-start gap-2 !no-underline"
           >
             <Image
