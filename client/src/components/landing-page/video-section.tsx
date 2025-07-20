@@ -21,13 +21,14 @@ export const VideoSection = () => {
           >
             See Tasmil Finance in Action
           </Typography>
-          
+
           <div className="max-w-2xl">
             <Typography
               variant="p"
               className="text-center text-xl md:text-2xl text-gray-300 leading-relaxed"
             >
-              Watch how our AI-powered DeFi platform transforms your trading experience with intelligent automation and real-time insights.
+              Watch how our AI-powered DeFi platform transforms your trading
+              experience with intelligent automation and real-time insights.
             </Typography>
           </div>
         </div>
@@ -37,15 +38,15 @@ export const VideoSection = () => {
           <HeroVideoDialog
             className="block dark:hidden"
             animationStyle="from-center"
-            videoSrc="https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb-zSdDkVK9qxxb"
-            thumbnailSrc="https://startup-template-sage.vercel.app/hero-light.png"
+            videoSrc="https://www.youtube.com/watch?v=qu1r2K83KNE"
+            thumbnailSrc="/images/landing-v3/video-thumbnail.png"
             thumbnailAlt="Tasmil Finance Demo Video"
           />
           <HeroVideoDialog
             className="hidden dark:block"
             animationStyle="from-center"
-            videoSrc="https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb-zSdDkVK9qxxb"
-            thumbnailSrc="https://startup-template-sage.vercel.app/hero-dark.png"
+            videoSrc="https://www.youtube.com/watch?v=qu1r2K83KNE"
+            thumbnailSrc="/images/landing-v3/video-thumbnail.png"
             thumbnailAlt="Tasmil Finance Demo Video"
           />
         </div>
@@ -64,10 +65,11 @@ export const VideoSection = () => {
               variant="p"
               className="text-gray-400 text-sm leading-relaxed"
             >
-              Experience intelligent trading decisions with our advanced AI algorithms that analyze market trends in real-time.
+              Experience intelligent trading decisions with our advanced AI
+              algorithms that analyze market trends in real-time.
             </Typography>
           </div>
-          
+
           <div className="text-center">
             <Typography
               variant="h3"
@@ -80,10 +82,11 @@ export const VideoSection = () => {
               variant="p"
               className="text-gray-400 text-sm leading-relaxed"
             >
-              Connect with major DeFi protocols and manage your portfolio from a single, intuitive interface.
+              Connect with major DeFi protocols and manage your portfolio from a
+              single, intuitive interface.
             </Typography>
           </div>
-          
+
           <div className="text-center">
             <Typography
               variant="h3"
@@ -96,11 +99,12 @@ export const VideoSection = () => {
               variant="p"
               className="text-gray-400 text-sm leading-relaxed"
             >
-              Get instant insights into market conditions, portfolio performance, and trading opportunities.
+              Get instant insights into market conditions, portfolio
+              performance, and trading opportunities.
             </Typography>
           </div>
         </div>
       </div>
     </div>
   );
-}; 
+};
