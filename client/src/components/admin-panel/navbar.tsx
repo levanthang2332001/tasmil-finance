@@ -1,7 +1,7 @@
 import { SheetMenu } from "@/components/admin-panel/sheet-menu";
 
 interface NavbarProps {
-  title: string;
+  title: string | React.ReactNode;
 }
 
 export function Navbar({ title }: NavbarProps) {
@@ -10,7 +10,11 @@ export function Navbar({ title }: NavbarProps) {
       <div className="mx-4 sm:mx-8 flex h-14 items-center">
         <div className="flex items-center space-x-4 lg:space-x-0">
           <SheetMenu />
-          <h1 className="font-bold">{title}</h1>
+          {typeof title === "string" ? (
+            <h1 className="font-bold">{title}</h1>
+          ) : (
+            title
+          )}
         </div>
       </div>
     </header>

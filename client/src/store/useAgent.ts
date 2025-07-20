@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
 export enum AgentType {
-  NAVI = "navi",
-  CETUS = "cetus",
-  SUILEND = "suiLend",
+  Thala = "Thala",
+  LiquidSwap = "LiquidSwap",
+  Shelby = "Shelby",
 }
 
 interface AgentState {
@@ -12,6 +12,6 @@ interface AgentState {
 }
 
 export const useAgent = create<AgentState>((set) => ({
-  selectedAgent: AgentType.CETUS,
+  selectedAgent: AgentType.LiquidSwap,
   setSelectedAgent: (agent) => set({ selectedAgent: agent }),
 }));
