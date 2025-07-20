@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { ChatResponse } from 'src/chat/entities/chat.entity';
 import {
   BridgeParams,
@@ -123,7 +124,22 @@ export class BridgeStargateAction extends AbstractBaseAction<BridgeParams> {
       };
 
       return this.createSuccessResult({
-        message: `I'll help you bridge ${amount} ${tokenA} from ${srcChainKey} to ${dstChainKey}. Here's the quote:`,
+        message: `## 🌉 Bridge Quote Ready!
+
+I'll help you bridge ${amount} ${tokenA} from ${srcChainKey} to ${dstChainKey}.
+
+### Bridge Details:
+- **From:** ${amount} ${tokenA} (${srcChainKey})
+- **To:** ${tokenB} (${dstChainKey})
+- **Destination:** ${dstAddress}
+- **Estimated Duration:** ${(quote as any)?.duration?.estimated || 'Unknown'} seconds
+
+### Next Steps:
+- Review the bridge quote and fees
+- Confirm the transaction when ready
+- Monitor the bridge status across chains
+
+> 💡 **Pro tip:** Bridge transactions typically take 2-5 minutes depending on network congestion. Keep your transaction hash handy!`,
         data: result,
       });
     } catch (error) {

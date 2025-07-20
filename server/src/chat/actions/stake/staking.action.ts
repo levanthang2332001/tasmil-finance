@@ -69,17 +69,21 @@ export class StakingAction extends AbstractBaseAction<StakingParams> {
       };
 
       return this.createSuccessResult({
-        message: `<h2>Staking Successful! 🎉</h2>
-          <div>
-            <strong>Transaction Details:</strong>
-            <ul>
-              <li><b>Token:</b> ${params.token}</li>
-              <li><b>Amount:</b> ${params.amount}</li>
-              <li><b>Duration:</b> ${params.duration || 'flexible'}</li>
-              <li><b>Transaction Hash:</b> <a href="https://explorer.aptoslabs.com/txn/${data?.hash}?network=mainnet" target="_blank" rel="noopener noreferrer">${data?.hash}</a></li>
-              </ul>
-            <p>Your tokens have been successfully staked and you're now earning rewards!</p>
-          </div>`,
+        message: `## 🎉 Staking Successful!
+
+Your tokens have been successfully staked and you're now earning rewards!
+
+### Transaction Details:
+- **Token:** ${params.token}
+- **Amount:** ${params.amount}
+- **Duration:** ${params.duration || 'flexible'}
+- **Transaction Hash:** [${data?.hash}](https://explorer.aptoslabs.com/txn/${data?.hash}?network=mainnet)
+
+### What's Next?
+- Monitor your staking rewards in your portfolio
+- You can unstake anytime (subject to lock period if applicable)
+
+> 💡 **Pro tip:** Consider diversifying your staking across different tokens to maximize your yield potential!`,
         data: result,
       });
     } catch (error) {

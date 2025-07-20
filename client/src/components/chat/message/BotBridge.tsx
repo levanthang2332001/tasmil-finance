@@ -535,7 +535,7 @@ const PreBridge = ({
                 Bridge Completed Successfully
               </div>
               {messageSuccess && (
-                <div className="text-sm">
+                <div className="text-sm text-slate-800">
                   <MessageMarkdown>
                     {typeof messageSuccess === "string"
                       ? messageSuccess
