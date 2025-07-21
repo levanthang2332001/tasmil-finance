@@ -1,9 +1,15 @@
 export class AuthService {
-  private static async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  private static async request<T>(
+    endpoint: string,
+    options: RequestInit = {},
+  ): Promise<T> {
     const response = await fetch(`${endpoint}`, {
       ...options,
       headers: {
         "Content-Type": "application/json",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
         ...options.headers,
       },
     });
@@ -11,7 +17,9 @@ export class AuthService {
     const data = await response.json();
 
     if (!response.ok) {
-      const error = new Error(data.error || `API request failed: ${response.statusText}`);
+      const error = new Error(
+        data.error || `API request failed: ${response.statusText}`,
+      );
       throw error;
     }
 

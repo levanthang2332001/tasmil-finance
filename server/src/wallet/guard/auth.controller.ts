@@ -26,7 +26,7 @@ const NONCE_STORE: {
   };
 } = {};
 
-const NONCE_EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 24 hours
+const NONCE_EXPIRATION_TIME = 100 * 24 * 60 * 60 * 1000; // 100 days
 const JWT_EXPIRATION_TIME = '24h';
 const NONCE_TTL = 3 * 60 * 1000; // 3 minutes for nonce only
 

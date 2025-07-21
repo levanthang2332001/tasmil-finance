@@ -26,14 +26,14 @@ export const BotChat = ({ message, isLoading }: BotChatProps) => {
           <motion.div
             layout
             className={cn(
-              "rounded-2xl rounded-bl-sm bg-gradient-to-br from-white via-blue-100 to-blue-50 text-gray-900 p-4 border border-blue-100 shadow-md",
+              "rounded-2xl rounded-bl-sm background-gradient3 text-gray-900 p-4 border border-blue-100 shadow-md",
               "shadow-sm transition-colors",
               isLoading && "opacity-50"
             )}
           >
             <MessageMarkdown>{message.message}</MessageMarkdown>
           </motion.div>
-          <span className="text-xs text-muted-foreground mt-2 block">
+          <span className="text-base text-muted-foreground mt-2 block">
             {new Date(message.timestamp).toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
