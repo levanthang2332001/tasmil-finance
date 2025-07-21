@@ -74,6 +74,11 @@ export type RemoveLiquidityParams = {
   minAmountB?: number;
 };
 
+export type HelpParams = {
+  topic: string;
+  request: string;
+};
+
 export type ParamsType =
   | SwapParams
   | LiquidityParams
@@ -86,9 +91,12 @@ export type ParamsType =
   | ClaimRewardParams
   | PlaceLimitOrderParams
   | PlaceMarketOrderParams
-  | RemoveLiquidityParams;
+  | RemoveLiquidityParams
+  | BridgeParams
+  | HelpParams;
 
 export enum ActionType {
+  BRIDGE = 'bridge',
   SWAP = 'swap',
   PRE_SWAP = 'pre_swap',
   LIQUIDITY = 'liquidity',
@@ -102,6 +110,7 @@ export enum ActionType {
   PLACE_LIMIT_ORDER = 'place_limit_order',
   PLACE_MARKET_ORDER = 'place_market_order',
   REMOVE_LIQUIDITY = 'remove_liquidity',
+  HELP = 'help',
   UNKNOWN = 'unknown',
 }
 
@@ -111,4 +120,23 @@ export interface DeFiIntent {
   confidence: number;
   missingFields: string[];
   context: string;
+}
+export interface BridgeParams {
+  tokenA: string;
+  tokenB: string;
+  srcChainKey: string;
+  dstChainKey: string;
+  amount: string;
+  dstAddress: string;
+  user_address: string;
+}
+export interface BridgeStargateParams {
+  srcToken: string;
+  dstToken: string;
+  srcAddress: string;
+  dstAddress: string;
+  srcChainKey: string;
+  dstChainKey: string;
+  srcAmount: string;
+  dstAmountMin: string;
 }

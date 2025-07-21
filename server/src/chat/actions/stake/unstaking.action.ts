@@ -77,16 +77,20 @@ export class UnStakingAction extends AbstractBaseAction<StakingParams> {
       };
 
       return this.createSuccessResult({
-        message: `<h2>Unstaking Successful! 🎉</h2>
-          <div>
-            <strong>Transaction Details:</strong>
-            <ul>
-              <li><b>Token:</b> ${params.token}</li>
-              <li><b>Amount:</b> ${params.amount}</li>
-              <li><b>Transaction Hash:</b> <a href="https://explorer.aptoslabs.com/txn/${data?.hash}?network=mainnet" target="_blank" rel="noopener noreferrer">${data?.hash}</a></li>
-              </ul>
-            <p>Your tokens have been successfully unstaked!</p>
-          </div>`,
+        message: `## 🎉 Unstaking Successful!
+
+Your tokens have been successfully unstaked and are now available in your wallet!
+
+### Transaction Details:
+- **Token:** ${params.token}
+- **Amount:** ${params.amount}
+- **Transaction Hash:** [${data?.hash}](https://explorer.aptoslabs.com/txn/${data?.hash}?network=mainnet)
+
+### What's Next?
+- Your tokens are now available for trading or other DeFi activities
+- Check your wallet balance to confirm the tokens have been received
+
+> 💡 **Pro tip:** Monitor gas fees and network congestion for optimal transaction timing!`,
         data: result,
       });
     } catch (error) {

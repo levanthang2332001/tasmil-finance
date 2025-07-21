@@ -107,3 +107,33 @@ export class ChatResponseDto {
   })
   data?: any;
 }
+
+export class BridgeRequestDto {
+  @IsString()
+  @IsNotEmpty()
+  tokenA: string;
+
+  @IsString()
+  @IsNotEmpty()
+  tokenB: string;
+
+  @IsString()
+  @IsNotEmpty()
+  srcChainKey: string;
+
+  @IsString()
+  @IsNotEmpty()
+  dstChainKey: string;
+
+  @IsString()
+  @IsNotEmpty()
+  amount: string;
+
+  @IsString()
+  @IsNotEmpty()
+  dstAddress: string;
+
+  @IsString()
+  @IsNotEmpty()
+  user_address: string;
+}

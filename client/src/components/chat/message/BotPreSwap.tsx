@@ -8,40 +8,49 @@ import { motion } from "framer-motion";
 import { Bot } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FaChevronDown, FaSpinner } from "react-icons/fa";
+import { Card, CardContent, CardHeader } from "../../ui/card";
 import { Button } from "../../ui/button";
 import { MessageMarkdown } from "./MessageMarkdown";
 import Image from "next/image";
 
-function TokenSelector({ token }: { token: TokenInfo }) {
-  return (
-    <button className="flex items-center gap-2 px-3 py-1 bg-white rounded-full border border-gray-200 shadow-sm hover:bg-gray-50 transition">
-      {token?.image && (
-        <Image src={token.image} alt={token.symbol} className="w-4 h-4 rounded-full" width={16} height={16} />
-      )}
-      <span className="font-medium text-gray-800">{token.symbol}</span>
-    </button>
-  );
-}
-
-function AmountPanel({
-  label,
+function TokenDisplay({
+  token,
   amount,
   fiat,
-  token,
+  label,
 }: {
-  label: string;
+  token: TokenInfo;
   amount: string;
   fiat: string;
-  token: TokenInfo;
+  label: string;
 }) {
   return (
-    <div className="flex flex-col gap-1 p-4 bg-white rounded-2xl shadow border border-gray-100">
-      <span className="text-sm text-gray-500 mb-1">{label}</span>
+    <div className="flex flex-col space-y-3 p-4 bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-xl border border-slate-200/60">
       <div className="flex items-center justify-between">
-        <span className="text-3xl font-semibold text-gray-900">{amount}</span>
-        <TokenSelector token={token} />
+        <span className="text-sm font-medium text-slate-600">{label}</span>
       </div>
-      <span className="text-xs text-gray-400 mt-1">{fiat}</span>
+
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col">
+          <span className="text-2xl font-bold text-slate-900">
+            {amount || "0"}
+          </span>
+          <span className="text-xs text-slate-400 mt-1">{fiat}</span>
+        </div>
+
+        <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-xl border border-slate-200 shadow-sm">
+          {token?.image && (
+            <Image
+              src={token.image}
+              alt={token.symbol}
+              className="w-5 h-5 rounded-full"
+              width={20}
+              height={20}
+            />
+          )}
+          <span className="font-semibold text-slate-800">{token?.symbol}</span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -51,7 +60,11 @@ interface BotPreSwapProps {
   isLatestMessage?: boolean;
 }
 
-const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps) => {
+const PreSwap = ({
+  message,
+  isLoading,
+  isLatestMessage = true,
+}: BotPreSwapProps) => {
   const [hasSwapped, setHasSwapped] = useState<boolean>(false);
   const [isSwapping, setIsSwapping] = useState<boolean>(false);
   const [swapData, setSwapData] = useState<any>(message?.data);
@@ -171,7 +184,8 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
   }, [fetchLatestSwapData, hasSwapped, permanentFailure, isLatestMessage]);
 
   const handleSwap = useCallback(async () => {
-    if (hasSwapped || isSwapping || !isLatestMessage || permanentFailure) return;
+    if (hasSwapped || isSwapping || !isLatestMessage || permanentFailure)
+      return;
     setIsSwapping(true);
     setHasError(null);
     if (!fromToken || !toToken || !sellAmount || !swapData?.address) {
@@ -197,7 +211,7 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
     }
     setHasSwapped(true);
     setMessageSuccess(
-      `<a href="https://explorer.aptoslabs.com/txn/${result?.data?.transactionHash}?network=mainnet" target="_blank" rel="noopener noreferrer">${result?.data?.transactionHash}</a>`
+      `<a href="https://explorer.aptoslabs.com/txn/${result?.data?.transactionHash}?network=mainnet" target="_blank" rel="noopener noreferrer">${result?.data?.transactionHash}</a>`,
     );
   }, [
     hasSwapped,
@@ -215,12 +229,17 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
   const handleRetry = useCallback(async () => {
     setIsRetrying(true);
     setHasError(null);
+    setPermanentFailure(false); // Reset permanent failure state
+
     try {
       const newData = await fetchLatestSwapData();
-      setSwapData(newData);
-      // If fetchLatestSwapData sets error, keep it, else clear permanentFailure
-      if (!newData || hasError) setPermanentFailure(true);
-      else setPermanentFailure(false);
+      if (newData) {
+        setSwapData(newData);
+        // Success - keep permanentFailure as false
+      } else {
+        setHasError("Failed to get swap data");
+        setPermanentFailure(true);
+      }
     } catch (err) {
       console.error("handleRetry: Error", err);
       setHasError("Failed to update swap data");
@@ -228,7 +247,7 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
     } finally {
       setIsRetrying(false);
     }
-  }, [fetchLatestSwapData, hasError]);
+  }, [fetchLatestSwapData]);
 
   const isButtonDisabled =
     isLoading ||
@@ -237,8 +256,10 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
     !fromToken ||
     !toToken ||
     !sellAmount ||
+    (!buyAmount && !isPolling) || // Only require buyAmount when not fetching
     permanentFailure ||
     !isLatestMessage;
+
 
   const isRetryButtonDisabled =
     isRetrying ||
@@ -250,97 +271,147 @@ const PreSwap = ({ message, isLoading, isLatestMessage = true }: BotPreSwapProps
     !isLatestMessage;
 
   return (
-    <div
-      className={cn(
-        "w-full max-w-md bg-white rounded-3xl shadow-lg p-2 flex flex-col overflow-hidden gap-2"
-      )}
-    >
-      <div className="relative space-y-1">
-        <AmountPanel label="Sell" amount={sellAmount} fiat={sellFiat} token={TOKENS?.[fromToken]} />
-        <div className="flex justify-center absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 transform z-[1]">
-          <div className="bg-white border border-gray-200 rounded-full p-2 shadow flex items-center justify-center">
-            <FaChevronDown className="text-gray-400 text-lg" />
-          </div>
+    <Card className="w-full max-w-md bg-white shadow-lg border-slate-200">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <h3 className="font-semibold text-slate-900">Token Swap</h3>
+          {isPolling && (
+            <div className="flex items-center gap-1 text-xs text-slate-500">
+              <FaSpinner className="animate-spin w-3 h-3" />
+              <span>Updating...</span>
+            </div>
+          )}
         </div>
-        <AmountPanel label="Buy" amount={buyAmount} fiat={buyFiat} token={TOKENS?.[toToken]} />
-      </div>
-      <div className="mt-2 h-[110px]">
-        {!hasSwapped && !hasError && (
-          <Button
-            className="w-full bg-primary/80 text-white font-semibold py-3 rounded-2xl hover:bg-primary/50 transition"
-            disabled={isButtonDisabled}
-            onClick={handleSwap}
-          >
-            {isLoading || isSwapping || isPolling ? (
-              <div className="flex items-center justify-center gap-2">
-                <FaSpinner className="animate-spin" aria-label="Loading" />
-                <span>Processing...</span>
-              </div>
-            ) : (
-              "Swap Now"
-            )}
-          </Button>
-        )}
-        {!hasSwapped && hasError && (
-          <Button
-            className="w-full bg-red-600/90 text-white font-semibold py-3 rounded-2xl hover:bg-red-600/70 transition"
-            disabled={isRetryButtonDisabled}
-            onClick={handleRetry}
-            variant="destructive"
-          >
-            {isRetrying || isPolling ? (
-              <div className="flex items-center justify-center gap-2">
-                <FaSpinner className="animate-spin" aria-label="Loading" />
-                <span>Retrying...</span>
-              </div>
-            ) : (
-              hasError
-            )}
-          </Button>
-        )}
-        {hasSwapped && (
-          <div className="w-full text-center py-3 rounded-2xl bg-green-100 text-green-700 font-semibold">
-            Swap completed
+      </CardHeader>
+
+      <CardContent className="space-y-4">
+        <div className="relative space-y-2">
+          <TokenDisplay
+            token={TOKENS?.[fromToken]}
+            amount={sellAmount}
+            fiat={sellFiat}
+            label="Sell"
+          />
+
+          <div className="flex justify-center">
+            <div className="absolute z-10 bg-white border-2 border-slate-200 rounded-full p-2 shadow-sm">
+              <FaChevronDown className="w-4 h-4 text-slate-600" />
+            </div>
           </div>
-        )}
-        {!isPolling && (
-          <div className="text-xs text-gray-500 text-center mt-2 flex items-center justify-center gap-2 px-2">
+
+          <TokenDisplay
+            token={TOKENS?.[toToken]}
+            amount={buyAmount}
+            fiat={buyFiat}
+            label="Buy"
+          />
+        </div>
+
+        {!isPolling && rate && !hasSwapped && (
+          <div className="text-xs text-slate-500 text-center mt-2 flex items-center justify-center gap-2 px-2">
             <span>
-              {rate.split("=")[0]} = <span className="font-semibold">{rate.split("=")[1]}</span>
+              {rate.split("=")[0]} ={" "}
+              <span className="font-semibold">{rate.split("=")[1]}</span>
             </span>
           </div>
         )}
-        {messageSuccess && (
-          <div className="w-full flex items-center justify-center text-center mt-3">
-            <MessageMarkdown>{messageSuccess}</MessageMarkdown>
-          </div>
-        )}
-      </div>
-    </div>
+
+        <div className="space-y-3 pt-2">
+          {!hasSwapped && !hasError && (
+            <Button
+              className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg"
+              disabled={isButtonDisabled}
+              onClick={handleSwap}
+            >
+              {isLoading || isSwapping || isPolling ? (
+                <div className="flex items-center justify-center gap-2">
+                  <FaSpinner className="animate-spin w-4 h-4" />
+                  <span>Processing...</span>
+                </div>
+              ) : (
+                <>
+                  <FaChevronDown className="w-4 h-4 mr-2 rotate-90" />
+                  Swap Tokens
+                </>
+              )}
+            </Button>
+          )}
+
+          {!hasSwapped && hasError && (
+            <div className="space-y-2">
+              <div className="w-full p-3 rounded-lg bg-red-50 border border-red-200">
+                <p className="text-sm text-red-700 text-center">{hasError}</p>
+              </div>
+              <Button
+                className="w-full h-12 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold rounded-xl transition-all duration-200"
+                disabled={isRetryButtonDisabled}
+                onClick={handleRetry}
+                variant="destructive"
+              >
+                {isRetrying || isPolling ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <FaSpinner className="animate-spin w-4 h-4" />
+                    <span>Retrying...</span>
+                  </div>
+                ) : (
+                  <>Try Again</>
+                )}
+              </Button>
+            </div>
+          )}
+
+          {hasSwapped && (
+            <div className="w-full text-center p-4 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200">
+              <div className="flex items-center justify-center gap-2 text-green-700 font-semibold mb-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                Swap Completed Successfully
+              </div>
+              {messageSuccess && (
+                <div className="text-sm text-slate-800">
+                  <MessageMarkdown>
+                    {typeof messageSuccess === "string"
+                      ? messageSuccess
+                      : JSON.stringify(messageSuccess)}
+                  </MessageMarkdown>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
-function BotPreSwap({ message, isLoading, isLatestMessage = true }: BotPreSwapProps) {
+function BotPreSwap({
+  message,
+  isLoading,
+  isLatestMessage = true,
+}: BotPreSwapProps) {
   return (
-    <div className="flex items-start gap-2">
-      <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
-        <Bot className="w-5 h-5 text-secondary-foreground" />
+    <div className="flex items-start gap-3">
+      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-sm">
+        <Bot className="w-4 h-4 text-white" />
       </div>
       <div className="flex flex-1 max-w-[80%] flex-col gap-4 items-start">
         <div className="w-full">
           <motion.div
             layout
             className={cn(
-              "rounded-2xl rounded-bl-sm bg-gradient-to-br from-white via-blue-100 to-blue-50 text-gray-900 p-4 border border-blue-100 shadow-md",
-              "shadow-sm transition-colors",
-              isLoading && "opacity-50"
+              "rounded-2xl rounded-bl-sm bg-gradient-to-br from-blue-50 via-slate-50 to-indigo-50 text-slate-900 p-4 border border-blue-100 shadow-sm",
+              "transition-all duration-200",
+              isLoading && "opacity-60",
             )}
           >
             <MessageMarkdown>{message.message}</MessageMarkdown>
           </motion.div>
         </div>
 
-        <PreSwap message={message} isLoading={isLoading} isLatestMessage={isLatestMessage} />
+        <PreSwap
+          message={message}
+          isLoading={isLoading}
+          isLatestMessage={isLatestMessage}
+        />
 
         <span className="text-base text-muted-foreground mt-2 block">
           {new Date(message.timestamp).toLocaleTimeString([], {

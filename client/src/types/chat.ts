@@ -1,6 +1,7 @@
 export enum ACTION_TYPE {
   USER = "user",
   UNKNOWN = "unknown",
+  BRIDGE = "bridge",
   SWAP = "swap",
   PRE_SWAP = "pre_swap",
   LIQUIDITY = "liquidity",
@@ -14,6 +15,7 @@ export enum ACTION_TYPE {
   PLACE_LIMIT_ORDER = "place_limit_order",
   PLACE_MARKET_ORDER = "place_market_order",
   REMOVE_LIQUIDITY = "remove_liquidity",
+  HELP = "help",
 }
 
 export interface ChatResponse {

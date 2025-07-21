@@ -34,7 +34,7 @@ Rename a `.env.development` file to `.env` file (both client & server folder)
 
 ## 🚀 Run Commands
 
-#### Client ([Staging](https://tasmil-finance-flax.vercel.app/))
+#### Client ([Staging](https://tasmil-finance.vercel.app/))
 
 ```sh
 cd client && yarn && yarn dev
@@ -43,5 +43,5 @@ cd client && yarn && yarn dev
 #### Server ([📚 Document](http://localhost:5000/api/docs))
 
 ```sh
-cd server && yarn && yarn start:dev
+cd server && pnpm i && pnpm start:dev
 ```
