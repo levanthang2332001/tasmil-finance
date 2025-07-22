@@ -24,12 +24,11 @@ const ChatDeFi = () => {
     if (messages.length === 0) {
       // Initial suggestions - mix of actions and help
       return [
-        ...SUGGESTION_DEFI_AGENT.slice(0, 3),
-        ...SUGGESTION_HELP_PROMPTS.slice(0, 2),
+        ...SUGGESTION_DEFI_AGENT.slice(0, 4),
       ];
     } else if (showHelpSuggestions) {
       // Show help and educational suggestions
-      return [...SUGGESTION_HELP_PROMPTS, ...SUGGESTION_TEMPLATES.slice(0, 2)];
+      return [...SUGGESTION_HELP_PROMPTS];
     } else {
       // Show action suggestions
       return SUGGESTION_DEFI_AGENT;

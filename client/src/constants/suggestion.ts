@@ -1,28 +1,24 @@
 export const SUGGESTION_DEFI_AGENT = [
   {
-    text: "How to stake?",
+    text: "Stake 0.0001 APT",
     linkImage: "/images/suggestion/stake.png",
   },
   {
-    text: "How to unstake?",
+    text: "Unstake 0.0001 APT",
     linkImage: "/images/suggestion/stake.png",
   },
   {
-    text: "How to swap?",
+    text: "Swap 0.02 APT for ALT",
     linkImage: "/images/suggestion/swap.png",
   },
   {
-    text: "How to bridge tokens to other chains?",
+    text: "How to bridge?",
     linkImage: "/images/suggestion/swap.png",
   },
 ];
 
 // Suggestions hướng dẫn giáo dục
 export const SUGGESTION_HELP_PROMPTS = [
-  {
-    text: "What information do I need for bridging?",
-    linkImage: "/images/suggestion/swap.png",
-  },
   {
     text: "What is staking and how does it work?",
     linkImage: "/images/suggestion/stake.png",
