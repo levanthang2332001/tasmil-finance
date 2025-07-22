@@ -104,6 +104,7 @@ export class IntentService {
     'Recent and timely: Prefer tweets that are recent and relevant to the current context.',
     'Avoid spam, promotional, repetitive, or misleading content.',
     'Concise and clear: Each tweet should be no longer than 280 characters.',
+    'No duplicate tweets: Avoid selecting the same tweet multiple times.',
   ] as const;
 
   constructor() {
@@ -145,6 +146,7 @@ For each tweet, consider:
 - Relevance to Aptos/crypto/blockchain/DeFi
 - Timing and freshness
 - Educational or analytical value
+- No duplicate tweets: Avoid selecting the same tweet multiple times.
 
 Return a JSON response with exactly this structure:
 {
