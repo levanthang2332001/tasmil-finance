@@ -133,30 +133,19 @@ const PreBridge = ({
   const dstAddress = bridgeData?.dstAddress;
   const userAddress = bridgeData?.user_address;
 
-  // Debug log
-  console.log("BotBridge message:", message);
-  console.log("BotBridge bridgeData:", bridgeData);
-  console.log("BotBridge params:", {
-    tokenA,
-    tokenB,
-    amount,
-    srcChainKey,
-    dstChainKey,
-  });
-
   // Calculate display amounts
   const srcAmount =
     quote?.srcAmount && bridgeData?.decimalsSrcToken
       ? (
-          Number(quote.srcAmount) / Math.pow(10, bridgeData.decimalsSrcToken)
-        ).toFixed(6)
+        Number(quote.srcAmount) / Math.pow(10, bridgeData.decimalsSrcToken)
+      ).toFixed(6)
       : amount;
 
   const dstAmount =
     quote?.dstAmount && bridgeData?.decimalsDstToken
       ? (
-          Number(quote.dstAmount) / Math.pow(10, bridgeData.decimalsDstToken)
-        ).toFixed(6)
+        Number(quote.dstAmount) / Math.pow(10, bridgeData.decimalsDstToken)
+      ).toFixed(6)
       : "0";
 
   const estimatedTime = quote?.duration?.estimated
@@ -167,14 +156,12 @@ const PreBridge = ({
   const fetchLatestBridgeData = useCallback(async () => {
     // Skip if already polling to prevent duplicate requests
     if (isPolling) {
-      console.log("Skipping fetch - already polling");
       return bridgeData;
     }
 
     // Skip if fetched recently (within 10 seconds) to avoid rate limits
     const now = Date.now();
     if (now - lastFetchTime < 10000) {
-      console.log("Skipping fetch - too recent");
       return bridgeData;
     }
 
@@ -209,7 +196,6 @@ const PreBridge = ({
       setIsPolling(false);
 
       if (result.error) {
-        console.error("fetchLatestBridgeData: Error from API", result.error);
         setHasError(result.error);
         setPermanentFailure(true);
         return bridgeData;
@@ -269,11 +255,11 @@ const PreBridge = ({
               setBridgeData(newData);
             }
           })
-          .catch((err) => {
+          .catch((error) => {
+            console.error("Failed to update bridge quote", error);
             if (isMounted) {
               setHasError("Failed to update bridge quote");
               setPermanentFailure(true);
-              console.error("Failed to update bridge quote", err);
             }
           });
       }, 1000); // 1 second debounce
@@ -388,8 +374,8 @@ const PreBridge = ({
         setPermanentFailure(true);
         setHasError("Failed to get bridge quote");
       }
-    } catch (err) {
-      console.error("handleRetry: Error", err);
+    } catch (error) {
+      console.error("handleRetry: Error", error);
       setHasError("Failed to update bridge quote");
       setPermanentFailure(true);
     } finally {
@@ -416,16 +402,6 @@ const PreBridge = ({
     !tokenB ||
     !amount ||
     !isLatestMessage;
-
-  // Debug logging
-  console.log("Retry button disabled:", {
-    isRetrying,
-    isPolling,
-    hasBridged,
-    hasTokens: !!(tokenA && tokenB && amount),
-    isLatestMessage,
-    isRetryButtonDisabled,
-  });
 
   // If no bridge data, show loading state
   if (!tokenA || !tokenB || !amount) {

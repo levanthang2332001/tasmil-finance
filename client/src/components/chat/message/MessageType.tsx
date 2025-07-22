@@ -17,7 +17,6 @@ export function MessageType({
   isLoading,
   isLatestMessage,
 }: MessageTypeProps) {
-  console.log("MessageType actionType:", message.actionType);
 
   const messageComponents = {
     [ACTION_TYPE.USER]: <UserChat message={message} isLoading={isLoading} />,

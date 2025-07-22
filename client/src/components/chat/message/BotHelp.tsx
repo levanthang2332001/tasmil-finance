@@ -19,10 +19,10 @@ export const BotHelp = ({ message, isLoading }: BotHelpProps) => {
       className="flex mb-4 animate-in"
     >
       <div className="flex items-start gap-3">
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center shadow-sm">
+        <div className="w-8 h-8 rounded-full background-gradient1 flex items-center justify-center shadow-sm">
           <BookOpen className="w-4 h-4 text-white" />
         </div>
-        <div className="max-w-[85%]">
+        <div className="max-w-[85%] ">
           <motion.div
             layout
             className={cn(
