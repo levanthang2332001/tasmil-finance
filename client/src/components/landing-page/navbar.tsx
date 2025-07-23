@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FiArrowUpRight, FiMenu, FiX } from "react-icons/fi";
 import { BsTwitterX } from "react-icons/bs";
-import { FaTelegram } from "react-icons/fa";
+// import { FaTelegram } from "react-icons/fa";
 import React from "react";
 import { PATHS, SECTION_IDS } from "@/constants/routes";
 // import { socialConfig, fundingConfig } from "@/config";
@@ -501,7 +501,7 @@ const MainNavbar = ({
                     </TooltipContent>
                   </Tooltip>
 
-                  <Tooltip>
+                  {/* <Tooltip>
                     <TooltipTrigger asChild>
                       <Link
                         href={PATHS.TELEGRAM}
@@ -517,7 +517,7 @@ const MainNavbar = ({
                     <TooltipContent>
                       <span>Telegram</span>
                     </TooltipContent>
-                  </Tooltip>
+                  </Tooltip> */}
                 </TooltipProvider>
               </div>
 

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Typography } from "../ui/typography";
 import { ArrowUp } from "lucide-react";
 import { BsTwitterX } from "react-icons/bs";
-import { FaTelegram } from "react-icons/fa";
+// import { FaTelegram } from "react-icons/fa";
 import { PATHS } from "@/constants/routes";
 import {
   Tooltip,
@@ -230,7 +230,7 @@ export function FooterSection() {
                     </TooltipContent>
                   </Tooltip>
 
-                  <Tooltip>
+                  {/* <Tooltip>
                     <TooltipTrigger asChild>
                       <Link
                         href={PATHS.TELEGRAM}
@@ -246,7 +246,7 @@ export function FooterSection() {
                     <TooltipContent>
                       <span>Telegram</span>
                     </TooltipContent>
-                  </Tooltip>
+                  </Tooltip> */}
                 </TooltipProvider>
               </div>
             </div>
@@ -306,7 +306,7 @@ export function FooterSection() {
                 </TooltipContent>
               </Tooltip>
 
-              <Tooltip>
+              {/* <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     href={PATHS.TELEGRAM}
@@ -322,7 +322,7 @@ export function FooterSection() {
                 <TooltipContent>
                   <span>Telegram</span>
                 </TooltipContent>
-              </Tooltip>
+              </Tooltip> */}
             </TooltipProvider>
           </div>
         </div>
