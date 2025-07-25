@@ -51,14 +51,11 @@ const sfPro = localFont({
 
 export const metadata: Metadata = {
   title: "Tasmil Finance | AI-Powered DeFi Trading, Swaps & AI Chatbot",
+  icons: {
+    icon: "/favicon.ico",
+  },
   description:
     "Trade smarter with Tasmil Finance: AI-powered DeFi swaps, liquidity management, and real-time market insights. Secure, decentralized, and user-friendly.",
-  icons: {
-    icon: {
-      url: "/images/logo.png",
-      type: "image/png",
-    },
-  },
   keywords:
     "DeFi, AI trading, crypto swaps, liquidity, blockchain, decentralized finance, trading bot, artificial intelligence, Aptos, wallet connect, DEX, chatbot",
   authors: [{ name: "Tasmil Finance Team" }],
@@ -79,7 +76,7 @@ export default function RootLayout({
         className="font-sfPro relative min-h-screen antialiased bg-background text-foreground"
         suppressHydrationWarning
       >
-          <AppProvider>{children}</AppProvider>
+        <AppProvider>{children}</AppProvider>
       </body>
     </html>
   );
