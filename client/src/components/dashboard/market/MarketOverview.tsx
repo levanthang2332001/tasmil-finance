@@ -31,7 +31,9 @@ export function MarketOverview() {
   useEffect(() => {
     const fetchMarketData = async () => {
       try {
-        const response = await fetch("/api/dashboard/market?symbols=BTCUSD,ETHUSD,SOLUSD,APTUSD");
+        const response = await fetch(
+          "/api/dashboard/market?symbols=BTCUSD,ETHUSD,SOLUSD,APTUSD",
+        );
         const data = await response.json();
         // API returns array of arrays, flatten it and extract first item from each subarray
         const flattenedData = data.map((arr: Token[]) => arr[0]);
@@ -85,7 +87,7 @@ export function MarketOverview() {
               <TokenCard
                 key={token.symbol}
                 symbol={token.symbol}
-                name={token.name}
+                name={token.name.replace(/\s*USD$/, "")}
                 price={token.price}
                 change={token.changePercentage}
                 isSelected={token.symbol === selectedToken}
