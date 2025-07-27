@@ -9,7 +9,7 @@ const DefiAgentPage = () => {
     <ContentLayout
       title={
         <div className="flex items-center gap-2">
-          <Image src="/images/defi-agent.png" alt="logo" width={58} height={58} />
+          <Image src="/images/defi-agent.png" alt="logo" width={45} height={45} />
           <h1 className="text-2xl font-semibold">Defi Strategy</h1>
         </div>
       }

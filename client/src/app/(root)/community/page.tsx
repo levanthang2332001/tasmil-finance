@@ -76,8 +76,8 @@ const CommunityPage = () => {
           <Image
             src="/images/community.png"
             alt="logo"
-            width={58}
-            height={58}
+            width={50}
+            height={50}
           />
           <h1 className="text-2xl font-semibold">
             Hot tweets ({items.length} loaded

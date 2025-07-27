@@ -10,8 +10,8 @@ const PortfolioPage = () => {
           <Image
             src="/images/portfolio.png"
             alt="logo"
-            width={55}
-            height={55}
+            width={40}
+            height={40}
           />
           <h1 className="text-2xl font-semibold">Portfolio</h1>
         </div>
