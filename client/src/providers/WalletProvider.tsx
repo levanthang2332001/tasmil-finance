@@ -7,11 +7,13 @@ import { WalletConnectionHandler } from "./WalletConnectionHandler";
 
 export { WalletConnectionHandler };
 
+
 export function WalletProvider({ children }: PropsWithChildren) {
   return (
     <AptosWalletAdapterProvider
       autoConnect={true}
       dappConfig={{ network: Network.MAINNET }}
+      optInWallets={["Petra", "Pontem Wallet", "Nightly", "OKX Wallet"]}
     >
       <WalletConnectionHandler />
       {children}
