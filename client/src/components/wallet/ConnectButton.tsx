@@ -16,6 +16,7 @@ import { Loader2, LogOut, User, Wallet } from "lucide-react";
 import { useCallback } from "react";
 import { toast } from "sonner";
 import ButtonCopy from "./menu/ButtonCopy";
+import { WalletIcon } from "./WalletIcon";
 
 declare global {
   interface Window {
@@ -177,19 +178,6 @@ export default function ConnectButton({
     }
   }, [disconnect, resetWalletState]);
 
-  const handleConnectClick = useCallback(async () => {
-    sessionStorage.removeItem(AUTH_CANCELLED_KEY);
-
-    if (wallets.length === 0) {
-      toast.error("No Wallet Found", {
-        description: "Please install an Aptos wallet extension",
-      });
-      return;
-    }
-
-    await handleConnect(wallets[0].name);
-  }, [wallets, handleConnect]);
-
   const renderTitle = (title: string) => label.trim().length > 0 && title;
 
   // Render states
@@ -233,24 +221,58 @@ export default function ConnectButton({
     );
   }
 
+  // Show wallet selection dropdown when not connected
   return (
-    <Button
-      variant="secondary"
-      className={cn("gap-2", className)}
-      onClick={handleConnectClick}
-      disabled={signing}
-    >
-      {signing ? (
-        <div className="flex items-center gap-2">
-          <Loader2 className="h-4 w-4 animate-spin" />
-          {renderTitle("Connecting...")}
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="secondary"
+          className={cn("gap-2", className)}
+          disabled={signing}
+        >
+          {signing ? (
+            <div className="flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              {renderTitle("Connecting...")}
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Wallet className="h-4 w-4" />
+              {renderTitle(label)}
+            </div>
+          )}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="center"
+        side="bottom"
+        className="w-72 p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border border-border shadow-xl rounded-xl"
+      >
+        <div className="text-base font-semibold text-center mb-4 text-foreground">
+          Choose your wallet
         </div>
-      ) : (
-        <div className="flex items-center gap-2">
-          <Wallet className="h-4 w-4" />
-          {renderTitle(label)}
-        </div>
-      )}
-    </Button>
+        {wallets.length === 0 ? (
+          <DropdownMenuItem disabled className="text-center py-3">
+            No wallets available
+          </DropdownMenuItem>
+        ) : (
+          <div className="space-y-2">
+            {wallets.map((wallet) => (
+              <DropdownMenuItem
+                key={wallet.name}
+                onSelect={() => {
+                  sessionStorage.removeItem(AUTH_CANCELLED_KEY);
+                  handleConnect(wallet.name);
+                }}
+                className="flex items-center gap-3 cursor-pointer p-4 rounded-lg hover:bg-accent transition-all duration-200 hover:scale-[1.02]"
+              >
+                <WalletIcon walletName={wallet.name} />
+                <span className="font-medium text-foreground">{wallet.name}</span>
+              </DropdownMenuItem>
+            ))}
+          </div>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
