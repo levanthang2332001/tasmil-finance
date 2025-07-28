@@ -21,6 +21,16 @@ import { WalletIcon } from "./WalletIcon";
 declare global {
   interface Window {
     aptos?: any;
+    okxwallet?: {
+      aptos?: {
+        account: () => Promise<{ address?: string; publicKey?: string }>;
+        getAccount?: () => Promise<{ address?: string; publicKey?: string }>;
+      };
+    };
+    pontem?: {
+      account: () => Promise<string | { address?: string; publicKey?: string }>;
+      publicKey: () => Promise<string>;
+    };
   }
 }
 
@@ -28,8 +38,6 @@ interface ConnectButtonProps {
   label?: string;
   className?: string;
 }
-
-const AUTH_CANCELLED_KEY = "wallet_auth_cancelled";
 
 interface UserResponse {
   success: boolean;
@@ -40,85 +48,202 @@ interface UserResponse {
   };
 }
 
+interface WalletAccount {
+  address: string;
+  publicKey: string;
+}
+
+const AUTH_CANCELLED_KEY = "wallet_auth_cancelled";
+
+// Helper functions
+const getWalletAccount = async (walletName: string): Promise<WalletAccount> => {
+  const walletNameLower = walletName.toLowerCase();
+
+  if (walletNameLower.includes("okx")) {
+    return getOKXWalletAccount();
+  } else if (walletNameLower.includes("pontem")) {
+    return getPontemWalletAccount();
+  } else {
+    return getStandardWalletAccount();
+  }
+};
+
+const getOKXWalletAccount = async (): Promise<WalletAccount> => {
+  if (typeof window === "undefined" || !window.okxwallet?.aptos) {
+    throw new Error(
+      "OKX wallet not found. Please install OKX wallet extension.",
+    );
+  }
+
+  try {
+    const account = await window.okxwallet.aptos.account();
+    return normalizeAccount(account);
+  } catch (error) {
+    console.error("Failed to get OKX wallet account:", error);
+
+    // Try fallback method
+    if (window.okxwallet?.aptos?.getAccount) {
+      try {
+        const account = await window.okxwallet.aptos.getAccount();
+        return normalizeAccount(account);
+      } catch (fallbackError) {
+        console.error("Fallback method also failed:", fallbackError);
+      }
+    }
+
+    throw new Error(
+      "Unable to access OKX wallet account. Please ensure OKX wallet is unlocked.",
+    );
+  }
+};
+
+const getPontemWalletAccount = async (): Promise<WalletAccount> => {
+  if (typeof window === "undefined" || !window.pontem) {
+    throw new Error(
+      "Pontem wallet not found. Please install Pontem wallet extension.",
+    );
+  }
+
+  try {
+    const [address, publicKey] = await Promise.all([
+      window.pontem.account(),
+      window.pontem.publicKey(),
+    ]);
+
+    return {
+      address: typeof address === "string" ? address : address.address || "",
+      publicKey: publicKey || "",
+    };
+  } catch (error) {
+    console.error("Failed to get Pontem wallet account:", error);
+    throw new Error(
+      "Unable to access Pontem wallet account. Please ensure Pontem wallet is unlocked.",
+    );
+  }
+};
+
+const getStandardWalletAccount = async (): Promise<WalletAccount> => {
+  if (typeof window === "undefined" || !window.aptos) {
+    throw new Error(
+      "Aptos wallet not found. Please install a supported wallet extension.",
+    );
+  }
+
+  try {
+    const account = await window.aptos.account();
+    return normalizeAccount(account);
+  } catch (error) {
+    console.error("Failed to get standard wallet account:", error);
+    throw new Error("Unable to access wallet account. Please try again.");
+  }
+};
+
+const normalizeAccount = (account: any): WalletAccount => {
+  if (typeof account === "string") {
+    return { address: account, publicKey: "" };
+  }
+
+  return {
+    address: account?.address || "",
+    publicKey: account?.publicKey || "",
+  };
+};
+
+const authenticateWallet = async (
+  walletAccount: WalletAccount,
+  signMessage: (args: { message: string; nonce: string }) => Promise<any>,
+) => {
+  // Get nonce
+  const { nonce, message } = (await AuthService.getNonce(
+    walletAccount.address,
+  )) as {
+    nonce: string;
+    message: string;
+  };
+
+  if (!nonce) throw new Error("Failed to get nonce");
+
+  // Sign message
+  const signature = await signMessage({ message, nonce });
+  if (!signature) throw new Error("User rejected signature");
+
+  // Verify signature
+  const response = await AuthService.verifySignature({
+    walletAddress: walletAccount.address,
+    publicKey: walletAccount.publicKey,
+    signature:
+      (signature.signature as any).signature || String(signature.signature),
+    message: signature.fullMessage,
+    nonce,
+  });
+
+  if (!response.success) throw new Error("Signature verification failed");
+
+  return response;
+};
+
+const checkUserAccount = async (address: string): Promise<string | null> => {
+  try {
+    const user = (await AccountService.checkUser(address)) as UserResponse;
+    return user.success && user.data ? user.data.tasmilAddress : null;
+  } catch (error) {
+    console.error("Error checking user:", error);
+    return null;
+  }
+};
+
 export default function ConnectButton({
   label = "Connect Aptos Wallet",
   className,
 }: ConnectButtonProps) {
   const {
-    account,
+    account: walletAccount,
     connected: walletConnected,
     disconnect,
     connect,
     signMessage,
     wallets,
   } = useWallet();
+
   const {
     setWalletState,
     setSigning,
     signing,
     connected: verified,
+    account: storedAccount,
     reset: resetWalletState,
   } = useWalletStore();
 
-  // Handle wallet connection and authentication
   const handleConnect = useCallback(
     async (walletName: string) => {
       let needsDisconnect = false;
 
       try {
         setSigning(true);
+        console.log(`Connecting to ${walletName}...`);
 
-        // Step 1: Connect wallet
+        // Connect wallet
         await connect(walletName);
         needsDisconnect = true;
+        console.log(`Connected to ${walletName}`);
 
-        // Step 2: Get account and authenticate
-        const wallet = window.aptos;
-        const walletAccount = await wallet?.account();
+        // Wait for wallet initialization
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        if (!walletAccount?.address) {
+        // Get wallet account
+        const walletAccount = await getWalletAccount(walletName);
+        if (!walletAccount.address) {
           throw new Error("No account found");
         }
 
-        // Step 3: Get nonce
-        const { nonce, message } = (await AuthService.getNonce(
-          walletAccount.address,
-        )) as {
-          nonce: string;
-          message: string;
-        };
-        if (!nonce) throw new Error("Failed to get nonce");
+        // Authenticate wallet
+        const authResponse = await authenticateWallet(
+          walletAccount,
+          signMessage,
+        );
 
-        // Step 4: Sign message
-        const signature = await signMessage({ message, nonce });
-        if (!signature) throw new Error("User rejected signature");
-
-        // Step 5: Verify signature
-        const response = await AuthService.verifySignature({
-          walletAddress: walletAccount.address,
-          publicKey: walletAccount.publicKey,
-          signature:
-            (signature.signature as any).signature ||
-            String(signature.signature),
-          message: signature.fullMessage,
-          nonce,
-        });
-
-        if (!response.success) throw new Error("Signature verification failed");
-
-        // Step 6: Check user and get Tasmil address after successful verification
-        let tasmilAddress = null;
-        try {
-          const user = (await AccountService.checkUser(
-            walletAccount.address,
-          )) as UserResponse;
-          if (user.success && user.data) {
-            tasmilAddress = user.data.tasmilAddress;
-          }
-        } catch (error) {
-          console.error("Error checking user:", error);
-          // Don't fail the connection if check-user fails
-        }
+        // Check user account
+        const tasmilAddress = await checkUserAccount(walletAccount.address);
 
         // Success
         sessionStorage.removeItem(AUTH_CANCELLED_KEY);
@@ -127,7 +252,10 @@ export default function ConnectButton({
           account: walletAccount.address,
           tasmilAddress,
         });
-        toast.success("Wallet Connected", { description: response?.message });
+
+        toast.success("Wallet Connected", {
+          description: authResponse?.message,
+        });
         needsDisconnect = false;
       } catch (error: any) {
         const isCancelled =
@@ -190,22 +318,22 @@ export default function ConnectButton({
     );
   }
 
-  if (walletConnected && verified && account) {
+  if (walletConnected && verified && storedAccount) {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" className={cn("gap-2", className)}>
             <Wallet className="h-4 w-4" />
-            {account.ansName ||
-              truncateAddress(account.address?.toString()) ||
+            {walletAccount?.ansName ||
+              truncateAddress(storedAccount) ||
               "Unknown"}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <ButtonCopy address={account.address?.toString() || ""} />
+          <ButtonCopy address={storedAccount} />
           <DropdownMenuItem asChild>
             <a
-              href={`https://explorer.aptoslabs.com/account/${account.address}`}
+              href={`https://explorer.aptoslabs.com/account/${storedAccount}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex gap-2"
@@ -221,7 +349,6 @@ export default function ConnectButton({
     );
   }
 
-  // Show wallet selection dropdown when not connected
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -246,7 +373,7 @@ export default function ConnectButton({
       <DropdownMenuContent
         align="center"
         side="bottom"
-        className="w-72 p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border border-border shadow-xl rounded-xl"
+        className="w-[17rem] p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border border-border shadow-xl rounded-xl"
       >
         <div className="text-base font-semibold text-center mb-4 text-foreground">
           Choose your wallet
@@ -257,9 +384,9 @@ export default function ConnectButton({
           </DropdownMenuItem>
         ) : (
           <div className="space-y-2">
-            {wallets.map((wallet) => (
+            {wallets.map((wallet, index) => (
               <DropdownMenuItem
-                key={wallet.name}
+                key={`${wallet.name}-${index}`}
                 onSelect={() => {
                   sessionStorage.removeItem(AUTH_CANCELLED_KEY);
                   handleConnect(wallet.name);
@@ -267,7 +394,9 @@ export default function ConnectButton({
                 className="flex items-center gap-3 cursor-pointer p-4 rounded-lg hover:bg-accent transition-all duration-200 hover:scale-[1.02]"
               >
                 <WalletIcon walletName={wallet.name} />
-                <span className="font-medium text-foreground">{wallet.name}</span>
+                <span className="font-medium text-foreground">
+                  {wallet.name}
+                </span>
               </DropdownMenuItem>
             ))}
           </div>
