@@ -1,69 +1,60 @@
-export class AuthService {
-  private static async request<T>(
-    endpoint: string,
-    options: RequestInit = {},
-  ): Promise<T> {
-    const response = await fetch(`${endpoint}`, {
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        Pragma: "no-cache",
-        Expires: "0",
-        ...options.headers,
-      },
-    });
+import { apiClient } from "@/lib/api/api-client";
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      const error = new Error(
-        data.error || `API request failed: ${response.statusText}`,
-      );
-      throw error;
-    }
-
-    return data;
-  }
-
-  static async getNonce(address: string) {
-    if (!address) {
-      throw new Error("Address is required");
-    }
-
-    return this.request(`/api/auth/get-nonce?address=${address}`);
-  }
-
-  static async verifySignature(params: {
-    walletAddress: string;
-    publicKey: string;
-    signature: string;
-    message: string;
-    nonce: string;
-  }): Promise<{ success: boolean; message: string; token: string }> {
-    if (
-      !params.walletAddress ||
-      !params.publicKey ||
-      !params.signature ||
-      !params.message ||
-      !params.nonce
-    ) {
-      throw new Error("Missing required parameters");
-    }
-
-    if (!params.message.includes(params.nonce)) {
-      throw new Error("Message does not contain nonce");
-    }
-
-    return this.request("/api/auth/verify-signature", {
-      method: "POST",
-      body: JSON.stringify(params),
-    });
-  }
-
-  static async logout() {
-    return this.request("/api/auth/logout", {
-      method: "POST",
-    });
-  }
+interface GetNonceResponse {
+  nonce: string;
+  message: string;
 }
+
+interface VerifySignatureParams {
+  walletAddress: string;
+  publicKey: string;
+  signature: string;
+  message: string;
+  nonce: string;
+}
+
+interface VerifySignatureResponse {
+  success: boolean;
+  message: string;
+  token: string;
+}
+
+export async function getNonce(address: string): Promise<GetNonceResponse> {
+  if (!address) {
+    throw new Error("Address is required");
+  }
+
+  return apiClient.request(`/api/auth/get-nonce?address=${address}`);
+}
+
+export async function verifySignature(
+  params: VerifySignatureParams,
+): Promise<VerifySignatureResponse> {
+  const { walletAddress, publicKey, signature, message, nonce } = params;
+
+  if (!walletAddress || !publicKey || !signature || !message || !nonce) {
+    throw new Error("Missing required parameters");
+  }
+
+  if (!message.includes(nonce)) {
+    throw new Error("Message does not contain nonce");
+  }
+
+  return apiClient.request("/api/auth/verify-signature", {
+    method: "POST",
+    body: JSON.stringify(params),
+  });
+}
+
+export async function logout(): Promise<void> {
+  return apiClient.request("/api/auth/logout", {
+    method: "POST",
+  });
+}
+
+// Backward compatibility - export as class-like object
+export const AuthService = {
+  getNonce,
+  verifySignature,
+  logout,
+};

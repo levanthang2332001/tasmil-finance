@@ -1,24 +1,17 @@
-export class VoiceService {
-  private static async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const response = await fetch(`${endpoint}`, {
-      ...options,
-    });
+import { apiClient } from "@/lib/api/api-client";
 
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.statusText}`);
-    }
-
-    return response.json();
+export async function transcribeAudio(formData: FormData): Promise<{ transcript: string }> {
+  if (!formData.get("file")) {
+    throw new Error("Missing required fields");
   }
 
-  static async transcribeAudio(formData: FormData): Promise<{ transcript: string }> {
-    if (!formData.get("file")) {
-      throw new Error("Missing required fields");
-    }
-
-    return this.request<{ transcript: string }>("/api/chat/voice", {
-      method: "POST",
-      body: formData,
-    });
-  }
+  return apiClient.request<{ transcript: string }>("/api/chat/voice", {
+    method: "POST",
+    body: formData,
+  });
 }
+
+// Backward compatibility - export as class-like object
+export const VoiceService = {
+  transcribeAudio,
+};

@@ -13,7 +13,7 @@ dotenv.config();
 interface IAccountResult {
   id: string;
   tasmilAddress: string;
-  privateKey: string;
+  privateKey: string; // Encrypted private key for client-side decryption
 }
 
 export class Accounts {

@@ -1,40 +1,45 @@
-export class AccountService {
-  private static async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const response = await fetch(`${endpoint}`, {
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        ...options.headers,
-      },
-      credentials: "include",
-    });
+import { apiClient } from "@/lib/api/api-client";
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      const error = new Error(data.error || `API request failed: ${response.statusText}`);
-      throw error;
-    }
-
-    return data;
-  }
-
-  static async checkUser(address: string) {
-    if (!address) {
-      throw new Error("Address is required");
-    }
-
-    return this.request(`/api/account/check-user?address=${address}`);
-  }
-
-  static async generateTasmilWallet(address: string) {
-    if (!address) {
-      throw new Error("Address is required");
-    }
-
-    return this.request("/api/account/generate-tasmil-wallet", {
-      method: "POST",
-      body: JSON.stringify({ address }),
-    });
-  }
+interface CheckUserResponse {
+  success: boolean;
+  message?: string;
+  data?: {
+    id: string;
+    tasmilAddress: string;
+  };
 }
+
+interface GenerateTasmilWalletResponse {
+  success: boolean;
+  message?: string;
+  data?: {
+    address: string;
+  };
+}
+
+export async function checkUser(address: string): Promise<CheckUserResponse> {
+  if (!address) {
+    throw new Error("Address is required");
+  }
+
+  return apiClient.request(`/api/account/check-user?address=${address}`);
+}
+
+export async function generateTasmilWallet(
+  address: string,
+): Promise<GenerateTasmilWalletResponse> {
+  if (!address) {
+    throw new Error("Address is required");
+  }
+
+  return apiClient.request("/api/account/generate-tasmil-wallet", {
+    method: "POST",
+    body: JSON.stringify({ address }),
+  });
+}
+
+// Backward compatibility - export as class-like object
+export const AccountService = {
+  checkUser,
+  generateTasmilWallet,
+};

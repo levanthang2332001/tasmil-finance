@@ -9,188 +9,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { AuthService } from "@/services/auth.service";
-import { AccountService } from "@/services/account.service";
 import { useWalletStore } from "@/store/useWalletStore";
 import { truncateAddress, useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Loader2, LogOut, User, Wallet } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import { toast } from "sonner";
+import type { WalletAccount, ConnectButtonProps } from "@/types/wallet";
+import {
+  getWalletAccount,
+  normalizeAccount,
+  authenticateWallet,
+  checkUserAccount,
+  isAuthCancelled,
+  AUTH_CANCELLED_KEY,
+} from "@/lib/utils";
 import ButtonCopy from "./menu/ButtonCopy";
 import { WalletIcon } from "./WalletIcon";
-
-declare global {
-  interface Window {
-    aptos?: any;
-    okxwallet?: {
-      aptos?: {
-        account: () => Promise<{ address?: string; publicKey?: string }>;
-        getAccount?: () => Promise<{ address?: string; publicKey?: string }>;
-      };
-    };
-    pontem?: {
-      account: () => Promise<string | { address?: string; publicKey?: string }>;
-      publicKey: () => Promise<string>;
-    };
-  }
-}
-
-interface ConnectButtonProps {
-  label?: string;
-  className?: string;
-}
-
-interface UserResponse {
-  success: boolean;
-  message?: string;
-  data?: {
-    id: string;
-    tasmilAddress: string;
-  };
-}
-
-interface WalletAccount {
-  address: string;
-  publicKey: string;
-}
-
-const AUTH_CANCELLED_KEY = "wallet_auth_cancelled";
-
-// Helper functions
-const getWalletAccount = async (walletName: string): Promise<WalletAccount> => {
-  const walletNameLower = walletName.toLowerCase();
-
-  if (walletNameLower.includes("okx")) {
-    return getOKXWalletAccount();
-  } else if (walletNameLower.includes("pontem")) {
-    return getPontemWalletAccount();
-  } else {
-    return getStandardWalletAccount();
-  }
-};
-
-const getOKXWalletAccount = async (): Promise<WalletAccount> => {
-  if (typeof window === "undefined" || !window.okxwallet?.aptos) {
-    throw new Error(
-      "OKX wallet not found. Please install OKX wallet extension.",
-    );
-  }
-
-  try {
-    const account = await window.okxwallet.aptos.account();
-    return normalizeAccount(account);
-  } catch (error) {
-    console.error("Failed to get OKX wallet account:", error);
-
-    // Try fallback method
-    if (window.okxwallet?.aptos?.getAccount) {
-      try {
-        const account = await window.okxwallet.aptos.getAccount();
-        return normalizeAccount(account);
-      } catch (fallbackError) {
-        console.error("Fallback method also failed:", fallbackError);
-      }
-    }
-
-    throw new Error(
-      "Unable to access OKX wallet account. Please ensure OKX wallet is unlocked.",
-    );
-  }
-};
-
-const getPontemWalletAccount = async (): Promise<WalletAccount> => {
-  if (typeof window === "undefined" || !window.pontem) {
-    throw new Error(
-      "Pontem wallet not found. Please install Pontem wallet extension.",
-    );
-  }
-
-  try {
-    const [address, publicKey] = await Promise.all([
-      window.pontem.account(),
-      window.pontem.publicKey(),
-    ]);
-
-    return {
-      address: typeof address === "string" ? address : address.address || "",
-      publicKey: publicKey || "",
-    };
-  } catch (error) {
-    console.error("Failed to get Pontem wallet account:", error);
-    throw new Error(
-      "Unable to access Pontem wallet account. Please ensure Pontem wallet is unlocked.",
-    );
-  }
-};
-
-const getStandardWalletAccount = async (): Promise<WalletAccount> => {
-  if (typeof window === "undefined" || !window.aptos) {
-    throw new Error(
-      "Aptos wallet not found. Please install a supported wallet extension.",
-    );
-  }
-
-  try {
-    const account = await window.aptos.account();
-    return normalizeAccount(account);
-  } catch (error) {
-    console.error("Failed to get standard wallet account:", error);
-    throw new Error("Unable to access wallet account. Please try again.");
-  }
-};
-
-const normalizeAccount = (account: any): WalletAccount => {
-  if (typeof account === "string") {
-    return { address: account, publicKey: "" };
-  }
-
-  return {
-    address: account?.address || "",
-    publicKey: account?.publicKey || "",
-  };
-};
-
-const authenticateWallet = async (
-  walletAccount: WalletAccount,
-  signMessage: (args: { message: string; nonce: string }) => Promise<any>,
-) => {
-  // Get nonce
-  const { nonce, message } = (await AuthService.getNonce(
-    walletAccount.address,
-  )) as {
-    nonce: string;
-    message: string;
-  };
-
-  if (!nonce) throw new Error("Failed to get nonce");
-
-  // Sign message
-  const signature = await signMessage({ message, nonce });
-  if (!signature) throw new Error("User rejected signature");
-
-  // Verify signature
-  const response = await AuthService.verifySignature({
-    walletAddress: walletAccount.address,
-    publicKey: walletAccount.publicKey,
-    signature:
-      (signature.signature as any).signature || String(signature.signature),
-    message: signature.fullMessage,
-    nonce,
-  });
-
-  if (!response.success) throw new Error("Signature verification failed");
-
-  return response;
-};
-
-const checkUserAccount = async (address: string): Promise<string | null> => {
-  try {
-    const user = (await AccountService.checkUser(address)) as UserResponse;
-    return user.success && user.data ? user.data.tasmilAddress : null;
-  } catch (error) {
-    console.error("Error checking user:", error);
-    return null;
-  }
-};
 
 export default function ConnectButton({
   label = "Connect Aptos Wallet",
@@ -234,7 +68,10 @@ export default function ConnectButton({
         let account: WalletAccount;
 
         const walletNameLower = walletName.toLowerCase();
-        if (walletNameLower.includes("okx") || walletNameLower.includes("pontem")) {
+        if (
+          walletNameLower.includes("okx") ||
+          walletNameLower.includes("pontem")
+        ) {
           // Special handling for OKX and Pontem wallets that need direct window access
           account = await getWalletAccount(walletName);
         } else {
@@ -242,10 +79,10 @@ export default function ConnectButton({
           if (!walletAccount?.address) {
             throw new Error("No account found after connection");
           }
-          account = {
+          account = normalizeAccount({
             address: walletAccount.address.toString(),
             publicKey: walletAccount.publicKey?.toString() || "",
-          };
+          });
         }
 
         if (!account.address) {
@@ -253,10 +90,7 @@ export default function ConnectButton({
         }
 
         // Authenticate wallet
-        const authResponse = await authenticateWallet(
-          account,
-          signMessage,
-        );
+        const authResponse = await authenticateWallet(account, signMessage);
 
         // Check user account
         const tasmilAddress = await checkUserAccount(account.address);
@@ -274,10 +108,7 @@ export default function ConnectButton({
         });
         needsDisconnect = false;
       } catch (error: any) {
-        const isCancelled =
-          error.message?.includes("rejected") || error.code === 4001;
-
-        if (isCancelled) {
+        if (isAuthCancelled(error)) {
           sessionStorage.setItem(AUTH_CANCELLED_KEY, "true");
         } else {
           const errorMessage =

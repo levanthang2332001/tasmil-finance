@@ -1,30 +1,21 @@
 import { ChatResponse } from "@/types/chat";
+import { apiClient } from "@/lib/api/api-client";
 
-export class ChatService {
-  private static async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const response = await fetch(`${endpoint}`, {
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        ...options.headers,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.statusText}`);
-    }
-
-    return response.json();
+export async function sendMessage(
+  userAddress: string,
+  content: string
+): Promise<ChatResponse> {
+  if (!userAddress) {
+    throw new Error("User address is required");
   }
 
-  static async sendMessage(userAddress: string, content: string): Promise<ChatResponse> {
-    if (!userAddress) {
-      throw new Error("User address is required");
-    }
-
-    return this.request<ChatResponse>("/api/chat/messages", {
-      method: "POST",
-      body: JSON.stringify({ userAddress, content }),
-    });
-  }
+  return apiClient.request<ChatResponse>("/api/chat/messages", {
+    method: "POST",
+    body: JSON.stringify({ userAddress, content }),
+  });
 }
+
+// Backward compatibility - export as class-like object
+export const ChatService = {
+  sendMessage,
+};

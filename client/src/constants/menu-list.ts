@@ -24,11 +24,11 @@ export function getMenuList(): GroupType[] {
     {
       groupLabel: "",
       menus: [
-        {
-          href: PATHS.DASHBOARD,
-          label: "Dashboard",
-          image: "/sidebar/dashboard.png",
-        },
+        // {
+        //   href: PATHS.DASHBOARD,
+        //   label: "Dashboard",
+        //   image: "/sidebar/dashboard.png",
+        // },
 
         {
           href: PATHS.DEFI_AGENT,
@@ -40,11 +40,11 @@ export function getMenuList(): GroupType[] {
           label: "Community",
           image: "/sidebar/community.png",
         },
-        {
-          href: PATHS.PORTFOLIO,
-          label: "Portfolio",
-          image: "/sidebar/portfolio.png",
-        },
+        // {
+        //   href: PATHS.PORTFOLIO,
+        //   label: "Portfolio",
+        //   image: "/sidebar/portfolio.png",
+        // },
       ],
     },
   ];

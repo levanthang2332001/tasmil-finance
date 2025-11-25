@@ -11,24 +11,38 @@ const PAGE_SIZE = 10;
 const CommunityPage = () => {
   const [items, setItems] = useState<BentoItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [cursor, setCursor] = useState<number | null>(null);
+  const [hasMore, setHasMore] = useState(true);
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const loadMoreItems = async () => {
-    if (loading || cursor === null || cursor === 0) return;
+    if (loading || !hasMore || cursor === null || cursor === 0) return;
+
     try {
       setLoading(true);
+      setError(null);
+
       const newItems = (await CommunityService.getBatches(
         PAGE_SIZE,
         cursor,
       )) as BentoItem[];
+
       if (newItems && newItems.length > 0) {
         setItems((prev) => [...prev, ...newItems]);
-        setCursor(Math.max(0, cursor - PAGE_SIZE));
+        const newCursor = Math.max(0, cursor - PAGE_SIZE);
+        setCursor(newCursor);
+
+        if (newCursor === 0 || newItems.length < PAGE_SIZE) {
+          setHasMore(false);
+        }
+      } else {
+        setHasMore(false);
       }
-      console.log("newItems", newItems);
     } catch (error) {
       console.error("Error loading more items:", error);
+      setError("Failed to load more tweets. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -37,29 +51,45 @@ const CommunityPage = () => {
   useEffect(() => {
     const initializePage = async () => {
       try {
-        setLoading(true);
+        setInitialLoading(true);
+        setError(null);
+
         const maxCursor = await CommunityService.getLatestCursor();
         const cursorValue = parseInt(maxCursor);
-        setCursor(cursorValue);
 
         const newItems = (await CommunityService.getBatches(
           PAGE_SIZE,
           cursorValue,
         )) as BentoItem[];
+
         if (newItems && newItems.length > 0) {
           setItems(newItems);
-          setCursor(Math.max(0, cursorValue - PAGE_SIZE));
+          const newCursor = Math.max(0, cursorValue - PAGE_SIZE);
+          setCursor(newCursor);
+
+          if (newCursor === 0 || newItems.length < PAGE_SIZE) {
+            setHasMore(false);
+          }
+        } else {
+          setCursor(0);
+          setHasMore(false);
         }
-        console.log("newItems", newItems);
       } catch (error) {
         console.error("Error initializing page:", error);
+        setError("Failed to load tweets. Please try again.");
+        setCursor(0);
+        setHasMore(false);
       } finally {
-        setLoading(false);
+        setInitialLoading(false);
       }
     };
 
     initializePage();
   }, []);
+
+  const handleRetry = () => {
+    window.location.reload();
+  };
 
   const handleScroll = () => {
     if (loading) return;
@@ -80,15 +110,27 @@ const CommunityPage = () => {
             height={50}
           />
           <h1 className="text-2xl font-semibold">
-            Hot tweets ({items.length} loaded
-            {cursor === 0 ? " - All caught up!" : ""})
+            Hot tweets
+            {items.length > 0 && (
+              <span className="ml-2 text-sm font-normal text-muted-foreground">
+                ({items.length} loaded{!hasMore ? " - All caught up!" : ""})
+              </span>
+            )}
           </h1>
         </div>
       }
       className="overflow-hidden px-0"
     >
       <div className="h-full w-full">
-        <NewsFeed items={items} onScrollEnd={handleScroll} loading={loading} />
+        <NewsFeed
+          items={items}
+          onScrollEnd={handleScroll}
+          loading={loading}
+          initialLoading={initialLoading}
+          error={error}
+          hasMore={hasMore}
+          onRetry={handleRetry}
+        />
       </div>
     </ContentLayout>
   );

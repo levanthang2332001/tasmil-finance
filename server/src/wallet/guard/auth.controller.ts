@@ -16,18 +16,11 @@ import { ApiTags } from '@nestjs/swagger';
 import { RedisCacheService } from 'src/redis/services/redisCacheService';
 import { AuthService } from './service/auth.service';
 import { Response } from 'express';
+import { Throttle } from '@nestjs/throttler';
 dotenv.config();
 
-const NONCE_STORE: {
-  [key: string]: {
-    nonceHex: string;
-    createdAt: number;
-    expiresAt: number;
-  };
-} = {};
-
-const NONCE_EXPIRATION_TIME = 100 * 24 * 60 * 60 * 1000; // 100 days
 const JWT_EXPIRATION_TIME = '24h';
+const JWT_EXPIRATION_MS = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 const NONCE_TTL = 3 * 60 * 1000; // 3 minutes for nonce only
 
 @ApiTags('Authentication')
@@ -45,6 +38,7 @@ export class AuthController {
   }
 
   @Get('get-nonce')
+  @Throttle({ default: { limit: 5, ttl: 60000 } }) // 5 requests per minute
   @AuthApiDocs.getNonce.operation
   @AuthApiDocs.getNonce.query
   @AuthApiDocs.getNonce.okResponse
@@ -84,6 +78,7 @@ export class AuthController {
   }
 
   @Post('verify-signature')
+  @Throttle({ default: { limit: 10, ttl: 60000 } }) // 10 requests per minute
   @AuthApiDocs.verifySignature.operation
   @AuthApiDocs.verifySignature.body
   @AuthApiDocs.verifySignature.okResponse
@@ -112,10 +107,6 @@ export class AuthController {
       throw new UnauthorizedException('Invalid nonce');
     }
 
-    if (Date.now() > NONCE_STORE[walletAddress]?.expiresAt) {
-      throw new UnauthorizedException('Nonce expired');
-    }
-
     try {
       const isValidNonce = await this.authService.isValidNonce(
         walletAddress,
@@ -140,14 +131,13 @@ export class AuthController {
         expiresIn: JWT_EXPIRATION_TIME,
       };
       const token = sign({ walletAddress }, this.jwtSecret, signOptions);
-      delete NONCE_STORE[walletAddress];
 
       // Set token in HTTP-only cookie
       res.cookie('tasmil-token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        maxAge: NONCE_EXPIRATION_TIME,
+        maxAge: JWT_EXPIRATION_MS, // Fixed: Now matches JWT expiration (24h)
         path: '/',
       });
 

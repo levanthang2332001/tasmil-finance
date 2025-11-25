@@ -8,6 +8,14 @@ export interface TokenData {
   share: number;
 }
 
+export interface RiskProfile {
+  largeCap: number;
+  stablecoins: number;
+  midCap: number;
+  smallCap: number;
+  microCap: number;
+}
+
 export interface PortfolioStats {
   netWorth: number;
   netWorthChange: number;
@@ -17,19 +25,3 @@ export interface PortfolioStats {
   totalLiabilities: number;
 }
 
-export interface RiskProfile {
-  largeCap: number;
-  stablecoins: number;
-  midCap: number;
-  smallCap: number;
-  microCap: number;
-}
-
-export interface PortfolioState {
-  isLoading: boolean;
-  hasData: boolean;
-  error: string | null;
-  portfolioStats: PortfolioStats;
-  tokens: TokenData[];
-  riskProfile: RiskProfile;
-}

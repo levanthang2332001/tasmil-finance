@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Decrypt } from "@/utils/descript";
+import { Decrypt } from "@/lib/utils";
 import { truncateAddress } from "@aptos-labs/ts-sdk";
 
 interface PrivateKeyDialogProps {

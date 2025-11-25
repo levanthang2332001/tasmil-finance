@@ -26,7 +26,10 @@ const TOKEN_MAPPING: Record<string, string> = {
 function getTokenSymbolFromAddress(coinType: string): string {
   // Check if it matches any known token addresses
   for (const [symbol, tokenInfo] of Object.entries(TOKENS)) {
-    if (tokenInfo.moveAddress === coinType || tokenInfo.hexAddress === coinType) {
+    if (
+      tokenInfo.moveAddress === coinType ||
+      tokenInfo.hexAddress === coinType
+    ) {
       return symbol;
     }
   }
@@ -42,7 +45,7 @@ function getTokenSymbolFromAddress(coinType: string): string {
 }
 
 export async function fetchTokenPrices(
-  symbols: string[]
+  symbols: string[],
 ): Promise<Record<string, { price: number; change24h: number }>> {
   try {
     const coinIds = symbols
@@ -53,7 +56,7 @@ export async function fetchTokenPrices(
     if (!coinIds) return {};
 
     const response = await fetch(
-      `${COINGECKO_API}/simple/price?ids=${coinIds}&vs_currencies=usd&include_24hr_change=true`
+      `${COINGECKO_API}/simple/price?ids=${coinIds}&vs_currencies=usd&include_24hr_change=true`,
     );
 
     if (!response.ok) throw new Error("Failed to fetch prices");
@@ -82,7 +85,7 @@ export async function fetchTokenPrices(
 export async function fetchAptosBalance(address: string): Promise<number> {
   const resources = await client.getAccountResources(address);
   const coinStore = resources.find(
-    (r) => r.type === "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>"
+    (r) => r.type === "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>",
   );
   let value = 0;
   if (coinStore) {
@@ -102,7 +105,9 @@ export interface AptosCoinInfo {
   balance: number;
 }
 
-export async function fetchAptosCoins(address: string): Promise<AptosCoinInfo[]> {
+export async function fetchAptosCoins(
+  address: string,
+): Promise<AptosCoinInfo[]> {
   const resources = await client.getAccountResources(address);
   return resources
     .filter((r) => r.type.startsWith("0x1::coin::CoinStore<"))
@@ -135,10 +140,10 @@ export async function fetchAptosHistory(address: string): Promise<any[]> {
   return txs;
 }
 
-export async function calculateTokenData(coins: AptosCoinInfo[]): Promise<TokenData[]> {
+export async function calculateTokenData(
+  coins: AptosCoinInfo[],
+): Promise<TokenData[]> {
   if (!coins || coins.length === 0) return [];
-
-  console.log("coins: ", coins);
 
   // Get unique symbols for price fetching
   const symbols = [...new Set(coins.map((coin) => coin.symbol))];

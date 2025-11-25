@@ -85,13 +85,14 @@ export function FooterSection() {
           >
             REVOLUTIONIZE YOUR DEFI EXPERIENCE WITH TASMIL FINANCE
           </Typography>
-          
+
           <Typography
             as="div"
             className="text-lg md:text-2xl md:w-[60%] mb-6 md:mb-10 mt-4 md:mt-6 opacity-90 max-w-2xl text-white"
           >
-            Experience the future of decentralized finance with our AI-powered platform. 
-            Trade, manage liquidity, and optimize your portfolio with intelligent automation.
+            Experience the future of decentralized finance with our AI-powered
+            platform. Trade, manage liquidity, and optimize your portfolio with
+            intelligent automation.
           </Typography>
 
           <button
@@ -229,24 +230,6 @@ export function FooterSection() {
                       <span>Twitter</span>
                     </TooltipContent>
                   </Tooltip>
-
-                  {/* <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link
-                        href={PATHS.TELEGRAM}
-                        aria-label="Telegram"
-                        className="group"
-                      >
-                        <div className="relative flex items-center justify-center h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/5 hover:bg-white/20">
-                          <FaTelegram className="text-white text-lg" />
-                          <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40"></div>
-                        </div>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <span>Telegram</span>
-                    </TooltipContent>
-                  </Tooltip> */}
                 </TooltipProvider>
               </div>
             </div>
@@ -290,11 +273,7 @@ export function FooterSection() {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Link
-                    href={PATHS.X}
-                    aria-label="Twitter"
-                    className="group"
-                  >
+                  <Link href={PATHS.X} aria-label="Twitter" className="group">
                     <div className="relative flex items-center justify-center h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/5 hover:bg-white/20">
                       <BsTwitterX className="text-white text-lg group-hover:scale-110 transition-transform" />
                       <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40"></div>
