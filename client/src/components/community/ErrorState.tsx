@@ -8,20 +8,22 @@ interface ErrorStateProps {
 
 export function ErrorState({ error, onRetry }: ErrorStateProps) {
   return (
-    <div className="h-full flex flex-col items-center justify-center py-12 space-y-4">
-      <div className="bg-destructive/20 rounded-full w-16 h-16 flex items-center justify-center mb-2">
-        <span className="text-destructive text-3xl font-bold">!</span>
+    <div className="h-full flex flex-col items-center justify-center py-16 space-y-6 bg-background">
+      <div className="bg-gradient-to-br from-destructive/20 to-muted/10 rounded-full w-20 h-20 flex items-center justify-center shadow-lg mb-2">
+        <span className="text-destructive text-4xl font-bold drop-shadow-lg">
+          !
+        </span>
       </div>
-      <div className="text-center">
+      <div className="text-center max-w-xs">
         <h3 className="text-lg font-semibold text-foreground mb-2">
-          Something went wrong
+          Oops! Something went wrong
         </h3>
-        <p className="text-sm text-destructive mb-4">
-          {error ? error : "We couldn't load the feed. Please try again."}
+        <p className="text-md text-secondary mb-6">
+          {error || "We couldn't load the feed. Please try again."}
         </p>
         <Button
-          variant="outline"
-          className="bg-background text-foreground border-border"
+          variant="secondary"
+          className="background-gradient3 text-primary border border-border px-5 py-2 rounded-full hover:opacity-80 transition"
           onClick={onRetry}
         >
           <svg

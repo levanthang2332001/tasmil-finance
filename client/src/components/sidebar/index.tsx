@@ -4,33 +4,25 @@ import { PATHS } from "@/constants/routes";
 import { cn } from "@/lib/utils";
 import { AnimatePresence } from "framer-motion";
 import {
-  Brain,
   ChartNoAxesCombined,
   ChevronLeft,
   ChevronRight,
-  HelpCircle,
   Landmark,
-  Settings,
   Wallet,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-import Logo from "./Logo";
-import SidebarButton, { SidebarItem } from "./SidebarButton";
 import { Button } from "../ui/button";
 import ConnectButton from "../wallet/ConnectButton";
+import Logo from "./Logo";
+import SidebarButton, { SidebarItem } from "./SidebarButton";
 
 const Sidebar: React.FC = () => {
   const SIDEBAR_ITEMS: SidebarItem[] = [
     {
       icon: <Wallet className="mr-2 h-6 w-6" />,
       label: "Dashboard",
-      link: PATHS.DASHBOARD,
-    },
-    {
-      icon: <Brain className="mr-2 h-6 w-6" />,
-      label: "Ai Agents",
-      link: PATHS.AI_AGENT,
+      link: PATHS.DEFI_AGENT,
     },
     {
       icon: <Landmark className="mr-2 h-6 w-6" />,
@@ -42,25 +34,9 @@ const Sidebar: React.FC = () => {
       label: "Community",
       link: PATHS.COMMUNITY,
     },
-    {
-      icon: <Wallet className="mr-2 h-6 w-6" />,
-      label: "Wallet",
-      link: PATHS.PORTFOLIO,
-    },
   ];
 
-  const FOOTER_ITEMS: SidebarItem[] = [
-    {
-      icon: <Settings className="mr-2 h-6 w-6" />,
-      label: "Settings",
-      link: PATHS.SETTINGS,
-    },
-    {
-      icon: <HelpCircle className="mr-2 h-6 w-6" />,
-      label: "Help & FAQ",
-      link: PATHS.HELP,
-    },
-  ];
+  const FOOTER_ITEMS: SidebarItem[] = [];
 
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
@@ -72,7 +48,7 @@ const Sidebar: React.FC = () => {
     <div
       className={cn(
         "transition-all h-full duration-300 ease-in-out relative",
-        isSidebarOpen ? "w-64" : "w-0"
+        isSidebarOpen ? "w-64" : "w-0",
       )}
     >
       <div
@@ -82,7 +58,7 @@ const Sidebar: React.FC = () => {
           "border-r border-crypto-blue/10",
           "transform transition-transform duration-300 ease-in-out",
           "flex flex-col",
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <Logo className={HEADER_HEIGHT} />

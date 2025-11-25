@@ -1,3 +1,5 @@
+// Formatting utilities
+
 export function formatNumber(value: number): string {
   // For values less than 1, show up to 6 decimal places
   if (Math.abs(value) < 1) {
@@ -37,4 +39,3 @@ export function formatDate(isoString: string): string {
   const year = date.getUTCFullYear();
   return `${day}/${month}/${year}`;
 }
-

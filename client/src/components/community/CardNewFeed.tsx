@@ -4,25 +4,13 @@ import { BadgeCheck } from "lucide-react";
 import { BsTwitterX } from "react-icons/bs";
 import Image from "next/image";
 import { useState } from "react";
-
-export interface CardNewFeedItem {
-  id: string;
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  author?: string;
-  handle?: string;
-  time?: string;
-  avatar?: string;
-  verified?: boolean;
-  hasImage?: boolean;
-  imageUrl?: string;
-  tweetUrl?: string;
-}
+import { CardNewFeedItem } from "@/types/community";
 
 interface CardNewFeedProps {
   item: CardNewFeedItem;
 }
+
+export type { CardNewFeedItem } from "@/types/community";
 
 export function CardNewFeed({ item }: CardNewFeedProps) {
   const [isExpanded, setIsExpanded] = useState(false);

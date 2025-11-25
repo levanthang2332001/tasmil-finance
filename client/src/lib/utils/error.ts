@@ -1,3 +1,5 @@
+// Error utilities
+
 export function formatError(
   error: unknown = "Sorry, there was an error processing your message. Please try again."
 ): string {
@@ -6,4 +8,3 @@ export function formatError(
   }
   return String(error);
 }
-
