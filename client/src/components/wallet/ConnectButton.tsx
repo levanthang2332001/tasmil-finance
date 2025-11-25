@@ -13,7 +13,7 @@ import { AccountService } from "@/services/account.service";
 import { useWalletStore } from "@/store/useWalletStore";
 import { truncateAddress, useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Loader2, LogOut, User, Wallet } from "lucide-react";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { toast } from "sonner";
 import ButtonCopy from "./menu/ButtonCopy";
 import { WalletIcon } from "./WalletIcon";
@@ -230,26 +230,42 @@ export default function ConnectButton({
         // Wait for wallet initialization
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        // Get wallet account
-        const walletAccount = await getWalletAccount(walletName);
-        if (!walletAccount.address) {
-          throw new Error("No account found");
+        // Get wallet account - use different strategies based on wallet type
+        let account: WalletAccount;
+
+        const walletNameLower = walletName.toLowerCase();
+        if (walletNameLower.includes("okx") || walletNameLower.includes("pontem")) {
+          // Special handling for OKX and Pontem wallets that need direct window access
+          account = await getWalletAccount(walletName);
+        } else {
+          // Use account from useWallet hook for standard wallets
+          if (!walletAccount?.address) {
+            throw new Error("No account found after connection");
+          }
+          account = {
+            address: walletAccount.address.toString(),
+            publicKey: walletAccount.publicKey?.toString() || "",
+          };
+        }
+
+        if (!account.address) {
+          throw new Error("No account address found");
         }
 
         // Authenticate wallet
         const authResponse = await authenticateWallet(
-          walletAccount,
+          account,
           signMessage,
         );
 
         // Check user account
-        const tasmilAddress = await checkUserAccount(walletAccount.address);
+        const tasmilAddress = await checkUserAccount(account.address);
 
         // Success
         sessionStorage.removeItem(AUTH_CANCELLED_KEY);
         setWalletState({
           connected: true,
-          account: walletAccount.address,
+          account: account.address,
           tasmilAddress,
         });
 
@@ -271,16 +287,15 @@ export default function ConnectButton({
           toast.error("Connection Failed", { description: errorMessage });
         }
 
-        // Cleanup
+        // Cleanup - single disconnect call
         if (needsDisconnect) {
           try {
-            disconnect();
+            await disconnect();
           } catch (err) {
             console.error("Failed to disconnect:", err);
           }
         }
         resetWalletState();
-        disconnect();
       } finally {
         setSigning(false);
       }
@@ -292,6 +307,7 @@ export default function ConnectButton({
       setSigning,
       signMessage,
       resetWalletState,
+      walletAccount,
     ],
   );
 
@@ -305,6 +321,22 @@ export default function ConnectButton({
       toast.error("Failed to disconnect");
     }
   }, [disconnect, resetWalletState]);
+
+  // Handle stuck "Verifying" state with timeout
+  useEffect(() => {
+    if (walletConnected && !verified && !signing) {
+      const timeout = setTimeout(() => {
+        console.error("Verification timeout - resetting wallet state");
+        disconnect();
+        resetWalletState();
+        toast.error("Connection timeout", {
+          description: "Please try connecting again",
+        });
+      }, 30000); // 30 seconds timeout
+
+      return () => clearTimeout(timeout);
+    }
+  }, [walletConnected, verified, signing, disconnect, resetWalletState]);
 
   const renderTitle = (title: string) => label.trim().length > 0 && title;
 
