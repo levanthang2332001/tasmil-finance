@@ -12,19 +12,15 @@ function DashboardLoading() {
       }
       className="overflow-hidden px-0"
     >
-      <div className="space-y-4 px-4 pb-4 sm:px-6">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="relative h-screen overflow-y-auto space-y-8 p-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, index) => (
-            <Skeleton key={index} className="h-24 w-full rounded-xl" />
+            <Skeleton
+              key={index}
+              className="h-[200px] rounded-xl border border-slate-700/50 bg-slate-800/30"
+            />
           ))}
         </div>
-
-        <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-          <Skeleton className="h-[360px] w-full rounded-xl xl:col-span-2" />
-          <Skeleton className="h-[360px] w-full rounded-xl" />
-        </div>
-
-        <Skeleton className="h-[320px] w-full rounded-xl" />
       </div>
     </ContentLayout>
   );

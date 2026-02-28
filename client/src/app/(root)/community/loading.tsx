@@ -13,10 +13,19 @@ function CommunityLoading() {
       }
       className="overflow-hidden px-0"
     >
-      <div className="grid grid-cols-1 gap-4 max-w-2xl mx-auto px-4 pb-6 pt-2 md:grid-cols-2">
-        {Array.from({ length: 10 }).map((_, index) => (
-          <LoadingItem key={index} />
-        ))}
+      <div className="h-full w-full overflow-y-auto">
+        <div className="mx-auto grid max-w-4xl grid-cols-1 items-start gap-4 px-2 sm:grid-cols-2">
+          <div>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <LoadingItem key={`left-${index}`} />
+            ))}
+          </div>
+          <div>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <LoadingItem key={`right-${index}`} />
+            ))}
+          </div>
+        </div>
       </div>
     </ContentLayout>
   );
