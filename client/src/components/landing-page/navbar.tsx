@@ -254,7 +254,7 @@ const MainNavbar = ({
 
   return (
     <div
-      className={`fixed top-0 left-0 w-full flex items-center justify-between h-[72px] px-8 md:px-16 transition-all duration-300`}
+      className={`fixed top-0 left-0 w-full flex items-center justify-between h-[72px] px-4 sm:px-6 md:px-16 transition-all duration-300`}
       style={{ transition: styles.navbarTransition }}
     >
       {/* Left Navigation Menu - Desktop Only */}
@@ -373,7 +373,7 @@ const MainNavbar = ({
           size="2xl"
           weight="bold"
           gradient={true}
-          className="transition-all duration-300"
+          className="hidden sm:block transition-all duration-300"
         >
           Tasmil Finance
         </Typography>
@@ -424,7 +424,7 @@ const MainNavbar = ({
             }}
           >
             {/* Top navigation bar */}
-            <header className="sticky top-0 flex w-full h-20 items-center justify-between px-4 py-8 bg-black/80 backdrop-blur-[32px] z-[1001]">
+            <header className="sticky top-0 flex w-full h-20 items-center justify-between px-4 py-6 bg-black/80 backdrop-blur-[32px] z-[1001]">
               <div className="flex items-center gap-2.5">
                 <button
                   onClick={toggleMobileMenu}
@@ -440,7 +440,7 @@ const MainNavbar = ({
                 <Button
                   variant="gradient"
                   size="default"
-                  className="font-mono text-black font-semibold text-sm uppercase tracking-tight hover:tracking-wider transition-all duration-300"
+                  className="font-mono text-black font-semibold text-xs sm:text-sm uppercase tracking-tight hover:tracking-wider transition-all duration-300"
                   // onClick={handleLaunchApp}
                 >
                   LAUNCH TERMINAL

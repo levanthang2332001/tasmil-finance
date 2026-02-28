@@ -157,13 +157,13 @@ export const FAQSection = () => {
                 className={`${!isLast || isOpen ? "border-b border-[#E5E5E5]" : ""} ${isFirst && isOpen ? "rounded-t-2xl" : ""} ${isLast && isOpen ? "rounded-b-2xl" : ""}`}
               >
                 <div
-                  className="flex items-center justify-between py-6 px-6 cursor-pointer"
+                  className="flex items-start justify-between gap-3 py-5 md:py-6 px-4 md:px-6 cursor-pointer"
                   onClick={() => toggleFAQ(faq.id)}
                 >
-                  <div className="flex items-center">
+                  <div className="flex flex-1 items-start md:items-center">
                     <Typography
                       as="span"
-                      className="mr-6 font-mono text-[#9A9BA0]"
+                      className="mr-3 md:mr-6 mt-0.5 font-mono text-xs md:text-sm text-[#9A9BA0]"
                     >
                       {faq.id}
                     </Typography>
@@ -171,12 +171,12 @@ export const FAQSection = () => {
                       // variant="h3"
                       font="darkerGrotesk"
                       weight="medium"
-                      className="text-black text-lg md:text-xl mb-1"
+                      className="text-black text-base sm:text-lg md:text-xl leading-snug"
                     >
                       {faq.question}
                     </Typography>
                   </div>
-                  <button className="h-8 w-8 flex items-center justify-center">
+                  <button className="h-8 w-8 shrink-0 flex items-center justify-center">
                     {isOpen ? (
                       <X className="h-6 w-6 text-black transition-transform duration-300" />
                     ) : (
@@ -193,11 +193,11 @@ export const FAQSection = () => {
                 >
                   <div
                     ref={setAnswerRef(faq.id)}
-                    className="bg-[#111111] mx-6 p-6 pl-16 pr-8 rounded-2xl mb-6"
+                    className="bg-[#111111] mx-4 md:mx-6 p-4 md:p-6 md:pl-16 md:pr-8 rounded-2xl mb-4 md:mb-6"
                   >
                     <Typography
                       font="darkerGrotesk"
-                      className="text-white text-lg"
+                      className="text-white text-base md:text-lg leading-relaxed"
                     >
                       {faq.answer}
                     </Typography>

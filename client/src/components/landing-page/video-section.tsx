@@ -13,14 +13,14 @@ export const VideoSection = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/60" />
 
       {/* Content container */}
-      <div className="relative z-10 flex flex-col items-center gap-16 w-full max-w-6xl">
+      <div className="relative z-10 flex flex-col items-center gap-10 md:gap-16 w-full max-w-6xl">
         {/* Section Header */}
         <div className="text-center flex flex-col items-center gap-6">
           <Typography
             variant="h1"
             font="sfPro"
             gradient={true}
-            className="text-center uppercase text-4xl md:text-5xl xl:text-6xl font-bold"
+            className="text-center uppercase text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold"
           >
             See Tasmil Finance in Action
           </Typography>
@@ -28,7 +28,7 @@ export const VideoSection = () => {
           <div className="max-w-2xl">
             <Typography
               variant="p"
-              className="text-center text-xl md:text-2xl text-gray-300 leading-relaxed"
+              className="text-center text-base sm:text-lg md:text-2xl text-gray-300 leading-relaxed"
             >
               Watch how our AI-powered DeFi platform transforms your trading
               experience with intelligent automation and real-time insights.
@@ -55,7 +55,7 @@ export const VideoSection = () => {
         </div>
 
         {/* Additional Features */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full mt-4 md:mt-8">
           <div className="text-center">
             <Typography
               variant="h3"

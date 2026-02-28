@@ -171,7 +171,7 @@ export const BenefitSection = () => {
                   transitionDelay: `${index * 200}ms`,
                 }}
               >
-                <div className="relative h-[400px] md:h-[400px] flex flex-col p-6 md:p-8 bg-[#00000080]/60 backdrop-blur-[100px] transition-all duration-500 group-hover:bg-[#00000080]/80">
+                <div className="relative h-[360px] md:h-[400px] flex flex-col p-5 md:p-8 bg-[#00000080]/60 backdrop-blur-[100px] transition-all duration-500 group-hover:bg-[#00000080]/80">
                   {/* Icon and label */}
                   <div className="flex items-center gap-3 mb-6 relative z-20">
                     <div

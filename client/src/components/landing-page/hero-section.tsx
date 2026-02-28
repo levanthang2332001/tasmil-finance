@@ -60,7 +60,7 @@ export const HeroSection = () => {
   };
 
   return (
-    <div className="relative h-[calc(100vh)] flex justify-center items-center w-full pt-8">
+    <div className="relative min-h-[100svh] flex justify-center items-center w-full pt-20 md:pt-8">
       {/* Background img */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Image
@@ -108,14 +108,14 @@ export const HeroSection = () => {
               <Typography
                 variant="h1"
                 gradient={true}
-                className="text-center font-semibold uppercase text-4xl md:text-4xl"
+                className="text-center font-semibold uppercase text-3xl sm:text-4xl"
               >
                 Your Intelligent DeFi
               </Typography>
               <Typography
                 variant="h1"
                 gradient={true}
-                className="text-center font-semibold uppercase text-4xl md:text-4xl mt-[-10px]"
+                className="text-center font-semibold uppercase text-3xl sm:text-4xl mt-[-6px]"
               >
                 Trading Companion
               </Typography>
@@ -123,7 +123,7 @@ export const HeroSection = () => {
               <div className="my-3 max-w-lg">
                 <Typography
                   variant="p"
-                  className="text-center text-xl text-gray-300"
+                  className="text-center text-base sm:text-lg text-gray-300"
                 >
                   Experience seamless token swaps, and real-time market insights with our AI-powered DeFi chatbot.
                 </Typography>
@@ -136,7 +136,7 @@ export const HeroSection = () => {
                 logoAlt="Tasmil Finance Logo"
                 logoSize={24}
                 onClick={() => router.push(PATHS.DEFI_AGENT)}
-                className="px-2 rounded-lg shadow-[0_0_15px_rgba(181,234,255,0.5)] hover:shadow-[0_0_25px_rgba(181,234,255,0.7)] font-mono text-black text-base uppercase transition-all duration-300 hover:tracking-wider"
+                className="w-full max-w-xs px-2 rounded-lg shadow-[0_0_15px_rgba(181,234,255,0.5)] hover:shadow-[0_0_25px_rgba(181,234,255,0.7)] font-mono text-black text-sm sm:text-base uppercase transition-all duration-300 hover:tracking-wider"
               >
                 LAUNCH TASMIL FINANCE
               </Button>
