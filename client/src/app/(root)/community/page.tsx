@@ -3,6 +3,7 @@
 import { ContentLayout } from "@/components/admin-panel/content-layout";
 import NewsFeed, { BentoItem } from "@/components/community/NewsFeed";
 import { CommunityService } from "@/services/community.service";
+import { ErrorState } from "@/components/ui/error-state";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
@@ -11,6 +12,7 @@ const PAGE_SIZE = 10;
 const CommunityPage = () => {
   const [items, setItems] = useState<BentoItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [cursor, setCursor] = useState<number | null>(null);
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -26,38 +28,38 @@ const CommunityPage = () => {
         setItems((prev) => [...prev, ...newItems]);
         setCursor(Math.max(0, cursor - PAGE_SIZE));
       }
-      console.log("newItems", newItems);
-    } catch (error) {
-      console.error("Error loading more items:", error);
+    } catch (err) {
+      console.error("Error loading more items:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const initializePage = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const maxCursor = await CommunityService.getLatestCursor();
+      const cursorValue = parseInt(maxCursor);
+      setCursor(cursorValue);
+
+      const newItems = (await CommunityService.getBatches(
+        PAGE_SIZE,
+        cursorValue,
+      )) as BentoItem[];
+      if (newItems && newItems.length > 0) {
+        setItems(newItems);
+        setCursor(Math.max(0, cursorValue - PAGE_SIZE));
+      }
+    } catch (err) {
+      console.error("Error initializing page:", err);
+      setError(err instanceof Error ? err.message : "Failed to load community feed");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const initializePage = async () => {
-      try {
-        setLoading(true);
-        const maxCursor = await CommunityService.getLatestCursor();
-        const cursorValue = parseInt(maxCursor);
-        setCursor(cursorValue);
-
-        const newItems = (await CommunityService.getBatches(
-          PAGE_SIZE,
-          cursorValue,
-        )) as BentoItem[];
-        if (newItems && newItems.length > 0) {
-          setItems(newItems);
-          setCursor(Math.max(0, cursorValue - PAGE_SIZE));
-        }
-        console.log("newItems", newItems);
-      } catch (error) {
-        console.error("Error initializing page:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     initializePage();
   }, []);
 
@@ -68,6 +70,26 @@ const CommunityPage = () => {
       loadMoreItems();
     }, 200); // 200ms debounce
   };
+
+  if (error) {
+    return (
+      <ContentLayout
+        title={
+          <div className="flex items-center gap-2">
+            <Image src="/images/community.png" alt="logo" width={50} height={50} />
+            <h1 className="text-2xl font-semibold">Hot tweets</h1>
+          </div>
+        }
+        className="overflow-hidden px-0"
+      >
+        <ErrorState
+          title="Failed to load community feed"
+          error={error}
+          onRetry={initializePage}
+        />
+      </ContentLayout>
+    );
+  }
 
   return (
     <ContentLayout

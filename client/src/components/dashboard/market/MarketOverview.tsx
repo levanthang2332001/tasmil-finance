@@ -1,3 +1,4 @@
+import { ErrorState } from "@/components/ui/error-state";
 import { useEffect, useState } from "react";
 import { TokenCard } from "./TokenCard";
 import { TokenChart, TimeRange } from "./TokenChart";
@@ -27,27 +28,33 @@ export function MarketOverview() {
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
   const [timeRange, setTimeRange] = useState<TimeRange>("1D");
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchMarketData = async () => {
+    try {
+      setError(null);
+      const response = await fetch(
+        "/api/dashboard/market?symbols=BTCUSD,ETHUSD,SOLUSD,APTUSD",
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || `Failed to fetch market data`);
+      }
+      // API returns array of arrays, flatten it and extract first item from each subarray
+      const flattenedData = data.map((arr: Token[]) => arr[0]);
+      setTokens(flattenedData);
+      if (flattenedData.length > 0) {
+        setSelectedToken(flattenedData[0].symbol);
+      }
+    } catch (err) {
+      console.error("Failed to fetch market data:", err);
+      setError(err instanceof Error ? err.message : "Failed to fetch market data");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchMarketData = async () => {
-      try {
-        const response = await fetch(
-          "/api/dashboard/market?symbols=BTCUSD,ETHUSD,SOLUSD,APTUSD",
-        );
-        const data = await response.json();
-        // API returns array of arrays, flatten it and extract first item from each subarray
-        const flattenedData = data.map((arr: Token[]) => arr[0]);
-        setTokens(flattenedData);
-        if (flattenedData.length > 0) {
-          setSelectedToken(flattenedData[0].symbol);
-        }
-      } catch (error) {
-        console.error("Failed to fetch market data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchMarketData();
     // Set up polling every minute
     const interval = setInterval(fetchMarketData, 60000);
@@ -70,6 +77,16 @@ export function MarketOverview() {
     }
     return data;
   };
+
+  if (error) {
+    return (
+      <ErrorState
+        title="Failed to load market data"
+        error={error}
+        onRetry={fetchMarketData}
+      />
+    );
+  }
 
   return (
     <div className="relative space-y-8 p-8 h-screen overflow-y-auto">
