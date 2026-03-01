@@ -1,6 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { DashboardService } from './service/dashboard.service';
+import { parseCsvQuery, parseDashboardPeriod } from './dashboard.types';
 
 @ApiTags('Dashboard')
 @Controller('dashboard')
@@ -21,11 +22,10 @@ export class DashboardController {
     example: 'BTCUSD,ETHUSD,AAPL,GOOGL',
   })
   getMarketOverview(@Query('symbols') symbolsQuery?: string) {
-    const symbols = symbolsQuery
-      ?.split(',')
-      .map((s) => s.trim())
-      .filter(Boolean);
-    return this.dashboardService.getMarketOverview(symbols?.join(','));
+    const symbols = parseCsvQuery(symbolsQuery);
+    return this.dashboardService.getMarketOverview(
+      symbols.length > 0 ? symbols.join(',') : undefined,
+    );
   }
 
   @Get('price-history')
@@ -51,7 +51,7 @@ export class DashboardController {
   ) {
     return this.dashboardService.getPriceHistory(
       symbol,
-      period as '1D' | '3D' | '5D' | '1W' | '1M' | '3M' | '6M' | '1Y',
+      parseDashboardPeriod(period),
     );
   }
 
@@ -74,8 +74,8 @@ export class DashboardController {
     @Query('period') period?: string,
   ) {
     return this.dashboardService.compareSymbols(
-      symbols.split(','),
-      period as '1D' | '3D' | '5D' | '1W' | '1M' | '3M' | '6M' | '1Y',
+      parseCsvQuery(symbols),
+      parseDashboardPeriod(period),
     );
   }
 }
