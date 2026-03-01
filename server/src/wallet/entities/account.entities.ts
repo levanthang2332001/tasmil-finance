@@ -1,7 +1,1 @@
-interface IAccount {
-  privateKey: string;
-  publicKey: string;
-  accountAddress: string;
-}
-
-export { IAccount };
+export * from '../../modules/wallet/entities/account.entities';

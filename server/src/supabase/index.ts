@@ -1,2 +1,1 @@
-export * from './client';
-export * from './vault';
+export * from '../infra/supabase';
