@@ -1,26 +1,10 @@
-# Server Module Structure (Target)
+# Target server structure
 
-This directory documents the target domain-first NestJS module layout.
+This PR applies initial server folder structure for gradual migration:
 
-```txt
-src/
-  modules/
-    <domain>/
-      <domain>.controller.ts
-      <domain>.service.ts
-      dto/
-      types/
-      mapper/
-      guards/ (if domain-specific)
-```
+- `modules/` (auth, dashboard, community, wallet)
+- `common/` (decorators, filters, interceptors, pipes, guards)
+- `infra/` (redis, supabase, http)
+- `config/` (`env.schema.ts`, `app.config.ts`)
 
-## Conventions
-
-- Keep controllers thin (HTTP only).
-- Keep business logic in services.
-- Keep DTOs and parsing helpers near owning domain.
-- Use `common/*` only for truly cross-cutting concerns.
-
-## Migration
-
-Current code can be migrated incrementally without breaking API contracts.
+Existing runtime code remains intact; migration is incremental.
