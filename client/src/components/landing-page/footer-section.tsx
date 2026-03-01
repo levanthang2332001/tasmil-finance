@@ -47,7 +47,7 @@ export function FooterSection() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden text-white h-[90vh] md:h-[100vh] flex flex-col">
+    <section className="relative w-full overflow-hidden text-white min-h-[90vh] md:min-h-[100vh] flex flex-col">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -99,7 +99,7 @@ export function FooterSection() {
             style={{
               boxShadow: "0 0 15px rgba(181, 234, 255, 0.5)",
             }}
-            onClick={() => router.push("/ai-agents")}
+            onClick={() => router.push(PATHS.AI_AGENT)}
           >
             {/* Glow effect */}
             <div className="absolute w-[50%] h-4 top-0 left-1/2 -translate-x-1/2 bg-white/80 rounded-full blur-xl" />
@@ -124,7 +124,7 @@ export function FooterSection() {
         </div>
 
         {/* Stay in the Loop Section */}
-        <div className="bg-black/10 rounded-lg p-4 sm:p-6 shadow-lg drop-shadow-lg backdrop-blur-lg w-full sm:w-[80%] md:w-[60%] lg:w-[40%]">
+        <div className="bg-black/10 rounded-lg p-4 sm:p-6 shadow-lg drop-shadow-lg backdrop-blur-lg w-full sm:w-[80%] md:w-[60%] lg:w-[40%] max-w-xl">
           <Typography
             font="darkerGrotesk"
             weight="semibold"
@@ -135,20 +135,20 @@ export function FooterSection() {
 
           {/* Subscription input */}
           <div className="w-full">
-            <div className="flex flex-row gap-3 sm:gap-0 items-stretch sm:items-center w-full overflow-hidden bg-black/30 rounded-xl border border-white/10">
-              <div className="w-full pl-6">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-0 items-stretch sm:items-center w-full overflow-hidden bg-black/30 rounded-xl border border-white/10 p-2 sm:p-0">
+              <div className="w-full pl-4 sm:pl-6">
                 <input
                   type="email"
                   placeholder="Your email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full font-geistMono bg-transparent border-none text-white placeholder:text-gray-500 h-14 focus:outline-none focus:ring-0 text-sm"
+                  className="w-full font-geistMono bg-transparent border-none text-white placeholder:text-gray-500 h-12 sm:h-14 focus:outline-none focus:ring-0 text-sm"
                 />
               </div>
-              <div className="w-auto">
+              <div className="w-full sm:w-auto">
                 <button
                   onClick={handleSubscribe}
-                  className="w-auto bg-white hover:bg-gray-100 text-black font-medium mt-2 md:mt-0 h-10 mr-2 px-4 sm:px-5 transition-all duration-300 rounded-md hover:shadow-md transform hover:scale-[1.02]"
+                  className="w-full sm:w-auto bg-white hover:bg-gray-100 text-black font-medium mt-0 h-10 sm:h-10 sm:mr-2 px-4 sm:px-5 transition-all duration-300 rounded-md hover:shadow-md transform hover:scale-[1.02]"
                 >
                   <Typography className="text-black whitespace-nowrap text-sm font-mono transition-all duration-300 hover:tracking-wider">
                     SUBSCRIBE NOW
