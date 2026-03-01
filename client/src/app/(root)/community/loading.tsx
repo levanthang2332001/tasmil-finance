@@ -1,14 +1,37 @@
-import React from "react";
+import { ContentLayout } from "@/components/admin-panel/content-layout";
 import LoadingItem from "@/components/community/LoadingItem";
+import { Skeleton } from "@/components/ui/skeleton";
 
-function Loading() {
+function CommunityLoading() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto pt-16">
-      {[...Array(40)].map((_, index) => (
-        <LoadingItem key={index} />
-      ))}
-    </div>
+    <ContentLayout
+      title={
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-12 w-12 rounded-xl" />
+          <Skeleton className="h-8 w-72" />
+        </div>
+      }
+      className="overflow-hidden px-0"
+    >
+      <div className="relative h-full w-full">
+        <div className="h-full w-full overflow-y-auto">
+          <div className="mx-auto grid max-w-4xl grid-cols-1 items-start gap-4 px-2 sm:grid-cols-2">
+            <div>
+              {Array.from({ length: 10 }).map((_, index) => (
+                <LoadingItem key={`left-${index}`} />
+              ))}
+            </div>
+            <div>
+              {Array.from({ length: 10 }).map((_, index) => (
+                <LoadingItem key={`right-${index}`} />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
+      </div>
+    </ContentLayout>
   );
 }
 
-export default Loading;
+export default CommunityLoading;
