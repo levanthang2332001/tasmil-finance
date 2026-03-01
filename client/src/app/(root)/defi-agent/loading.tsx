@@ -1,10 +1,11 @@
-import Navbar from "@/components/sidebar/Navbar";
 import { Skeleton } from "@/components/ui/skeleton";
 
 function ChatMessageSkeleton({ isBot }: { isBot: boolean }) {
   return (
     <div className={`flex mb-4 ${isBot ? "" : "justify-end"}`}>
-      <div className={`flex items-end gap-2 ${isBot ? "" : "flex-row-reverse"}`}>
+      <div
+        className={`flex items-end gap-2 ${isBot ? "" : "flex-row-reverse"}`}
+      >
         <Skeleton className="w-10 h-10 rounded-full bg-neutral-700/50" />
         <div className="max-w-[85%]">
           <Skeleton
@@ -76,10 +77,6 @@ function ChatInputSkeleton() {
 function loading() {
   return (
     <div className="flex flex-1 flex-col h-screen overflow-y-auto bg-transparent">
-      <Navbar>
-        <Skeleton className="h-7 w-40 ml-4 bg-neutral-700/50" />
-        <Skeleton className="h-10 w-10 ml-auto bg-neutral-700/50" />
-      </Navbar>
       <div className="flex-1 flex flex-col justify-end px-3 sm:px-6 py-6 max-w-full mx-auto w-full">
         <div className="flex-1 flex flex-col justify-end gap-3 max-w-[800px] w-full mx-auto">
           <ChatMessageSkeleton isBot={true} />

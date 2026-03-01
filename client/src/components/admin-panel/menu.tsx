@@ -92,27 +92,30 @@ function SidebarMenuIcon({
   isOpen?: boolean;
   isActive: boolean;
 }) {
-  const iconSize = isOpen ? SIDEBAR_ICON_EXPANDED_SIZE : SIDEBAR_ICON_COLLAPSED_SIZE;
+  const iconSize = isOpen
+    ? SIDEBAR_ICON_EXPANDED_SIZE
+    : SIDEBAR_ICON_COLLAPSED_SIZE;
+
+  if (!isOpen) {
+    return (
+      <div className="w-12 h-12 mx-auto flex items-center justify-center">
+        <Image src={src} alt={alt} width={iconSize} height={iconSize} />
+      </div>
+    );
+  }
 
   return (
-    <div
-      className={cn(
-        "relative flex items-center justify-center transition-all duration-300 ease-in-out",
-        isOpen ? "w-[70px] h-[70px]" : "w-10 h-10 mx-auto",
-      )}
-    >
+    <div className="relative w-[70px] h-[70px] flex items-center justify-center">
       <Image
         src={src}
         alt={alt}
         width={iconSize}
         height={iconSize}
         className={cn(
-          "absolute left-1/2 -translate-x-1/2 transition-all duration-300 ease-in-out",
-          isOpen
-            ? isActive
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 -translate-y-1 pointer-events-none"
-            : "opacity-100",
+          "transition-all duration-300 ease-in-out",
+          isActive
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-1 pointer-events-none",
         )}
       />
     </div>
@@ -139,14 +142,14 @@ function MenuItem({
             <TooltipTrigger asChild>
               <Button
                 variant={isActive ? "secondary" : "ghost"}
-                className={cn("w-full justify-start h-11 mb-1")}
+                className={cn("w-full justify-start h-11  mb-1")}
                 asChild
               >
                 <Link
                   href={href}
                   className={cn(
                     "flex items-center w-full",
-                    isOpen ? "justify-between" : "justify-center",
+                    isOpen ? "justify-between" : "justify-center !p-1",
                   )}
                 >
                   {isOpen && (
