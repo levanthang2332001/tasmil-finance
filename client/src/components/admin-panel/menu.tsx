@@ -1,6 +1,10 @@
 "use client";
 
 import { CollapseMenuButton } from "@/components/admin-panel/collapse-menu-button";
+import {
+  SIDEBAR_ICON_COLLAPSED_SIZE,
+  SIDEBAR_ICON_EXPANDED_SIZE,
+} from "@/components/admin-panel/sidebar-config";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -77,6 +81,44 @@ function GroupLabel({
   );
 }
 
+function SidebarMenuIcon({
+  src,
+  alt,
+  isOpen,
+  isActive,
+}: {
+  src: string;
+  alt: string;
+  isOpen?: boolean;
+  isActive: boolean;
+}) {
+  const iconSize = isOpen ? SIDEBAR_ICON_EXPANDED_SIZE : SIDEBAR_ICON_COLLAPSED_SIZE;
+
+  return (
+    <div
+      className={cn(
+        "relative flex items-center justify-center transition-all duration-300 ease-in-out",
+        isOpen ? "w-[70px] h-[70px]" : "w-10 h-10 mx-auto",
+      )}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        width={iconSize}
+        height={iconSize}
+        className={cn(
+          "absolute left-1/2 -translate-x-1/2 transition-all duration-300 ease-in-out",
+          isOpen
+            ? isActive
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 -translate-y-1 pointer-events-none"
+            : "opacity-100",
+        )}
+      />
+    </div>
+  );
+}
+
 function MenuItem({
   menu,
   isOpen,
@@ -100,7 +142,13 @@ function MenuItem({
                 className={cn("w-full justify-start h-11 mb-1")}
                 asChild
               >
-                <Link href={href} className="flex items-center justify-between">
+                <Link
+                  href={href}
+                  className={cn(
+                    "flex items-center w-full",
+                    isOpen ? "justify-between" : "justify-center",
+                  )}
+                >
                   {isOpen && (
                     <span
                       className={cn(
@@ -111,20 +159,13 @@ function MenuItem({
                       {label}
                     </span>
                   )}
-                  <div className="relative w-[70px] h-[70px] flex items-center">
-                    <Image
-                      src={image}
-                      alt={label}
-                      width={70}
-                      height={70}
-                      className={cn(
-                        "absolute left-0 transition-all duration-500 ease-in-out",
-                        isActive
-                          ? "opacity-100 translate-x-0"
-                          : "opacity-0 -translate-x-4 pointer-events-none",
-                      )}
-                    />
-                  </div>
+
+                  <SidebarMenuIcon
+                    src={image}
+                    alt={label}
+                    isOpen={isOpen}
+                    isActive={isActive}
+                  />
                 </Link>
               </Button>
             </TooltipTrigger>
