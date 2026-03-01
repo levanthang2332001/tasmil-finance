@@ -1,8 +1,8 @@
 "use client";
 
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import NewsFeed, { BentoItem } from "@/components/community/NewsFeed";
-import { CommunityService } from "@/services/community.service";
+import NewsFeed, { BentoItem } from "@/features/community/components/NewsFeed";
+import { CommunityService } from "@/features/community/services/community.service";
 import { ErrorState } from "@/components/ui/error-state";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";

@@ -1,10 +1,10 @@
 "use client";
-import LoadingItem from "@/components/community/LoadingItem";
+import LoadingItem from "@/features/community/components/LoadingItem";
 import EmptyFeed from "./EmptyFeed";
 import {
   CardNewFeed,
   CardNewFeedItem,
-} from "@/components/community/CardNewFeed";
+} from "@/features/community/components/CardNewFeed";
 import { useEffect, useState } from "react";
 
 export interface BentoItem extends CardNewFeedItem {
