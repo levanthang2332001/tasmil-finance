@@ -1,10 +1,9 @@
 import { MenuIcon } from "lucide-react";
-import Link from "next/link";
 
 import { Menu } from "@/components/admin-panel/menu";
+import { SidebarBrand } from "@/components/admin-panel/sidebar-brand";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import Image from "next/image";
 
 export function SheetMenu() {
   return (
@@ -17,17 +16,9 @@ export function SheetMenu() {
       <SheetContent className="sm:w-72 px-3 h-full flex flex-col" side="left">
         <SheetHeader>
           <Button className="flex justify-center items-center pb-2 pt-1" variant="link" asChild>
-            <Link href="/dashboard" className="flex items-center gap-2">
-              <Image
-                src="/images/logo.png"
-                alt="logo"
-                width={40}
-                height={40}
-                className="w-10 h-10"
-              />
-              <SheetTitle className="font-bold text-lg">Tasmil Finance</SheetTitle>
-            </Link>
+            <SidebarBrand href="/dashboard" isOpen className="items-center" titleClassName="font-bold text-lg" />
           </Button>
+          <SheetTitle className="sr-only">Tasmil Finance</SheetTitle>
         </SheetHeader>
         <Menu isOpen />
       </SheetContent>

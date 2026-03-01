@@ -1,12 +1,12 @@
 "use client";
 import { Menu } from "@/components/admin-panel/menu";
 import { SidebarToggle } from "@/components/admin-panel/sidebar-toggle";
+import { SidebarBrand } from "@/components/admin-panel/sidebar-brand";
+import { SIDEBAR_COLLAPSED_WIDTH, SIDEBAR_EXPANDED_WIDTH } from "@/components/admin-panel/sidebar-config";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/hooks/useSidebar";
 import { useStore } from "@/hooks/useStore";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-import Link from "next/link";
 
 export function Sidebar() {
   const sidebar = useStore(useSidebar, (x) => x);
@@ -17,9 +17,9 @@ export function Sidebar() {
     <aside
       className={cn(
         "fixed top-0 left-0 z-20 h-screen -translate-x-full lg:translate-x-0 transition-[width] ease-in-out duration-300",
-        !getOpenState() ? "w-[90px]" : "w-72",
         settings.disabled && "hidden"
       )}
+      style={{ width: getOpenState() ? SIDEBAR_EXPANDED_WIDTH : SIDEBAR_COLLAPSED_WIDTH }}
     >
       <SidebarToggle isOpen={isOpen} setIsOpen={toggleOpen} />
       <div
@@ -35,26 +35,7 @@ export function Sidebar() {
           variant="link"
           asChild
         >
-          <Link
-            href="/"
-            className="!p-0 flex flex-row justify-start items-start gap-2 !no-underline"
-          >
-            <Image
-              src="/images/logo.png"
-              alt="logo"
-              className="w-[40px] h-[40px] object-contain"
-              width={40}
-              height={40}
-            />
-            <h3
-              className={cn(
-                "text-lg font-semibold text-gradient whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300",
-                !getOpenState() ? "-translate-x-96 opacity-0 hidden" : "translate-x-0 opacity-100"
-              )}
-            >
-              Tasmil Finance
-            </h3>
-          </Link>
+          <SidebarBrand isOpen={getOpenState()} href="/" />
         </Button>
         <Menu isOpen={getOpenState()} />
       </div>

@@ -1,6 +1,10 @@
 "use client";
 
 import { CollapseMenuButton } from "@/components/admin-panel/collapse-menu-button";
+import {
+  SIDEBAR_ICON_COLLAPSED_SIZE,
+  SIDEBAR_ICON_EXPANDED_SIZE,
+} from "@/components/admin-panel/sidebar-config";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -21,6 +25,30 @@ import Image from "next/image";
 
 interface MenuProps {
   isOpen?: boolean;
+}
+
+function WalletPanel({ isOpen }: { isOpen?: boolean }) {
+  const { connected, signing } = useWalletStore();
+
+  return (
+    <li className="w-full grow flex flex-col justify-end gap-3">
+      {isOpen && connected && !signing && <TasmilWallet />}
+      {connected ? (
+        <div className="w-full overflow-hidden flex flex-col gap-2 items-center rounded-2xl p-3 glass border border-white/5">
+          {isOpen ? (
+            <>
+              <p className="text-base text-white/60">Aptos Wallet</p>
+              <ConnectButton className="w-full" />
+            </>
+          ) : (
+            <Wallet className="h-4 w-4" />
+          )}
+        </div>
+      ) : (
+        <ConnectButton label={isOpen ? "Connect Aptos Wallet" : ""} />
+      )}
+    </li>
+  );
 }
 
 function GroupLabel({
@@ -53,6 +81,47 @@ function GroupLabel({
   );
 }
 
+function SidebarMenuIcon({
+  src,
+  alt,
+  isOpen,
+  isActive,
+}: {
+  src: string;
+  alt: string;
+  isOpen?: boolean;
+  isActive: boolean;
+}) {
+  const iconSize = isOpen
+    ? SIDEBAR_ICON_EXPANDED_SIZE
+    : SIDEBAR_ICON_COLLAPSED_SIZE;
+
+  if (!isOpen) {
+    return (
+      <div className="w-12 h-12 mx-auto flex items-center justify-center">
+        <Image src={src} alt={alt} width={iconSize} height={iconSize} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative w-[70px] h-[70px] flex items-center justify-center">
+      <Image
+        src={src}
+        alt={alt}
+        width={iconSize}
+        height={iconSize}
+        className={cn(
+          "transition-all duration-300 ease-in-out",
+          isActive
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-1 pointer-events-none",
+        )}
+      />
+    </div>
+  );
+}
+
 function MenuItem({
   menu,
   isOpen,
@@ -73,10 +142,16 @@ function MenuItem({
             <TooltipTrigger asChild>
               <Button
                 variant={isActive ? "secondary" : "ghost"}
-                className={cn("w-full justify-start h-11 mb-1")}
+                className={cn("w-full justify-start h-11  mb-1")}
                 asChild
               >
-                <Link href={href} className="flex items-center justify-between">
+                <Link
+                  href={href}
+                  className={cn(
+                    "flex items-center w-full",
+                    isOpen ? "justify-between" : "justify-center !p-1",
+                  )}
+                >
                   {isOpen && (
                     <span
                       className={cn(
@@ -87,20 +162,13 @@ function MenuItem({
                       {label}
                     </span>
                   )}
-                  <div className="relative w-[70px] h-[70px] flex items-center">
-                    <Image
-                      src={image}
-                      alt={label}
-                      width={70}
-                      height={70}
-                      className={cn(
-                        "absolute left-0 transition-all duration-500 ease-in-out",
-                        isActive
-                          ? "opacity-100 translate-x-0"
-                          : "opacity-0 -translate-x-4 pointer-events-none",
-                      )}
-                    />
-                  </div>
+
+                  <SidebarMenuIcon
+                    src={image}
+                    alt={label}
+                    isOpen={isOpen}
+                    isActive={isActive}
+                  />
                 </Link>
               </Button>
             </TooltipTrigger>
@@ -125,7 +193,6 @@ function MenuItem({
 export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList();
-  const { connected, signing } = useWalletStore();
 
   const CLASS_HEIGHT =
     "min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)]";
@@ -152,23 +219,7 @@ export function Menu({ isOpen }: MenuProps) {
               ))}
             </li>
           ))}
-          <li className="w-full grow flex flex-col justify-end gap-3">
-            {isOpen && connected && !signing && <TasmilWallet />}
-            {connected ? (
-              <div className="w-full overflow-hidden flex flex-col gap-2 items-center rounded-2xl p-3 glass border border-white/5">
-                {isOpen ? (
-                  <>
-                    <p className="text-base text-white/60">Aptos Wallet</p>
-                    <ConnectButton className="w-full" />
-                  </>
-                ) : (
-                  <Wallet className="h-4 w-4" />
-                )}
-              </div>
-            ) : (
-              <ConnectButton label={isOpen ? "Connect Aptos Wallet" : ""} />
-            )}
-          </li>
+          <WalletPanel isOpen={isOpen} />
         </ul>
       </nav>
     </ScrollArea>
