@@ -83,6 +83,7 @@ export function MarketOverview() {
 
   const fetchMarketData = useCallback(async () => {
     try {
+      setIsLoading(true);
       setError(null);
       const response = await fetch(
         "/api/dashboard/market?symbols=BTCUSD,ETHUSD,SOLUSD,APTUSD",
