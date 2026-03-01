@@ -1,7 +1,7 @@
 "use client";
 
 import { PropsWithChildren } from "react";
-import { ReactQueryClientProvider } from "./QuerryProvider";
+import { ReactQueryClientProvider } from "./QueryProvider";
 import { WalletProvider } from "./WalletProvider";
 import { Toaster } from "sonner";
 
