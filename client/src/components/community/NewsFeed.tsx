@@ -1,7 +1,10 @@
 "use client";
 import LoadingItem from "@/components/community/LoadingItem";
 import EmptyFeed from "./EmptyFeed";
-import { CardNewFeed, CardNewFeedItem } from "@/components/community/CardNewFeed";
+import {
+  CardNewFeed,
+  CardNewFeedItem,
+} from "@/components/community/CardNewFeed";
 import { useEffect, useState } from "react";
 
 export interface BentoItem extends CardNewFeedItem {
@@ -86,11 +89,6 @@ function NewsFeed({ items, onScrollEnd, loading }: BentoGridProps) {
           </div>
         </div>
       </div>
-      {/* {loading && (
-        <div className="flex justify-center py-4">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-        </div>
-      )} */}
     </div>
   );
 }

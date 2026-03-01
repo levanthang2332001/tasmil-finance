@@ -2,6 +2,18 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const LoadingItem = () => {
   return (
+    <div className="flex flex-col gap-2 ">
+      {Array.from({ length: 20 }).map((_, index) => (
+        <LoadingCard key={index} />
+      ))}
+    </div>
+  );
+};
+
+export default LoadingItem;
+
+const LoadingCard = () => {
+  return (
     <div className="relative flex size-full max-w-lg flex-col gap-2 overflow-hidden rounded-xl border border-gray-800 p-4 mb-4 backdrop-blur-md bg-gray-900/95">
       {/* Header */}
       <div className="flex flex-row justify-between tracking-tight">
@@ -38,5 +50,3 @@ const LoadingItem = () => {
     </div>
   );
 };
-
-export default LoadingItem;

@@ -53,7 +53,9 @@ const CommunityPage = () => {
       }
     } catch (err) {
       console.error("Error initializing page:", err);
-      setError(err instanceof Error ? err.message : "Failed to load community feed");
+      setError(
+        err instanceof Error ? err.message : "Failed to load community feed",
+      );
     } finally {
       setLoading(false);
     }
@@ -68,7 +70,7 @@ const CommunityPage = () => {
     if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
     scrollTimeout.current = setTimeout(() => {
       loadMoreItems();
-    }, 200); // 200ms debounce
+    }, 200);
   };
 
   if (error) {
@@ -76,7 +78,12 @@ const CommunityPage = () => {
       <ContentLayout
         title={
           <div className="flex items-center gap-2">
-            <Image src="/images/community.png" alt="logo" width={50} height={50} />
+            <Image
+              src="/images/community.png"
+              alt="logo"
+              width={50}
+              height={50}
+            />
             <h1 className="text-2xl font-semibold">Hot tweets</h1>
           </div>
         }
