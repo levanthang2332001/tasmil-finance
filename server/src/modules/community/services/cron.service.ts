@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { CommunityService } from './community.service';
 import { IntentService } from './intent.service';
-import { TwitterSupabase } from '../../supabase/twitter';
+import { TwitterSupabase } from 'src/infra/supabase/twitter';
 import { mapTwitterData } from '../utils/mapper';
 import { convertTweet } from '../utils/convert';
 

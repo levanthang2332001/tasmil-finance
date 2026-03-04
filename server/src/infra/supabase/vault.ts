@@ -3,7 +3,7 @@ import { SupabaseClient } from './client';
 import {
   IInsertVaultRequest,
   IReadVaultRequest,
-} from '../wallet/entities/vault.entities';
+} from 'src/modules/wallet/entities/vault.entities';
 
 interface IInsertVaultResponse {
   id: string;

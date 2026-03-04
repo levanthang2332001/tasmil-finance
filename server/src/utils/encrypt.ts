@@ -2,7 +2,7 @@ import * as forge from 'node-forge';
 import {
   IEncryptRequest,
   IEncryptResponse,
-} from '../wallet/entities/crypto.entities';
+} from 'src/modules/wallet/entities/crypto.entities';
 
 export const Encrypt = (params: IEncryptRequest): IEncryptResponse => {
   const { prKey, password } = params;

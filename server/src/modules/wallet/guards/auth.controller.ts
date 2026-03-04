@@ -11,7 +11,7 @@ import {
 import * as forge from 'node-forge';
 import { sign, Secret, SignOptions } from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
-import { AuthApiDocs } from '../../chat/docs/auth/auth-api.docs';
+import { AuthApiDocs } from 'src/chat/docs/auth/auth-api.docs';
 import { ApiTags } from '@nestjs/swagger';
 import { RedisCacheService } from 'src/infra/redis/services/redisCacheService';
 import { AuthService } from './services/auth.service';

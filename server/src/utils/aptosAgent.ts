@@ -5,7 +5,7 @@ import {
   Ed25519PrivateKey,
   Network,
 } from '@aptos-labs/ts-sdk';
-import { Accounts } from '../wallet/accounts';
+import { Accounts } from 'src/modules/wallet/accounts';
 
 export const aptosAgent = async (user_address: string) => {
   const aptosConfig = new AptosConfig({ network: Network.MAINNET });
