@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -85,8 +85,22 @@ const MainNavbar = ({
     };
   }, []);
 
+  // Get the active tab ref based on current selection
+  const getActiveTabRef = useCallback(() => {
+    switch (activeTab) {
+      case "DEMO":
+        return frameworkRef;
+      case "DEFI AGENT":
+        return useCaseRef;
+      case "DOCS":
+        return rewardRef;
+      default:
+        return null;
+    }
+  }, [activeTab]);
+
   // Update indicator position with RAF and better transition
-  const updateIndicatorPosition = () => {
+  const updateIndicatorPosition = useCallback(() => {
     requestAnimationFrame(() => {
       const activeTabRef = getActiveTabRef();
       const containerRef = navContainerRef;
@@ -101,7 +115,7 @@ const MainNavbar = ({
         const containerRect = containerRef.current.getBoundingClientRect();
         const centerPosition =
           tabRect.left - containerRect.left + tabRect.width / 2;
-        const indicatorWidth = Math.min(tabRect.width * 0.25, 24); // 25% of tab width or max 24px
+        const indicatorWidth = Math.min(tabRect.width * 0.25, 24);
 
         setIndicatorStyle({
           left: `${centerPosition}px`,
@@ -110,7 +124,6 @@ const MainNavbar = ({
           opacity: 1,
         });
       } else {
-        // No active tab or refs not available
         setIndicatorStyle((prev) => ({
           ...prev,
           opacity: 0,
@@ -118,7 +131,7 @@ const MainNavbar = ({
         }));
       }
     });
-  };
+  }, [activeTab, getActiveTabRef]);
 
   // Update position when active tab changes or on resize
   useEffect(() => {
@@ -168,20 +181,6 @@ const MainNavbar = ({
   const useCaseRef = useRef<HTMLDivElement>(null);
   const rewardRef = useRef<HTMLDivElement>(null);
   const navContainerRef = useRef<HTMLDivElement>(null);
-
-  // Get the active tab ref based on current selection
-  const getActiveTabRef = () => {
-    switch (activeTab) {
-      case "DEMO":
-        return frameworkRef;
-      case "DEFI AGENT":
-        return useCaseRef;
-      case "DOCS":
-        return rewardRef;
-      default:
-        return null;
-    }
-  };
 
   // Navigation menu items data
   const menuItems = [

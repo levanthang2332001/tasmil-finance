@@ -28,20 +28,17 @@ export function PrivateKeyDialog({
   const [hasCopied, setHasCopied] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleCopy = useCallback(
-    async (key: string) => {
-      if (!key) return;
-      try {
-        await navigator.clipboard.writeText(key);
-        setHasCopied(true);
-        toast.success("Private key copied to clipboard.");
-        setTimeout(() => setHasCopied(false), 1200);
-      } catch {
-        // Optionally handle error here
-      }
-    },
-    [toast],
-  );
+  const handleCopy = useCallback(async (key: string) => {
+    if (!key) return;
+    try {
+      await navigator.clipboard.writeText(key);
+      setHasCopied(true);
+      toast.success("Private key copied to clipboard.");
+      setTimeout(() => setHasCopied(false), 1200);
+    } catch {
+      // Optionally handle error here
+    }
+  }, []);
 
   if (!privateKey) return null;
 

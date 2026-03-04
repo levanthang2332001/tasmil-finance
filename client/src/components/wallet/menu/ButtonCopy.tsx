@@ -16,7 +16,7 @@ const ButtonCopy = ({ address }: ButtonCopyProps) => {
     } catch {
       toast.error("Failed to copy wallet address.");
     }
-  }, [address, toast]);
+  }, [address]);
 
   return (
     <DropdownMenuItem onClick={copyAddress}>
