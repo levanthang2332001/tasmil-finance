@@ -1,7 +1,7 @@
 "use client";
 
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import { MarketOverview } from "@/features/dashboard/components/market/MarketOverview";
+import { MarketOverview } from "@/features/dashboard/components/dashboard/market/MarketOverview";
 import Image from "next/image";
 
 export default function DashboardPage() {

@@ -1,4 +1,4 @@
-import { BentoItem } from "@/features/community/components/NewsFeed";
+import { BentoItem } from "@/features/community/components/community/NewsFeed";
 
 export class CommunityService {
   private static async request<T>(
