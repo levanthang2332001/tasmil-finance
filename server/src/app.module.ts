@@ -8,7 +8,7 @@ import { ChatModule } from './chat/chat.module';
 import { CommunityModule } from './modules/community/community.module';
 import { RedisModule } from './infra/redis/redis.module';
 import { AccountsModule } from './modules/wallet/accounts.module';
-import { AuthModule } from './modules/wallet/guard/auth.module';
+import { AuthModule } from './modules/wallet/guards/auth.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({

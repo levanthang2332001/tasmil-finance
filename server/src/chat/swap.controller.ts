@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { SwapApiDocs } from './docs/swap-api.docs';
 import { ChatResponseDto, PreswapRequestDto } from './dto';
 import { SwapService } from './services/swap.service';
-import { JwtAuthGuard } from 'src/modules/wallet/guard/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/modules/wallet/guards/jwt-auth.guard';
 
 /**
  * SwapController handles HTTP endpoints for token swap operations.

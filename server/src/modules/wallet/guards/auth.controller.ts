@@ -14,7 +14,7 @@ import * as dotenv from 'dotenv';
 import { AuthApiDocs } from '../../chat/docs/auth/auth-api.docs';
 import { ApiTags } from '@nestjs/swagger';
 import { RedisCacheService } from 'src/infra/redis/services/redisCacheService';
-import { AuthService } from './service/auth.service';
+import { AuthService } from './services/auth.service';
 import { Response } from 'express';
 dotenv.config();
 

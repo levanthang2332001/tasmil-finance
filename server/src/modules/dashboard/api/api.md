@@ -861,7 +861,7 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
-import { DashboardService, DashboardData, MarketSummary, PriceHistoryData } from './service/dashboard.service';
+import { DashboardService, DashboardData, MarketSummary, PriceHistoryData } from './services/dashboard.service';
 import { JwtAuthGuard } from '../wallet/guard/jwt-auth.guard';
 
 // DTOs for validation
@@ -1367,7 +1367,7 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
-import { DashboardService, DashboardData, MarketSummary, PriceHistoryData } from './service/dashboard.service';
+import { DashboardService, DashboardData, MarketSummary, PriceHistoryData } from './services/dashboard.service';
 import { JwtAuthGuard } from '../wallet/guard/jwt-auth.guard';
 
 ->
@@ -1397,7 +1397,7 @@ import {
   DashboardData,
   MarketSummary,
   PriceHistoryData,
-} from './service/dashboard.service';
+} from './services/dashboard.service';
 ```
 
 Bây giờ tôi sẽ cập nhật dashboard module để wire tất cả các dependencies:
@@ -1406,7 +1406,7 @@ Bây giờ tôi sẽ cập nhật dashboard module để wire tất cả các de
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DashboardController } from './dashboard.controller';
-import { DashboardService } from './service/dashboard.service';
+import { DashboardService } from './services/dashboard.service';
 import { FmpApiService } from './api/fmp';
 import { RedisModule } from '../redis/redis.module';
 
@@ -2158,7 +2158,7 @@ Tuyệt vời! Bây giờ tôi sẽ cập nhật dashboard module để include 
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DashboardController } from './dashboard.controller';
-import { DashboardService } from './service/dashboard.service';
+import { DashboardService } from './services/dashboard.service';
 import { FmpApiService } from './api/fmp';
 import { RedisModule } from '../redis/redis.module';
 
@@ -2181,7 +2181,7 @@ export class DashboardModule {}
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DashboardController } from './dashboard.controller';
-import { DashboardService } from './service/dashboard.service';
+import { DashboardService } from './services/dashboard.service';
 import { FmpApiService } from './api/fmp';
 import { EnhancedFmpApiService } from './api/enhanced-fmp';
 import { RequestManager } from './api/request-manager';
@@ -2216,7 +2216,7 @@ export class DashboardModule {}
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DashboardController } from './dashboard.controller';
-import { DashboardService } from './service/dashboard.service';
+import { DashboardService } from './services/dashboard.service';
 import { FmpApiService } from './api/fmp';
 import { RedisModule } from '../redis/redis.module';
 
@@ -2239,7 +2239,7 @@ export class DashboardModule { }
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DashboardController } from './dashboard.controller';
-import { DashboardService } from './service/dashboard.service';
+import { DashboardService } from './services/dashboard.service';
 import { FmpApiService } from './api/fmp';
 import { EnhancedFmpApiService } from './api/enhanced-fmp';
 import { RequestManager } from './api/request-manager';
@@ -2516,7 +2516,7 @@ Cuối cùng, tôi sẽ tạo một example file để demo cách sử dụng:
 
 ```typescript
 import { Injectable, Logger } from '@nestjs/common';
-import { DashboardService } from '../service/dashboard.service';
+import { DashboardService } from '../services/dashboard.service';
 import { FmpApiService } from '../api/fmp';
 import { EnhancedFmpApiService } from '../api/enhanced-fmp';
 

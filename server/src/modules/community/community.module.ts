@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
-import { CommunityService } from './service/community.service';
-import { IntentService } from './service/intent.service';
-import { CronService } from './service/cron.service';
+import { CommunityService } from './services/community.service';
+import { IntentService } from './services/intent.service';
+import { CronService } from './services/cron.service';
 import { TwitterApiService } from './api/twitter';
 import { TwitterTokenManager } from './api/token';
 import { TwitterSupabase } from 'src/infra/supabase/twitter';
