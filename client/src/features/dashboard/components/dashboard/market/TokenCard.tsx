@@ -1,8 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { formatNumber } from "@/lib/utils";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
-import { useEffect, useState } from "react";
-import { TimeRange } from "./TokenChart";
+import { useTokenHistory } from "@/features/dashboard/hooks/useTokenHistory";
 
 interface TokenCardProps {
   symbol: string;
@@ -13,64 +12,9 @@ interface TokenCardProps {
   onClick?: () => void;
 }
 
-interface PriceHistory {
-  timestamp: number;
-  price: number;
-}
-
 export function TokenCard({ symbol, name, price, change, isSelected, onClick }: TokenCardProps) {
   const isPositive = change >= 0;
-  const [historicalData, setHistoricalData] = useState<PriceHistory[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchHistoricalData = async () => {
-      try {
-        setIsLoading(true);
-
-        // Default to 1M for mini chart to show month trend
-        const period: TimeRange = "1M";
-        const response = await fetch(
-          `/api/dashboard/get-history?symbols=${symbol}&period=${period}`
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data[symbol] && Array.isArray(data[symbol])) {
-          setHistoricalData(
-            data[symbol].map((item: any) => ({
-              timestamp: item.timestamp,
-              price: item.price,
-            }))
-          );
-        } else {
-          // Fallback: generate mock data if API fails
-          const mockData = Array.from({ length: 30 }, (_, i) => ({
-            timestamp: Date.now() - (29 - i) * 24 * 60 * 60 * 1000,
-            price: price * (1 + (Math.random() - 0.5) * 0.1),
-          }));
-          setHistoricalData(mockData);
-        }
-      } catch (error) {
-        console.error(`Failed to fetch historical data for ${symbol}:`, error);
-
-        // Generate fallback mock data
-        const mockData = Array.from({ length: 30 }, (_, i) => ({
-          timestamp: Date.now() - (29 - i) * 24 * 60 * 60 * 1000,
-          price: price * (1 + (Math.random() - 0.5) * 0.1),
-        }));
-        setHistoricalData(mockData);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchHistoricalData();
-  }, [symbol, price]);
+  const { data: historicalData, isLoading } = useTokenHistory(symbol, price, "1M");
 
   return (
     <Card
@@ -96,7 +40,6 @@ export function TokenCard({ symbol, name, price, change, isSelected, onClick }: 
           </div>
         </div>
 
-        {/* Price */}
         <div className="mb-4">
           <div className="text-3xl font-bold text-white mb-1">${formatNumber(price)}</div>
           <div
@@ -106,7 +49,6 @@ export function TokenCard({ symbol, name, price, change, isSelected, onClick }: 
           </div>
         </div>
 
-        {/* Chart */}
         <div className="h-16 -mx-2">
           {isLoading ? (
             <div className="h-full bg-slate-700/30 animate-pulse rounded-lg" />
@@ -131,7 +73,6 @@ export function TokenCard({ symbol, name, price, change, isSelected, onClick }: 
         </div>
       </div>
 
-      {/* Hover Effect */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     </Card>
   );
