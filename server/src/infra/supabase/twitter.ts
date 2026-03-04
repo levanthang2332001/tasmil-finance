@@ -13,7 +13,7 @@ import {
   InputJson,
   AiSelectedTweet,
   AiAnalysisBatch,
-} from 'src/community/interface';
+} from 'src/modules/community/interface';
 
 interface UpsertConfig {
   tableName: string;

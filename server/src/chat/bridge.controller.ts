@@ -6,7 +6,7 @@ import {
   BridgeStargateRequestDto,
 } from './dto';
 import { BridgeService } from './services/bridge.service';
-import { JwtAuthGuard } from 'src/wallet/guard/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/modules/wallet/guard/jwt-auth.guard';
 
 @ApiTags('Bridge')
 @Controller('bridge')

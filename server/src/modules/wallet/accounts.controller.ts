@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { Accounts } from './accounts';
-// import { JwtAuthGuard } from 'src/wallet/guard/jwt-auth.guard';
+// import { JwtAuthGuard } from 'src/modules/wallet/guard/jwt-auth.guard';
 import { GenerateWalletDto } from 'src/utils/input';
 
 interface ITasmilWalletResponse {
