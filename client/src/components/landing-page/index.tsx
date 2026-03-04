@@ -76,29 +76,6 @@ export default function LandingPage() {
     };
   }, []);
 
-  // Function to scroll to section with better handling
-  // const scrollToSection = (sectionId: SectionId) => {
-  //   const section = sectionRefs[sectionId]?.current;
-  //   if (section) {
-  //     // Calculate offset based on announcement bar visibility
-  //     const announcementHeight = 48; // Height of announcement bar
-  //     const navbarHeight = 72; // Height of navbar
-  //     const totalOffset =
-  //       navbarHeight + (window.scrollY === 0 ? announcementHeight : 0);
-
-  //     setTimeout(() => {
-  //       const elementPosition = section.getBoundingClientRect().top;
-  //       const offsetPosition =
-  //         elementPosition + window.pageYOffset - totalOffset;
-
-  //       window.scrollTo({
-  //         top: offsetPosition,
-  //         behavior: "smooth",
-  //       });
-  //     }, 50);
-  //   }
-  // };
-
   // Reset active tab initially (clear any previously active tab)
   useEffect(() => {
     // Clear any active tab when page loads

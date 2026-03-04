@@ -26,7 +26,6 @@ export const HeroSection = () => {
         playPromise
           .then(() => {
             // Playback started successfully
-            console.log("Video playback started");
           })
           .catch((error) => {
             // Auto-play was prevented

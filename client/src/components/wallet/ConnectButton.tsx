@@ -220,12 +220,10 @@ export default function ConnectButton({
 
       try {
         setSigning(true);
-        console.log(`Connecting to ${walletName}...`);
 
         // Connect wallet
         await connect(walletName);
         needsDisconnect = true;
-        console.log(`Connected to ${walletName}`);
 
         // Wait for wallet initialization
         await new Promise((resolve) => setTimeout(resolve, 1000));

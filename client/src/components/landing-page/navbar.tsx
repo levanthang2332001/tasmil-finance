@@ -6,10 +6,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FiArrowUpRight, FiMenu, FiX } from "react-icons/fi";
 import { BsTwitterX } from "react-icons/bs";
-// import { FaTelegram } from "react-icons/fa";
 import React from "react";
 import { PATHS, SECTION_IDS } from "@/constants/routes";
-// import { socialConfig, fundingConfig } from "@/config";
 import {
   Tooltip,
   TooltipContent,
@@ -32,63 +30,6 @@ interface IndicatorStyle {
   transition: string;
   opacity: number;
 }
-
-// Separate Announcement Bar component
-// const AnnouncementBar = () => {
-//   // Cache images
-//   const saliteImage = "/images/landing-v3/navbar/salite.png";
-//   const fireIcon = "/images/landing-v3/navbar/fire-icon.gif";
-
-//   return (
-//     <div
-//       className="w-full relative backdrop-blur-md flex justify-center items-center h-12 gap-6 overflow-hidden"
-//       style={{
-//         background: "rgba(0, 0, 0, 0.3)",
-//       }}
-//     >
-//       <div className="absolute top-[-20px] right-[-50px] w-[600px] h-auto opacity-30 z-0">
-//         <Image
-//           src={saliteImage}
-//           alt="salite"
-//           width={600}
-//           height={400}
-//           loading="lazy"
-//           className="object-cover w-full h-auto"
-//         />
-//       </div>
-//       <div className="flex items-center gap-2 z-10">
-//         <div className="h-5 w-5 relative">
-//           <Image
-//             src={fireIcon}
-//             alt="Emoji"
-//             width={20}
-//             height={20}
-//             className="object-contain"
-//           />
-//         </div>
-//         <Typography
-//           font="geistMono"
-//           size="base-geist"
-//           color="submerged"
-//           className="text-xs md:text-base"
-//         >
-//           Tasmil Finance is LIVE now!
-//         </Typography>
-//       </div>
-
-//       <Link href={PATHS.DEFI_AGENT} className="group z-10">
-//         <Button
-//           variant="gradient"
-//           size="sm"
-//           className="font-mono text-black text-xs md:text-sm font-semibold uppercase transition-all duration-300 hover:tracking-wider"
-//         >
-//           EXPLORE NOW
-//           <FiArrowUpRight className="w-4 h-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-//         </Button>
-//       </Link>
-//     </div>
-//   );
-// };
 
 type SectionId =
   | "hero"
@@ -501,23 +442,7 @@ const MainNavbar = ({
                     </TooltipContent>
                   </Tooltip>
 
-                  {/* <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link
-                        href={PATHS.TELEGRAM}
-                        aria-label="Telegram"
-                        className="group"
-                      >
-                        <div className="relative flex items-center justify-center h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/5 hover:bg-white/20">
-                          <FaTelegram className="w-4 h-4 text-white group-hover:scale-110" />
-                          <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40"></div>
-                        </div>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <span>Telegram</span>
-                    </TooltipContent>
-                  </Tooltip> */}
+                  
                 </TooltipProvider>
               </div>
 

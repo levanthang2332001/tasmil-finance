@@ -138,7 +138,6 @@ export async function fetchAptosHistory(address: string): Promise<any[]> {
 export async function calculateTokenData(coins: AptosCoinInfo[]): Promise<TokenData[]> {
   if (!coins || coins.length === 0) return [];
 
-  console.log("coins: ", coins);
 
   // Get unique symbols for price fetching
   const symbols = [...new Set(coins.map((coin) => coin.symbol))];

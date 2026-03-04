@@ -39,7 +39,6 @@ export function TokenCard({ symbol, name, price, change, isSelected, onClick }: 
         }
 
         const data = await response.json();
-        console.log(`Historical data for ${symbol}:`, data);
 
         if (data[symbol] && Array.isArray(data[symbol])) {
           setHistoricalData(

@@ -11,8 +11,6 @@ export interface TokenTableRowProps {
 export function TokenTableRow({ token }: TokenTableRowProps) {
   const tokenInfo = TOKENS[token.symbol];
 
-  console.log("tokenInfo: ", tokenInfo);
-  console.log("token: ", token);
 
   const formatPrice = (price: number) => {
     if (price === 0) return "N/A";
