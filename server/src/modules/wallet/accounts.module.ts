@@ -1,17 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AccountsController } from './accounts.controller';
-import { Accounts } from './accounts';
-import { JwtModule } from '@nestjs/jwt';
+import { AccountsService } from './accounts.service';
+import { SupabaseModule } from 'src/infra/supabase/supabase.module';
+import { AppJwtModule } from 'src/infra/jwt/jwt.module';
 
 @Module({
-  imports: [
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '24h' },
-    }),
-  ],
+  imports: [SupabaseModule, AppJwtModule],
   controllers: [AccountsController],
-  providers: [Accounts],
-  exports: [Accounts],
+  providers: [AccountsService],
+  exports: [AccountsService],
 })
 export class AccountsModule {}

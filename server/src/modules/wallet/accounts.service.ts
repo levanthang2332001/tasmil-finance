@@ -1,13 +1,14 @@
-import * as dotenv from 'dotenv';
 import {
   Account,
   Ed25519PrivateKey,
   PrivateKey,
   PrivateKeyVariants,
 } from '@aptos-labs/ts-sdk';
-import { SupabaseClient, VaultSupabase } from 'src/infra/supabase/index';
-import { IAccount } from './entities/account.entities';
+import { Injectable } from '@nestjs/common';
+import * as dotenv from 'dotenv';
+import { VaultSupabase } from 'src/infra/supabase/index';
 import { Decrypt, Encrypt } from 'src/utils/index';
+import { IAccount } from './entities/account.entities';
 dotenv.config();
 
 interface IAccountResult {
@@ -16,13 +17,11 @@ interface IAccountResult {
   privateKey: string;
 }
 
-export class Accounts {
-  private readonly supabaseClient: SupabaseClient;
+@Injectable()
+export class AccountsService {
   private readonly password: string;
 
-  constructor() {
-    this.supabaseClient = new SupabaseClient();
-
+  constructor(private readonly vault: VaultSupabase) {
     if (!process.env.PASSWORD_ENCRYPT) {
       throw new Error('Missing required PASSWORD_ENCRYPT environment variable');
     }
@@ -46,17 +45,17 @@ export class Accounts {
   }
 
   private async checkUserExist(accountAddress: string): Promise<boolean> {
-    const vault = new VaultSupabase();
-    const vaultData = await vault.getVault({ secret_name: accountAddress });
+    const vaultData = await this.vault.getVault({
+      secret_name: accountAddress,
+    });
     return vaultData !== null;
   }
 
   public async getAccount(address: string): Promise<IAccountResult | null> {
     const userExist = await this.checkUserExist(address);
-    const vault = new VaultSupabase();
 
     if (userExist) {
-      const vaultData = await vault.getVault({ secret_name: address });
+      const vaultData = await this.vault.getVault({ secret_name: address });
 
       if (!vaultData) {
         throw new Error('Vault data not found');
@@ -93,7 +92,7 @@ export class Accounts {
       iv: encrypted.iv,
     });
 
-    const insertVault = await vault.insertVault({
+    const insertVault = await this.vault.insertVault({
       secret_name: address,
       secret_value: formattedEncrypted,
     });
@@ -107,10 +106,9 @@ export class Accounts {
 
   public async getPrivateKeyByAddress(address: string): Promise<string | null> {
     const userExist = await this.checkUserExist(address);
-    const vault = new VaultSupabase();
 
     if (userExist) {
-      const vaultData = await vault.getVault({ secret_name: address });
+      const vaultData = await this.vault.getVault({ secret_name: address });
 
       if (!vaultData) {
         throw new Error('Vault data not found');

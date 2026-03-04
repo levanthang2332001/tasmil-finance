@@ -1,23 +1,25 @@
-import { createClient } from '@supabase/supabase-js';
-import * as dotenv from 'dotenv';
+import { Injectable } from '@nestjs/common';
+import {
+  createClient,
+  SupabaseClient as SBClient,
+} from '@supabase/supabase-js';
 
-dotenv.config();
-
+@Injectable()
 export class SupabaseClient {
-  private readonly supabaseUrl: string;
-  private readonly supabaseRoleKey: string;
+  private readonly client: SBClient;
 
   constructor() {
-    this.supabaseUrl = process.env.SUPABASE_URL || '';
-    this.supabaseRoleKey = process.env.SUPABASE_ROLE_KEY || '';
-  }
+    const url = process.env.SUPABASE_URL || '';
+    const key = process.env.SUPABASE_ROLE_KEY || '';
 
-  public checkClient() {
-    if (!this.supabaseUrl || !this.supabaseRoleKey) {
+    if (!url || !key) {
       throw new Error('Missing Supabase URL or role key');
     }
 
-    const supabase = createClient(this.supabaseUrl, this.supabaseRoleKey);
-    return supabase;
+    this.client = createClient(url, key);
+  }
+
+  public getClient(): SBClient {
+    return this.client;
   }
 }

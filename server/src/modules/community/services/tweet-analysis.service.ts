@@ -91,7 +91,7 @@ interface ConvertedTweetAnalysisData {
 }
 
 @Injectable()
-export class IntentService {
+export class TweetAnalysisService {
   private model: ChatOpenAI;
   private readonly logger: LoggerService;
   private readonly defaultRules: readonly string[] = [

@@ -7,8 +7,9 @@ import { AppService } from './app.service';
 import { ChatModule } from './chat/chat.module';
 import { CommunityModule } from './modules/community/community.module';
 import { RedisModule } from './infra/redis/redis.module';
+import { SupabaseModule } from './infra/supabase/supabase.module';
 import { AccountsModule } from './modules/wallet/accounts.module';
-import { AuthModule } from './modules/wallet/guards/auth.module';
+import { AuthModule } from './infra/auth/auth.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
@@ -19,6 +20,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
       ignoreEnvFile: true,
     }),
     RedisModule.forRoot(),
+    SupabaseModule,
     ChatModule,
     AccountsModule,
     AuthModule,

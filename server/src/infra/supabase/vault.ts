@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { SupabaseClient } from './client';
 import {
   IInsertVaultRequest,
@@ -15,18 +15,15 @@ interface IReadVaultResponse {
   secret_value: string;
 }
 
+@Injectable()
 export class VaultSupabase {
-  private readonly supabaseClient: SupabaseClient;
-
-  constructor() {
-    this.supabaseClient = new SupabaseClient();
-  }
+  constructor(private readonly supabaseClient: SupabaseClient) {}
 
   public async insertVault(
     params: IInsertVaultRequest,
   ): Promise<IInsertVaultResponse | null> {
     try {
-      const client = this.supabaseClient.checkClient();
+      const client = this.supabaseClient.getClient();
       const response = await client.rpc('insert_secret', {
         secret_name: params.secret_name,
         secret_value: params.secret_value,
@@ -43,7 +40,7 @@ export class VaultSupabase {
     params: IReadVaultRequest,
   ): Promise<IReadVaultResponse | null> {
     try {
-      const client = this.supabaseClient.checkClient();
+      const client = this.supabaseClient.getClient();
       const response = await client.rpc('read_secret', {
         secret_name: params.secret_name,
       });

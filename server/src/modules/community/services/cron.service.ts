@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { CommunityService } from './community.service';
-import { IntentService } from './intent.service';
+import { TweetAnalysisService } from './tweet-analysis.service';
 import { TwitterSupabase } from 'src/infra/supabase/twitter';
 import { mapTwitterData } from '../utils/mapper';
 import { convertTweet } from '../utils/convert';
@@ -12,7 +12,7 @@ export class CronService {
 
   constructor(
     private readonly communityService: CommunityService,
-    private readonly intentService: IntentService,
+    private readonly intentService: TweetAnalysisService,
     private readonly twitterSupabase: TwitterSupabase,
   ) {}
 

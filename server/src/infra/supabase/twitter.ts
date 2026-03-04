@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { SupabaseClient } from './client';
 import {
   Tweet,
@@ -21,9 +21,8 @@ interface UpsertConfig {
   errorMessage: string;
 }
 
+@Injectable()
 export class TwitterSupabase {
-  private readonly supabaseClient: SupabaseClient;
-
   // Configuration for different upsert operations
   private readonly upsertConfigs: Record<string, UpsertConfig> = {
     users: {
@@ -73,9 +72,7 @@ export class TwitterSupabase {
     },
   };
 
-  constructor() {
-    this.supabaseClient = new SupabaseClient();
-  }
+  constructor(private readonly supabaseClient: SupabaseClient) {}
 
   /**
    * Generic upsert method for all table operations
@@ -94,7 +91,7 @@ export class TwitterSupabase {
         throw new Error(`Invalid config key: ${configKey}`);
       }
 
-      const client = this.supabaseClient.checkClient();
+      const client = this.supabaseClient.getClient();
       const { error, status } = await client
         .from(config.tableName)
         .upsert(data, {
@@ -192,7 +189,7 @@ export class TwitterSupabase {
   public async insertBatchAndTweets(json: InputJson['selectedTweetIds']) {
     // Insert batch
     const { data: batch, error: batchError } = await this.supabaseClient
-      .checkClient()
+      .getClient()
       .from('ai_analysis_batch')
       .insert([
         {
@@ -234,7 +231,7 @@ export class TwitterSupabase {
 
     // Insert all tweets
     const { error: tweetsError } = await this.supabaseClient
-      .checkClient()
+      .getClient()
       .from('ai_selected_tweet')
       .insert(tweets);
 
@@ -248,7 +245,7 @@ export class TwitterSupabase {
     cursor: number,
   ): Promise<AiAnalysisBatch[]> {
     let query = this.supabaseClient
-      .checkClient()
+      .getClient()
       .from('ai_selected_tweet')
       .select('*')
       .order('created_at', { ascending: false })
@@ -264,7 +261,7 @@ export class TwitterSupabase {
 
   public async getTweetsByBatch(batch_id: number): Promise<AiAnalysisBatch[]> {
     const { data, error } = await this.supabaseClient
-      .checkClient()
+      .getClient()
       .from('ai_selected_tweet')
       .select('*')
       .eq('batch_id', batch_id)
@@ -276,7 +273,7 @@ export class TwitterSupabase {
 
   public async getCursor(): Promise<string> {
     const { count, error } = await this.supabaseClient
-      .checkClient()
+      .getClient()
       .from('ai_selected_tweet')
       .select('*', { count: 'exact', head: true });
 

@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { TwitterApiService } from '../api/twitter';
 import { TwitterSearchDto } from '../dto/community.dto';
 import { TwitterApiResponse } from '../interface';
-// import { convertToCustomFormat } from '../utils';
 
 @Injectable()
 export class CommunityService {
