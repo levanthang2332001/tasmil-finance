@@ -141,11 +141,7 @@ const PreSwap = ({
     fromToken,
     toToken,
     sellAmount,
-    swapData?.address,
-    swapData?.curveType,
-    swapData?.version,
-    swapData?.fromFiat,
-    swapData?.toFiat,
+    swapData,
   ]);
 
   // Poll for price every 12s

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Typography } from "../ui/typography";
 import { ArrowUp } from "lucide-react";
 import { BsTwitterX } from "react-icons/bs";
-// import { FaTelegram } from "react-icons/fa";
 import { PATHS } from "@/constants/routes";
 import {
   Tooltip,
@@ -230,23 +229,7 @@ export function FooterSection() {
                     </TooltipContent>
                   </Tooltip>
 
-                  {/* <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link
-                        href={PATHS.TELEGRAM}
-                        aria-label="Telegram"
-                        className="group"
-                      >
-                        <div className="relative flex items-center justify-center h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/5 hover:bg-white/20">
-                          <FaTelegram className="text-white text-lg" />
-                          <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40"></div>
-                        </div>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <span>Telegram</span>
-                    </TooltipContent>
-                  </Tooltip> */}
+                  
                 </TooltipProvider>
               </div>
             </div>

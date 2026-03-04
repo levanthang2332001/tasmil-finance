@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { ChatContainer } from "@/components/chat/ChatContainer";
 import {
   SUGGESTION_DEFI_AGENT,
   SUGGESTION_HELP_PROMPTS,
-  SUGGESTION_TEMPLATES,
 } from "@/constants/suggestion";
 import { formatError } from "@/lib/utils";
 import { ChatService } from "@/services/chat.service";
@@ -73,9 +71,7 @@ const ChatDeFi = () => {
       setIsLoading(true);
       const userAddress = String(account?.address) || "";
 
-      console.log("Sending message:", { userAddress, content });
       const response = await ChatService.sendMessage(userAddress, content);
-      console.log("Received response:", response);
 
       // Determine action type with better fallback logic
       let actionType = ACTION_TYPE.UNKNOWN;
@@ -96,7 +92,6 @@ const ChatDeFi = () => {
         actionType,
       };
 
-      console.log("Bot message:", botMessage);
       setMessages((prev) => [...prev, botMessage]);
 
       // Reset help suggestions after a successful response

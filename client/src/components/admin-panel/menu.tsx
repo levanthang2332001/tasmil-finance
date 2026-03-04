@@ -142,7 +142,7 @@ function MenuItem({
             <TooltipTrigger asChild>
               <Button
                 variant={isActive ? "secondary" : "ghost"}
-                className={cn("w-full justify-start h-11  mb-1")}
+                className={cn("w-full justify-start h-11 mb-1")}
                 asChild
               >
                 <Link

@@ -1,5 +1,5 @@
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import LoadingItem from "@/components/community/LoadingItem";
+import LoadingItem from "@/features/community/components/community/LoadingItem";
 import { Skeleton } from "@/components/ui/skeleton";
 
 function CommunityLoading() {

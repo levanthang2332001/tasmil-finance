@@ -13,7 +13,6 @@ export const PATHS = {
   NEXT: "/_next",
   FAVICON: "/favicon.ico",
   ROBOTS: "/robots.txt",
-  // TELEGRAM: "https://t.me/tasmilfinance",
   X: "https://x.com/tasmilfinance",
 };
 

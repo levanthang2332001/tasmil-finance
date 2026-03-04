@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 
 import { Navbar } from "./navbar";
 import { HeroSection } from "./hero-section";
@@ -32,14 +32,24 @@ export default function LandingPage() {
   });
 
   // Refs for sections
-  const sectionRefs = {
-    hero: useRef<HTMLDivElement>(null),
-    video: useRef<HTMLDivElement>(null),
-    benefits: useRef<HTMLDivElement>(null),
-    abstract: useRef<HTMLDivElement>(null),
-    faq: useRef<HTMLDivElement>(null),
-    footer: useRef<HTMLDivElement>(null),
-  };
+  const heroRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLDivElement>(null);
+  const benefitsRef = useRef<HTMLDivElement>(null);
+  const abstractRef = useRef<HTMLDivElement>(null);
+  const faqRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+
+  const sectionRefs = useMemo(
+    () => ({
+      hero: heroRef,
+      video: videoRef,
+      benefits: benefitsRef,
+      abstract: abstractRef,
+      faq: faqRef,
+      footer: footerRef,
+    }),
+    [],
+  );
 
   // Add intersection observer to handle section animations on scroll
   useEffect(() => {
@@ -74,30 +84,7 @@ export default function LandingPage() {
     return () => {
       observer.disconnect();
     };
-  }, []);
-
-  // Function to scroll to section with better handling
-  // const scrollToSection = (sectionId: SectionId) => {
-  //   const section = sectionRefs[sectionId]?.current;
-  //   if (section) {
-  //     // Calculate offset based on announcement bar visibility
-  //     const announcementHeight = 48; // Height of announcement bar
-  //     const navbarHeight = 72; // Height of navbar
-  //     const totalOffset =
-  //       navbarHeight + (window.scrollY === 0 ? announcementHeight : 0);
-
-  //     setTimeout(() => {
-  //       const elementPosition = section.getBoundingClientRect().top;
-  //       const offsetPosition =
-  //         elementPosition + window.pageYOffset - totalOffset;
-
-  //       window.scrollTo({
-  //         top: offsetPosition,
-  //         behavior: "smooth",
-  //       });
-  //     }, 50);
-  //   }
-  // };
+  }, [sectionRefs]);
 
   // Reset active tab initially (clear any previously active tab)
   useEffect(() => {
@@ -192,7 +179,7 @@ export default function LandingPage() {
       window.removeEventListener("scroll", scrollListener);
       clearTimeout(initialCheckTimeout);
     };
-  }, []);
+  }, [sectionRefs]);
 
   // Define animation classes for sections
   const getSectionAnimationClass = (sectionId: string) => {

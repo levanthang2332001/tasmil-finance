@@ -23,45 +23,46 @@ export const BenefitSection = () => {
   const bg3 = "/images/landing-v3/benefit/bg-3.png";
 
   useEffect(() => {
+    const timerIds: ReturnType<typeof setTimeout>[] = [];
+    const currentSection = sectionRef.current;
+
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
         if (entry.isIntersecting) {
           setIsLoaded(true);
-          // Staggered card loading animation
-          const timer1 = setTimeout(() => {
-            setCardsLoaded((prev) => [true, prev[1], prev[2]]);
-          }, 400);
-
-          const timer2 = setTimeout(() => {
-            setCardsLoaded((prev) => [prev[0], true, prev[2]]);
-          }, 800);
-
-          const timer3 = setTimeout(() => {
-            setCardsLoaded((prev) => [prev[0], prev[1], true]);
-          }, 1200);
-
-          return () => {
-            clearTimeout(timer1);
-            clearTimeout(timer2);
-            clearTimeout(timer3);
-          };
+          timerIds.push(
+            setTimeout(() => {
+              setCardsLoaded((prev) => [true, prev[1], prev[2]]);
+            }, 400),
+          );
+          timerIds.push(
+            setTimeout(() => {
+              setCardsLoaded((prev) => [prev[0], true, prev[2]]);
+            }, 800),
+          );
+          timerIds.push(
+            setTimeout(() => {
+              setCardsLoaded((prev) => [prev[0], prev[1], true]);
+            }, 1200),
+          );
         }
       },
       {
         root: null,
         rootMargin: "0px",
-        threshold: 0.3, // Trigger when 30% of the section is visible
+        threshold: 0.3,
       },
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    if (currentSection) {
+      observer.observe(currentSection);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      timerIds.forEach(clearTimeout);
+      if (currentSection) {
+        observer.unobserve(currentSection);
       }
     };
   }, []);

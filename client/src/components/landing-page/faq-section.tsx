@@ -90,7 +90,7 @@ export const FAQSection = () => {
         });
       }
     }
-  }, []);
+  }, [openFAQ]);
 
   const toggleFAQ = (id: string) => {
     if (openFAQ === id) {
