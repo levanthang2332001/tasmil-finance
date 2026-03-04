@@ -1,41 +1,7 @@
 import { ErrorState } from "@/components/ui/error-state";
-import { useCallback, useEffect, useState } from "react";
 import { TokenCard } from "./TokenCard";
-import { TokenChart, TimeRange } from "./TokenChart";
-
-interface Token {
-  symbol: string;
-  name: string;
-  price: number;
-  changePercentage: number;
-  change: number;
-  volume: number;
-  dayLow: number;
-  dayHigh: number;
-  yearHigh: number;
-  yearLow: number;
-  marketCap: number;
-  priceAvg50: number;
-  priceAvg200: number;
-  exchange: string;
-  open: number;
-  previousClose: number;
-  timestamp: number;
-}
-
-function generateChartData(token: Token) {
-  const now = token.timestamp * 1000;
-  const data = [];
-  for (let i = 0; i < 24; i++) {
-    const time = now - (23 - i) * 3600 * 1000;
-    const randomChange = (Math.random() - 0.5) * 2;
-    data.push({
-      timestamp: time,
-      price: token.price * (1 + randomChange / 100),
-    });
-  }
-  return data;
-}
+import { TokenChart } from "./TokenChart";
+import { useMarketOverview } from "@/features/dashboard/hooks/useMarketOverview";
 
 function MarketOverviewSkeleton() {
   return (
@@ -75,52 +41,25 @@ function MarketOverviewSkeleton() {
 }
 
 export function MarketOverview() {
-  const [tokens, setTokens] = useState<Token[]>([]);
-  const [selectedToken, setSelectedToken] = useState<string | null>(null);
-  const [timeRange, setTimeRange] = useState<TimeRange>("1D");
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchMarketData = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const response = await fetch(
-        "/api/dashboard/market?symbols=BTCUSD,ETHUSD,SOLUSD,APTUSD",
-      );
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to fetch market data");
-      }
-      // API returns array of arrays; extract first item from each subarray
-      const flattenedData = data.map((arr: Token[]) => arr[0]);
-      setTokens(flattenedData);
-      // Preserve user's selection on re-polls; only set default on first load
-      setSelectedToken((prev) => prev ?? flattenedData[0]?.symbol ?? null);
-    } catch (err) {
-      console.error("Failed to fetch market data:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch market data",
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchMarketData();
-    const interval = setInterval(fetchMarketData, 60000);
-    return () => clearInterval(interval);
-  }, [fetchMarketData]);
-
-  const selectedTokenData = tokens.find((t) => t.symbol === selectedToken);
+  const {
+    tokens,
+    selectedToken,
+    setSelectedToken,
+    timeRange,
+    setTimeRange,
+    isLoading,
+    error,
+    selectedTokenData,
+    chartData,
+    refresh,
+  } = useMarketOverview();
 
   if (error) {
     return (
       <ErrorState
         title="Failed to load market data"
         error={error}
-        onRetry={fetchMarketData}
+        onRetry={refresh}
       />
     );
   }
@@ -147,7 +86,7 @@ export function MarketOverview() {
 
       {selectedTokenData && (
         <TokenChart
-          data={generateChartData(selectedTokenData)}
+          data={chartData}
           symbol={selectedTokenData.symbol}
           currentPrice={selectedTokenData.price}
           priceChange={selectedTokenData.changePercentage}

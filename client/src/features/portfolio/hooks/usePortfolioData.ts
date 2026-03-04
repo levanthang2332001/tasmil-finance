@@ -1,13 +1,12 @@
-import {
-  calculatePortfolioStats,
-  calculateRiskProfile,
-  calculateTokenData,
-  fetchAptosCoins,
-} from "@/lib/aptos-helpers";
+import { fetchAptosCoins } from "@/lib/aptos-helpers";
 import { useWalletStore } from "@/store/useWalletStore";
 import { TokenData } from "@/types/portfolio";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  mapCoinsToTokenData,
+  mapPortfolioViewModel,
+} from "@/features/portfolio/mappers/portfolio.mapper";
 
 export function usePortfolioData() {
   const [tokens, setTokens] = useState<TokenData[]>([]);
@@ -37,7 +36,7 @@ export function usePortfolioData() {
         setHasData(false);
         setTokens([]);
       } else {
-        const tokenData = await calculateTokenData(coins);
+        const tokenData = await mapCoinsToTokenData(coins);
         setTokens(tokenData);
         setHasData(tokenData.length > 0);
       }
@@ -54,8 +53,10 @@ export function usePortfolioData() {
     fetchPortfolioData();
   }, [fetchPortfolioData]);
 
-  const riskProfile = useMemo(() => calculateRiskProfile(tokens), [tokens]);
-  const portfolioStats = useMemo(() => calculatePortfolioStats(tokens), [tokens]);
+  const { riskProfile, portfolioStats } = useMemo(
+    () => mapPortfolioViewModel(tokens),
+    [tokens],
+  );
 
   return {
     tokens,

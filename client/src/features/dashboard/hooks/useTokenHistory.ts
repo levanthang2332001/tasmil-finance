@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchTokenHistory, PriceHistoryPoint } from "@/features/dashboard/services/dashboard.service";
+import { fetchTokenHistory } from "@/features/dashboard/services/dashboard.service";
+import { PriceHistoryPoint } from "@/features/dashboard/mappers/dashboard.mapper";
 import { TimeRange } from "@/features/dashboard/components/dashboard/market/TokenChart";
 
 export function useTokenHistory(

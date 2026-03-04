@@ -1,16 +1,11 @@
 import { TimeRange } from "@/features/dashboard/components/dashboard/market/TokenChart";
-
-export interface PriceHistoryPoint {
-  timestamp: number;
-  price: number;
-}
-
-function buildMockHistory(basePrice: number, points = 30): PriceHistoryPoint[] {
-  return Array.from({ length: points }, (_, i) => ({
-    timestamp: Date.now() - (points - 1 - i) * 24 * 60 * 60 * 1000,
-    price: basePrice * (1 + (Math.random() - 0.5) * 0.1),
-  }));
-}
+import {
+  DashboardToken,
+  generateMockHistory,
+  mapHistoryRows,
+  mapMarketOverviewResponse,
+  PriceHistoryPoint,
+} from "@/features/dashboard/mappers/dashboard.mapper";
 
 export async function fetchTokenHistory(
   symbol: string,
@@ -27,17 +22,22 @@ export async function fetchTokenHistory(
     }
 
     const data = await response.json();
-    const rows = data?.[symbol];
-
-    if (Array.isArray(rows)) {
-      return rows.map((item: { timestamp: number; price: number }) => ({
-        timestamp: item.timestamp,
-        price: item.price,
-      }));
-    }
-
-    return buildMockHistory(fallbackPrice);
+    const parsed = mapHistoryRows(data?.[symbol]);
+    return parsed.length > 0 ? parsed : generateMockHistory(fallbackPrice);
   } catch {
-    return buildMockHistory(fallbackPrice);
+    return generateMockHistory(fallbackPrice);
   }
+}
+
+export async function fetchMarketOverview(
+  symbols = "BTCUSD,ETHUSD,SOLUSD,APTUSD",
+): Promise<DashboardToken[]> {
+  const response = await fetch(`/api/dashboard/market?symbols=${symbols}`);
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data?.error || "Failed to fetch market data");
+  }
+
+  return mapMarketOverviewResponse(data);
 }

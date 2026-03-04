@@ -3,5 +3,19 @@
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
     "react/jsx-no-comment-textnodes": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/features/**/components/**/*.{ts,tsx}"],
+      "rules": {
+        "no-restricted-syntax": [
+          "error",
+          {
+            "selector": "CallExpression[callee.name='fetch']",
+            "message": "Do not call fetch directly inside feature components. Move IO to services/hooks."
+          }
+        ]
+      }
+    }
+  ]
 }
