@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { PortfolioStats, RiskProfile } from "@/types/portfolio";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { RefreshCw, TrendingUp, TrendingDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 

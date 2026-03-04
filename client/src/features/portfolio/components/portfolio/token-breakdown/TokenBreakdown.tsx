@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Skeleton } from "../../ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { TokenData } from "@/types/portfolio";
 import { getSortableValue, getSortIcon } from "./helpers";
 import { TokenTableRow } from "./TokenTableRow";

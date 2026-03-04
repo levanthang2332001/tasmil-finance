@@ -10,7 +10,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { TokenData } from "../../types/portfolio";
+import { TokenData } from "@/types/portfolio";
 
 export const description = "Portfolio asset breakdown by token";
 
