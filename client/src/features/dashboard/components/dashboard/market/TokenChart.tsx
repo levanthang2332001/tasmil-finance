@@ -8,8 +8,9 @@ import {
   Area,
   AreaChart,
 } from "recharts";
+import type { TimeRange } from "@/features/dashboard/types";
 
-export type TimeRange = "1D" | "3D" | "5D" | "1W" | "1M" | "3M" | "6M" | "1Y";
+export type { TimeRange };
 
 const TIME_RANGES: TimeRange[] = [
   "1D",

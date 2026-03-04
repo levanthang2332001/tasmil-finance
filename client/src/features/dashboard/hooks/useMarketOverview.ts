@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { TimeRange } from "@/features/dashboard/components/dashboard/market/TokenChart";
+import type { TimeRange, DashboardToken } from "@/features/dashboard/types";
 import { fetchMarketOverview } from "@/features/dashboard/services/dashboard.service";
-import {
-  DashboardToken,
-  generateTokenChartData,
-} from "@/features/dashboard/mappers/dashboard.mapper";
+import { generateTokenChartData } from "@/features/dashboard/mappers/dashboard.mapper";
 
 export function useMarketOverview() {
   const [tokens, setTokens] = useState<DashboardToken[]>([]);

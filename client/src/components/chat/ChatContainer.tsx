@@ -6,7 +6,7 @@ import { ChatInput } from "./ChatInput";
 import { BotThinking } from "./message/BotThinking";
 import { MessageType } from "./message/MessageType";
 import SuggestionGrid from "./SuggestionGrid";
-import SuggestionList from "./SuggesstionList";
+import SuggestionList from "./SuggestionList";
 
 interface Suggestion {
   text: string;

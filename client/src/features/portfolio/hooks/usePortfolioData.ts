@@ -1,4 +1,4 @@
-import { fetchAptosCoins } from "@/lib/aptos-helpers";
+import { fetchPortfolioCoins } from "@/features/portfolio/services/portfolio.service";
 import { useWalletStore } from "@/store/useWalletStore";
 import { TokenData } from "@/types/portfolio";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
@@ -30,7 +30,7 @@ export function usePortfolioData() {
     setError(null);
 
     try {
-      const coins = await fetchAptosCoins(tasmilAddress);
+      const coins = await fetchPortfolioCoins(tasmilAddress);
 
       if (!coins || coins.length === 0) {
         setHasData(false);

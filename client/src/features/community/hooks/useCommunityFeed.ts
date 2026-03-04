@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CommunityService } from "@/features/community/services/community.service";
-import { BentoItem } from "@/features/community/components/community/NewsFeed";
+import {
+  fetchCommunityBatches,
+  fetchLatestCommunitycursor,
+} from "@/features/community/services/community.service";
+import type { BentoItem } from "@/features/community/types";
 
 const PAGE_SIZE = 10;
 
@@ -15,10 +18,7 @@ export function useCommunityFeed() {
     if (loading || cursor === null || cursor === 0) return;
     try {
       setLoading(true);
-      const newItems = (await CommunityService.getBatches(
-        PAGE_SIZE,
-        cursor,
-      )) as BentoItem[];
+      const newItems = await fetchCommunityBatches(PAGE_SIZE, cursor);
       if (newItems?.length) {
         setItems((prev) => [...prev, ...newItems]);
         setCursor(Math.max(0, cursor - PAGE_SIZE));
@@ -34,15 +34,11 @@ export function useCommunityFeed() {
     try {
       setLoading(true);
       setError(null);
-      const maxCursor = await CommunityService.getLatestCursor();
+      const maxCursor = await fetchLatestCommunitycursor();
       const cursorValue = parseInt(maxCursor, 10);
       setCursor(cursorValue);
 
-      const newItems = (await CommunityService.getBatches(
-        PAGE_SIZE,
-        cursorValue,
-      )) as BentoItem[];
-
+      const newItems = await fetchCommunityBatches(PAGE_SIZE, cursorValue);
       if (newItems?.length) {
         setItems(newItems);
         setCursor(Math.max(0, cursorValue - PAGE_SIZE));

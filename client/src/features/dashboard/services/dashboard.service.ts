@@ -1,32 +1,23 @@
-import { TimeRange } from "@/features/dashboard/components/dashboard/market/TokenChart";
+import type { TimeRange, DashboardToken, PriceHistoryPoint } from "@/features/dashboard/types";
 import {
-  DashboardToken,
-  generateMockHistory,
   mapHistoryRows,
   mapMarketOverviewResponse,
-  PriceHistoryPoint,
 } from "@/features/dashboard/mappers/dashboard.mapper";
 
 export async function fetchTokenHistory(
   symbol: string,
   period: TimeRange = "1M",
-  fallbackPrice = 0,
 ): Promise<PriceHistoryPoint[]> {
-  try {
-    const response = await fetch(
-      `/api/dashboard/get-history?symbols=${symbol}&period=${period}`,
-    );
+  const response = await fetch(
+    `/api/dashboard/get-history?symbols=${symbol}&period=${period}`,
+  );
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-
-    const data = await response.json();
-    const parsed = mapHistoryRows(data?.[symbol]);
-    return parsed.length > 0 ? parsed : generateMockHistory(fallbackPrice);
-  } catch {
-    return generateMockHistory(fallbackPrice);
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
   }
+
+  const data = await response.json();
+  return mapHistoryRows(data?.[symbol]);
 }
 
 export async function fetchMarketOverview(

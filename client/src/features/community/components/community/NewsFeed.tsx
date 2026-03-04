@@ -1,19 +1,11 @@
 "use client";
 import LoadingItem from "@/features/community/components/community/LoadingItem";
 import EmptyFeed from "./EmptyFeed";
-import {
-  CardNewFeed,
-  CardNewFeedItem,
-} from "@/features/community/components/community/CardNewFeed";
+import { CardNewFeed } from "@/features/community/components/community/CardNewFeed";
 import { useEffect, useState } from "react";
+import type { BentoItem } from "@/features/community/types";
 
-export interface BentoItem extends CardNewFeedItem {
-  tags?: string[];
-  meta?: string;
-  cta?: string;
-  colSpan?: number;
-  hasPersistentHover?: boolean;
-}
+export type { BentoItem };
 
 interface BentoGridProps {
   items: BentoItem[];

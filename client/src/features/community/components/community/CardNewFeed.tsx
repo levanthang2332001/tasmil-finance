@@ -4,21 +4,9 @@ import { BadgeCheck } from "lucide-react";
 import { BsTwitterX } from "react-icons/bs";
 import Image from "next/image";
 import { useState } from "react";
+import type { CardNewFeedItem } from "@/features/community/types";
 
-export interface CardNewFeedItem {
-  id: string;
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  author?: string;
-  handle?: string;
-  time?: string;
-  avatar?: string;
-  verified?: boolean;
-  hasImage?: boolean;
-  imageUrl?: string;
-  tweetUrl?: string;
-}
+export type { CardNewFeedItem };
 
 interface CardNewFeedProps {
   item: CardNewFeedItem;
