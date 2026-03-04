@@ -99,7 +99,7 @@ function TokenBreakdown({ tokens }: { tokens: TokenData[] }) {
     return (
       <tbody>
         {filteredAndSortedTokens.map((token) => (
-          <TokenTableRow key={token.name} token={token} sortField={sortConfig.field} />
+          <TokenTableRow key={token.name} token={token} />
         ))}
       </tbody>
     );

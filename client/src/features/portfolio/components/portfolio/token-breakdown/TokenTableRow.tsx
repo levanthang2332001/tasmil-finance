@@ -5,13 +5,10 @@ import Image from "next/image";
 
 export interface TokenTableRowProps {
   token: TokenData;
-  sortField: string;
 }
 
 export function TokenTableRow({ token }: TokenTableRowProps) {
   const tokenInfo = TOKENS[token.symbol];
-
-
   const formatPrice = (price: number) => {
     if (price === 0) return "N/A";
     if (price < 0.01) return `$${price.toFixed(6)}`;
