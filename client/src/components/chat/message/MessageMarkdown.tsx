@@ -2,7 +2,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
-import rehypeRaw from "rehype-raw";
+
 import { truncateAddress } from "@aptos-labs/ts-sdk";
 import { ExternalLink } from "lucide-react";
 import {
@@ -23,7 +23,7 @@ export function MessageMarkdown({ children }: MessageMarkdownProps) {
       <div className="markdown-content">
         <ReactMarkdown
           remarkPlugins={[remarkGfm, remarkMath]}
-          rehypePlugins={[rehypeRaw]}
+          rehypePlugins={[]}
           components={{
             h1: ({ children }) => (
               <h1 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 text-slate-900">
