@@ -6,15 +6,15 @@ const PortfolioPage = () => {
   return (
     <ContentLayout
       title={
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
           <Image
             src="/images/portfolio.png"
             alt="logo"
             width={34}
             height={34}
-            className="sm:w-[40px] sm:h-[40px]"
+            className="md:w-[40px] md:h-[40px]"
           />
-          <h1 className="text-lg sm:text-2xl font-semibold">Portfolio</h1>
+          <h1 className="text-lg md:text-2xl font-semibold">Portfolio</h1>
         </div>
       }
     >

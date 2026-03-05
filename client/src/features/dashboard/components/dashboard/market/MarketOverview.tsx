@@ -5,7 +5,7 @@ import { useMarketOverview } from "@/features/dashboard/hooks/useMarketOverview"
 
 function MarketOverviewSkeleton() {
   return (
-    <div className="relative space-y-6 sm:space-y-8 p-4 sm:p-8 min-h-full overflow-y-auto">
+    <div className="relative space-y-6 md:space-y-8 p-4 md:p-8 min-h-full overflow-y-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {Array(4)
           .fill(0)
@@ -17,7 +17,7 @@ function MarketOverviewSkeleton() {
           ))}
       </div>
 
-      <div className="relative overflow-hidden bg-gray-950 border border-slate-700/50 rounded-xl p-4 sm:p-8 space-y-6 sm:space-y-8">
+      <div className="relative overflow-hidden bg-gray-950 border border-slate-700/50 rounded-xl p-4 md:p-8 space-y-6 md:space-y-8">
         <div className="flex justify-between items-start">
           <div className="space-y-2">
             <div className="h-10 w-48 bg-slate-800/60 animate-pulse rounded-lg" />
@@ -69,7 +69,7 @@ export function MarketOverview() {
   }
 
   return (
-    <div className="relative space-y-6 sm:space-y-8 p-4 sm:p-8 min-h-full overflow-y-auto">
+    <div className="relative space-y-6 md:space-y-8 p-4 md:p-8 min-h-full overflow-y-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {tokens.map((token) => (
           <TokenCard
