@@ -386,7 +386,7 @@ function BotPreSwap({
 }: BotPreSwapProps) {
   return (
     <div className="flex items-start gap-3">
-      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-sm">
+      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 hidden md:flex items-center justify-center shadow-sm">
         <Bot className="w-4 h-4 text-white" />
       </div>
       <div className="flex flex-1 max-w-[80%] flex-col gap-4 items-start">
