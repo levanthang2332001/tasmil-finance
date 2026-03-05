@@ -4,18 +4,13 @@ import { IntentService } from './services/intent.service';
 import { VoiceService } from './services/voice.service';
 import { SwapService } from './services/swap.service';
 import { VoiceController } from './voice.controller';
-import { JwtModule } from '@nestjs/jwt';
 import { SwapController } from './swap.controller';
 import { BridgeController } from './bridge.controller';
 import { BridgeService } from './services/bridge.service';
+import { AppJwtModule } from 'src/infra/jwt/jwt.module';
 
 @Module({
-  imports: [
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '24h' },
-    }),
-  ],
+  imports: [AppJwtModule],
   controllers: [
     ChatController,
     VoiceController,

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/require-await */
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../wallet/guard/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/infra/auth/jwt-auth.guard';
 import { handleAction } from './actions';
 import { ChatApiDocs } from './docs/chat-api.docs';
 import { ChatRequestDto, ChatResponseDto } from './dto/chat.dto';

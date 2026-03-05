@@ -5,13 +5,15 @@ import {
   Ed25519PrivateKey,
   Network,
 } from '@aptos-labs/ts-sdk';
-import { Accounts } from '../wallet/accounts';
+import { SupabaseClient } from 'src/infra/supabase/client';
+import { VaultSupabase } from 'src/infra/supabase/vault';
+import { AccountsService } from 'src/modules/wallet/accounts.service';
 
 export const aptosAgent = async (user_address: string) => {
   const aptosConfig = new AptosConfig({ network: Network.MAINNET });
   const aptos = new Aptos(aptosConfig);
 
-  const account = new Accounts();
+  const account = new AccountsService(new VaultSupabase(new SupabaseClient()));
   const privateKey = await account.getPrivateKeyByAddress(user_address);
 
   if (!privateKey) {

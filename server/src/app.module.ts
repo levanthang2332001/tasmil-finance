@@ -5,11 +5,12 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ChatModule } from './chat/chat.module';
-import { CommunityModule } from './community/community.module';
-import { RedisModule } from './redis/redis.module';
-import { AccountsModule } from './wallet/accounts.module';
-import { AuthModule } from './wallet/guard/auth.module';
-import { DashboardModule } from './dashboard/dashboard.module';
+import { CommunityModule } from './modules/community/community.module';
+import { RedisModule } from './infra/redis/redis.module';
+import { SupabaseModule } from './infra/supabase/supabase.module';
+import { AccountsModule } from './modules/wallet/accounts.module';
+import { AuthModule } from './infra/auth/auth.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
       ignoreEnvFile: true,
     }),
     RedisModule.forRoot(),
+    SupabaseModule,
     ChatModule,
     AccountsModule,
     AuthModule,
