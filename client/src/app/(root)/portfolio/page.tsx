@@ -1,6 +1,16 @@
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import Portfolio from "@/features/portfolio/components/portfolio";
+import { Skeleton } from "@/components/ui/skeleton";
+import dynamic from "next/dynamic";
 import Image from "next/image";
+
+const Portfolio = dynamic(() => import("@/features/portfolio/components/portfolio"), {
+  loading: () => (
+    <div className="space-y-4 p-2 md:p-4">
+      <Skeleton className="h-[220px] w-full" />
+      <Skeleton className="h-[300px] w-full" />
+    </div>
+  ),
+});
 
 const PortfolioPage = () => {
   return (
