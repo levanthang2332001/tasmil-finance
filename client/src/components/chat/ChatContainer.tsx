@@ -36,7 +36,7 @@ export const ChatContainer = ({
     scrollToBottom();
   }, [messages]);
 
-  const widthClass = "max-w-[740px] w-full";
+  const widthClass = "max-w-[740px] w-full px-1 sm:px-0";
 
   return (
     <div className="flex flex-col h-full w-full bg-transparent">
