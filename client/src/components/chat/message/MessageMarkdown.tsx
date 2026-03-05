@@ -26,7 +26,7 @@ export function MessageMarkdown({ children }: MessageMarkdownProps) {
           rehypePlugins={[rehypeRaw]}
           components={{
             h1: ({ children }) => (
-              <h1 className="text-2xl font-bold mb-4 text-slate-900">
+              <h1 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 text-slate-900">
                 {children}
               </h1>
             ),

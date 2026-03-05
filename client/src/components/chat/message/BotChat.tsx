@@ -19,10 +19,10 @@ export const BotChat = ({ message, isLoading }: BotChatProps) => {
       className="flex mb-4 animate-in"
     >
       <div className="flex items-start gap-2">
-        <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+        <div className="hidden md:flex w-8 h-8 rounded-full bg-secondary items-center justify-center">
           <Bot className="w-5 h-5 text-secondary-foreground" />
         </div>
-        <div className="max-w-[80%]">
+        <div className="max-w-[90%] md:max-w-[80%]">
           <motion.div
             layout
             className={cn(

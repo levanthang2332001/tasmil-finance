@@ -15,7 +15,7 @@ function CommunityLoading() {
     >
       <div className="relative h-full w-full">
         <div className="h-full w-full overflow-y-auto">
-          <div className="mx-auto grid max-w-4xl grid-cols-1 items-start gap-4 px-2 sm:grid-cols-2">
+          <div className="mx-auto grid max-w-4xl grid-cols-1 items-start gap-4 px-2 md:grid-cols-2">
             <div>
               {Array.from({ length: 10 }).map((_, index) => (
                 <LoadingItem key={`left-${index}`} />

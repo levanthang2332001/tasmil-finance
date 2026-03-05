@@ -5,10 +5,10 @@ import Link from "next/link";
 
 const EmptyFeed = () => {
   return (
-    <div className="h-screen overflow-y-auto scroll-container flex items-center justify-center">
+    <div className="min-h-full overflow-y-auto scroll-container flex items-center justify-center">
       <div className="max-w-4xl mx-auto px-2">
         <div className="flex min-h-[60vh] w-full items-center justify-center py-10">
-          <div className="relative w-full max-w-2xl rounded-2xl border border-[#00DEF2]/20 bg-card p-6 text-center shadow-[0_0_40px_-8px_rgba(0,222,242,0.12)] backdrop-blur-md sm:p-8">
+          <div className="relative w-full max-w-2xl rounded-2xl border border-[#00DEF2]/20 bg-card p-4 md:p-8 text-center shadow-[0_0_40px_-8px_rgba(0,222,242,0.12)] backdrop-blur-md">
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden"
@@ -18,10 +18,10 @@ const EmptyFeed = () => {
             </div>
 
             <span className="absolute -left-3 -top-3 animate-pulse">
-              <Sparkles className="h-6 w-6 text-[#00DEF2]/70 sm:h-7 sm:w-7" />
+              <Sparkles className="h-6 w-6 text-[#00DEF2]/70 md:h-7 md:w-7" />
             </span>
             <span className="absolute -bottom-3 -right-3 animate-pulse">
-              <Sparkles className="h-6 w-6 text-[#F161C9]/70 sm:h-7 sm:w-7" />
+              <Sparkles className="h-6 w-6 text-[#F161C9]/70 md:h-7 md:w-7" />
             </span>
 
             <div className="mx-auto mb-6 max-w-xs overflow-hidden rounded-2xl border border-[#00DEF2]/15">
@@ -35,11 +35,11 @@ const EmptyFeed = () => {
               />
             </div>
 
-            <h2 className="text-gradient mb-2 text-2xl font-bold sm:text-3xl">
+            <h2 className="text-gradient mb-2 text-2xl font-bold md:text-3xl">
               No hot tweets yet
             </h2>
 
-            <p className="mx-auto mb-6 max-w-lg text-sm text-foreground/50 sm:text-base">
+            <p className="mx-auto mb-6 max-w-lg text-sm text-foreground/50 md:text-base">
               The feed is quiet for now. New trending posts will appear here
               automatically. You can also start the momentum by sharing an
               update with the community.
@@ -49,7 +49,7 @@ const EmptyFeed = () => {
               href="https://x.com/intent/tweet?text=Check%20out%20this%20community!"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center rounded-xl bg-[#00DEF2] px-5 py-2.5 text-sm font-semibold text-[#000C18] shadow-[0_0_20px_-4px_rgba(0,222,242,0.4)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_28px_-4px_rgba(0,222,242,0.55)] sm:px-6 sm:py-3 sm:text-base"
+              className="inline-flex items-center rounded-xl bg-[#00DEF2] px-5 py-2.5 text-sm font-semibold text-[#000C18] shadow-[0_0_20px_-4px_rgba(0,222,242,0.4)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_28px_-4px_rgba(0,222,242,0.55)] md:px-6 md:py-3 md:text-base"
             >
               <BsTwitterX className="mr-2 h-5 w-5" />
               Share on X

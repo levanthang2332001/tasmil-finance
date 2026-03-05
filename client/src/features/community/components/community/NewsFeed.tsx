@@ -65,8 +65,8 @@ function NewsFeed({ items, onScrollEnd, loading }: BentoGridProps) {
 
   return (
     <div className="h-full overflow-y-auto scroll-container">
-      <div className="max-w-4xl mx-auto px-2">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+      <div className="max-w-4xl mx-auto px-0 md:px-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
           <div>
             {columns[0].map((item) => (
               <CardNewFeed key={item.id} item={item} />

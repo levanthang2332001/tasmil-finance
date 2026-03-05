@@ -32,7 +32,7 @@ function TokenDisplay({
 
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
-          <span className="text-2xl font-bold text-slate-900">
+          <span className="text-xl md:text-2xl font-bold text-slate-900">
             {amount || "0"}
           </span>
           <span className="text-xs text-slate-400 mt-1">{fiat}</span>
@@ -386,7 +386,7 @@ function BotPreSwap({
 }: BotPreSwapProps) {
   return (
     <div className="flex items-start gap-3">
-      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-sm">
+      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 hidden md:flex items-center justify-center shadow-sm">
         <Bot className="w-4 h-4 text-white" />
       </div>
       <div className="flex flex-1 max-w-[80%] flex-col gap-4 items-start">

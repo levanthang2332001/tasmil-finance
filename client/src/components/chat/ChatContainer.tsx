@@ -36,11 +36,11 @@ export const ChatContainer = ({
     scrollToBottom();
   }, [messages]);
 
-  const widthClass = "max-w-[740px] w-full";
+  const widthClass = "max-w-[740px] w-full px-1 md:px-0";
 
   return (
     <div className="flex flex-col h-full w-full bg-transparent">
-      <motion.div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 w-full">
+      <motion.div className="flex-1 overflow-y-auto overflow-x-hidden p-2 md:p-4 space-y-3 md:space-y-4 w-full">
         <div className={cn("space-y-4 mx-auto ", widthClass)}>
           {suggestions && messages.length === 0 ? (
             <SuggestionGrid

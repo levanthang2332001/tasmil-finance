@@ -13,14 +13,15 @@ const CommunityPage = () => {
     return (
       <ContentLayout
         title={
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 md:gap-3">
             <Image
               src="/images/community.png"
               alt="logo"
-              width={50}
-              height={50}
+              width={40}
+              height={40}
+              className="md:w-[50px] md:h-[50px]"
             />
-            <h1 className="text-2xl font-semibold">Hot tweets</h1>
+            <h1 className="text-lg md:text-2xl font-semibold">Hot tweets</h1>
           </div>
         }
         className="overflow-hidden px-0"
@@ -37,14 +38,15 @@ const CommunityPage = () => {
   return (
     <ContentLayout
       title={
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 md:gap-3">
           <Image
             src="/images/community.png"
             alt="logo"
-            width={50}
-            height={50}
+            width={40}
+            height={40}
+            className="md:w-[50px] md:h-[50px]"
           />
-          <h1 className="text-2xl font-semibold">
+          <h1 className="text-lg md:text-2xl font-semibold leading-tight">
             Hot tweets ({items.length} loaded
             {cursor === 0 ? " - All caught up!" : ""})
           </h1>
