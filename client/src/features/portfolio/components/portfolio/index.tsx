@@ -1,13 +1,20 @@
 "use client";
 
-import ChartOverview from "./ChartOverview";
 import { PortfolioStatsCard } from "./PortfolioOverview";
 import { EmptyPortfolioState } from "./state/EmptyPortfolioState";
 import { ErrorState } from "./state/ErrorState";
 import { LoadingState } from "./state/LoadingStates";
 import { NoWalletState } from "./state/NoWalletState";
-import TokenBreakdown from "./token-breakdown/TokenBreakdown";
 import { usePortfolioData } from "@/features/portfolio/hooks/usePortfolioData";
+import dynamic from "next/dynamic";
+
+const ChartOverview = dynamic(() => import("./ChartOverview"), {
+  loading: () => <div className="h-[260px] rounded-xl border border-muted/30 animate-pulse" />,
+});
+
+const TokenBreakdown = dynamic(() => import("./token-breakdown/TokenBreakdown"), {
+  loading: () => <div className="h-[320px] rounded-xl border border-muted/30 animate-pulse" />,
+});
 
 const Portfolio = () => {
   const {
