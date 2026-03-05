@@ -44,7 +44,7 @@ function TokenDisplay({
 
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
-          <span className="text-2xl font-bold text-slate-900">
+          <span className="text-xl md:text-2xl font-bold text-slate-900">
             {amount || "0"}
           </span>
           <span className="text-sm text-slate-500">
@@ -87,7 +87,7 @@ function BridgeDetails({
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 text-xs">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3 text-xs">
         {estimatedTime && (
           <div className="flex items-center gap-2">
             <Clock className="w-3 h-3 text-slate-400" />

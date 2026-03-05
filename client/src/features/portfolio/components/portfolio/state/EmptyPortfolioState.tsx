@@ -10,12 +10,12 @@ interface EmptyPortfolioStateProps {
 export function EmptyPortfolioState({ isLoading, onRefresh }: EmptyPortfolioStateProps) {
   return (
     <div className="w-full min-h-screen flex flex-col">
-      <div className="w-full max-w-7xl mx-auto flex flex-col space-y-6 px-4 sm:px-6 py-8">
+      <div className="w-full max-w-7xl mx-auto flex flex-col space-y-6 px-4 md:px-6 py-8">
         <div className="flex flex-1 items-center justify-center min-h-[300px]">
           <div className="text-center w-full ">
-            <Wallet className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-3 text-muted-foreground" />
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">Empty Portfolio</h2>
-            <p className="text-sm sm:text-base text-muted-foreground">
+            <Wallet className="w-14 h-14 md:w-16 md:h-16 mx-auto mb-3 text-muted-foreground" />
+            <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2">Empty Portfolio</h2>
+            <p className="text-sm md:text-base text-muted-foreground">
               No tokens found in your wallet
             </p>
             <div className="mt-8">
@@ -24,7 +24,7 @@ export function EmptyPortfolioState({ isLoading, onRefresh }: EmptyPortfolioStat
                 size="sm"
                 onClick={onRefresh}
                 disabled={isLoading}
-                className="gap-2 border-primary/20 hover:border-primary/40 text-primary hover:bg-primary/10 w-full max-w-[160px] sm:max-w-fit"
+                className="gap-2 border-primary/20 hover:border-primary/40 text-primary hover:bg-primary/10 w-full max-w-[160px] md:max-w-fit"
               >
                 <RefreshCw className={cn("w-4 h-4", isLoading && "animate-spin")} />
                 Refresh

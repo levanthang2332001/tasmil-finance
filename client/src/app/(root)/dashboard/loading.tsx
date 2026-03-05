@@ -12,7 +12,7 @@ function DashboardLoading() {
       }
       className="overflow-hidden px-0"
     >
-      <div className="relative h-screen overflow-y-auto space-y-8 p-8">
+      <div className="relative min-h-full overflow-y-auto space-y-6 md:space-y-8 p-4 md:p-8">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, index) => (
             <Skeleton

@@ -2,8 +2,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 function loading() {
   return (
-    <div className="flex flex-1 flex-col h-screen overflow-y-auto bg-transparent">
-      <div className="flex-1 flex flex-col justify-end px-3 sm:px-6 py-6 max-w-full mx-auto w-full">
+    <div className="flex flex-1 flex-col min-h-full overflow-y-auto bg-transparent">
+      <div className="flex-1 flex flex-col justify-end px-3 md:px-6 py-6 max-w-full mx-auto w-full">
         <div className="flex-1 flex flex-col justify-end gap-3 max-w-[800px] w-full mx-auto">
           <ChatMessageSkeleton isBot={true} />
           <ChatMessageSkeleton isBot={false} />

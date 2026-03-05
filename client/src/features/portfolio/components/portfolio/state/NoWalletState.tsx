@@ -11,7 +11,7 @@ export function NoWalletState() {
           height={100}
           className="mx-auto mb-4"
         />
-        <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
+        <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2">
           No Wallet Connected
         </h2>
         <p className="text-base text-muted-foreground">

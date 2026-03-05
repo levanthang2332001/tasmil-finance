@@ -32,7 +32,7 @@ function TokenDisplay({
 
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
-          <span className="text-2xl font-bold text-slate-900">
+          <span className="text-xl md:text-2xl font-bold text-slate-900">
             {amount || "0"}
           </span>
           <span className="text-xs text-slate-400 mt-1">{fiat}</span>
