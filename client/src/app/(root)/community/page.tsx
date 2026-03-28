@@ -1,10 +1,24 @@
 "use client";
 
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import NewsFeed from "@/features/community/components/community/NewsFeed";
 import { ErrorState } from "@/components/ui/error-state";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useCommunityFeed } from "@/features/community/hooks/useCommunityFeed";
+import dynamic from "next/dynamic";
 import Image from "next/image";
+
+const NewsFeed = dynamic(
+  () => import("@/features/community/components/community/NewsFeed"),
+  {
+    loading: () => (
+      <div className="space-y-3 p-2 md:p-4">
+        <Skeleton className="h-24 w-full" />
+        <Skeleton className="h-24 w-full" />
+        <Skeleton className="h-24 w-full" />
+      </div>
+    ),
+  },
+);
 
 const CommunityPage = () => {
   const { items, loading, error, cursor, initializePage, handleScroll } = useCommunityFeed();

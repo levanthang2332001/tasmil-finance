@@ -1,8 +1,19 @@
 "use client";
 
-import ChatDefi from "@/components/defi-agent/ChatDeFi";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
+import { Skeleton } from "@/components/ui/skeleton";
+import dynamic from "next/dynamic";
 import Image from "next/image";
+
+const ChatDefi = dynamic(() => import("@/components/defi-agent/ChatDeFi"), {
+  loading: () => (
+    <div className="space-y-3 p-2 md:p-4">
+      <Skeleton className="h-10 w-3/4" />
+      <Skeleton className="h-20 w-full" />
+      <Skeleton className="h-20 w-4/5" />
+    </div>
+  ),
+});
 
 const DefiAgentPage = () => {
   return (
