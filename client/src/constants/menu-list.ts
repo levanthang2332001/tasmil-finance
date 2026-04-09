@@ -40,11 +40,11 @@ export function getMenuList(): GroupType[] {
           label: "Community",
           image: "/sidebar/community.png",
         },
-        {
-          href: PATHS.PORTFOLIO,
-          label: "Portfolio",
-          image: "/sidebar/portfolio.png",
-        },
+        // {
+        //   href: PATHS.PORTFOLIO,
+        //   label: "Portfolio",
+        //   image: "/sidebar/portfolio.png",
+        // },
       ],
     },
   ];
