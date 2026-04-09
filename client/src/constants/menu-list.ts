@@ -24,22 +24,21 @@ export function getMenuList(): GroupType[] {
     {
       groupLabel: "",
       menus: [
-        {
-          href: PATHS.DASHBOARD,
-          label: "Dashboard",
-          image: "/sidebar/dashboard.png",
-        },
-
+        // {
+        //   href: PATHS.DASHBOARD,
+        //   label: "Dashboard",
+        //   image: "/sidebar/dashboard.png",
+        // },
         {
           href: PATHS.DEFI_AGENT,
           label: "Defi Agent",
           image: "/sidebar/defi-agent.png",
         },
-        {
-          href: PATHS.COMMUNITY,
-          label: "Community",
-          image: "/sidebar/community.png",
-        },
+        // {
+        //   href: PATHS.COMMUNITY,
+        //   label: "Community",
+        //   image: "/sidebar/community.png",
+        // },
         // {
         //   href: PATHS.PORTFOLIO,
         //   label: "Portfolio",
